@@ -1,6 +1,9 @@
 package RainbowLike.repository;
 
+import RainbowLike.entity.Chat;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ChatRepository extends JpaRepository {
+@Repository
+public interface ChatRepository extends JpaRepository <Chat,Long> {
 }

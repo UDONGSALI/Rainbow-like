@@ -1,6 +1,9 @@
 package RainbowLike.repository;
 
+import RainbowLike.entity.File;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface FileRepository extends JpaRepository {
+@Repository
+public interface FileRepository extends JpaRepository <File,Long> {
 }
