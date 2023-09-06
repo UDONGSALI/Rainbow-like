@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -73,6 +72,23 @@ public class Member {
         member.setJdate(LocalDate.now());
         member.setType(memberFormDto.getType());
         return member;
+    }
+
+
+
+    public Member(String memId, String pwd, Type type, String name, String gender, LocalDate bir, String tel, String email, String addr, String addrDtl, LocalDate jdate) {
+        super();
+        this.memId = memId;
+        this.pwd = pwd;
+        this.type = type;
+        this.name = name;
+        this.gender = gender;
+        this.bir = bir;
+        this.email = email;
+        this.tel = tel ;
+        this.addr = addr;
+        this.addrDtl =addrDtl;
+        this.jdate = jdate;
     }
 
 
