@@ -10,11 +10,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ChatRes {
+public class CbotRes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long chatNum;
+    private Long cbotResNum;
 
     @Column( nullable = false, length = 50)
     private String resCtgr;
