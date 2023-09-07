@@ -52,4 +52,18 @@ public class Post {
 
     @Column(length = 50)
     private String clubRecuStatus;
+
+    public Post(Member member, Board board, String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus) {
+        super();
+        this.member = member;
+        this.board = board;
+        this.title = title;
+        this.content = content;
+        this.writeDate = writeDate;
+        this.pageView = pageView;
+        this.clubAllowStatus = clubAllowStatus;
+        this.clubRecuStatus = clubRecuStatus;
+
+
+    }
 }
