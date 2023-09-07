@@ -12,12 +12,9 @@ import java.util.List;
 @RestController
 
 public class ClubController {
-    private final PostRepository postRepository;
+  @Autowired
+   PostRepository postRepository;
 
-    @Autowired
-    public ClubController(PostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
 
     @GetMapping("/clubs")
     public List<Post> getClubs() {
