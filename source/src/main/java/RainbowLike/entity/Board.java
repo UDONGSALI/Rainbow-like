@@ -30,4 +30,13 @@ public class Board {
 
     @Column(nullable = false)
     private byte commAllowYn;
+
+    public Board(String boardName, int readRole, int writeRole, int editRole, byte commAllowYn) {
+        super();
+        this.boardName = boardName;
+        this.readRole = readRole;
+        this.writeRole = writeRole;
+        this.editRole = editRole;
+        this.commAllowYn = commAllowYn;
+    }
 }
