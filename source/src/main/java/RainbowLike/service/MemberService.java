@@ -1,31 +1,36 @@
 package RainbowLike.service;
 
+import RainbowLike.dto.MemberFormDto;
 import RainbowLike.entity.Member;
 import RainbowLike.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
-	@Autowired
 	private final MemberRepository memberRepository;
 
-	public Member saveMember(Member member) {
+	private final ModelMapper mapper;
+
+	private final PasswordEncoder passwordEncoder;
+
+
+	public void saveMember(MemberFormDto memberFormDto) {
 //		validateDuplicateMember(member);
 
-		return (Member) memberRepository.save(member);
+		Member member = Member.createMember(memberFormDto, passwordEncoder);
+		memberRepository.save(member);
 	}
 
-	public MemberService(MemberRepository memberRepository, MemberRepository memberRepository1){
-
-		this.memberRepository = memberRepository1;
-	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
