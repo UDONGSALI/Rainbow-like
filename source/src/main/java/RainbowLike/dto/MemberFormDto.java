@@ -1,6 +1,7 @@
 package RainbowLike.dto;
 
 
+import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,7 +47,7 @@ public class MemberFormDto {
     private String email;
 
     @NotBlank(message = "성별을 선택해주세요.")
-    private String gender;
+    private Gender gender;
 
     @Length(min = 10, max = 11, message = "전화번호를 형식에 맞게 입력해주세요")
     private String tel;
@@ -73,7 +74,7 @@ public class MemberFormDto {
         memberFormDto.setName("관리자");
         memberFormDto.setEmail("test@abc.com");
         memberFormDto.setType(Type.ADMIN);
-        memberFormDto.setGender("W");
+        memberFormDto.setGender(Gender.FEMALE);
         memberFormDto.setTel("01012345678");
         memberFormDto.setBir(LocalDate.of(2000, 10, 10));
         memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
@@ -89,7 +90,7 @@ public class MemberFormDto {
         memberFormDto.setName("관리자");
         memberFormDto.setEmail("admin@abc.com");
         memberFormDto.setType(Type.ADMIN);
-        memberFormDto.setGender("W");
+        memberFormDto.setGender(Gender.FEMALE);
         memberFormDto.setTel("01012345678");
         memberFormDto.setBir(LocalDate.of(2000, 10, 10));
         memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
@@ -106,7 +107,7 @@ public class MemberFormDto {
         memberFormDto.setName("유저");
         memberFormDto.setEmail("user@abc.com");
         memberFormDto.setType(Type.USER);
-        memberFormDto.setGender("W");
+        memberFormDto.setGender(Gender.FEMALE);
         memberFormDto.setTel("01012345678");
         memberFormDto.setBir(LocalDate.of(2000, 10, 10));
         memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
@@ -123,7 +124,7 @@ public class MemberFormDto {
         memberFormDto.setName("노무사");
         memberFormDto.setEmail("labor@abc.com");
         memberFormDto.setType(Type.LABOR);
-        memberFormDto.setGender("W");
+        memberFormDto.setGender(Gender.FEMALE);
         memberFormDto.setTel("01023456789");
         memberFormDto.setBir(LocalDate.of(2000, 10, 10));
         memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
@@ -140,7 +141,7 @@ public class MemberFormDto {
         memberFormDto.setName("상담사");
         memberFormDto.setEmail("counselor@abc.com");
         memberFormDto.setType(Type.COUNSELOR);
-        memberFormDto.setGender("W");
+        memberFormDto.setGender(Gender.FEMALE);
         memberFormDto.setTel("01012345678");
         memberFormDto.setBir(LocalDate.of(2000, 10, 10));
         memberFormDto.setAddr("대전광역시 서구 둔산서로 17");

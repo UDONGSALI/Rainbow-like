@@ -18,11 +18,11 @@ public class Post {
     private Long postNum;
 
     @ManyToOne
-    @JoinColumn(name = "mem_num", nullable = false)
+    @JoinColumn(name = "mem_num")
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "board_num", nullable = false)
+    @JoinColumn(name = "board_num")
     private Board board;
 
     @Column(nullable = false)
