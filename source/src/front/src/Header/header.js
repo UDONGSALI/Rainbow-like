@@ -1,8 +1,8 @@
-import logo from "../img/logo.png";
-import facebook from "../img/facebook.png";
-import instagram from "../img/instagram.png";
-import naverblog from "../img/naverblog.png";
-import youtube from "../img/youtube.png";
+import logo from "../layout/img/header/logo.png";
+import facebook from "../layout/img/header/facebook.png";
+import instagram from "../layout/img/header/instagram.png";
+import naverblog from "../layout/img/header/naverblog.png";
+import youtube from "../layout/img/header/youtube.png";
 import React from "react";
 
 
@@ -207,7 +207,7 @@ const Header=()=>{
                         </div>
                         <div class="login_wrap">
                             <a href="/user/authority/logout"><span>로그아웃</span></a>
-                            <a href="/mypage"><span>마이페이지</span></a>
+                            <a href="/src/front/src/mypage/mypage"><span>마이페이지</span></a>
                         </div>
                     </div>
                     <button type="button" class="search" style={{display: 'none'}}>
