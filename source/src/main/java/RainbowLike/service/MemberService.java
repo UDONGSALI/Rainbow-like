@@ -36,6 +36,7 @@ public class MemberService implements UserDetailsService {
         if (member == null) {
             throw new UsernameNotFoundException(memId);
         }
+
         return User.builder()
                 .username(member.getMemId())
                 .password(member.getPwd())
