@@ -20,23 +20,19 @@ public class Board {
     private String boardName;
 
     @Column( nullable = false)
-    private int readRole;
+    private boolean readRole;
 
     @Column( nullable = false)
-    private int writeRole;
-
-    @Column( nullable = false)
-    private int editRole;
+    private boolean writeRole;
 
     @Column(nullable = false)
-    private byte commAllowYn;
+    private boolean commAllowYn;
 
-    public Board(String boardName, int readRole, int writeRole, int editRole, byte commAllowYn) {
+    public Board(String boardName, boolean readRole, boolean writeRole, boolean commAllowYn) {
         super();
         this.boardName = boardName;
         this.readRole = readRole;
         this.writeRole = writeRole;
-        this.editRole = editRole;
         this.commAllowYn = commAllowYn;
     }
 }
