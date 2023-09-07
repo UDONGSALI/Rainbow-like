@@ -5,6 +5,7 @@ import RainbowLike.entity.Member;
 import RainbowLike.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,32 +18,37 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
-	private final MemberRepository memberRepository;
-
-	private final ModelMapper mapper;
-
-	private final PasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
 
 
-	public void saveMember(MemberFormDto memberFormDto) {
+
+    public void saveMember(Member member) {
 //		validateDuplicateMember(member);
 
-		Member member = Member.createMember(memberFormDto, passwordEncoder);
-		memberRepository.save(member);
-	}
+        memberRepository.save(member);
+    }
 
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return null;
-	}
+    //	아이디로 회원을 찾아 유저빌더로 빌드
+    @Override
+    public UserDetails loadUserByUsername(String memId) throws UsernameNotFoundException {
+        Member member = memberRepository.findByMemId(memId);
+        if (member == null) {
+            throw new UsernameNotFoundException(memId);
+        }
+        return User.builder()
+                .username(member.getMemId())
+                .password(member.getPwd())
+                .roles(member.getType().toString())
+                .build();
+    }
 
 
-	public boolean checkIdDuplicate(String memId) {
-		Member findMember = memberRepository.findByMemId(memId);
-		if(findMember != null) // 이미 admin계정이 있을경우
-			return true;
-		return false;
-	}
+    public boolean checkIdDuplicate(String memId) {
+        Member findMember = memberRepository.findByMemId(memId);
+        if (findMember != null)
+            return true;
+        return false;
+    }
 
 }
