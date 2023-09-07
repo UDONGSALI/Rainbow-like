@@ -9,6 +9,8 @@ import java.util.List;
 public interface ClubRepository extends CrudRepository<Post, Long>
 {
     List<Post> findByBoard(Board board);
+
+//    Iterable<Post> findById(Long id);
 //    @Query("select p from post as p where p.board_num = 10")
 //    Iterable<Post> findByClubs();
 
