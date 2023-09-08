@@ -29,7 +29,15 @@ function Memlist() {
 
 
     const colums = [
-        {field: 'index', headerName: '회원번호' , width: 100},
+        {
+            field:
+                '_links.member.href',
+            headerName: '번호',
+            sortable: false,
+            filterable: false,
+            renderCell: row =>
+                <div>{(row.id).slice(-1)}</div>
+        },
         {field: 'memId', headerName: '아이디' , width: 100},
         {field: 'type', headerName: '유형' , width: 100},
         {field: 'name', headerName: '이름' , width: 100},
