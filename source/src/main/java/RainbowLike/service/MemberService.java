@@ -28,7 +28,6 @@ public class MemberService implements UserDetailsService {
         memberRepository.save(member);
     }
 
-
     //	아이디로 회원을 찾아 유저빌더로 빌드
     @Override
     public UserDetails loadUserByUsername(String memId) throws UsernameNotFoundException {
