@@ -17,11 +17,11 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long postNum;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mem_num")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "board_num")
     private Board board;
 
