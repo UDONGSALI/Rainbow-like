@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
 import RainbowLike.dto.MemberFormDto;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class Member {
     private String name;
 
     @Column(nullable = false, length = 10)
-    private String gender;
+    private Gender gender;
 
     @Column(nullable = false)
     private LocalDate bir;
@@ -76,7 +77,7 @@ public class Member {
 
 
 
-    public Member(String memId, String pwd, Type type, String name, String gender, LocalDate bir, String tel, String email, String addr, String addrDtl, LocalDate jdate) {
+    public Member(String memId, String pwd, Type type, String name, Gender gender, LocalDate bir, String tel, String email, String addr, String addrDtl, LocalDate jdate) {
         super();
         this.memId = memId;
         this.pwd = pwd;

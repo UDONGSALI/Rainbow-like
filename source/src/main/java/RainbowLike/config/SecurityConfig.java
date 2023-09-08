@@ -1,16 +1,27 @@
 package RainbowLike.config;
 
 
+import RainbowLike.component.AuthEntryPoint;
+import RainbowLike.component.AuthenticationFilter;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+<<<<<<< HEAD
+=======
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+>>>>>>> origin/master
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,59 +35,48 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     MemberService memberService;
-
     @Autowired
     MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthEntryPoint exceptionHandler;
 
-    private final PasswordEncoderConfig passwordEncoderConfig;
-
-//	protected void configure(HttpSecurity http) throws Exception {
-//		http.formLogin().loginPage("/members/login")
-//				.defaultSuccessUrl("/")
-//				.usernameParameter("id")
-//				.passwordParameter("pwd")
-//				.successHandler(new AccountLoginSuccessHandler(memberRepository))
-//				.failureUrl("/members/login/error")
-//				.failureHandler(new AccountLoginFailureHandler()).and().logout()
-//				.logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
-//				.logoutSuccessUrl("/");
-//
-//		http.authorizeRequests()
-//				.mvcMatchers("/admin/**").hasRole("ADMIN")
-//				.mvcMatchers("/mypage/**").hasAnyRole("CLIENT", "COUNSELOR")
-//				.mvcMatchers("/sweetboard/**").hasAnyRole("COUNSELOR", "ADMIN")
-//				.mvcMatchers("/", "/members/**", "/ws/**", "/cons/**", "/board/**", "/boardCons/**", "/mhinfo/**",
-//							"/weeNetwork/**", "/mhTest/**","/weeProjectInfo","/weeSymbol","/siteMap").permitAll()
-//				.anyRequest().authenticated();
-//
-//		http.exceptionHandling() // 인증되지 않은 사용자가 리소스에 접근하였을 때 수행되는 핸들러 등록
-////	      .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-////	      .accessDeniedHandler(new CustomAccessDeniedHandler());
-//				.accessDeniedPage("/error_user");
-//	}
-
+    @Autowired
+    private AuthenticationFilter authenticationFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.csrf().disable().cors().and()
-                .authorizeRequests().anyRequest().permitAll();
-
-//		http.csrf().disable().cors().and()
-//		.sessionManagement()
-//		.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//		.authorizeRequests()
-//		.antMatchers(HttpMethod.POST, "/login").permitAll()
-//		.anyRequest().authenticated().and()
-//		.exceptionHandling()
-//		.authenticationEntryPoint(exceptionHandler);
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests()
+//                제일 중요 보안 예외 부분
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers("/api/*").permitAll()
+                .anyRequest().authenticated().and()
+                .exceptionHandling()
+                .authenticationEntryPoint(exceptionHandler).and()
+                .addFilterBefore(authenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class);
     }
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(Arrays.asList("*"));
+        config.setAllowedMethods(Arrays.asList("*"));
+        config.setAllowedHeaders(Arrays.asList("*"));
+        config.setAllowCredentials(false);
+        config.applyPermitDefaultValues();
 
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberService).passwordEncoder(passwordEncoderConfig.passwordEncoder());
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
+<<<<<<< HEAD
 //	public void configure(WebSecurity web) throws Exception {
 //		web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/wee/**", "/images/**", "/error");
 //	}
@@ -93,5 +93,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         source.registerCorsConfiguration("/**", config);
         return source;
+=======
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth.userDetailsService(memberService).passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    public AuthenticationManager getAuthenticationManager() throws
+            Exception {
+        return authenticationManager();
+>>>>>>> origin/master
     }
 }
