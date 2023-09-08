@@ -18,10 +18,6 @@ public class BoardService {
     private final ModelMapper mapper;
 
     private final BoardRepository boardRepository;
-<<<<<<< HEAD
-=======
-
->>>>>>> 110d4a4e2e3c4fb5c666bd0d2b5ad1c33b09118f
 
     public void createBoards(ArrayList<BoardDto> boardDtoList) {
 
