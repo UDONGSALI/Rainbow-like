@@ -1,13 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {SERVER_URL} from "../constants";
 import {DataGrid} from "@mui/x-data-grid";
+import SingupModal from "./SingupModal";
 
 function Memlist() {
 
     const [members, setMembers] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [selectedMember, setSelectedMember] = useState(null); // 선택한 멤버를 저장하는 상태
+
+
 
     useEffect(() => {
-        fetch(SERVER_URL + "members")
+        fetch(SERVER_URL + "api/members")
             .then(res => res.json())
             .then(data =>  setMembers(data._embedded.members))
             .catch(err => console.error(err));
@@ -17,7 +22,6 @@ function Memlist() {
         fetchMembers();
     }, []);
 
-    const [open, setOpen] = useState(false);
 
     const jwtToken = sessionStorage.getItem("jwt");
 
@@ -47,32 +51,29 @@ function Memlist() {
         {field: 'email', headerName: '이메일' , width: 200},
         {field: 'addr', headerName: '주소' , width: 200},
         {field: 'jdate', headerName: '가일일' , width: 150},
+        {
+            field: '_links.self.href',
+            headerName: '',
+            sortable: false,
+            filterable: false,
+            renderCell: row => (
+                <button onClick={() => handleOpenModal()}>수정</button>
+            )
+        },
         // {
         //     field:
-        //         '_links.car.href',
+        //         '_links.self.href',
         //     headerName: '',
         //     sortable: false,
         //     filterable: false,
         //     renderCell: row =>
-        //         <button data={row} updateCar={updateCar}></button>
-        // },
-        {
-            field:
-                '_links.self.href',
-            headerName: '',
-            sortable: false,
-            filterable: false,
-            renderCell: row =>
-                <button onClick={() => onDelClick(row.id)}>Delete</button>
-        }
+        //         <button onClick={() => onDelClick(row.id)}>삭제</button>
+        // }
     ]
 
     const fetchMembers = () => {
-
         const token = sessionStorage.getItem("jwt");
-
         fetch(SERVER_URL + 'api/members',{
-
             headers: { 'Authorization' : token}
         })
             .then(response => response.json())
@@ -81,9 +82,7 @@ function Memlist() {
     }
     const onDelClick = (url) => {
         if (window.confirm("삭제 전 한번 더 확인해 주세요")) {
-
             const token = sessionStorage.getItem("jwt");
-
             fetch(url, {method: 'DELETE',
                 headers: { 'Authorization' : token}
             })
@@ -99,9 +98,21 @@ function Memlist() {
         }
     }
 
+    // 모달 열기 함수
+    const handleOpenModal = () => {
+        setOpen(true);
+    };
+
+    // 모달 닫기 함수
+    const handleCloseModal = () => {
+        setOpen(false);
+    };
+
+
     return (
         <div style={{height: 500, width: '100%'}}>
             <DataGrid columns={colums} rows={members} getRowId={row => row._links.self.href}/>
+            <SingupModal open={open} handleClose={handleCloseModal} /> {/* 모달 컴포넌트 추가 */}
         </div>
     );
 }
