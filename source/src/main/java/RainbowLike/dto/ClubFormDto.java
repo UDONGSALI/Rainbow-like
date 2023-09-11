@@ -23,4 +23,13 @@ public class ClubFormDto {
 
     }
 
+    public ClubFormDto(String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus){
+        this.title = title;
+        this.content = content;
+        this.writeDate = writeDate;
+        this.pageView = pageView;
+        this.clubAllowStatus = clubAllowStatus;
+        this.clubRecuStatus = clubRecuStatus;
+    }
+
 }
