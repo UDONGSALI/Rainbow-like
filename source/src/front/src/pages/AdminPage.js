@@ -4,8 +4,8 @@ import Memlist from "../components/Memlist";
 
 
 
-const Admin = () => {
+const AdminPage = () => {
         return <Memlist/>
 };
 
-export default Admin;
+export default AdminPage;
