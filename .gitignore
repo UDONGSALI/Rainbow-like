@@ -229,7 +229,6 @@ $RECYCLE.BIN
 #application.properties
 application.properties
 
-
-.App.js
+App.js
 package.json
 package-lock.json
