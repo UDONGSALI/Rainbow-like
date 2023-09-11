@@ -40,4 +40,5 @@ public class RentHist {
 
     @Column(nullable = false,length = 50)
     private String payStatus;
+
 }

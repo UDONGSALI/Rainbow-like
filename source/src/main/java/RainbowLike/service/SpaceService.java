@@ -28,8 +28,5 @@ public class SpaceService {
         }
     }
 
-    public void saveSpace(SpaceDto spaceDto) {
-        Space space =Space.createSpace(spaceDto);
-        spaceRepository.save(space);
-    }
+
 }
