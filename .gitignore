@@ -226,9 +226,10 @@ $RECYCLE.BIN
 
 # End of httpswww.toptal.comdevelopersgitignoreapiintellij,eclipse,react,windows
 
-<<<<<<< HEAD
-
-=======
->>>>>>> fc5705b3895d38752db42e2bb9fb133c1506674d
 #application.properties
 application.properties
+
+
+.App.js
+package.json
+package-lock.json
