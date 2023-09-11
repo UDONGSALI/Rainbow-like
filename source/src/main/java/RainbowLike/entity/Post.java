@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Post {
+public class Post extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,12 +31,6 @@ public class Post {
     @Column(nullable = false)
     @Lob
     private String content;
-
-    @Column(nullable = false)
-    private LocalDateTime writeDate;
-
-    @Column
-    private LocalDateTime editDate;
 
     @Column(nullable = false)
     private int pageView;
