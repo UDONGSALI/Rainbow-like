@@ -46,15 +46,5 @@ public class Space {
 
     }
 
-    public static Space createSpace(SpaceDto spaceDto) {
-        Space space =new Space();
-        space.setSpaceName(spaceDto.getSpaceName());
-        space.setMaxPerson(spaceDto.getMaxPerson());
-        space.setSpaceUsage(spaceDto.getSpaceUsage());
-        space.setRentTime(spaceDto.getRentTime());
-        space.setRentFee(spaceDto.getRentFee());
-        space.setFacilities(spaceDto.getFacilities());
 
-        return space;
-    }
 }
