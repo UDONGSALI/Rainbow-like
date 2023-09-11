@@ -1,5 +1,6 @@
 package RainbowLike;
 
+import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
@@ -48,6 +49,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("일단 이게 되긴 하는지");
 
+<<<<<<< HEAD
         Board board1 = new Board("Club", 1, 1, 1, (byte) 1);
         Board board2 = new Board("Test", 1, 2, 2, (byte) 0);
         boardRepository.saveAll(Arrays.asList(board1, board2));
@@ -55,6 +57,15 @@ public class RainbowLikeApplication implements CommandLineRunner {
         Member member1 = new Member("test1", "$2a$10$HX32zW6s/T1EvnnSDlKcde1uMtvkF/mq8qSf8XLv5PdBN26tT6YUG", Type.USER, "김유저", "여", LocalDate.of(2023, 01, 01), "010-1111-1111", "test1@test.com", "대전 서구", "둔산서로 17", LocalDate.now());
         Member member2 = new Member("test2", "$2a$10$avDcExXAMm7U.tezpQsF9uaAKYsh4fb.kAAvdVdxgqeNbfiwro1Uq", Type.USER, "박유저", "남", LocalDate.of(2023, 01, 01), "010-2222-2222", "test2@test.com", "대전 서구", "양호빌딩", LocalDate.now());
         memberRepository.saveAll(Arrays.asList(member1, member2));
+=======
+        Board board1 = new Board("Club", true, true, true);
+		Board board2 = new Board("Test", true, false, false);
+		boardRepository.saveAll(Arrays.asList(board1, board2));
+
+        Member member1 = new Member("test1", "$2a$10$HX32zW6s/T1EvnnSDlKcde1uMtvkF/mq8qSf8XLv5PdBN26tT6YUG", Type.USER, "김유저", Gender.FEMALE, LocalDate.of(2023,01,01), "010-1111-1111", "test1@test.com", "대전 서구", "둔산서로 17", LocalDate.now());
+        Member member2 = new Member("test2", "$2a$10$avDcExXAMm7U.tezpQsF9uaAKYsh4fb.kAAvdVdxgqeNbfiwro1Uq", Type.USER, "박유저", Gender.MALE ,LocalDate.of(2023,01,01), "010-2222-2222", "test2@test.com", "대전 서구", "양호빌딩", LocalDate.now());
+		memberRepository.saveAll(Arrays.asList(member1, member2));
+>>>>>>> 88d2d4886d3552068a9986ea1eafdfda596bc17d
 
         Post club1 = new Post(member1, board1, "소모임게시글테스트", "소모임게시글테스트용입니다. 겸사겸사 게시판과 멤버도 테스트 중입니다.", LocalDateTime.now(), 0, "허가", "모집중");
         Post club2 = new Post(member1, board2, "학원 시작하고 엄마를 한 번도 못 봤어요", "엄마보고싶어요", LocalDateTime.now(), 0, "허가", "진행중");
