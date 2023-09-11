@@ -1,5 +1,5 @@
 
-import Footer from "./footer";
+import Footer from "../footer/footer";
 import Header from "./header";
 import '../layout/css/Header.css';
 const Layout=()=>{
@@ -11,7 +11,7 @@ const Layout=()=>{
 
             </main>
 
-            {/*<Footer/>*/}
+            <Footer/>
         </div>
     )
 }

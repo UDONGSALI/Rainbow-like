@@ -1,67 +1,68 @@
 import logo from "../layout/img/header/logo.png";
-import facebook from "../layout/img/header/facebook.png";
-import instagram from "../layout/img/header/instagram.png";
-import naverblog from "../layout/img/header/naverblog.png";
-import youtube from "../layout/img/header/youtube.png";
+import sns_01 from "../layout/img/header/sns_01.png";
+import sns_02 from "../layout/img/header/sns_02.png";
+import sns_03 from "../layout/img/header/sns_03.png";
+import sns_04 from "../layout/img/header/sns_04.png";
 import React from "react";
+import '../layout/css/Header.css';
 
 
 const Header=()=>{
     return (
-        <header id="header" class="active">
-            <div class="header_wrap">
-                <h1 class="logo">
+        <header id="header" className="active">
+            <div className="header_wrap">
+                <h1 className="logo">
                     <a href="/"><img src={logo} alt="로고"/></a>
                 </h1>
                 <nav id="gnb" >
                     <ul>
-                        <li><a href="/greeting" class=""><span>기관소개</span></a>
-                            <div class="sub">
-                                <div class="sub_tit">
+                        <li><a href="/greeting" className=""><span>기관소개</span></a>
+                            <div className="sub">
+                                <div className="sub_tit">
                                     <strong>기관소개</strong>
                                     <p><span></span></p>
                                 </div>
                                 <ul>
                                     <li>
-                                        <a href="/greeting" class="depth_menu_tit"><span>인사말</span></a>
+                                        <a href="/greeting" className="depth_menu_tit"><span>인사말</span></a>
                                     </li>
                                     <li>
-                                        <a href="/sub0103" class="depth_menu_tit"><span>목적 및 비전</span></a>
+                                        <a href="/sub0103" className="depth_menu_tit"><span>목적 및 비전</span></a>
                                     </li>
                                     <li>
-                                        <a href="/sub0104" class="depth_menu_tit"><span>연혁</span></a>
+                                        <a href="/sub0104" className="depth_menu_tit"><span>연혁</span></a>
                                     </li>
                                     <li>
-                                        <a href="/sub0105" class="depth_menu_tit"><span>조직도</span></a>
+                                        <a href="/sub0105" className="depth_menu_tit"><span>조직도</span></a>
                                     </li>
                                     <li>
-                                        <a href="/sub0108" class="depth_menu_tit"><span>CI소개</span></a>
+                                        <a href="/sub0108" className="depth_menu_tit"><span>CI소개</span></a>
                                     </li>
                                     <li>
-                                        <a href="/sub0106" class="depth_menu_tit"><span>공간소개</span></a>
+                                        <a href="/sub0106" className="depth_menu_tit"><span>공간소개</span></a>
                                     </li>
                                     <li>
-                                        <a href="/sub0107" class="depth_menu_tit"><span>오시는 길</span></a>
+                                        <a href="/sub0107" className="depth_menu_tit"><span>오시는 길</span></a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
-                        <li><a href="/sub0201" class=""><span>사업안내</span></a>
-                            <div class="sub">
-                                <div class="sub_tit">
+                        <li><a href="/sub0201" className=""><span>사업안내</span></a>
+                            <div className="sub">
+                                <div className="sub_tit">
                                     <strong>사업안내</strong>
                                     <p><span></span></p>
                                 </div>
                                 <ul>
                                     <li>
-                                        <a href="/sub020101" class="depth_menu_tit"><span>여성 경제적 역량 강화 사업</span></a>
+                                        <a href="/sub020101" className="depth_menu_tit"><span>여성 경제적 역량 강화 사업</span></a>
                                         <ul>
                                             <li><a href="/sub020101"><span>여성 경제적 역량 강화 교육</span></a></li>
                                             <li><a href="/sub020102"><span>창업지원 프로그램</span></a></li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="/sub020201" class="depth_menu_tit"><span>네트워크 활성화 사업</span></a>
+                                        <a href="/sub020201" className="depth_menu_tit"><span>네트워크 활성화 사업</span></a>
                                         <ul>
                                             <li><a href="/sub020201"><span>여성정책네트워크</span></a></li>
                                             <li><a href="/sub020202"><span>성평등 소모임 지원사업</span></a></li>
@@ -69,7 +70,7 @@ const Header=()=>{
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="/sub020301" class="depth_menu_tit"><span>성평등 교육 및 문화소통사업</span></a>
+                                        <a href="/sub020301" className="depth_menu_tit"><span>성평등 교육 및 문화소통사업</span></a>
                                         <ul>
                                             <li><a href="/sub020301"><span>성인권 배움숲</span></a></li>
                                             <li><a href="/sub020302"><span>여성정책단</span></a></li>
@@ -79,7 +80,7 @@ const Header=()=>{
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="/sub020401" class="depth_menu_tit"><span>홍보사업</span></a>
+                                        <a href="/sub020401" className="depth_menu_tit"><span>홍보사업</span></a>
                                         <ul>
                                             <li><a href="/sub020401"><span>여성 소식지 기자단</span></a></li>
                                             <li><a href="/sub020402"><span>성평등 책마당 '퐁당'</span></a></li>
@@ -88,9 +89,9 @@ const Header=()=>{
                                 </ul>
                             </div>
                         </li>
-                        <li><a href="/sub020601" class=""><span>신청 · 접수</span></a>
-                            <div class="sub">
-                                <div class="sub_tit">
+                        <li><a href="/sub020601" className=""><span>신청 · 접수</span></a>
+                            <div className="sub">
+                                <div className="sub_tit">
                                     <strong>신청 · 접수</strong>
                                     <p><span></span></p>
                                 </div>
@@ -189,19 +190,19 @@ const Header=()=>{
                             <div class="sns_wrap">
                                 <a href="https://blog.naver.com/sjwplaza" class="col_01" target="_blank" rel="noopener noreferrer">
                                     <span class="hide"></span>
-                                    <img src={naverblog} alt=""/>
+                                    <img src={sns_01} alt=""/>
                                 </a>
                                 <a href="https://www.instagram.com/sjwplaza/" class="col_02" target="_blank" rel="noopener noreferrer">
                                     <span class="hide"></span>
-                                    <img src={instagram} alt=""/>
+                                    <img src={sns_02} alt=""/>
                                 </a>
                                 <a href="https://www.facebook.com/sjwplaza" class="col_03" target="_blank" rel="noopener noreferrer">
                                     <span class="hide"></span>
-                                    <img src={facebook} alt=""/>
+                                    <img src={sns_03} alt=""/>
                                 </a>
                                 <a href="https://www.youtube.com/@sjwomenplaza" class="col_04" target="_blank" rel="noopener noreferrer">
                                     <span class="hide"></span>
-                                    <img src={youtube} alt=""/>
+                                    <img src={sns_04} alt=""/>
                                 </a>
                             </div>
                         </div>
