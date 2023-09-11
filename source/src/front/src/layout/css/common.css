@@ -6,12 +6,13 @@
 a{transition:background .1s}
 
 /*reset*/
-html { font-size: 10px;margin: 0;padding: 0;-webkit-box-sizing: border-box;box-sizing: border-box;-webkit-text-size-adjust: none;-moz-text-size-adjust: none;-ms-text-size-adjust: none;height:100%; overflow: hidden;overflow-y: auto; height: 100%; }
-body { font-size: 1.6rem;font-family: "Pretendard", sans-serif;font-weight: 300;line-height: 1.25;margin: 0;padding: 0;height: 100%; }
+html { font-size: 10px;margin: 0;padding: 0;-webkit-box-sizing: border-box;box-sizing: border-box;-webkit-text-size-adjust: none;-moz-text-size-adjust: none;-ms-text-size-adjust: none;height:100%; overflow: hidden;overflow-y: auto; width: 100%; }
+body { font-size: 1.6rem;font-family: "Gothic A1", sans-serif;font-weight: 300;line-height: 1.25;margin: 0;padding: 0;height: 100%; width: 100% }
 
-body,h1,h2,h3,h4,h5,h6,p,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,strong,b{font-weight:400;font-family:'Pretendard', sans-serif;margin:0;padding:0;color:#4b4b4b;word-break: keep-all; }
+body,h1,h2,h3,h4,h5,h6,p,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,strong,b{font-weight:400;font-family:'Gothic A1', sans-serif;margin:0;padding:0;color:#4b4b4b;word-break: keep-all; }
 ul,ol,li,dl,dt,dd {margin: 0;padding: 0;list-style: none;}
 h1,h2,h3,h4,h5,h6{font-weight:600;}
+div{display: block;}
 
 label{display:inline-block;cursor:pointer}
 input,textarea,select,button,table{font-family:'Pretendard', sans-serif;color:#555;}
@@ -23,7 +24,6 @@ i,em,address{font-style:normal}
 a{text-decoration:none}
 a:link,a:visited{color:#555}
 a:hover,a:focus{color:#000}
-article,aside,dialog,footer,header,section,footer,nav,figure,main{display:block;margin:0;padding:0}
 button, input[type="submit"]{cursor:pointer}
 button{padding:0;line-height:100%;border-width:0;background-color:transparent}
 legend{overflow:hidden;position:fixed;left:-1px;top:-1px;width:1px;height:1px;font-size:0;line-height:0}
@@ -190,6 +190,9 @@ h5.type02 { font-size:2.2rem; color:#222;margin-bottom:1.2rem; }
 .edu_more { padding:.5rem 1.7rem;border-radius: .5rem;border:1px solid #ABA8B7;margin-left:1.5rem; }
 .edu_more span { font-size:1.6rem;font-weight: 500;color:#565358; }
 
+
+
+
 /*@media all and (max-width:640px) {*/
 /*    .tbl_scroll {position:relative;padding-top:6rem; background:url("/layout/img/common/mCount_scroll_ico.png") no-repeat right 0; background-size:68px 40px;position:relative;}*/
 /*    .tbl_wrap { overflow-x:auto; }*/
@@ -236,7 +239,7 @@ h5.type02 { font-size:2.2rem; color:#222;margin-bottom:1.2rem; }
 /*셀렉트 박스*/
 .select_box { position: absolute; right:0; top:6rem; }
 .select_box>button { padding:0 3.3rem; display: flex; align-items: center; background: #302F2F;position: relative;height: 6rem;width: 26rem;text-align: left; color:#D8D8D8;font-size: 1.6rem; border-radius: 6rem; }
-.select_box>button:before { position: absolute; top:50%;transform: translateY(-50%); right: 3.3rem; content: "\e914"; transition: all .2s;font-size:1.6rem; font-family: "xeicon";font-size: 1.8rem;color:#D8D8D8; }
+.select_box>button:before { position: absolute; top:50%;transform: translateY(-50%); right: 3.3rem; content: "+"; transition: all .2s;font-size:1.6rem; font-family: "Gothic A1";font-size: 3rem;color:#D8D8D8; }
 .select_box>button.on:before { transform: translateY(-50%) rotate(45deg); }
 .select_box ul li a { display: block; color:#fff; font-weight:300; background: #fff; position: relative;height: 5rem;width: 100%;text-align: left;padding: 0 3.3rem;border-top:1px solid #302F2F; color:#555;display: flex;align-items: center; font-size: 1.6rem; }
 .select_box ul li a:hover { background:#302F2F;color:#fff; }

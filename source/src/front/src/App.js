@@ -1,13 +1,19 @@
-import logo from './logo.svg';
+
 import './App.css';
-// import Layout from "./Header/layout";
-import Container_common from "./mypage/container_common";
+import './layout/css/font.css';
+import Footer from "./footer/footer";
+ import Container_common from "./mypage/container_common";
+import Header from "./Header/header";
+import Mypage_active from "./mypage/mypage_active";
+import Mypage from "./mypage/mypage";
 
 function App() {
   return (
     <div className="App">
-      {/*<Layout/>*/}
+        {/*<Header/>*/}
         <Container_common/>
+        <Mypage_active/>
+        {/*<Footer/>*/}
     </div>
   );
 }

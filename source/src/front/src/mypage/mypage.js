@@ -1,10 +1,11 @@
-import './font.css';
+
 import Container_common from './container_common';
+import Mypage_active from "./mypage_active";
 const Mypage=()=>{
     return(
         <main>
             <Container_common/>
-            <Container_main/>
+            <Mypage_active/>
         </main>
     );
 }
