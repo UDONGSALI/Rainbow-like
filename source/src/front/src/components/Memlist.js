@@ -1,118 +1,105 @@
-import React, {useEffect, useState} from 'react';
-import {SERVER_URL} from "../constants";
-import {DataGrid} from "@mui/x-data-grid";
-import SingupModal from "./SingupModal";
+import React, { useEffect, useState } from 'react';
+import { SERVER_URL } from '../constants';
+import { DataGrid } from '@mui/x-data-grid';
+import MemberEditor from './MemberEditor';
 
 function Memlist() {
-
+    // 멤버 목록과 모달 상태를 관리하는 상태 변수들을 정의합니다.
     const [members, setMembers] = useState([]);
-    const [open, setOpen] = useState(false);
-    const [selectedMember, setSelectedMember] = useState(null); // 선택한 멤버를 저장하는 상태
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedMember, setSelectedMember] = useState(null);
 
-
-
+    // 컴포넌트가 마운트될 때 멤버 목록을 불러오는 효과를 정의합니다.
     useEffect(() => {
-        fetch(SERVER_URL + "api/members")
-            .then(res => res.json())
-            .then(data =>  setMembers(data._embedded.members))
-            .catch(err => console.error(err));
+        fetch(SERVER_URL + 'api/members')
+            .then((res) => res.json())
+            .then((data) => setMembers(data._embedded.members))
+            .catch((err) => console.error(err));
     }, []);
 
-    useEffect(() => {
-        fetchMembers();
-    }, []);
-
-
-    const jwtToken = sessionStorage.getItem("jwt");
-
-    if (jwtToken !== null) {
-        console.log(jwtToken);
-    } else {
-        console.log("토큰이 없습니다.");
-    }
-
-
-    const colums = [
+    // 데이터 그리드의 컬럼 설정을 정의합니다.
+    const columns = [
         {
-            field:
-                '_links.member.href',
+            field: '_links.member.href',
             headerName: '번호',
             sortable: false,
             filterable: false,
-            renderCell: row =>
+            renderCell: (row) => (
                 <div>{(row.id).slice(-1)}</div>
+            ),
+            width: 50
+
         },
-        {field: 'memId', headerName: '아이디' , width: 100},
-        {field: 'type', headerName: '유형' , width: 100},
-        {field: 'name', headerName: '이름' , width: 100},
-        {field: 'bir', headerName: '생년월일' , width: 100},
-        {field: 'tel', headerName: '전화번호' , width: 150},
-        {field: 'gender', headerName: '성별' , width: 50},
-        {field: 'email', headerName: '이메일' , width: 200},
-        {field: 'addr', headerName: '주소' , width: 200},
-        {field: 'jdate', headerName: '가일일' , width: 150},
+        { field: 'memId', headerName: '아이디', width: 100 },
+        { field: 'type', headerName: '유형', width: 130 },
+        { field: 'name', headerName: '이름', width: 100 },
+        { field: 'bir', headerName: '생년월일', width: 100 },
+        { field: 'tel', headerName: '전화번호', width: 120 },
+        { field: 'gender', headerName: '성별', width: 80 },
+        { field: 'email', headerName: '이메일', width: 180 },
+        { field: 'jdate', headerName: '가입일', width: 100 },
         {
-            field: '_links.self.href',
-            headerName: '',
+            field: '_links.self.href.detail',
+            headerName: '수정',
             sortable: false,
             filterable: false,
-            renderCell: row => (
-                <button onClick={() => handleOpenModal()}>수정</button>
-            )
+            renderCell: (row) => (
+                <button onClick={() => handleOpenModal(row)}>수정</button>
+            ),
+            width: 100
         },
-        // {
-        //     field:
-        //         '_links.self.href',
-        //     headerName: '',
-        //     sortable: false,
-        //     filterable: false,
-        //     renderCell: row =>
-        //         <button onClick={() => onDelClick(row.id)}>삭제</button>
-        // }
-    ]
+        {
+            field: '_links.self.href.delete',
+            headerName: '회원 삭제',
+            sortable: false,
+            filterable: false,
+            renderCell: (row) => (
+                <button onClick={() => MemberDelete(row.id)}>삭제</button>
+            ),
+            width: 100
+        },
 
+    ];
+
+    // 멤버 목록을 다시 불러오는 함수를 정의합니다.
     const fetchMembers = () => {
-        const token = sessionStorage.getItem("jwt");
-        fetch(SERVER_URL + 'api/members',{
-            headers: { 'Authorization' : token}
+        const token = sessionStorage.getItem('jwt');
+        fetch(SERVER_URL + 'api/members', {
+            headers: { Authorization: token },
         })
-            .then(response => response.json())
-            .then(data => setMembers(data._embedded.members))
+            .then((response) => response.json())
+            .then((data) => setMembers(data._embedded.members))
+            .catch((err) => console.error(err));
+    };
+
+    // 상세 정보 모달을 열기 위한 함수를 정의합니다.
+    const handleOpenModal = (member) => {
+        setSelectedMember(member);
+        setOpenModal(true);
+    };
+
+    // 상세 정보 모달을 닫기 위한 함수를 정의합니다.
+    const handleCloseModal = () => {
+        setSelectedMember(null);
+        setOpenModal(false);
+    };
+
+    //멤버를 삭제합니다.
+    const MemberDelete = (url) =>{
+        fetch(url, {method: 'DELETE'})
+            .then(response => fetchMembers())
             .catch(err => console.error(err))
     }
-    const onDelClick = (url) => {
-        if (window.confirm("삭제 전 한번 더 확인해 주세요")) {
-            const token = sessionStorage.getItem("jwt");
-            fetch(url, {method: 'DELETE',
-                headers: { 'Authorization' : token}
-            })
-                .then(response => {
-                    if (response.ok) {
-                        fetchMembers();
-                        setOpen(true);
-                    } else {
-                        alert('삭제에 실패 했습니다.');
-                    }
-                })
-                .catch(err => console.error(err));
-        }
-    }
 
-    // 모달 열기 함수
-    const handleOpenModal = () => {
-        setOpen(true);
-    };
-
-    // 모달 닫기 함수
-    const handleCloseModal = () => {
-        setOpen(false);
-    };
 
 
     return (
-        <div style={{height: 500, width: '100%'}}>
-            <DataGrid columns={colums} rows={members} getRowId={row => row._links.self.href}/>
-            <SingupModal open={open} handleClose={handleCloseModal} /> {/* 모달 컴포넌트 추가 */}
+        <div style={{ height: 500, width: '100%' }}>
+            {/* 데이터 그리드 컴포넌트를 렌더링합니다. */}
+            <DataGrid columns={columns} rows={members} getRowId={(row) => row._links.self.href} />
+
+            {/* 멤버 상세 정보 모달을 렌더링합니다. */}
+            <MemberEditor member={selectedMember} open={openModal} onClose={handleCloseModal} onUpdate={fetchMembers} />
         </div>
     );
 }
