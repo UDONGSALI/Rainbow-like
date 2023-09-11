@@ -1,0 +1,40 @@
+ul, ol, li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+#navbarTogglerDemo02 > ul{
+  justify-content:center;
+  margin: auto;
+
+}
+.sub > ul  {
+  width: 100%;
+  display: block;
+  position: relative;
+  flex-wrap: wrap;
+  position: absolute;
+  display: none;
+}
+
+#navbarTogglerDemo02 > ul > li > a:hover {
+  background-color: cornflowerblue;
+  color: white;
+  transition: 0.5s;
+}
+
+
+
+.nav-link {
+  font-size: 20px;
+  
+}
+
+
+
+
+
+
+
