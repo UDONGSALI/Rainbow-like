@@ -35,6 +35,7 @@ public class Member {
     private String name;
 
     @Column(nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column(nullable = false)
