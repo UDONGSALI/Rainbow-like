@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class FtConsumer {
+public class FtConsumer extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,12 +28,6 @@ public class FtConsumer {
     @Column(nullable = false)
     @Lob
     private String applyContent;
-
-    @Column(nullable = false)
-    private LocalDateTime writeDate;
-
-    @Column(nullable = false)
-    private LocalDateTime editDate;
 
     @Column(nullable = false)
     private boolean ftmYn;
