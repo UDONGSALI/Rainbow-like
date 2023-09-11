@@ -31,11 +31,30 @@ function Memlist() {
 
         },
         { field: 'memId', headerName: '아이디', width: 100 },
-        { field: 'type', headerName: '유형', width: 130 },
+        {
+            field: 'type',
+            headerName: '유형',
+            width: 130,
+            renderCell: (row) => (
+                <div>
+                    {row.value === 'ADMIN' ? '관리자' :
+                        row.value === 'USER' ? '일반 회원' :
+                            row.value === 'LABOR' ? '노무사' :
+                                row.value === 'COUNSELOR' ? '상담사' : ''}
+                </div>
+            ),
+        },
         { field: 'name', headerName: '이름', width: 100 },
         { field: 'bir', headerName: '생년월일', width: 100 },
         { field: 'tel', headerName: '전화번호', width: 120 },
-        { field: 'gender', headerName: '성별', width: 80 },
+        {
+            field: 'gender',
+            headerName: '성별',
+            width: 80,
+            renderCell: (row) => (
+                <div>{row.value === 'FEMALE' ? '여자' : row.value === 'MALE' ? '남자' : ''}</div>
+            ),
+        },
         { field: 'email', headerName: '이메일', width: 180 },
         { field: 'jdate', headerName: '가입일', width: 100 },
         {
