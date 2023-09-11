@@ -3,7 +3,7 @@ import { Container } from '../components/Styles/Container/Container.style';
 import { Header } from '../components/Styles/Header/Header.style';
 
 
-const Home = () => {
+const Main = () => {
 return <div>
     <Container>
     <Header>
@@ -12,4 +12,4 @@ return <div>
     </Container>
 </div>
 }
-export default Home;
+export default Main;
