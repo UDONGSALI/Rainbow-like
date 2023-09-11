@@ -4,10 +4,7 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
-<<<<<<< HEAD
-=======
     "@emotion/style": "^0.8.0",
->>>>>>> 88d2d4886d3552068a9986ea1eafdfda596bc17d
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.8",
     "@mui/x-data-grid": "^6.12.1",
