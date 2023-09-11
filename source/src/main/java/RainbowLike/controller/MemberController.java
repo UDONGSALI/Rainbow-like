@@ -7,14 +7,14 @@ import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -24,14 +24,20 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
 
-    @RequestMapping("/members")
+    @GetMapping
     private Iterable<Member> getMembers() {
-        return memberRepository.findAll();
+        return  memberRepository.findAll();
     }
 
-    @PostMapping("/members")
-    private void PostMember(Member member) {
-        memberService.saveMember(member);
+    @PostMapping
+    public Member saveMember(@RequestBody Member member) {
+
+        // 비밀번호 암호화
+        String encodedPassword = passwordEncoder.encode(member.getPwd());
+        member.setPwd(encodedPassword);
+
+        // 데이터베이스에 저장
+        return memberRepository.save(member);
     }
 
 
