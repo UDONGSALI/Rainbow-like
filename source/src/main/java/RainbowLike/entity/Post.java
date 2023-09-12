@@ -32,7 +32,7 @@ public class Post {
     @Lob
     private String content;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime writeDate;
 
     @Column
