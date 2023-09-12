@@ -232,3 +232,9 @@ $RECYCLE.BIN
 >>>>>>> fc5705b3895d38752db42e2bb9fb133c1506674d
 #application.properties
 application.properties
+application.propertiesapplication.properties
+
+App.js
+package.json
+package-lock.json
+pom.xml
