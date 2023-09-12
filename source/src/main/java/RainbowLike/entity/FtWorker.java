@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class FtWorker {
+public class FtWorker extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,12 +33,6 @@ public class FtWorker {
 
     @Column(nullable = false)
     private String ftDtl;
-
-    @Column(nullable = false)
-    private LocalDateTime writeDate;
-
-    @Column(nullable = false)
-    private LocalDateTime editDate;
 
     @Column(nullable = false)
     private boolean ftmYn;

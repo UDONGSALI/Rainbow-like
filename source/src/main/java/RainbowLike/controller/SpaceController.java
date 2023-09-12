@@ -22,9 +22,6 @@ public class SpaceController {
     @RequestMapping("/spaces")
     private Iterable<Space> getSpaces(){return spaceRepository.findAll();}
 
-    @PostMapping("/spaces")
-    private void PostSpace(SpaceDto spaceDto){ spaceService.saveSpace(spaceDto);}
-
     @PostConstruct
     private void createSpaces(){
         ArrayList<SpaceDto> spaceDtoList = SpaceDto.createSpaces();

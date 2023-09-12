@@ -110,7 +110,7 @@ function MemberEditor({ member, open, onClose, onUpdate }) {
                             >
                                 <option value="">회원 유형 선택</option>
                                 <option value="ADMIN">관리자</option>
-                                <option value="USER">일반 사용자</option>
+                                <option value="USER">일반 회원</option>
                                 <option value="LABOR">노무사</option>
                                 <option value="COUNSELOR">상담사</option>
                             </select>
