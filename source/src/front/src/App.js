@@ -15,22 +15,21 @@ import React from "react";
 function App() {
 
   return (
-<<<<<<< HEAD
       <div className="App">
           <Routes>
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/singUp" element={<SingUp />} />
           </Routes>
+          {/*<Header/>*/}
+          <Container_common/>
+          <Mypage_active/>
+          <Footer/>
+
       </div>
-=======
-    <div className="App">
-        {/*<Header/>*/}
-        <Container_common/>
-        <Mypage_active/>
-        <Footer/>
-    </div>
->>>>>>> 2885b1e61ffec65e6707cb99963a6cf5eee3b6f1
+
+
+
   );
 }
 

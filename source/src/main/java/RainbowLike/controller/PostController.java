@@ -1,5 +1,6 @@
 package RainbowLike.controller;
 
+import RainbowLike.dto.ClubFormDto;
 import RainbowLike.dto.PostInfo;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
@@ -10,10 +11,7 @@ import RainbowLike.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class PostController {
@@ -37,7 +35,7 @@ public class PostController {
     }
 
     @RequestMapping("/clubnum")
-    public Iterable<Post> getTestPosts() {
+    public Iterable<Post> getClulbPostNum() {
         //게시판 번호로 게시글 요청
         Board clubNumBoard = boardRepository.findByBoardNum(10L);
         return postRepository.findByBoard(clubNumBoard);
@@ -57,4 +55,29 @@ public class PostController {
 
         return ResponseEntity.ok(postInfo);
     }
+
+
+
+
+@PostMapping("/clubs/new")
+    public ResponseEntity<Post> createClub(@RequestBody ClubFormDto clubFormDto) {
+        Post newPost = new Post();
+        newPost.setTitle(clubFormDto.getTitle());
+        newPost.setContent(clubFormDto.getContent());
+        newPost.setPageView(clubFormDto.getPageView());
+        newPost.setClubAllowStatus(clubFormDto.getClubAllowStatus());
+        newPost.setClubRecuStatus(clubFormDto.getClubRecuStatus());
+        Board board = new Board();
+        board.setBoardNum(clubFormDto.getBoardNum());
+        newPost.setBoard(board);
+        Member member = new Member();
+        member.setMemNum(clubFormDto.getMemNum());
+        newPost.setMember(member);
+
+        Post savedPost = postRepository.save(newPost);
+
+        // 저장한 게시글을 반환
+        return ResponseEntity.ok(savedPost);
+    }
+
 }

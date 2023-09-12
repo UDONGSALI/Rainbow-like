@@ -9,22 +9,23 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ClubFormDto {
+public class PostFormDto {
 
     private Long memNum;
     private Long boardNum;
     private String title;
     private String content;
     private LocalDateTime writeDate;
+    private LocalDateTime editDate;
     private int pageView;
     private String clubAllowStatus;
     private String clubRecuStatus;
 
-    public ClubFormDto(){
+    public PostFormDto(){
 
     }
 
-    public ClubFormDto(String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus){
+    public PostFormDto(String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus){
         this.title = title;
         this.content = content;
         this.writeDate = writeDate;
@@ -33,7 +34,7 @@ public class ClubFormDto {
         this.clubRecuStatus = clubRecuStatus;
     }
 
-    public ClubFormDto(String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus, Long memNum, Long boardNum){
+    public PostFormDto(String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus, Long memNum, Long boardNum){
         Board board = new Board();
         Member member = new Member();
 
