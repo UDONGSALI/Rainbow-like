@@ -6,8 +6,21 @@ import MemberEditor from './MemberEditor';
 function Memlist() {
     // 멤버 목록과 모달 상태를 관리하는 상태 변수들을 정의합니다.
     const [members, setMembers] = useState([]);
+    const [files, setFiles] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
+    const membersWithFiles = members.map((member) => {
+
+        // 각 멤버에 대한 파일 정보를 찾는 로직 작성
+        const memberFiles = files.filter((file) => file.member.memNum == member._links.member.href.slice(-1));
+
+        return {
+            ...member,
+            memberFiles, // 각 멤버의 파일 정보를 추가합니다.
+        };
+    });
+
+    console.log(membersWithFiles)
 
     // 컴포넌트가 마운트될 때 멤버 목록을 불러오는 효과를 정의합니다.
     useEffect(() => {
@@ -15,6 +28,18 @@ function Memlist() {
             .then((res) => res.json())
             .then((data) => setMembers(data._embedded.members))
             .catch((err) => console.error(err));
+    }, []);
+
+    // 컴포넌트가 마운트될 때 파일 목록을 불러오는 효과를 정의합니다.
+    useEffect(() => {
+        fetch(SERVER_URL + "files")
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                setFiles(data);
+            })
+            .catch(err => console.error(err));
     }, []);
 
     // 데이터 그리드의 컬럼 설정을 정의합니다.
@@ -77,7 +102,22 @@ function Memlist() {
             ),
             width: 100
         },
-
+        {
+            field: 'memberFiles',
+            headerName: '제출 문서',
+            sortable: false,
+            filterable: false,
+            renderCell: (row) => (
+                <div style={{ overflow: 'auto', maxHeight: '50px',  lineHeight: 0.5, width:200}}>
+                    {row.value && row.value.map((file) => (
+                        <div>
+                            <p><a href={file.fileUri} target="_blank" rel="noopener noreferrer" download={file.fileOriName}>{file.fileOriName}</a></p>
+                        </div>
+                    ))}
+                </div>
+            ),
+            width: 250,
+        }
     ];
 
     // 멤버 목록을 다시 불러오는 함수를 정의합니다.
@@ -115,7 +155,7 @@ function Memlist() {
     return (
         <div style={{ height: 500, width: '100%' }}>
             {/* 데이터 그리드 컴포넌트를 렌더링합니다. */}
-            <DataGrid columns={columns} rows={members} getRowId={(row) => row._links.self.href} />
+            <DataGrid columns={columns} rows={membersWithFiles} getRowId={(row) => row._links.self.href} />
 
             {/* 멤버 상세 정보 모달을 렌더링합니다. */}
             <MemberEditor member={selectedMember} open={openModal} onClose={handleCloseModal} onUpdate={fetchMembers} />

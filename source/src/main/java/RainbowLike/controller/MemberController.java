@@ -6,6 +6,7 @@ import RainbowLike.entity.Member;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
