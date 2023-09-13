@@ -20,8 +20,6 @@ function Memlist() {
         };
     });
 
-    console.log(membersWithFiles)
-
     // 컴포넌트가 마운트될 때 멤버 목록을 불러오는 효과를 정의합니다.
     useEffect(() => {
         fetch(SERVER_URL + 'api/members')
