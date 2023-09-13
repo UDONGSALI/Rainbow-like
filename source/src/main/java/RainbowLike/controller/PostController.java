@@ -1,6 +1,6 @@
 package RainbowLike.controller;
 
-import RainbowLike.dto.ClubFormDto;
+import RainbowLike.dto.PostFormDto;
 import RainbowLike.dto.PostInfo;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
@@ -59,19 +59,22 @@ public class PostController {
 
 
 
-@PostMapping("/clubs/new")
-    public ResponseEntity<Post> createClub(@RequestBody ClubFormDto clubFormDto) {
+@PostMapping("/posts/new")
+    public ResponseEntity<Post> createPost(@RequestBody PostFormDto postFormDto) {
         Post newPost = new Post();
-        newPost.setTitle(clubFormDto.getTitle());
-        newPost.setContent(clubFormDto.getContent());
-        newPost.setPageView(clubFormDto.getPageView());
-        newPost.setClubAllowStatus(clubFormDto.getClubAllowStatus());
-        newPost.setClubRecuStatus(clubFormDto.getClubRecuStatus());
+        newPost.setTitle(postFormDto.getTitle());
+        newPost.setContent(postFormDto.getContent());
+        newPost.setPageView(postFormDto.getPageView());
+        newPost.setConsField(postFormDto.getConsField());
+        newPost.setParentsNum(postFormDto.getParentsNum());
+        newPost.setClubAllowStatus(postFormDto.getClubAllowStatus());
+        newPost.setClubRecuStatus(postFormDto.getClubRecuStatus());
+
         Board board = new Board();
-        board.setBoardNum(clubFormDto.getBoardNum());
+        board.setBoardNum(postFormDto.getBoardNum());
         newPost.setBoard(board);
         Member member = new Member();
-        member.setMemNum(clubFormDto.getMemNum());
+        member.setMemNum(postFormDto.getMemNum());
         newPost.setMember(member);
 
         Post savedPost = postRepository.save(newPost);
