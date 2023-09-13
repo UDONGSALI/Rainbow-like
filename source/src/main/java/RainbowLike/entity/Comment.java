@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Comment {
+public class Comment extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commNum;
@@ -27,11 +27,5 @@ public class Comment {
     @Column(nullable = false)
     @Lob
     private String content;
-
-    @Column(nullable = false)
-    private LocalDateTime writeDate;
-
-    @Column
-    private LocalDateTime editDate;
 
 }
