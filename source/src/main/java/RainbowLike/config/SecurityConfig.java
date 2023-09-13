@@ -42,6 +42,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+//        http.csrf().disable().cors().and()
+//                .authorizeRequests().anyRequest().permitAll();
+
+
+//        http.csrf().disable().cors().and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//                .authorizeRequests()
+////                제일 중요 보안 예외 부분
+//                .antMatchers(HttpMethod.POST, "/login").permitAll()
+//                .antMatchers("/api/*").permitAll()
+//                .antMatchers("/api/*/*").permitAll()
+//                .antMatchers("/*/*").permitAll()
+//                .anyRequest().authenticated().and()
+//                .exceptionHandling()
+//                .authenticationEntryPoint(exceptionHandler).and()
+//                .addFilterBefore(authenticationFilter,
+//                        UsernamePasswordAuthenticationFilter.class);
+
         // CSRF 보호 비활성화, CORS 활성화 및 세션 관리를 STATELESS로 설정
         http.csrf().disable().cors().and()
                 .sessionManagement()
@@ -58,13 +78,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // AuthenticationFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
                 .addFilterBefore(authenticationFilter,
                         UsernamePasswordAuthenticationFilter.class);
+
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("*"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         config.setAllowedMethods(Arrays.asList("*"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowCredentials(false);
@@ -73,6 +94,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
+//	public void configure(WebSecurity web) throws Exception {
+//		web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/wee/**", "/images/**", "/error");
+//	}
+
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
