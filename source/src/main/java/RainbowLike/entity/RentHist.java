@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -13,6 +14,9 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class RentHist {
+
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,4 +45,16 @@ public class RentHist {
     @Column(nullable = false,length = 50)
     private String payStatus;
 
+
+    public RentHist(Member member, Space space, LocalDateTime rentStdt, LocalDateTime rentEddt, LocalDateTime applyDate, String applyStatus, String payStatus){
+        super();
+        this.member=member;
+        this.space=space;
+        this.rentStdt=rentStdt;
+        this.rentEddt=rentEddt;
+        this.applyDate=applyDate;
+        this.payStatus=payStatus;
+
+
+    }
 }

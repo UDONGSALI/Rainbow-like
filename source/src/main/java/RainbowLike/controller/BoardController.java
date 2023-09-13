@@ -6,6 +6,7 @@ import RainbowLike.entity.Board;
 import RainbowLike.repository.BoardRepository;
 import RainbowLike.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

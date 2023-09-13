@@ -2,12 +2,22 @@ package RainbowLike;
 
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
+<<<<<<< HEAD
+import RainbowLike.controller.RentHistController;
+import RainbowLike.entity.*;
+import RainbowLike.repository.BoardRepository;
+import RainbowLike.repository.MemberRepository;
+import RainbowLike.repository.PostRepository;
+import RainbowLike.repository.SpaceRepository;
+import RainbowLike.repository.RentHistRepository;
+=======
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
 import RainbowLike.entity.Post;
 import RainbowLike.repository.BoardRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
+>>>>>>> 3db001eb08878d49e7a560a9a7c6a636782027da
 import RainbowLike.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +39,26 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
     private final PasswordEncoder passwordEncoder;
     @Autowired
+<<<<<<< HEAD
+    private BoardRepository boardRepository;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private PostRepository postRepository;
+    @Autowired
+    private SpaceRepository spaceRepository;
+    @Autowired
+    private RentHistRepository rentHistRepository;
+    @Autowired
+    private RentHistController rentHistController;
+
+=======
 	private BoardRepository boardRepository;
     	@Autowired
 	private MemberRepository memberRepository;
         @Autowired
         private PostRepository postRepository;
+>>>>>>> 3db001eb08878d49e7a560a9a7c6a636782027da
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
 
@@ -58,6 +83,10 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
 
 
+
+
+
+        rentHistController.createBasicRent();
 
 
 
