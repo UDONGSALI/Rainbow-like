@@ -1,5 +1,6 @@
 package RainbowLike.dto;
 
+import RainbowLike.entity.Space;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -117,6 +118,7 @@ public class SpaceDto {
 
         return spaceList;
     }
+
 
 
 }

@@ -6,8 +6,13 @@ import RainbowLike.entity.Member;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.MemberService;
 import lombok.RequiredArgsConstructor;
+<<<<<<< HEAD
+import org.springframework.core.annotation.Order;
+=======
 import org.springframework.scheduling.annotation.Async;
+>>>>>>> 3db001eb08878d49e7a560a9a7c6a636782027da
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +21,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
+
 public class MemberController {
 
     private final MemberService memberService;
@@ -23,6 +29,7 @@ public class MemberController {
     private final MemberRepository memberRepository;
 
     private final PasswordEncoder passwordEncoder;
+
 
 
     @GetMapping
