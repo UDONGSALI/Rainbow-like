@@ -6,14 +6,14 @@ import RainbowLike.controller.RentHistController;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
 import RainbowLike.entity.Post;
-import RainbowLike.repository.*;
-import RainbowLike.service.MemberService;
+import RainbowLike.repository.BoardRepository;
+import RainbowLike.repository.MemberRepository;
+import RainbowLike.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
