@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import bcrypt from "bcryptjs";
+import './ClubForm.css';
 
 function ClubForm(){
     // 사용자가 선택한 멤버와 게시판의 ID를 저장하기 위한 상태 변수
@@ -110,14 +110,15 @@ function ClubForm(){
                 </div>
 
                 <div className="input-group">
-                    <input
-                        type="text"
+                    <textarea
                         name="content"
                         value={formData.content}
                         onChange={handleChange}
                         placeholder="게시글 본문"
                         required
-                    />
+                    >
+                        본문을 작성해주세요.
+                    </textarea>
                 </div>
                 {/*<div className="input-group" >*/}
                 {/*    <input*/}
@@ -129,16 +130,7 @@ function ClubForm(){
                 {/*        required*/}
                 {/*    />*/}
                 {/*</div>*/}
-                <div className="input-group" >
-                    <input
-                        type="text"
-                        name="clubAllowStatus"
-                        value={formData.clubAllowStatus}
-                        onChange={handleChange}
-                        placeholder="허가여부"
-                        required
-                    />
-                </div>
+
                 {/*<div className="input-group" >*/}
                 {/*    <input*/}
                 {/*        type="text"*/}

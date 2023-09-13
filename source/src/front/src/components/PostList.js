@@ -2,10 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {DataGrid} from "@mui/x-data-grid";
 import { SERVER_URL} from "./constants";
 import Snackbar from '@mui/material/Snackbar';
+import {useNavigate, useParams } from 'react-router-dom';
 
 function PostList() {
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
+
 
     const columns = [
         {field: 'board',
@@ -26,7 +29,7 @@ function PostList() {
                 return members.map((m) => m.memNum).join(', ');
             }},
         {field: 'title', headerName: 'Title', width: 200},
-        {field: 'content', headerName: 'Content', width: 150},
+        {field: 'pageView', headerName: 'PageView', width: 150},
         {field: '_links.self.href',
             headerName: '',
             sortable: false,
@@ -71,9 +74,18 @@ function PostList() {
     }
 
 
+    const onRowClick = (params) => {
+        const rowId = params.row.postNum;
+        navigate(`/posts/${rowId}`);
+    };
+
     return (
         <div style={{ height: 500, width: '100%' }}>
-            <DataGrid columns={columns} rows={posts} disableRowSelectionOnClick={true} getRowId={row => "http://localhost:8090/api/posts/" + row.postNum} />
+            <DataGrid columns={columns}
+                      rows={posts}
+                      disableRowSelectionOnClick={true}
+                      getRowId={row => SERVER_URL + "api/posts/" + row.postNum}
+                      onRowClick={onRowClick}/>
 
             <Snackbar
                 open={open}
@@ -82,23 +94,6 @@ function PostList() {
                 message="게시글을 지웠습니다."
             />
         </div>
-
-
-        // <div>
-        //     <table>
-        //         <tbody>
-        //         {
-        //             posts &&
-        //             posts.map((post, index) =>
-        //             <tr key={index}>
-        //                 <td>{post.title}</td>
-        //                 <td>{post.content}</td>
-        //             </tr>)
-        //         }
-        //         </tbody>
-        //     </table>
-        // </div>
-
 
 
     );
