@@ -19,7 +19,6 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-
     public void createBoards(ArrayList<BoardDto> boardDtoList) {
 
         for (BoardDto boardDto : boardDtoList) {

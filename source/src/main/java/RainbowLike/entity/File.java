@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.nio.file.Path;
 
 @Entity
 @Getter
@@ -33,11 +34,11 @@ public class File {
     private Member member;
 
     @Column(nullable = false)
-    private String failName;
+    private String fileName;
 
     @Column(nullable = false)
-    private String failOriName;
+    private String fileOriName;
 
     @Column(nullable = false)
-    private boolean fileUri;
+    private String  fileUri;
 }
