@@ -33,9 +33,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         // Authorization 헤더에서 토큰을 가져옴
         String jws = request.getHeader(HttpHeaders.AUTHORIZATION);
-
-        System.out.println("jws" + jws);
-
         if (jws != null) {
 
             // 토큰을 확인하고 사용자를 얻음
