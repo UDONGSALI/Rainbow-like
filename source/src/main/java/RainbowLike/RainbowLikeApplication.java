@@ -2,14 +2,13 @@ package RainbowLike;
 
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
-import RainbowLike.entity.Board;
-import RainbowLike.entity.Member;
-import RainbowLike.entity.Post;
-import RainbowLike.entity.Space;
+import RainbowLike.controller.RentHistController;
+import RainbowLike.entity.*;
 import RainbowLike.repository.BoardRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
 import RainbowLike.repository.SpaceRepository;
+import RainbowLike.repository.RentHistRepository;
 import RainbowLike.service.MemberService;
 import RainbowLike.service.SpaceService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +38,10 @@ public class RainbowLikeApplication implements CommandLineRunner {
     private PostRepository postRepository;
     @Autowired
     private SpaceRepository spaceRepository;
+    @Autowired
+    private RentHistRepository rentHistRepository;
+    @Autowired
+    private RentHistController rentHistController;
 
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
@@ -61,6 +64,10 @@ public class RainbowLikeApplication implements CommandLineRunner {
         Post club2 = new Post(member1, board2, "학원 시작하고 엄마를 한 번도 못 봤어요", "엄마보고싶어요", LocalDateTime.now(), 0, "허가", "진행중");
         Post club3 = new Post(member2, board2, "엄마는 나 안 보고 싶을 수도 있어", "사실 그럴 가능성이 더 큰 편이죠", LocalDateTime.now(), 0, "거부", "거부");
         postRepository.saveAll(Arrays.asList(club1, club2, club3));
+
+
+        rentHistController.createBasicRent();
+
 
 
     }

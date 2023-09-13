@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RentHistRepository extends JpaRepository <RentHist,Long> {
+
 }

@@ -4,6 +4,9 @@ import RainbowLike.entity.Space;
 import RainbowLike.repository.SpaceRepository;
 import RainbowLike.service.SpaceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequiredArgsConstructor
+
 public class SpaceController {
 
 
