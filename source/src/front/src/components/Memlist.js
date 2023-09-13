@@ -111,7 +111,7 @@ function Memlist() {
                 <div style={{ overflow: 'auto', maxHeight: '50px',  lineHeight: 0.5, width:200}}>
                     {row.value && row.value.map((file) => (
                         <div>
-                            <p><a href={file.fileUri} target="_blank" rel="noopener noreferrer" download={file.fileOriName}>{file.fileOriName}</a></p>
+                            <p><a href={file.fileUri}>{file.fileOriName}</a></p>
                         </div>
                     ))}
                 </div>
