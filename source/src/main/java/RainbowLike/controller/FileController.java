@@ -2,26 +2,21 @@ package RainbowLike.controller;
 
 import RainbowLike.entity.*;
 import RainbowLike.repository.*;
-import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.*;
-import io.grpc.Context;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.WritableResource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +39,7 @@ public class FileController {
 
     @GetMapping
     private Iterable<File> getMembers() {
-        return  fileRepository.findAll();
+        return fileRepository.findAll();
     }
 
     @PostMapping
@@ -60,19 +55,19 @@ public class FileController {
         // tableName에 따라 적절한 엔티티 검색
         if (tableName.equals("member")) {
             member = memberRepository.findTopByOrderByMemNumDesc();
-            midPath = tableName + "/" + member.getMemNum()+ "/";
+            midPath = tableName + "/" + member.getMemNum() + "/";
         }
         if (tableName.equals("space")) {
             space = spaceRepository.findTopByOrderBySpaceNumDesc();
-            midPath = tableName + "/" + space.getSpaceNum()+ "/";
+            midPath = tableName + "/" + space.getSpaceNum() + "/";
         }
         if (tableName.equals("edu")) {
             edu = eduRepository.findTopByOrderByEduNumDesc();
-            midPath = tableName  + "/" + edu.getEduNum()+ "/";
+            midPath = tableName + "/" + edu.getEduNum() + "/";
         }
         if (tableName.equals("post")) {
             post = postRepository.findTopByOrderByPostNumDesc();
-            midPath = tableName + "/" + post.getPostNum()+ "/";
+            midPath = tableName + "/" + post.getPostNum() + "/";
         }
 
 
@@ -159,7 +154,7 @@ public class FileController {
 
 
                 // 파일 이름 변경
-                String newFileName = midPath + file.getOriginalFilename() ;
+                String newFileName = midPath + file.getOriginalFilename();
                 // 파일 url
                 String fileUrl = "https://storage.googleapis.com/" + bucketName + "/" + newFileName;
 
@@ -167,7 +162,7 @@ public class FileController {
                 BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, newFileName).build();
 
                 // GCS에 파일 업로드
-                Blob blob =storage.create(blobInfo, file.getBytes());
+                Blob blob = storage.create(blobInfo, file.getBytes());
 
 
                 // 업로드된 파일 정보를 데이터베이스에 저장
@@ -192,7 +187,8 @@ public class FileController {
             return ResponseEntity.status(500).body("파일 업로드 실패");
         }
     }
-    public void createDefaultFiles(){
+
+    public void createDefaultFiles() {
 
         // 기본 파일 저장용 리스트
         // 멤버 관련
