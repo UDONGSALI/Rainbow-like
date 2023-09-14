@@ -1,12 +1,14 @@
 
-import Container_common from './top';
+import Top from './top';
 import Mypage_active from "./mypage_active";
+import Footer from "./footer";
 
 const Mypage=()=>{
     return(
         <main>
-        <Container_common/>
-        {/*<Mypage_active/>*/}
+        <Top/>
+        <Mypage_active/>
+        <Footer/>
         </main>
     );
 }
