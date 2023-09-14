@@ -1,4 +1,4 @@
-import '../layout/css/mypage_active.css' ;
+import '../../../css/component/mypage_active.css' ;
 
 const Mypage_active = () => {
     return(

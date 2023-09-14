@@ -1,7 +1,7 @@
-import mypage_bg from "../layout/img/mypage/mypage_bg.png";
-import '../layout/css/container_common.css';
-import '../layout/css/common.css';
-import '../layout/css/font.css';
+cdimport mypage_bg from "../../../img/component/mypage/mypage_bg.png";
+import '../../../css/layout/container_common.css';
+import '../../../css/layout/common.css';
+import '../../../css/font.css';
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";

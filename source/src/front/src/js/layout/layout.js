@@ -1,7 +1,7 @@
 
-import Footer from "../footer/footer";
+import Footer from "./footer";
 import Header from "./header";
-import '../layout/css/Header.css';
+import '../../css/layout/Header.css';
 const Layout=()=>{
     return(
         <div>
