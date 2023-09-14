@@ -9,7 +9,7 @@ import './App.css';
 import LoginPage from "./pages/LoginPage";
 import React from "react";
 import AdminPage from "./pages/AdminPage";
-import SingUp from "./components/SingUp";
+import SingUp from "./js/component/SingUp";
 import React from "react";
 
 function App() {
