@@ -1,76 +1,65 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-import {Route, Routes} from "react-router-dom";
->>>>>>> aef92e7 (no message)
+import {Route, Routes, useNavigate} from "react-router-dom";
 import './App.css';
-import './layout/css/font.css';
-import Footer from "./footer/footer";
- import Container_common from "./mypage/container_common";
-import Header from "./Header/header";
-import Mypage_active from "./mypage/mypage_active";
-import Mypage from "./mypage/mypage";
-import './App.css';
-import LoginPage from "./pages/LoginPage";
-import React from "react";
-import AdminPage from "./pages/AdminPage";
-import SingUp from "./components/SingUp";
-import React from "react";
-<<<<<<< HEAD
-=======
-import LoginPage from "./pages/Login";
-import Admin from "./pages/Admin";
-=======
-import './App.css';
-import { Route, Routes } from 'react-router-dom';
-import Home from './screens/Home';
-import About from './screens/About';
-import Questions from './screens/Questions';
-import ReactDoc from './screens/ReactDoc';
-import Projects from './screens/Projects';
-import NavBarElements from './components/Navbar/NavBarElements';
-import { Form } from 'react-bootstrap';
-
-
->>>>>>> bc06ba3 (no message)
->>>>>>> aef92e7 (no message)
+import './css/font.css';
+import LoginPage from "./js/pages/LoginPage";
+import React, {useEffect, useState} from "react";
+import AdminPage from "./js/pages/AdminPage";
+import SingUp from "./js/compnent/SingUp";
+import About from './js/compnent/screens/About';
+import Questions from './js/compnent/screens/Questions';
+import ReactDoc from './js/compnent/screens/ReactDoc';
+import Projects from './js/compnent/screens/Projects';
+import NavBarElements from './js/layout/NavBarElements';
+import EduPage from "./js/pages/EduPage";
 
 function App() {
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
+    const navigate = useNavigate();
 
-  return (
-<<<<<<< HEAD
-      <div className="App">
-          <Routes>
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/singUp" element={<SingUp />} />
-          </Routes>
-          {/*<Header/>*/}
-          <Container_common/>
-          <Mypage_active/>
-          <Footer/>
+    useEffect(() => {
+        // sessionStorage에서 JWT 토큰을 가져옵니다.
+        const token = sessionStorage.getItem('jwt');
 
-      </div>
-<<<<<<< HEAD
+        if (token) {
+            // JWT 디코딩 라이브러리를 사용하여 토큰을 디코딩합니다.
+            const decodedToken = decodeToken(token);
+            // 유형을 세션 스토리지에 저장
+            sessionStorage.setItem("role" , decodedToken.role);
+        }
+    }, [navigate]);
 
+    // JWT 토큰을 디코딩하는 함수
+    function decodeToken(token) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split('')
+                    .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join('')
+            );
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            return null;
+        }
+    }
 
-
-=======
-=======
-    <div className='App'>
-    <NavBarElements />
-   <Routes>
-   <Route path = "/" element = { <Home /> } />
-   <Route path = "/About" element = { <About /> } />
-   <Route path = "/Projects" element = { <Projects /> } />
-   <Route path = "/Questions" element = { <Questions /> } />
-   <Route path = "/ReactDoc" element = { <ReactDoc /> } />
-   </Routes>
-   </div>
-  
->>>>>>> bc06ba3 (no message)
->>>>>>> aef92e7 (no message)
-  );
+    return (
+        <div className="App">
+            <NavBarElements/>
+            <Routes>
+                <Route path="/admin" element={isAdmin ? <AdminPage/> : null}/>
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/singUp" element={<SingUp/>}/>
+                <Route path="/about" element={<About/>}/>
+                <Route path="/edu" element={<EduPage />}/>
+                <Route path="/Projects" element={<Projects/>}/>
+                <Route path="/Questions" element={<Questions/>}/>
+                <Route path="/ReactDoc" element={<ReactDoc/>}/>
+            </Routes>
+        </div>
+    )
 }
 
 export default App;
