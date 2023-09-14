@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "../../css/component/EduDetail.css";
-import {SERVER_URL} from "./constants";
+import {SERVER_URL} from "../../constants";
 
 function EduDetail({eduNum, onBackClick}) {
 
