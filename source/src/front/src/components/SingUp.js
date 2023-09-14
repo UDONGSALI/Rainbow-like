@@ -70,6 +70,7 @@ function Singup() {
 
                 // 파일 업로드
                 const formDataWithFiles = new FormData();
+
                 for (const file of selectedFiles) {
                     formDataWithFiles.append('file', file);
                 }

@@ -1,5 +1,5 @@
 import footer_bottom_logo from '../layout/img/footer/footer_bottom_logo.png';
-import './footer.css';
+import '../footer/footer.css';
 import '../layout/css/common.css';
 import '../layout/css/font.css';
 
