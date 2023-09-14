@@ -21,10 +21,12 @@ public class SpaceController {
     private final SpaceRepository spaceRepository;
 
     @RequestMapping("/spaces")
-    private Iterable<Space> getSpaces(){return spaceRepository.findAll();}
+    private Iterable<Space> getSpaces() {
+        return spaceRepository.findAll();
+    }
 
     @PostConstruct
-    private void createSpaces(){
+    private void createSpaces() {
         ArrayList<SpaceDto> spaceDtoList = SpaceDto.createSpaces();
         spaceService.createSpaces(spaceDtoList);
     }
