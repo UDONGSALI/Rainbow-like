@@ -1,6 +1,6 @@
 import React from 'react';
-import { Container } from '../components/Styles/Container/Container.style';
-import { Header } from '../components/Styles/Header/Header.style';
+import { Container } from '../Container.style';
+import { Header } from '../../layout/Header.style';
 
 
 const Main = () => {

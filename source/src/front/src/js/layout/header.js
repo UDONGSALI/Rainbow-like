@@ -1,10 +1,10 @@
-import logo from "../layout/img/header/logo.png";
-import sns_01 from "../layout/img/header/sns_01.png";
-import sns_02 from "../layout/img/header/sns_02.png";
-import sns_03 from "../layout/img/header/sns_03.png";
-import sns_04 from "../layout/img/header/sns_04.png";
+import logo from "../../img/layout/header/logo.png";
+import sns_01 from "../../img/layout/header/sns_01.png";
+import sns_02 from "../../img/layout/header/sns_02.png";
+import sns_03 from "../../img/layout/header/sns_03.png";
+import sns_04 from "../../img/layout/header/sns_04.png";
 import React from "react";
-import '../layout/css/Header.css';
+import '../../css/layout/Header.css';
 
 
 const Header=()=>{

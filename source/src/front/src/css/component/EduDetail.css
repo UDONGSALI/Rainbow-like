@@ -1,0 +1,111 @@
+/* EduDetail.css */
+
+/* Container Styles */
+.container {
+    max-width: 1200px;  /* 800px * 1.5 */
+    margin: 2rem auto;
+    padding: 2.25rem;  /* 1.5rem * 1.5 */
+    border-radius: 18px;  /* 12px * 1.5 */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    transition: box-shadow 0.3s;
+}
+
+.container:hover {
+    box-shadow: 0 9px 27px rgba(0, 0, 0, 0.15);  /* Adjusted shadow for larger container */
+}
+
+/* Back Button Styles */
+.back-button {
+    border: none;
+    background-color: #3498db;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    margin-bottom: 1.5rem;
+    font-size: 16px;
+    display: block;  /* Making the button a block element */
+    margin: 2rem auto 0;  /* Centering the button with auto margin on the sides */
+}
+
+.back-button:hover {
+    background-color: #2980b9;
+}
+
+/* Content Wrapper and Layout Styles */
+.header-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.left-top {
+    flex: 1;
+    max-width: calc(100% / 2.7);  /* To make right-top approximately 1.7 times bigger */
+    margin-right: 2rem;
+}
+
+.left-top img {
+    width: 100%;
+    height: auto;
+}
+
+.right-top {
+    flex: 1.7;
+    max-width: calc(100% - (100% / 2.7));
+}
+
+.right-top h1 {
+    font-size: 20px;
+    font-weight: bold ;
+}
+
+.right-top .detail {
+    font-size: 20px;
+}
+
+.right-top .detail strong {
+    font-size: inherit;
+}
+
+.main-content {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.main-content img {
+    width: 75%;
+    height: auto;
+    margin: 0 auto 1.5rem;  /* auto used for centering the image */
+    display: block;  /* This will allow the use of margin auto for centering */
+}
+
+/* Headers and Detail Styles */
+.header {
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 1rem;
+}
+
+.detail {
+    margin-bottom: 1.2rem;
+    font-size: 27.2px;  /* Original 16px * 1.7 */
+    color: #34495e;
+}
+
+.detail strong {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.detail-content {
+    white-space: pre-line;
+    line-height: 1.6;
+    color: black;
+    font-size: 18px;  /* Adjusted the font size */
+}

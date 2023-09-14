@@ -1,5 +1,5 @@
 import React from 'react';
-import Memlist from "../js/component/Memlist";
+import Memlist from "../compnent/Memlist";
 
 
 

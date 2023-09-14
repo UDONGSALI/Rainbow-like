@@ -43,25 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-//        http.csrf().disable().cors().and()
-//                .authorizeRequests().anyRequest().permitAll();
-
-
-//        http.csrf().disable().cors().and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//                .authorizeRequests()
-////                제일 중요 보안 예외 부분
-//                .antMatchers(HttpMethod.POST, "/login").permitAll()
-//                .antMatchers("/api/*").permitAll()
-//                .antMatchers("/api/*/*").permitAll()
-//                .antMatchers("/*/*").permitAll()
-//                .anyRequest().authenticated().and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(exceptionHandler).and()
-//                .addFilterBefore(authenticationFilter,
-//                        UsernamePasswordAuthenticationFilter.class);
-
         // CSRF 보호 비활성화, CORS 활성화 및 세션 관리를 STATELESS로 설정
         http.csrf().disable().cors().and()
                 .sessionManagement()
@@ -70,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 접근 권한을 모두 허용
                 .antMatchers("/**").permitAll()
                 // "/api/*" 엔드포인트에 대한 접근 권한을 "ADMIN" 역할을 가진 사용자로 설정
-//                 .antMatchers("/api/").hasRole("ADMIN")
+                 .antMatchers("/admin").hasRole("ADMIN")
                 // 모든 다른 요청은 인증된 사용자만 접근 가능
                 .anyRequest().authenticated().and()
                 .exceptionHandling()
@@ -82,16 +63,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+// CORS (Cross-Origin Resource Sharing) 구성을 정의하는 메서드입니다.
     CorsConfigurationSource corsConfigurationSource() {
+        // URL 기반의 CORS 구성 소스를 생성합니다.
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        // CORS 구성을 생성하고 특정 origin (http://localhost:3000)으로부터의 요청을 허용합니다.
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+
+        // 모든 HTTP 메서드를 허용합니다.
         config.setAllowedMethods(Arrays.asList("*"));
+
+        // 모든 HTTP 헤더를 허용합니다.
         config.setAllowedHeaders(Arrays.asList("*"));
+
+        // 자격 증명 (Credentials)을 허용하지 않습니다.
         config.setAllowCredentials(false);
+
+        // 기본 CORS 규칙을 적용합니다.
         config.applyPermitDefaultValues();
 
+        // 모든 경로 (/**)에 대해 이 CORS 구성을 등록합니다.
         source.registerCorsConfiguration("/**", config);
+
+        // CORS 구성 소스를 반환합니다.
         return source;
     }
 
