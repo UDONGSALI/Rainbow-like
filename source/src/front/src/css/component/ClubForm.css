@@ -1,6 +1,6 @@
 
 .registration-form-container {
-    max-width: 800px;
+    max-width: 60%;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -26,6 +26,7 @@
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 3px;
+
 }
 .registration-form select{
     display: block;
@@ -58,6 +59,7 @@
     color: #fff;
     border: none;
     cursor: pointer;
+
 }
 
 .registration-form button:hover {
