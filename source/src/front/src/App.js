@@ -1,98 +1,28 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-import {Route, Routes} from "react-router-dom";
->>>>>>> aef92e7 (no message)
+
 import './App.css';
-import './layout/css/font.css';
-import Footer from "./mypage/footer";
-import Header from "./Header/header";
+import './css/font.css';
 import './App.css';
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./js/pages/LoginPage";
 import React from "react";
-import AdminPage from "./pages/AdminPage";
-import SingUp from "./components/SingUp";
-<<<<<<< HEAD
-import Top from "./mypage/top";
-import Mypage from "./mypage/mypage";
-import {Route, Router, Routes} from "react-router";
+import AdminPage from "./js/pages/AdminPage";
+import SingUp from "./js/components/SingUp";
+import {Route, Routes} from "react-router";
+import RentProcess from "./js/components/rent/RentProcess";
 
 function App() {
 
     return (
         <div className="App">
 
-                <Routes>
-                    <Route path="/admin" element={<AdminPage/>}/>
-                    <Route path="/login" element={<LoginPage/>}/>
-                    <Route path="/singUp" element={<SingUp/>}/>
-                </Routes>
-
-            {/*<Header/>*/}
-            {/*<Mypage/>*/}
-
+            {/*<Routes>*/}
+            {/*    <Route path="/admin" element={<AdminPage/>}/>*/}
+            {/*    <Route path="/login" element={<LoginPage/>}/>*/}
+            {/*    <Route path="/singUp" element={<SingUp/>}/>*/}
+            {/*</Routes>*/}
+            <RentProcess/>
         </div>
 
 
     );
-=======
-import React from "react";
-<<<<<<< HEAD
-=======
-import LoginPage from "./pages/Login";
-import Admin from "./pages/Admin";
-=======
-import './App.css';
-import { Route, Routes } from 'react-router-dom';
-import Home from './screens/Home';
-import About from './screens/About';
-import Questions from './screens/Questions';
-import ReactDoc from './screens/ReactDoc';
-import Projects from './screens/Projects';
-import NavBarElements from './components/Navbar/NavBarElements';
-import { Form } from 'react-bootstrap';
-
-
->>>>>>> bc06ba3 (no message)
->>>>>>> aef92e7 (no message)
-
-function App() {
-
-  return (
-<<<<<<< HEAD
-      <div className="App">
-          <Routes>
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/singUp" element={<SingUp />} />
-          </Routes>
-          {/*<Header/>*/}
-          <Container_common/>
-          <Mypage_active/>
-          <Footer/>
-
-      </div>
-<<<<<<< HEAD
-
-
-
-=======
-=======
-    <div className='App'>
-    <NavBarElements />
-   <Routes>
-   <Route path = "/" element = { <Home /> } />
-   <Route path = "/About" element = { <About /> } />
-   <Route path = "/Projects" element = { <Projects /> } />
-   <Route path = "/Questions" element = { <Questions /> } />
-   <Route path = "/ReactDoc" element = { <ReactDoc /> } />
-   </Routes>
-   </div>
-  
->>>>>>> bc06ba3 (no message)
->>>>>>> aef92e7 (no message)
-  );
->>>>>>> 193d2ba58c82bab2c0e4d0abc8cfbb4ed8da3acd
 }
-
 export default App;
