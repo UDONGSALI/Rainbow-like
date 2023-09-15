@@ -44,8 +44,8 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostInfo> getPostInfo(@PathVariable Long id) {
-        postService.updatePageView(id);
-        // 포스트 id를 요청하면 해당 id에 대한 post, board, member 정보를 하나의 배열로 반환받을 수 있습니다.
+
+//         포스트 id를 요청하면 해당 id에 대한 post, board, member 정보를 하나의 배열로 반환받을 수 있습니다.
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + id));
 
@@ -82,6 +82,18 @@ public class PostController {
 
         // 저장한 게시글을 반환
         return ResponseEntity.ok(savedPost);
+    }
+
+    @PostMapping("posts/{id}/increase-view")
+    public ResponseEntity<Void> increasePageView(@PathVariable Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + id));
+
+        // 조회수를 1 증가시킵니다.
+        post.setPageView(post.getPageView() + 1);
+        postRepository.save(post);
+
+        return ResponseEntity.ok().build();
     }
 
 }
