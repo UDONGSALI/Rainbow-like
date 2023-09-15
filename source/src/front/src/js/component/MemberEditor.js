@@ -4,12 +4,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-<<<<<<<< HEAD:source/src/front/src/js/components/MemberEditor.js
-import '../../css/components/MemberEditor.css';
-========
 import '../../css/component/MemberEditor.css';
->>>>>>>> e1c2fa4cefa80d3884e1c2dab03cd89e0b65e8c4:source/src/front/src/js/compnent/MemberEditor.js
-import {SERVER_URL} from "../../constants";
 
 function MemberEditor({ member, open, onClose, onUpdate }) {
     const [formData, setFormData] = useState({

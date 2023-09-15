@@ -35,6 +35,32 @@ function EduDetail({ onBackClick }) {
             });
     }, [eduNum]);
 
+    function formatDateAndTime(inputDate) {
+        const dateObj = new Date(inputDate);
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const hours = String(dateObj.getHours()).padStart(2, '0');
+        const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+
+        return {
+            date: `${year}-${month}-${day}`,
+            time: `${hours}:${minutes}`
+        };
+    }
+
+    function renderDateRange(startDate, endDate) {
+        const start = formatDateAndTime(startDate);
+        const end = formatDateAndTime(endDate);
+
+        // 시작 날짜와 종료 날짜가 동일한 경우, 날짜는 한 번만 표시하고 시간 범위만 표시합니다.
+        if (start.date === end.date) {
+            return `${start.date} ${start.time} ~ ${end.time}`;
+        } else {
+            return `${start.date} ${start.time} ~ ${end.date} ${end.time}`;
+        }
+    }
+
     return (
         <div className="container">
             {eduData ? (
@@ -45,7 +71,7 @@ function EduDetail({ onBackClick }) {
                         </div>
                         <div className="right-top">
                             <h1 className="header">{eduData.eduname}</h1>
-                            <p className="detail"><strong>일시:</strong> {eduData.eduStdt} ~ {eduData.eduEddt}</p>
+                            <p className="detail"><strong>교육 일시:</strong> {renderDateRange(eduData.eduStdt, eduData.eduEddt)}</p>
                             <p className="detail"><strong>장소:</strong> {eduData.eduAddr}</p>
                             <p className="detail"><strong>대상:</strong> {eduData.target}</p>
                             <p className="detail"><strong>신청 기간:</strong> {eduData.recuStdt} ~ {eduData.recuEddt}</p>
