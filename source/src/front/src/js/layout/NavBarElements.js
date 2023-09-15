@@ -1,9 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-<<<<<<<< HEAD:source/src/front/src/js/layouts/NavBarElements.js
-import '../../css/layouts/Navbar.css';
-========
 import '../../css/layout/Navbar.css';
->>>>>>>> e1c2fa4cefa80d3884e1c2dab03cd89e0b65e8c4:source/src/front/src/js/layout/NavBarElements.js
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 
 
