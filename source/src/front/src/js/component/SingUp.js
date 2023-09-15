@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import bcrypt from 'bcryptjs'; // bcryptjs 라이브러리를 임포트
+<<<<<<<< HEAD:source/src/front/src/js/components/SingUp.js
+import '../../css/components/SingUp.css';
+========
 import '../../css/component/SingUp.css';
+>>>>>>>> e1c2fa4cefa80d3884e1c2dab03cd89e0b65e8c4:source/src/front/src/js/compnent/SingUp.js
 import FileUpload from "./FileUpload";
 import axios from "axios"; // CSS 파일을 임포트
 
@@ -70,6 +74,7 @@ function Singup() {
 
                 // 파일 업로드
                 const formDataWithFiles = new FormData();
+
                 for (const file of selectedFiles) {
                     formDataWithFiles.append('file', file);
                 }
