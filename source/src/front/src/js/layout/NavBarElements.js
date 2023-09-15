@@ -1,8 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import '../../css/layout/Navbar.css';
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
-
-
 
 const NavBarElements = () => {
   useEffect(() => {
@@ -20,7 +17,7 @@ const NavBarElements = () => {
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">
-          <img src='img/logo.png' alt="로고"></img>
+          <img src='../../img/layout/header/logo.png' alt="로고"></img>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
