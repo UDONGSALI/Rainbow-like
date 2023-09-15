@@ -22,12 +22,14 @@ function EduList({ onEduClick }) {
             .catch((err) => console.error(err));
     };
 
+    console.log(edus)
+
     useEffect(() => {
         fetchEdus();
     }, []);
 
     const handleTitleClick = (eduNum) => {
-        navigate('/eduDetail/' + eduNum.slice(-1));
+        navigate('/edu/detail/' + eduNum.slice(-1));
     };
 
     // 동적으로 열을 구성하는 함수
