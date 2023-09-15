@@ -3,7 +3,6 @@ package RainbowLike.controller;
 
 import RainbowLike.dto.RentHistDto;
 import RainbowLike.entity.RentHist;
-import RainbowLike.repository.RentHistRepository;
 import RainbowLike.service.RentHistService;
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +19,7 @@ import java.util.List;
 public class RentHistController {
 
     private final RentHistService rentHistService;
-    private final RentHistRepository rentHistRepository;
+
 
 
 

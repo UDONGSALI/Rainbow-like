@@ -1,4 +1,7 @@
 import React, {useState} from "react";
+<<<<<<<< HEAD:source/src/front/src/js/components/ClubForm.js
+import '../../css/components/ClubForm.css';
+========
 <<<<<<<< HEAD:source/src/front/src/js/compnent/ClubForm.js
 import '../../css/component/ClubForm.css';
 ========
@@ -6,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 
 import '../../../../../helpme/source/src/front/src/css/component/ClubForm.css';
 >>>>>>>> 96a8e975646000df4ce3dd96eda442c614b36ab2:source/src/front/src/js/component/ClubForm.js
+>>>>>>>> e1c2fa4cefa80d3884e1c2dab03cd89e0b65e8c4:source/src/front/src/js/component/ClubForm.js
 
 function ClubForm(){
     // 사용자가 선택한 멤버와 게시판의 ID를 저장하기 위한 상태 변수

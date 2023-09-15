@@ -3,13 +3,11 @@ package RainbowLike;
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
 import RainbowLike.controller.DefaultFileController;
-import RainbowLike.controller.FileController;
 import RainbowLike.controller.RentHistController;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
 import RainbowLike.entity.Post;
 import RainbowLike.repository.BoardRepository;
-import RainbowLike.repository.FileRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +32,9 @@ public class RainbowLikeApplication implements CommandLineRunner {
     private PostRepository postRepository;
     @Autowired
     private DefaultFileController defaultFileController;
+
+    @Autowired
+    private RentHistController rentHistController;
 
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
@@ -60,6 +61,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
         defaultFileController.createDefaultFiles();
 
+        rentHistController.createBasicRent();
+
     }
 }
-
