@@ -2,6 +2,7 @@ package RainbowLike;
 
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
+import RainbowLike.controller.DefaultFileController;
 import RainbowLike.controller.FileController;
 import RainbowLike.controller.RentHistController;
 import RainbowLike.entity.Board;
@@ -32,9 +33,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     @Autowired
     private PostRepository postRepository;
     @Autowired
-    private RentHistController rentHistController;
-    @Autowired
-    private FileController fileController;
+    private DefaultFileController defaultFileController;
 
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
@@ -68,7 +67,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
 >>>>>>> e1c2fa4cefa80d3884e1c2dab03cd89e0b65e8c4
         postRepository.saveAll(Arrays.asList(club1, club2, club3));
 
-        fileController.createDefaultFiles();
+        defaultFileController.createDefaultFiles();
 
 
 
