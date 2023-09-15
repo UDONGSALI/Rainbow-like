@@ -26,9 +26,12 @@ public class EduController {
         return eduRepository.findAll();
     }
 
-    @PostConstruct
     private void createEdus() {
-        ArrayList<EduDto> eduDtoList = EduDto.createEdu();
-        eduService.createEdu(eduDtoList);
+    }
+
+    @PostConstruct
+    private void createDefaultEdus() {
+        ArrayList<EduDto> eduDtoList = EduDto.createDefaultEdu();
+        eduService.createDefaultEdus(eduDtoList);
     }
 }

@@ -79,10 +79,13 @@ function EduDetail({ onBackClick }) {
                             <p className="detail"><strong>문의 전화번호:</strong> {eduData.tel}</p>
                         </div>
                     </div>
-                    <h3>상세정보</h3>
+                    <br/>
+                    <br/>
                     <hr />
+                    <br/>
                     <div className="main-content">
                         {filteredFiles[1] && <img src={filteredFiles[1].fileUri} alt="Second Image" />}
+                        <br/>
                         <p className="detail-content">{eduData.content}</p>
                     </div>
                 </div>
