@@ -24,7 +24,7 @@ public class Edu {
     private EduType type;
 
     @Column(nullable = false)
-    private String eduname;
+    private String eduName;
 
     @Column(nullable = false)
     @Lob
