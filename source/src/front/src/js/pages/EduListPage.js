@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import EduList from "../compnent/EduList";
+import EduList from "../component/EduList";
 
 function EduListPage() {
 
