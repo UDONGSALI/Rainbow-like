@@ -4,8 +4,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import '../../css/component/MemberEditor.css';
-import {SERVER_URL} from "../../constants";
+import '../../../css/component/MemberEditor.css';
+import {SERVER_URL} from "../../../constants";
 
 
 function MemberEditor({ member, open, onClose, onUpdate }) {

@@ -1,5 +1,5 @@
-import ClubDetail from "../compnent/ClubDetail";
-import Comment from "../compnent/Comment";
+import ClubDetail from "../component/Club/ClubDetail";
+import Comment from "../component/Comment/Comment";
 import '../../css/component/ClubDetail.css';
 
 

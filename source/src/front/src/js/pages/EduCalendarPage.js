@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import EduCalendar from "../component/EduCalendar";
+import EduCalendar from "../component/Edu/EduCalendar";
 
 function EduCalendarPage() {
 
