@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SERVER_URL } from "../../constants";
+import { SERVER_URL } from "../../../constants";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from 'react-router-dom';
 

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {DataGrid} from "@mui/x-data-grid";
-import { SERVER_URL} from "./constants";
+import { SERVER_URL} from "../Common/constants";
 import Snackbar from '@mui/material/Snackbar';
 
 function ClubList() {
