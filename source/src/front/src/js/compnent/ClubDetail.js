@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
+
 import {SERVER_URL} from "./constants";
-import '../../../../../helpme/source/src/front/src/css/component/ClubDetail.css';
 
 function ClubDetail() {
     const { id } = useParams();
@@ -63,6 +63,14 @@ function ClubDetail() {
         navigate("/posts/edit/" + id);
     };
 
+    function convertNewlinesToBr(text) {
+        return text.split('\n').map((line, index) => (
+            <React.Fragment key={index}>
+                {line}
+                <br />
+            </React.Fragment>
+        ));
+    }
 
 
     if (!post) {
@@ -81,7 +89,7 @@ function ClubDetail() {
                 조회수: {post.post.pageView}</p>
             </div>
 
-            <div className="content">{post.post.content}</div>
+            <div className="content">{convertNewlinesToBr(post.post.content)}</div>
             <div className="post-button">
                 <button onClick={() => onEditClick()}>수정</button>
                 <button onClick={() => onDelClick()}>삭제</button>
@@ -89,6 +97,7 @@ function ClubDetail() {
             </div>
         </div>
     );
+
 
 
 }
