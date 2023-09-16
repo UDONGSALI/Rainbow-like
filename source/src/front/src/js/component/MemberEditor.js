@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import '../../css/component/MemberEditor.css';
 import {SERVER_URL} from "../../constants";
 
+
 function MemberEditor({ member, open, onClose, onUpdate }) {
     const [formData, setFormData] = useState({
         memId: '',

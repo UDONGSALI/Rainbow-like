@@ -12,8 +12,10 @@ function Memlist() {
     const membersWithFiles = members.map((member) => {
 
         // 각 멤버에 대한 파일 정보를 찾는 로직 작성
-        const memberFiles = files.filter((file) => file.member.memNum == member._links.member.href.slice(-1));
-
+        const memberFiles = files.filter((file) => {
+            if (!file.member) return false;
+            return file.member.memNum == member._links.member.href.slice(-1);
+        });
         return {
             ...member,
             memberFiles, // 각 멤버의 파일 정보를 추가합니다.
