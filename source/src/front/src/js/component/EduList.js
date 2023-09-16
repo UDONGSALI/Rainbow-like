@@ -57,7 +57,7 @@ function EduList({ onEduClick }) {
                 ),
             },
             {
-                field: 'eduname',
+                field: 'eduName',
                 headerName: '프로그램명',
                 width: 350,
                 renderCell: (row) => (
