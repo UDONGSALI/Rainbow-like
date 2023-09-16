@@ -54,7 +54,7 @@ public class EduDto {
     @NotBlank
     private String tel;
 
-    static public ArrayList<EduDto> createEdu() {
+    static public ArrayList<EduDto> createDefaultEdu() {
         ArrayList<EduDto> eduList = new ArrayList<EduDto>();
 
         EduDto Edu1 = new EduDto();

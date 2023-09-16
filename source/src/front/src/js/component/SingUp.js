@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import bcrypt from 'bcryptjs'; // bcryptjs 라이브러리를 임포트
 import '../../css/component/SingUp.css';
 import FileUpload from "./FileUpload";
@@ -23,8 +23,8 @@ function Singup() {
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const {name, value} = e.target;
+        setFormData({...formData, [name]: value});
     };
 
     const handleFileChange = (files) => {
@@ -35,10 +35,9 @@ function Singup() {
         e.preventDefault();
 
 
-
         // 회원가입 정보 전송
         const hashedPwd = bcrypt.hashSync(formData.pwd, 10);
-        setFormData({ ...formData, pwd: hashedPwd });
+        setFormData({...formData, pwd: hashedPwd});
 
         try {
             const response = await fetch('http://localhost:8090/api/members', {
@@ -70,6 +69,7 @@ function Singup() {
 
                 // 파일 업로드
                 const formDataWithFiles = new FormData();
+
                 for (const file of selectedFiles) {
                     formDataWithFiles.append('file', file);
                 }
@@ -94,7 +94,7 @@ function Singup() {
         <div className="registration-form-container">
             <h2>회원가입 폼</h2>
             <form onSubmit={handleSubmit} className="registration-form">
-                <div className="input-group" >
+                <div className="input-group">
                     <input
                         type="text"
                         name="memId"
@@ -104,7 +104,7 @@ function Singup() {
                         required
                     />
                 </div>
-                <div className="input-group" >
+                <div className="input-group">
                     <input
                         type="password"
                         name="pwd"
@@ -113,7 +113,7 @@ function Singup() {
                         placeholder="비밀번호"
                         required
                     />
-                </ div >
+                </ div>
                 <select
                     name="type"
                     value={formData.type}
@@ -121,8 +121,8 @@ function Singup() {
                     required
                 >
                     <option value="">회원 유형 선택</option>
-                    <option value="ADMIN">관리자 </option>
-                    <option value="USER">일반 사용자 </option>
+                    <option value="ADMIN">관리자</option>
+                    <option value="USER">일반 사용자</option>
                     <option value="LABOR">노무사</option>
                     <option value="COUNSELOR">상담사</option>
                 </select>
@@ -147,7 +147,7 @@ function Singup() {
                     <option value="MALE">남성</option>
                     <option value="FEMALE">여성</option>
                 </select>
-                <div className="input-group" >
+                <div className="input-group">
                     <input
                         type="date"
                         name="bir"
@@ -157,7 +157,7 @@ function Singup() {
                         required
                     />
                 </div>
-                <div className="input-group" >
+                <div className="input-group">
                     <input
                         type="text"
                         name="tel"
@@ -167,7 +167,7 @@ function Singup() {
                         required
                     />
                 </div>
-                <div className="input-group" >
+                <div className="input-group">
                     <input
                         type="email"
                         name="email"
@@ -177,7 +177,7 @@ function Singup() {
                         required
                     />
                 </div>
-                <div className="input-group" >
+                <div className="input-group">
                     <input
                         type="text"
                         name="addr"
@@ -196,7 +196,7 @@ function Singup() {
                         placeholder="상세주소"
                     />
                 </div>
-                <div className="input-group" >
+                <div className="input-group">
                     <input
                         type="text"
                         name="addrPost"
@@ -206,7 +206,7 @@ function Singup() {
                     />
                 </div>
                 {/*<FileUpload  />*/}
-                <FileUpload onFileChange={handleFileChange} />
+                <FileUpload onFileChange={handleFileChange}/>
 
                 <button type="submit">회원가입</button>
             </form>

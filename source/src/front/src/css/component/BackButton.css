@@ -1,0 +1,21 @@
+.backButton {
+    position: fixed;
+    top: calc(100vh / 6);
+    left: calc(100vw / 30);
+    z-index: 1000;
+    background-color: skyblue; /* 하늘색 배경 */
+    border-radius: 50%; /* 버튼을 원형으로 */
+    width: 40px; /* 버튼 너비 */
+    height: 40px; /* 버튼 높이 */
+    border: none; /* 기본 테두리 제거 */
+    color: white; /* 글자색을 흰색으로 */
+    font-size: 20px; /* 글자 크기 조정 */
+    cursor: pointer; /* 마우스를 올렸을 때 커서 모양 변경 */
+    outline: none; /* 포커스 시 외곽선 제거 */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16); /* 약간의 그림자 효과 */
+}
+
+/* 마우스를 올렸을 때의 스타일 */
+.backButton:hover {
+    background-color: deepskyblue; /* 조금 더 진한 하늘색으로 */
+}

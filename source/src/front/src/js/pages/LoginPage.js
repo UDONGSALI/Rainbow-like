@@ -1,7 +1,7 @@
 import React from 'react';
 import {AppBar, Toolbar, Typography} from "@mui/material";
-import SingUp from "../compnent/SingUp";
-import Login from "../compnent/Login";
+import SingUp from "../component/SingUp";
+import Login from "../component/Login";
 
 const LoginPage = () => {
     return (

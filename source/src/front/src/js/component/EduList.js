@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { SERVER_URL } from "../../constants";
 import { DataGrid } from "@mui/x-data-grid";
+import { useNavigate } from 'react-router-dom';
 
 function EduList({ onEduClick }) {
     const [edus, setEdus] = useState([]);
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    const navigate = useNavigate();
+
 
     const fetchEdus = () => {
         fetch(SERVER_URL + 'api/edus')
@@ -19,14 +22,14 @@ function EduList({ onEduClick }) {
             .catch((err) => console.error(err));
     };
 
+    console.log(edus)
+
     useEffect(() => {
         fetchEdus();
     }, []);
 
     const handleTitleClick = (eduNum) => {
-        if (onEduClick) {
-            onEduClick(eduNum);
-        }
+        navigate('/edu/detail/' + eduNum.slice(-1));
     };
 
     // 동적으로 열을 구성하는 함수
@@ -54,7 +57,7 @@ function EduList({ onEduClick }) {
                 ),
             },
             {
-                field: 'eduname',
+                field: 'eduName',
                 headerName: '프로그램명',
                 width: 350,
                 renderCell: (row) => (

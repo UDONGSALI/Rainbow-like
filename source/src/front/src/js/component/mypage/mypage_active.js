@@ -1,4 +1,7 @@
+<<<<<<<< HEAD:source/src/front/src/js/components/mypage/mypage_active.js
+========
 import '../../../css/component/mypage_active.css' ;
+>>>>>>>> e1c2fa4cefa80d3884e1c2dab03cd89e0b65e8c4:source/src/front/src/js/compnent/mypage/mypage_active.js
 
 const Mypage_active = () => {
     return(
