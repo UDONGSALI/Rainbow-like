@@ -1,7 +1,6 @@
 package RainbowLike.entity;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,7 +14,6 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @SuperBuilder
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
@@ -25,4 +23,9 @@ LocalDateTime writeDate;
 
 @LastModifiedDate
 private LocalDateTime editDate;
+
+public BaseEntity(){
+    this.writeDate = LocalDateTime.now();
+}
+
 }

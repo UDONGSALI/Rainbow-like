@@ -13,7 +13,7 @@ function PostList() {
     const columns = [
         {
             field: 'board',
-            headerName: 'Board',
+            headerName: '게시판',
             width: 200,
             valueGetter: (params) => {
                 const boards = Array.isArray(params.row.board) ? params.row.board : [params.row.board];
@@ -22,16 +22,16 @@ function PostList() {
         },
         {
             field: 'member',
-            headerName: 'Members',
+            headerName: '작성자',
             width: 200,
             valueGetter: (params) => {
                 const members = Array.isArray(params.row.member) ? params.row.member : [params.row.member];
-                return members.map((m) => m.memNum).join(', ');
+                return members.map((m) => m.name).join(', ');
             }
         },
         {
             field: 'title',
-            headerName: 'Title',
+            headerName: '제목',
             width: 200,
             renderCell: (params) => (
                 <div
@@ -43,8 +43,23 @@ function PostList() {
             ),
         },
         {
+            field: 'consField',
+            headerName: '상담 현황',
+            width: 150,
+        },
+        {
+            field: 'clubAllowStatus',
+            headerName: '소모임 허가 현황',
+            width: 150,
+        },
+        {
+            field: 'clubRecuStatus',
+            headerName: '소모임 현황',
+            width: 150,
+        },
+        {
             field: 'pageView',
-            headerName: 'PageView',
+            headerName: '조회수',
             width: 150,
         },
         {
@@ -89,16 +104,6 @@ function PostList() {
                 setPosts(data))
             .catch(err => console.error(err));
     };
-
-    useEffect(() => {
-        fetch(SERVER_URL + "posts/")
-            .then(response =>
-                response.json())
-            .then(data =>
-                setPosts(data))
-            .catch(err => console.error(err));
-    }, []);
-
 
     const onDelClick = ( url) => {
 
