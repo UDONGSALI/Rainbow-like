@@ -1,5 +1,5 @@
 import React from 'react';
-import Memlist from "../component/Memlist";
+import Memlist from "../component/Member/Memlist";
 
 const AdminPage = () => {
         return <Memlist/>

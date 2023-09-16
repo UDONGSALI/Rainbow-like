@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 
-import {SERVER_URL} from "./constants";
+import {SERVER_URL} from "../Common/constants";
 
 function ClubDetail() {
     const { id } = useParams();
