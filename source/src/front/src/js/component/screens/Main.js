@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from '../Container.style';
+import { Container } from '../Common/Container.style';
 import { Header } from '../../layout/Header.style';
 
 

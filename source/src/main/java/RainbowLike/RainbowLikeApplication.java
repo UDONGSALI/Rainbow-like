@@ -1,38 +1,35 @@
 package RainbowLike;
 
-import RainbowLike.controller.CommentController;
-import RainbowLike.controller.FileController;
-import RainbowLike.controller.PostController;
-import RainbowLike.controller.RentHistController;
+import RainbowLike.constant.Gender;
+import RainbowLike.constant.Type;
+import RainbowLike.controller.*;
+import RainbowLike.entity.Board;
+import RainbowLike.entity.Member;
+import RainbowLike.entity.Post;
 import RainbowLike.repository.BoardRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @SpringBootApplication
 @RequiredArgsConstructor
 public class RainbowLikeApplication implements CommandLineRunner {
 
-    @Autowired
-    private BoardRepository boardRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private PostController postController;
-    @Autowired
-    private CommentController commentController;
-    @Autowired
-    private RentHistController rentHistController;
-    private DefaultFileController defaultFileController;
-    @Autowired
-    private FileController fileController;
-    private RentHistController rentHistController;
+    private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
+    private final PostRepository postRepository;
+    private final PostController postController;
+    private final CommentController commentController;
+    private final RentHistController rentHistController;
+    private final DefaultFileController defaultFileController;
+    private final FileController fileController;
 
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
@@ -41,7 +38,6 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        fileController.createDefaultFiles();
         System.out.println("일단 이게 되긴 하는지");
 
         Board board1 = new Board("Club", true, true, true);
@@ -63,11 +59,8 @@ public class RainbowLikeApplication implements CommandLineRunner {
         rentHistController.createBasicRent();
 
         postController.createPosts();
+
         commentController.createComms();
-
-
-
-
 
 
     }

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import '../../css/component/ClubForm.css';
+import '../../../css/component/ClubForm.css';
 import { useParams} from "react-router-dom";
-import {SERVER_URL} from "./constants";
+import {SERVER_URL} from "../Common/constants";
 import {DataGrid} from "@mui/x-data-grid";
 import Snackbar from "@mui/material/Snackbar";
 

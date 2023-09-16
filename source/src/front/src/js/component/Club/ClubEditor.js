@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import '../../css/component/ClubForm.css';
+import '../../../css/component/ClubForm.css';
 import {useNavigate, useParams} from "react-router-dom";
-import {SERVER_URL} from "./constants";
+import {SERVER_URL} from "../Common/constants";
 
 function ClubEditor(){
     const { id } = useParams();
