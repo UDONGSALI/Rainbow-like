@@ -10,7 +10,7 @@ function BackButton() {
     };
 
     return (
-        <button className="backButton" onClick={handleBackClick}>
+        <button className="BackButton" onClick={handleBackClick}>
             &lt;
         </button>
     );

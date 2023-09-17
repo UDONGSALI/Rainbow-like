@@ -1,6 +1,7 @@
 package RainbowLike.dto;
 
 import RainbowLike.constant.EduType;
+import RainbowLike.constant.RecuMethod;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,7 +50,7 @@ public class EduDto {
     private int recuPerson;
 
     @NotBlank
-    private String recuMethod;
+    private RecuMethod recuMethod;
 
     @NotBlank
     private String tel;
@@ -96,7 +97,7 @@ public class EduDto {
         Edu1.setRecuEddt(LocalDate.of(2023,9,20));
         Edu1.setCapacity(15);
         Edu1.setRecuPerson(0);
-        Edu1.setRecuMethod("관리자승인");
+        Edu1.setRecuMethod(RecuMethod.ADMIN_APPROVAL);
         Edu1.setTel("044) 866-0179");
         eduList.add(Edu1);
 
@@ -152,7 +153,7 @@ public class EduDto {
         Edu2.setRecuEddt(LocalDate.of(2023,9,25));
         Edu2.setCapacity(70);
         Edu2.setRecuPerson(0);
-        Edu2.setRecuMethod("선착순모집");
+        Edu2.setRecuMethod(RecuMethod.FIRST_COME);
         Edu2.setTel("044-850-8179");
         eduList.add(Edu2);
 
@@ -197,7 +198,7 @@ public class EduDto {
         Edu3.setRecuEddt(LocalDate.of(2023,8,28));
         Edu3.setCapacity(30);
         Edu3.setRecuPerson(0);
-        Edu3.setRecuMethod("선착순모집");
+        Edu3.setRecuMethod(RecuMethod.FIRST_COME);
         Edu3.setTel("044-863-0380");
         eduList.add(Edu3);
 
@@ -235,7 +236,7 @@ public class EduDto {
         Edu4.setRecuEddt(LocalDate.of(2023,9,13));
         Edu4.setCapacity(50);
         Edu4.setRecuPerson(0);
-        Edu4.setRecuMethod("선착순모집");
+        Edu4.setRecuMethod(RecuMethod.FIRST_COME);
         Edu4.setTel("세종시직장맘지원센터 044) 866-0179");
         eduList.add(Edu4);
 

@@ -1,21 +1,29 @@
-.backButton {
+.BackButton {
+    /* 위치, 크기, 모양 */
     position: fixed;
     top: calc(100vh / 6);
     left: calc(100vw / 30);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* 원형으로 */
     z-index: 1000;
-    background-color: skyblue; /* 하늘색 배경 */
-    border-radius: 50%; /* 버튼을 원형으로 */
-    width: 40px; /* 버튼 너비 */
-    height: 40px; /* 버튼 높이 */
-    border: none; /* 기본 테두리 제거 */
-    color: white; /* 글자색을 흰색으로 */
-    font-size: 20px; /* 글자 크기 조정 */
-    cursor: pointer; /* 마우스를 올렸을 때 커서 모양 변경 */
-    outline: none; /* 포커스 시 외곽선 제거 */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16); /* 약간의 그림자 효과 */
+
+    /* 시각적 스타일 */
+    background-color: skyblue;
+    border: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+
+    /* 텍스트와 관련된 스타일 */
+    color: white;
+    font-size: 25px;
+    padding-bottom: 15px;
+    text-align: center;
+
+    /* 기타 스타일 */
+    cursor: pointer;
+    outline: none;
 }
 
-/* 마우스를 올렸을 때의 스타일 */
-.backButton:hover {
-    background-color: deepskyblue; /* 조금 더 진한 하늘색으로 */
+.BackButton:hover {
+    background-color: deepskyblue;
 }
