@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { SERVER_URL } from "../../../constants";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from 'react-router-dom';
+import {SERVER_URL} from "../Common/constants";
 
 function EduList({ onEduClick }) {
     const [edus, setEdus] = useState([]);

@@ -1,6 +1,7 @@
 package RainbowLike.entity;
 
 import RainbowLike.constant.EduType;
+import RainbowLike.constant.RecuMethod;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -55,7 +56,8 @@ public class Edu {
     private int recuPerson;
 
     @Column(nullable = false)
-    private String recuMethod;
+    @Enumerated(EnumType.STRING)
+    private RecuMethod recuMethod;
 
     @Column(nullable = false, length = 30)
     private String tel;

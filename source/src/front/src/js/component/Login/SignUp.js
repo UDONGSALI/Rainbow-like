@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import bcrypt from 'bcryptjs'; // bcryptjs 라이브러리를 임포트
 import '../../../css/component/SingUp.css';
 import FileUpload from "../Common/FileUpload";
-import axios from "axios"; // CSS 파일을 임포트
+import axios from "axios";
+import {SERVER_URL} from "../Common/constants"; // CSS 파일을 임포트
 
-function Singup() {
+function SignUp() {
     const [formData, setFormData] = useState({
         memId: '',
         pwd: '',
@@ -40,7 +41,7 @@ function Singup() {
         setFormData({...formData, pwd: hashedPwd});
 
         try {
-            const response = await fetch('http://localhost:8090/api/members', {
+            const response = await fetch(SERVER_URL + 'api/members', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -214,4 +215,4 @@ function Singup() {
     );
 }
 
-export default Singup;
+export default SignUp;
