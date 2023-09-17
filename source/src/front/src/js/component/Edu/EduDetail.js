@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import "../../../css/component/EduDetail.css";
-import { SERVER_URL } from "../../../constants";
 import { useParams } from "react-router-dom";
+import {SERVER_URL} from "../Common/constants";
 
 function EduDetail({ onBackClick }) {
     const [eduData, setEduData] = useState(null);
@@ -20,7 +20,7 @@ function EduDetail({ onBackClick }) {
     }, []);
 
     const filteredFiles = useMemo(
-        () => files.filter(file => file.edu && file.edu.eduNum == eduNum.slice(-1)),
+        () => files.filter(file => file.edu && file.edu.eduNum == eduNum),
         [files, eduNum]
     );
 

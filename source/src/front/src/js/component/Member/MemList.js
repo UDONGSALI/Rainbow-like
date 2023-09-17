@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { SERVER_URL } from '../../../constants';
 import { DataGrid } from '@mui/x-data-grid';
 import MemberEditor from './MemberEditor';
+import {SERVER_URL} from "../Common/constants";
 
-function Memlist() {
+function MemList() {
     // 멤버 목록과 모달 상태를 관리하는 상태 변수들을 정의합니다.
     const [members, setMembers] = useState([]);
     const [files, setFiles] = useState([]);
@@ -163,4 +163,4 @@ function Memlist() {
     );
 }
 
-export default Memlist;
+export default MemList;

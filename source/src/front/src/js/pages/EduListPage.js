@@ -3,6 +3,7 @@ import EduList from "../component/Edu/EduList";
 
 function EduListPage() {
 
+
     return (
         <div>
                 <EduList  />
