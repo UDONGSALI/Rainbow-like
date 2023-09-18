@@ -25,12 +25,7 @@ function MemList() {
     // 컴포넌트가 마운트될 때 멤버 목록을 불러오는 효과를 정의합니다.
     useEffect(() => {
         fetch(SERVER_URL + 'api/members')
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return res.json();
-            })
+            .then((res) => res.json())
             .then((data) => setMembers(data._embedded.members))
             .catch((err) => console.error(err));
     }, []);
@@ -115,7 +110,7 @@ function MemList() {
             renderCell: (row) => (
                 <div style={{ overflow: 'auto', maxHeight: '50px',  lineHeight: 0.5, width:200}}>
                     {row.value && row.value.map((file) => (
-                        <div>
+                        <div key={file.id || file.fileUri}>
                             <p><a href={file.fileUri}>{file.fileOriName}</a></p>
                         </div>
                     ))}
@@ -154,7 +149,6 @@ function MemList() {
             .then(response => fetchMembers())
             .catch(err => console.error(err))
     }
-
 
 
     return (

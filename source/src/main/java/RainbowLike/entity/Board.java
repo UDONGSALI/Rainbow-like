@@ -1,10 +1,13 @@
 package RainbowLike.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +30,10 @@ public class Board {
 
     @Column(nullable = false)
     private boolean commAllowYn;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<Post> posts = new ArrayList<>();
 
     public Board(String boardName, boolean readRole, boolean writeRole, boolean commAllowYn) {
         super();

@@ -1,6 +1,7 @@
 package RainbowLike.entity;
 
 import RainbowLike.dto.SpaceDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,7 +39,12 @@ public class Space {
     private String facilities;
 
     @OneToMany(mappedBy = "space", cascade = CascadeType.REMOVE)
+    @JsonBackReference
     private List<File> files = new ArrayList<>();
+
+    @OneToMany(mappedBy = "space", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<RentHist> rentHists = new ArrayList<>();
 
     public Space(String spaceName, int maxPerson, String spaceUsage,String rentTime, String rentFee, String facilities){
         super();
