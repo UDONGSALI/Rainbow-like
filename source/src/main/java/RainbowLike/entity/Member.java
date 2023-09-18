@@ -3,6 +3,7 @@ package RainbowLike.entity;
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
 import RainbowLike.dto.MemberFormDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -56,6 +59,38 @@ public class Member {
 
     @Column(nullable = false)
     private LocalDate jdate;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<File> files = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<Chat> chats = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<EduHist> eduHists = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<RentHist> rentHists = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<FtWorker> ftWorkers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<FtConsumer> ftConsumers = new ArrayList<>();
 
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){

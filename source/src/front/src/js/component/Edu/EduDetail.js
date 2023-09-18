@@ -18,11 +18,14 @@ function EduDetail({ onBackClick }) {
                 console.error(error);
             });
     }, []);
+    console.log(files);
 
     const filteredFiles = useMemo(
         () => files.filter(file => file.edu && file.edu.eduNum == eduNum),
         [files, eduNum]
     );
+    console.log(filteredFiles);
+
 
     useEffect(() => {
         fetch(SERVER_URL + `api/edus/` + eduNum)

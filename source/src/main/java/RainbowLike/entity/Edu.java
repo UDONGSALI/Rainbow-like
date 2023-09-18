@@ -2,13 +2,20 @@ package RainbowLike.entity;
 
 import RainbowLike.constant.EduType;
 import RainbowLike.constant.RecuMethod;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -61,4 +68,12 @@ public class Edu {
 
     @Column(nullable = false, length = 30)
     private String tel;
+
+    @OneToMany(mappedBy = "edu", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<File> files = new ArrayList<>();
+
+    @OneToMany(mappedBy = "edu", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<EduHist> eduHists = new ArrayList<>();
 }

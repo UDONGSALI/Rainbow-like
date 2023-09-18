@@ -1,11 +1,15 @@
 package RainbowLike.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,6 +22,7 @@ public class FtWorker extends BaseEntity{
     private Long ftWorkerNum;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "mem_num", nullable = false)
     private Member member;
 
@@ -36,4 +41,8 @@ public class FtWorker extends BaseEntity{
 
     @Column(nullable = false)
     private boolean ftmYn;
+
+    @OneToMany(mappedBy = "ftWorker", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<FemaleTalentMatching> femaleTalentMatchings = new ArrayList<>();
 }
