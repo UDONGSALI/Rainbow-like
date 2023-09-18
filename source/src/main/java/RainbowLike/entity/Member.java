@@ -111,8 +111,6 @@ public class Member {
         return member;
     }
 
-
-
     public Member(String memId, String pwd, Type type, String name, Gender gender, LocalDate bir, String tel, String email, String addr, String addrDtl, LocalDate jdate) {
         super();
         this.memId = memId;

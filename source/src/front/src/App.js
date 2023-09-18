@@ -13,12 +13,14 @@ import EduDetailPage from "./js/pages/Edu/EduDetailPage";
 import EduManagePage from "./js/pages/Edu/EduManagePage";
 import EduAddPage from "./js/pages/Edu/EduAddPage";
 import EduEditPage from "./js/pages/Edu/EduEditPage";
+import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
+    const memId =  sessionStorage.getItem("memId");
     const navigate = useNavigate();
 
-    useEffect(() => {
+        useEffect(() => {
         // sessionStorage에서 JWT 토큰을 가져옵니다.
         const token = sessionStorage.getItem('jwt');
 
@@ -27,6 +29,8 @@ function App() {
             const decodedToken = decodeToken(token);
             // 유형을 세션 스토리지에 저장
             sessionStorage.setItem("role", decodedToken.role);
+            // username을 세션 스토리지에 저장
+            sessionStorage.setItem("memId", decodedToken.sub);
         }
     }, [navigate]);
 
@@ -61,6 +65,7 @@ function App() {
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
             </Routes>
         </div>
     )
