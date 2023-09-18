@@ -28,11 +28,3 @@
 .comment-form button{
     margin: 0;
 }
-
-.comment-item {
-    /* 댓글 스타일 */
-}
-
-.indented-comment {
-    margin-left: 20px; /* 들여쓰기 크기를 조절합니다. */
-}
