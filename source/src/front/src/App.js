@@ -12,6 +12,11 @@ import EduListPage from "./js/pages/EduListPage";
 import EduDetailPage from "./js/pages/EduDetailPage";
 import EduManagePage from "./js/pages/EduManagePage";
 import EduAddPage from "./js/pages/EduAddPage";
+import PostList from "./js/component/Post/PostList";
+import ClubList from "./js/component/Club/ClubList";
+import ClubForm from "./js/component/Club/ClubForm";
+import ClubEditor from "./js/component/Club/ClubEditor";
+import ClubDtlPage from "./js/pages/ClubDtlPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -59,6 +64,17 @@ function App() {
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/posts" element={<PostList />}   />
+                <Route path="/clubs" element={<ClubList />}   />
+                <Route path="/clubs/new" element={<ClubForm />}   />
+                <Route
+                    path="/posts/:id" element={<ClubDtlPage />}
+                    render={(props) => <ClubDtlPage {...props} />} // props를 전달
+                />
+                <Route
+                    path="/posts/edit/:id" element={<ClubEditor />}
+                    render={(props) => <ClubDtlPage {...props} />} // props를 전달
+                />
             </Routes>
         </div>
     )

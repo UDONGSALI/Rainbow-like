@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import RainbowLike.constant.DelYN;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,5 +30,9 @@ public class Comment extends BaseEntity{
 
     @Column
     private Long parentNum;
+
+    @Column
+    private DelYN delYN;
+
 
 }

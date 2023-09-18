@@ -100,8 +100,11 @@ function PostList() {
         fetch(SERVER_URL + "posts/")
             .then(response =>
                response.json())
-            .then(data =>
-                setPosts(data))
+            .then((data) => {
+                // 필터링: delYN이 'N'인 게시물만 남김
+                const filteredPosts = data.filter((post) => post.delYN === 'N');
+                setPosts(filteredPosts);
+            })
             .catch(err => console.error(err));
     };
 
@@ -112,6 +115,10 @@ function PostList() {
                 fetchPosts();
                 setOpen(true);
             })
+            .then(response => {
+               alert("게시글을 삭제했습니다.");
+            })
+
             .catch(err => console.error(err))
     };
 
@@ -140,7 +147,7 @@ function PostList() {
                 open={open}
                 autoHideDuration={2000}
                 onClose={() => setOpen(false)}
-                message="게시글을 지웠습니다."
+                message="게시글을 삭제했습니다."
             />
             <button onClick = {() => navigate('/clubs/new')}>새 게시글 작성</button>
 
