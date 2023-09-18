@@ -39,11 +39,11 @@ public class Space {
     private String facilities;
 
     @OneToMany(mappedBy = "space", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="space-files")
     private List<File> files = new ArrayList<>();
 
     @OneToMany(mappedBy = "space", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="space-rentHists")
     private List<RentHist> rentHists = new ArrayList<>();
 
     public Space(String spaceName, int maxPerson, String spaceUsage,String rentTime, String rentFee, String facilities){

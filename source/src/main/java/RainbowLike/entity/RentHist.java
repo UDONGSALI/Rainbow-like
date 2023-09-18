@@ -49,8 +49,9 @@ public class RentHist {
     private String payStatus;
 
     @OneToMany(mappedBy = "rentHist", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="rentHist-payHists")
     private List<PayHist> payHists = new ArrayList<>();
+
 
 
     public RentHist(Member member, Space space, LocalDateTime rentStdt, LocalDateTime rentEddt, LocalDateTime applyDate, String applyStatus, String payStatus){

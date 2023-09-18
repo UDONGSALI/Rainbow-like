@@ -34,7 +34,7 @@ public class SmsHist {
     private LocalDateTime sendDate;
 
     @OneToMany(mappedBy = "smsHist", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="smsHist-smsRecepTels")
     private List<SmsRecepTel> smsRecepTels = new ArrayList<>();
 
 }
