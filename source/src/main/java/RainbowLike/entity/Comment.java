@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -27,5 +26,8 @@ public class Comment extends BaseEntity{
     @Column(nullable = false)
     @Lob
     private String content;
+
+    @Column
+    private Long parentNum;
 
 }
