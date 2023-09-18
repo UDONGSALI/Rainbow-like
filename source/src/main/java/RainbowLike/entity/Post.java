@@ -54,11 +54,11 @@ public class Post extends BaseEntity{
     private String clubRecuStatus;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="post-files")
     private List<File> files = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="post-comments")
     private List<Comment> comments = new ArrayList<>();
 
     public Post(Member member, Board board, String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus) {
