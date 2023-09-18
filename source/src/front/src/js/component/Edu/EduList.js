@@ -148,11 +148,23 @@ function EduList({ onEduClick }) {
     };
 
     const columns = getColumns();
-    const EduDelete = (url) => {
-        fetch(url, { method: 'DELETE' })
-            .then(response => fetchEdus())
-            .catch(err => console.error(err));
-    };
+    const EduDelete = async (id) => {
+        try {
+            // 삭제 API 호출
+            const response = await fetch(id, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                alert('삭제 중 오류가 발생했습니다.');
+            } else {
+                alert('삭제되었습니다.');
+            }
+        } catch (error) {
+            console.error("Error deleting edu:", error);
+            alert('삭제 중 오류가 발생했습니다.');
+        }
+    }
 
     return (
         <div style={{ height: 500, width: '100%' }}>

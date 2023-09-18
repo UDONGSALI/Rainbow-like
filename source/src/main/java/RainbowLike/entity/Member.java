@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -56,6 +58,9 @@ public class Member {
 
     @Column(nullable = false)
     private LocalDate jdate;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<File> files = new ArrayList<>();
 
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){

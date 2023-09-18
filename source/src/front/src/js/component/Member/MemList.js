@@ -25,7 +25,12 @@ function MemList() {
     // 컴포넌트가 마운트될 때 멤버 목록을 불러오는 효과를 정의합니다.
     useEffect(() => {
         fetch(SERVER_URL + 'api/members')
-            .then((res) => res.json())
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return res.json();
+            })
             .then((data) => setMembers(data._embedded.members))
             .catch((err) => console.error(err));
     }, []);

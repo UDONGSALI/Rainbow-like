@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,6 +36,9 @@ public class Space {
 
     @Column(nullable = false)
     private String facilities;
+
+    @OneToMany(mappedBy = "space", cascade = CascadeType.REMOVE)
+    private List<File> files = new ArrayList<>();
 
     public Space(String spaceName, int maxPerson, String spaceUsage,String rentTime, String rentFee, String facilities){
         super();
