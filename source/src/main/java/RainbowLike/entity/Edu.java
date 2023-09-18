@@ -70,10 +70,11 @@ public class Edu {
     private String tel;
 
     @OneToMany(mappedBy = "edu", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="edu-files")
     private List<File> files = new ArrayList<>();
 
     @OneToMany(mappedBy = "edu", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="edu-eduHists")
     private List<EduHist> eduHists = new ArrayList<>();
+
 }

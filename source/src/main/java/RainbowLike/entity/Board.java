@@ -32,7 +32,7 @@ public class Board {
     private boolean commAllowYn;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="board-posts")
     private List<Post> posts = new ArrayList<>();
 
     public Board(String boardName, boolean readRole, boolean writeRole, boolean commAllowYn) {

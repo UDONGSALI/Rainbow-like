@@ -12,6 +12,7 @@ import EduListPage from "./js/pages/Edu/EduListPage";
 import EduDetailPage from "./js/pages/Edu/EduDetailPage";
 import EduManagePage from "./js/pages/Edu/EduManagePage";
 import EduAddPage from "./js/pages/Edu/EduAddPage";
+import EduEditPage from "./js/pages/Edu/EduEditPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -53,6 +54,7 @@ function App() {
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
+                <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/singUp" element={<SingUp/>}/>
                 <Route path="/edu/list" element={<EduList/>}/>

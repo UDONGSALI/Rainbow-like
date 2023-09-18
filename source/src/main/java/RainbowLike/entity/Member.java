@@ -61,35 +61,35 @@ public class Member {
     private LocalDate jdate;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="member-files")
     private List<File> files = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="member-posts")
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="member-comments")
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="member-chats")
     private List<Chat> chats = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="member-eduHists")
     private List<EduHist> eduHists = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="member-rentHists")
     private List<RentHist> rentHists = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="member-ftWorkers")
     private List<FtWorker> ftWorkers = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="member-ftConsumers")
     private List<FtConsumer> ftConsumers = new ArrayList<>();
 
 
