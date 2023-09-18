@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import RainbowLike.constant.DelYN;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,6 +47,9 @@ public class Post extends BaseEntity{
 
     @Column(length = 50)
     private String clubRecuStatus;
+
+    @Column
+    private DelYN delYN;
 
     public Post(Member member, Board board, String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus) {
         super();
