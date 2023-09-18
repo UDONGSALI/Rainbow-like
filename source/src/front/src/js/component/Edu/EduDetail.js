@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import "../../../css/component/Edu/EduDetail.css";
-import { useParams } from "react-router-dom";
 import {SERVER_URL} from "../Common/constants";
 
 function EduDetail(props) {
@@ -70,11 +69,12 @@ function EduDetail(props) {
                 <div>
                     <div className="header-content">
                         <div className="left-top">
-                            {filteredFiles[0] && <img src={filteredFiles[0].fileUri} alt="First Image" />}
+                            {filteredFiles[0] && <img src={filteredFiles[0].fileUri} alt="First Image"/>}
                         </div>
                         <div className="right-top">
                             <h1 className="header">{eduData.eduname}</h1>
-                            <p className="detail"><strong>교육 일시:</strong> {renderDateRange(eduData.eduStdt, eduData.eduEddt)}</p>
+                            <p className="detail"><strong>교육
+                                일시:</strong> {renderDateRange(eduData.eduStdt, eduData.eduEddt)}</p>
                             <p className="detail"><strong>장소:</strong> {eduData.eduAddr}</p>
                             <p className="detail"><strong>대상:</strong> {eduData.target}</p>
                             <p className="detail"><strong>신청 기간:</strong> {eduData.recuStdt} ~ {eduData.recuEddt}</p>
@@ -84,10 +84,10 @@ function EduDetail(props) {
                     </div>
                     <br/>
                     <br/>
-                    <hr />
+                    <hr/>
                     <br/>
                     <div className="main-content">
-                        {filteredFiles[1] && <img src={filteredFiles[1].fileUri} alt="Second Image" />}
+                        {filteredFiles[1] && <img src={filteredFiles[1].fileUri} alt="Second Image"/>}
                         <br/>
                         <p className="detail-content">{eduData.content}</p>
                     </div>
