@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import '../../../css/component/ClubForm.css';
+import '../../../css/component/Club/ClubForm.css';
 import FileUpload from "../Common/FileUpload";
 import axios from "axios";
 import {SERVER_URL} from "../Common/constants";

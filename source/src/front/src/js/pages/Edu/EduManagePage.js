@@ -1,6 +1,6 @@
 import React from 'react';
-import EduList from "../component/Edu/EduList";
-import NavigationButton from "../component/Common/NavigationButton";
+import EduList from "../../component/Edu/EduList";
+import NavigationButton from "../../component/Common/NavigationButton";
 
 const MemManagePage = () => {
     return (
