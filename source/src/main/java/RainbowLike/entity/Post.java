@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -46,6 +48,9 @@ public class Post extends BaseEntity{
 
     @Column(length = 50)
     private String clubRecuStatus;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<File> files = new ArrayList<>();
 
     public Post(Member member, Board board, String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus) {
         super();

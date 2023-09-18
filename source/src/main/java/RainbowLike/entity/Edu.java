@@ -9,6 +9,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -61,4 +63,7 @@ public class Edu {
 
     @Column(nullable = false, length = 30)
     private String tel;
+
+    @OneToMany(mappedBy = "edu", cascade = CascadeType.REMOVE)
+    private List<File> files = new ArrayList<>();
 }
