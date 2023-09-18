@@ -1,6 +1,6 @@
 import ClubDetail from "../component/Club/ClubDetail";
 import Comment from "../component/Comment/Comment";
-import '../../css/component/ClubDetail.css';
+import '../../css/component/Club/ClubDetail.css';
 
 
 function ClubDtlPage(){
