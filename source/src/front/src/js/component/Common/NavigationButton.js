@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../../css/component/NavigationButton.css';
+import '../../../css/component/Common/NavigationButton.css';
 
 function NavigationButton({ name, url, fontSize = "calc(1vw + 1vh)" }) { // 기본값 설정
     const navigate = useNavigate();

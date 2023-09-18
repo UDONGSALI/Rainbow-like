@@ -4,7 +4,7 @@ import '../../../css/pages/mypage/container_common.css';
 import '../../../css/pages/mypage/common.css';
 ========
 cdimport mypage_bg from "../../../img/component/mypage/mypage_bg.png";
-import '../../../css/layout/container_common.css';
+import '../../../css/layout/Container/container_common.css';
 import '../../../css/layout/common.css';
 >>>>>>>> e1c2fa4cefa80d3884e1c2dab03cd89e0b65e8c4:source/src/front/src/js/compnent/mypage/top.js
 import '../../../css/font.css';

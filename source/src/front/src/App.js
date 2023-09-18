@@ -1,17 +1,17 @@
 import {Route, Routes, useNavigate} from "react-router-dom";
 import './App.css';
 import './css/font.css';
-import LoginPage from "./js/pages/LoginPage";
+import LoginPage from "./js/pages/Login/LoginPage";
 import React, {useEffect} from "react";
-import MemManagePage from "./js/pages/MemManagePage";
-import NavBarElements from './js/layout/NavBarElements';
+import MemManagePage from "./js/pages/Member/MemManagePage";
+import NavBarElements from './js/layout/Navbar/NavBarElements';
 import SingUp from "./js/component/Login/SignUp";
 import EduList from "./js/component/Edu/EduList";
-import EduCalendarPage from "./js/pages/EduCalendarPage";
-import EduListPage from "./js/pages/EduListPage";
-import EduDetailPage from "./js/pages/EduDetailPage";
-import EduManagePage from "./js/pages/EduManagePage";
-import EduAddPage from "./js/pages/EduAddPage";
+import EduCalendarPage from "./js/pages/Edu/EduCalendarPage";
+import EduListPage from "./js/pages/Edu/EduListPage";
+import EduDetailPage from "./js/pages/Edu/EduDetailPage";
+import EduManagePage from "./js/pages/Edu/EduManagePage";
+import EduAddPage from "./js/pages/Edu/EduAddPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
