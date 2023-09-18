@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import '../../../css/component/Club/ClubForm.css';
 import FileUpload from "../Common/FileUpload";
-import axios from "axios";
 import {SERVER_URL} from "../Common/constants";
 import {useNavigate} from 'react-router-dom';
 
@@ -59,11 +58,18 @@ function EduForm({ eduNum }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (eduNum) {
-            // 수정 로직 (PUT 요청)
-            try {
+        try {
+            if (eduNum) {
+                // 수정 로직 (PATCH 요청)
+
+                // Step 1: 기존의 파일들 삭제
+                await fetch(`${SERVER_URL}files/eduNum/${eduNum}`, {
+                    method: 'DELETE'
+                });
+
+                // Step 2: 데이터 수정
                 const response = await fetch(`${SERVER_URL}api/edus/${eduNum}`, {
-                    method: 'PTCHH',
+                    method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -72,18 +78,32 @@ function EduForm({ eduNum }) {
 
                 if (response.ok) {
                     alert('정보가 수정되었습니다.');
+
+                    // Step 3: 새 파일들 업로드
+                    if (selectedFiles.length > 0) {
+                        const formDataWithFiles = new FormData();
+                        for (const file of selectedFiles) {
+                            formDataWithFiles.append('file', file);
+                        }
+                        formDataWithFiles.append('tableName', "edu");
+                        formDataWithFiles.append('number', eduNum);
+
+                        const fileUploadResponse = await fetch(`${SERVER_URL}files`, {
+                            method: 'POST',
+                            body: formDataWithFiles,
+                        });
+
+                        const fileUploadData = await fileUploadResponse.text();
+                        console.log('File upload response:', fileUploadData);
+                    }
+
                     window.location.reload();
                 } else {
-                    const errorData = await response.json();
+                    const errorData = await response.text();
                     console.error('Error:', errorData.message || "Unknown error");
                 }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-
-        } else {
-            // 기존의 생성 로직
-            try {
+            } else {
+                // 기존의 생성 로직
                 const response = await fetch(`${SERVER_URL}api/edus`, {
                     method: 'POST',
                     headers: {
@@ -102,24 +122,25 @@ function EduForm({ eduNum }) {
                             formDataWithFiles.append('file', file);
                         }
                         formDataWithFiles.append('tableName', "edu");
+                        formDataWithFiles.append('number', 0);
 
-                        const fileUploadResponse = await axios.post(`${SERVER_URL}files`, formDataWithFiles, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data',
-                            },
+                        const fileUploadResponse = await fetch(`${SERVER_URL}files`, {
+
+                            method: 'POST',
+                            body: formDataWithFiles,
                         });
 
-                        console.log('File upload response:', fileUploadResponse.data);
+                        const fileUploadData = await fileUploadResponse.text();
+                        console.log('File upload response:', fileUploadData);
                     }
-
                     window.location.reload();
                 } else {
-                    const errorData = await response.json();
+                    const errorData = await response.text();
                     console.error('Error:', errorData.message || "Unknown error");
                 }
-            } catch (error) {
-                console.error('Error:', error);
             }
+        } catch (error) {
+            console.error('Error:', error);
         }
     };
 

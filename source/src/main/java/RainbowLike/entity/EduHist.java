@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import RainbowLike.constant.Status;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class EduHist {
     private LocalDateTime applyDate;
 
     @Column(nullable = false, length = 50)
-    private String  applyStatus;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 }
