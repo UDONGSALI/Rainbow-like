@@ -15,7 +15,7 @@ const NavBarElements = () => {
     });
   }, []); // 빈 배열을 전달하여 useEffect가 한 번만 실행되도록 설정
 
-  
+
   return (
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">

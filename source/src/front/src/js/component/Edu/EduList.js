@@ -8,7 +8,6 @@ function EduList({ onEduClick }) {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const navigate = useNavigate();
 
-
     const fetchEdus = () => {
         fetch(SERVER_URL + 'api/edus')
             .then((res) => res.json())
@@ -148,23 +147,11 @@ function EduList({ onEduClick }) {
     };
 
     const columns = getColumns();
-    const EduDelete = async (id) => {
-        try {
-            // 삭제 API 호출
-            const response = await fetch(id, {
-                method: 'DELETE'
-            });
-
-            if (!response.ok) {
-                alert('삭제 중 오류가 발생했습니다.');
-            } else {
-                alert('삭제되었습니다.');
-            }
-        } catch (error) {
-            console.error("Error deleting edu:", error);
-            alert('삭제 중 오류가 발생했습니다.');
-        }
-    }
+    const EduDelete = (url) => {
+        fetch(url, { method: 'DELETE' })
+            .then(response => fetchEdus())
+            .catch(err => console.error(err));
+    };
 
     return (
         <div style={{ height: 500, width: '100%' }}>

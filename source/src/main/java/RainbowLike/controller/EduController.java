@@ -5,7 +5,6 @@ import RainbowLike.entity.Edu;
 import RainbowLike.repository.EduRepository;
 import RainbowLike.service.EduService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -20,8 +19,6 @@ public class EduController {
 
     private final EduRepository eduRepository;
 
-    private final FileController fileController;
-
     @GetMapping
     private Iterable<Edu> getEdus() {
         return eduRepository.findAll();
@@ -32,11 +29,8 @@ public class EduController {
         return eduRepository.save(edu);
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteEdu(@PathVariable Long id) {
-//        eduService.deleteEduAndFiles(id);
-//        return ResponseEntity.noContent().build();
-//    }
+    private void createEdus() {
+    }
 
     @PostConstruct
     private void createDefaultEdus() {
