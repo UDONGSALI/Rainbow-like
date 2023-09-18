@@ -37,8 +37,8 @@ public class FtConsumer extends BaseEntity{
     @Column(nullable = false)
     private boolean ftmYn;
 
-
     @OneToMany(mappedBy = "ftConsumer", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="ftConsumer-femaleTalentMatchings")
     private List<FemaleTalentMatching> femaleTalentMatchings = new ArrayList<>();
+
 }

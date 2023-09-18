@@ -43,6 +43,7 @@ public class FtWorker extends BaseEntity{
     private boolean ftmYn;
 
     @OneToMany(mappedBy = "ftWorker", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonBackReference(value="ftWorker-femaleTalentMatchings")
     private List<FemaleTalentMatching> femaleTalentMatchings = new ArrayList<>();
+
 }
