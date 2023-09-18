@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,10 +17,12 @@ public class Comment extends BaseEntity{
     private Long commNum;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "post_num", nullable = false)
     private Post post;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "mem_num", nullable = false)
     private Member member;
 

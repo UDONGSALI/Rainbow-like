@@ -110,7 +110,7 @@ function MemList() {
             renderCell: (row) => (
                 <div style={{ overflow: 'auto', maxHeight: '50px',  lineHeight: 0.5, width:200}}>
                     {row.value && row.value.map((file) => (
-                        <div>
+                        <div key={file.id || file.fileUri}>
                             <p><a href={file.fileUri}>{file.fileOriName}</a></p>
                         </div>
                     ))}
@@ -149,7 +149,6 @@ function MemList() {
             .then(response => fetchMembers())
             .catch(err => console.error(err))
     }
-
 
 
     return (
