@@ -13,6 +13,8 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 public class PostController {
     @Autowired
@@ -100,6 +102,11 @@ public class PostController {
         postRepository.save(post);
 
         return ResponseEntity.ok().build();
+    }
+
+    public void createPosts(){
+        ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();
+        postService.createPosts(postDtoList);
     }
 
 }

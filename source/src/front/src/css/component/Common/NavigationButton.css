@@ -1,0 +1,25 @@
+.NavButton {
+    position: fixed;
+    top: calc(100vh / 6);
+    left: calc(100vw / 30);
+    z-index: 1000;
+    background-color: skyblue; /* 하늘색 배경 */
+    border-radius: 50%; /* 버튼을 원형으로 */
+    width: 40px; /* 버튼 너비 */
+    height: 40px; /* 버튼 높이 */
+    border: none; /* 기본 테두리 제거 */
+    color: white; /* 글자색을 흰색으로 */
+    cursor: pointer; /* 마우스를 올렸을 때 커서 모양 변경 */
+    outline: none; /* 포커스 시 외곽선 제거 */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16); /* 약간의 그림자 효과 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: calc(1vw + 1vh); /* 기본 폰트 크기를 조금 동적으로 설정 */
+    overflow: hidden; /* 내부 요소가 넘치면 숨기기 */
+}
+
+/* 마우스를 올렸을 때의 스타일 */
+.NavButton:hover {
+    background-color: deepskyblue; /* 조금 더 진한 하늘색으로 */
+}

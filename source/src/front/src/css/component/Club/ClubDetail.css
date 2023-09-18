@@ -1,0 +1,38 @@
+
+
+.post-detailPage {
+    max-width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    background-color: #f9f9f9;
+}
+
+.post-meta{
+    margin-top: 5%;
+    margin-bottom: 10%;
+}
+
+
+.post-button{
+    margin-top: 5%;
+}
+
+.comment{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.comment-form button{
+    margin: 0;
+}
+
+.comment-item {
+    /* 댓글 스타일 */
+}
+
+.indented-comment {
+    margin-left: 20px; /* 들여쓰기 크기를 조절합니다. */
+}
