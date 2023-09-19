@@ -56,12 +56,12 @@ body {
 .title-divider {
     border-top: 2px solid black;
     width: 100%;
-    margin-top: 10px;
-    margin-bottom: 20px;
 }
 
 .title {
     font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .left-top {
@@ -106,13 +106,16 @@ body {
 }
 
 .file-names {
-    margin-top: 10px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .file-name {
-    margin-bottom: 10px;
+    margin: 10px 0; /* 상하 여백 추가 (상단과 하단에 10px 간격 추가) */
+    display: block; /* 각각의 파일 이름을 한 칸씩 할당 */
+
 }
 
 .button-container {
