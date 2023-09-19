@@ -13,14 +13,18 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Button from '@mui/material/Button';
 import './RentProcess.css';
 
+
+//대관 신청 절차//
 const StyledPaper = styled(Paper)(({theme}) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    backgroundColor: "rgba(253,244,255,0.79)",
     ...theme.typography.body2,
     padding: theme.spacing(2),
     maxWidth: 400,
-    color: theme.palette.text.primary
+    color: "rgb(75,75,77)",
+
 }));
 
+//유의사항//
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({theme}) => ({
@@ -32,7 +36,6 @@ const Accordion = styled((props) => (
         display: 'none',
     },
 }));
-
 const AccordionSummary = styled((props) => (
     <MuiAccordionSummary
         expandIcon={<ArrowForwardIosSharpIcon sx={{fontSize: '0.9rem'}}/>}
@@ -51,15 +54,16 @@ const AccordionSummary = styled((props) => (
         marginLeft: theme.spacing(1),
     },
 }));
-
 const AccordionDetails = styled(MuiAccordionDetails)(({theme}) => ({
     padding: theme.spacing(2),
     borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-// function redirectToURL(){
-//     window.location.href="#";
-// }
+
+//대관신청하기 버튼//
+function redirectToURL(){
+    window.location.href="http://localhost:3000/rentStatus";
+};
 
 
 export default function RentProcess() {
@@ -90,8 +94,8 @@ export default function RentProcess() {
                             }}
                         >
 
-                            <Grid container wrap="nowrap" spacing={3} style={{width: '200px', height: '100px'}}>
-                                <Grid item>
+                            <Grid container wrap="nowrap" spacing={3} style={{width: '150px', height: '100px'}}>
+                                <Grid item >
                                     <Avatar>01</Avatar>
                                 </Grid>
                                 <Grid item xs zeroMinWidth>
@@ -100,6 +104,7 @@ export default function RentProcess() {
                                             fontSize: "15px",
                                             align: "center",
                                             textAlignment: "center",
+                                            fontWeight:"bold",
 
                                         }}
                                     >대관 장소 및 <br/>대관현황 확인</Typography>
@@ -115,7 +120,7 @@ export default function RentProcess() {
                                 position: "relative",
                             }}
                         >
-                            <Grid container wrap="nowrap" spacing={3} style={{width: '200px', height: '100px'}}>
+                            <Grid container wrap="nowrap" spacing={3} style={{width: '150px', height: '100px'}}>
                                 <Grid item>
                                     <Avatar>02</Avatar>
                                 </Grid>
@@ -124,6 +129,7 @@ export default function RentProcess() {
                                         fontSize: "15px",
                                         align: "center",
                                         textAlignment: "center",
+                                        fontWeight:"bold",
 
                                     }}>대관 신청서 작성</Typography>
                                 </Grid>
@@ -136,19 +142,22 @@ export default function RentProcess() {
                                 mx: "auto",
                                 p: 2,
                                 position: "relative",
+
                             }}
                         >
                             <Grid clssName="contents3" container wrap="nowrap" spacing={3}
-                                  style={{width: '200px', height: '100px'}}>
+                                  style={{width: '150px', height: '100px'}}>
                                 <Grid item>
                                     <Avatar>03</Avatar>
                                 </Grid>
                                 <Grid item xs>
                                     <Typography
                                         sx={{
+
                                             fontSize: "15px",
                                             align: "center",
                                             textAlignment: "center",
+                                            fontWeight:"bold",
 
                                         }}>대관 담당자 확인</Typography>
                                 </Grid>
@@ -163,7 +172,7 @@ export default function RentProcess() {
                                 position: "relative",
                             }}
                         >
-                            <Grid container wrap="nowrap" spacing={3} style={{width: '200px', height: '100px'}}>
+                            <Grid container wrap="nowrap" spacing={3} style={{width: '150px', height: '100px'}}>
                                 <Grid item>
                                     <Avatar>04</Avatar>
                                 </Grid>
@@ -172,6 +181,7 @@ export default function RentProcess() {
                                         fontSize: "15px",
                                         align: "center",
                                         textAlignment: "center",
+                                        fontWeight:"bold",
 
                                     }}>승인 및 <br/>결제 안내(이메일)</Typography>
                                 </Grid>
@@ -186,7 +196,7 @@ export default function RentProcess() {
                                 position: "relative",
                             }}
                         >
-                            <Grid container wrap="nowrap" spacing={3} style={{width: '200px', height: '100px'}}>
+                            <Grid container wrap="nowrap" spacing={3} style={{width: '150px', height: '100px'}}>
                                 <Grid item>
                                     <Avatar>05</Avatar>
                                 </Grid>
@@ -195,6 +205,7 @@ export default function RentProcess() {
                                         fontSize: "15px",
                                         align: "center",
                                         textAlignment: "center",
+                                        fontWeight:"bold",
 
                                     }}>대관공간 사용</Typography>
                                 </Grid>
@@ -206,14 +217,21 @@ export default function RentProcess() {
             <div className="main2">
                 <h3>대관 운영 시간</h3>
                 <div className="table">
-                    <table className="rentTime">
-                        <thead>
+                    <table className="rentTime"
+                    style={{
+                        border:'1px solid #ccc',
+                        width:'100%',
+                        textAlign: 'center',
+                        padding: '10px',
+                        position: 'relative',
+                    }}>
+                        <thead className="table-header">
                         <tr className="col1">
-                            <td><b>대관일</b></td>
-                            <td><b>휴관일</b></td>
+                            <td><b style={{fontWeight : 'bold'}}>대관일</b></td>
+                            <td><b style={{fontWeight : 'bold'}}>휴관일</b></td>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="table-body">
                         <tr className="col2">
                             <td>
                                 <p> 평일(월~금) 9:30 ~ 17:30<br/>
@@ -264,17 +282,20 @@ export default function RentProcess() {
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header"
                                           style={{
                                               backgroundColor: "rgba(225,183,246,0.66)",
-                                              borderRadius: '5px'
+                                              borderRadius: '5px',
+                                              padding : '5px',
+                                              paddingLeft :' 20px',
                                           }}>
                             <Typography sx={{
                                 color: 'black',
-                                fontSize: '20px',
+                                fontSize: '18px',
+                                fontWeight : 'bold',
                             }}>시설이용제한</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography>
                                 <ul>
-                                    <b>다음에 해당하는 경우에는 시설의 이용을 제한할 수 있습니다.</b>
+                                    <b style={{fontWeight : 'bold'}}>다음에 해당하는 경우에는 시설의 이용을 제한할 수 있습니다.</b>
                                     <br/><br/>
                                     <li>&nbsp;○ 공공질서 또는 미풍양속을 저해한다고 판단되는 경우(음주, 흡연 포함)</li>
                                     <li>&nbsp;○ 허가받은 목적과 다르게 이용하는 경우</li>
@@ -288,18 +309,22 @@ export default function RentProcess() {
                     </Accordion>
                     <Accordion className="Acc2" expanded={expanded === 'panel2'} onChange={handleChange('panel2')}
                                style={{
-                                   backgroundColor: "rgba(248,241,255,0.69)",
+                                   backgroundColor: "rgba(253,249,255,0.36)",
                                    border: '1px solid #ba68c8',
                                    borderRadius: '5px',
                                }}>
                         <AccordionSummary aria-controls="panel2d-content" id="panel2d-header"
                                           style={{
                                               backgroundColor: "rgba(225,183,246,0.66)",
-                                              borderRadius: '5px'
+                                              borderRadius: '5px',
+                                              padding : '5px',
+                                              paddingLeft :' 20px',
+
                                           }}>
                             <Typography sx={{
                                 color: 'black',
-                                fontSize: '20px',
+                                fontSize: '18px',
+                                fontWeight : 'bold',
                             }}>이용자 준수사항</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
@@ -337,11 +362,14 @@ export default function RentProcess() {
                         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header"
                                           style={{
                                               backgroundColor: "rgba(225,183,246,0.66)",
-                                              borderRadius: '5px'
+                                              borderRadius: '5px',
+                                              padding : '5px',
+                                              paddingLeft :' 20px',
                                           }}>
                             <Typography sx={{
                                 color: 'black',
-                                fontSize: '20px',
+                                fontSize: '18px',
+                                fontWeight : 'bold',
                             }}>방역관련 안내</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
@@ -365,11 +393,14 @@ export default function RentProcess() {
                         <AccordionSummary aria-controls="panel4d-content" id="panel4d-header"
                                           style={{
                                               backgroundColor: "rgba(225,183,246,0.66)",
-                                              borderRadius: '5px'
+                                              borderRadius: '5px',
+                                              padding : '5px',
+                                              paddingLeft :' 20px',
                                           }}>
                             <Typography sx={{
                                 color: 'black',
-                                fontSize: '20px',
+                                fontSize: '18px',
+                                fontWeight : 'bold',
                             }}>주차 및 출입 안내</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
@@ -397,11 +428,14 @@ export default function RentProcess() {
                         <AccordionSummary aria-controls="panel5d-content" id="panel5d-header"
                                           style={{
                                               backgroundColor: "rgba(225,183,246,0.66)",
-                                              borderRadius: '5px'
+                                              borderRadius: '5px',
+                                              padding : '5px',
+                                              paddingLeft :' 20px',
                                           }}>
                             <Typography sx={{
                                 color: 'black',
-                                fontSize: '20px',
+                                fontSize: '18px',
+                                fontWeight : 'bold',
                             }}>쓰레기 분리수거 안내</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
@@ -416,7 +450,9 @@ export default function RentProcess() {
                 </div>
             </div>
             <Stack className="buttonWrap" spacing={2} direction="row">
-                <Button className="button" style={{
+                <Button className="button"
+                        onClick={redirectToURL}
+                        style={{
                     width: "150px",
                     height: "50px",
                     backgroundColor: "rgb(91,49,121)",
@@ -426,6 +462,7 @@ export default function RentProcess() {
                     fontWeight: "bold",
                 }}>대관신청하기</Button>
             </Stack>
+
         </div>
     );
 }
