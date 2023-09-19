@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SERVER_URL } from '../../../constants';
+import { SERVER_URL } from '../Common/constants';
 import { DataGrid } from '@mui/x-data-grid';
 import MemberEditor from './MemberEditor';
 
@@ -21,6 +21,7 @@ function Memlist() {
             memberFiles, // 각 멤버의 파일 정보를 추가합니다.
         };
     });
+    console.log(members)
 
     // 컴포넌트가 마운트될 때 멤버 목록을 불러오는 효과를 정의합니다.
     useEffect(() => {

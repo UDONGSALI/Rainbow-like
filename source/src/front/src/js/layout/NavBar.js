@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import '../../css/layout/Navbar.css';
+import logo1 from '../../img/layout/logo1.png';
+import magnifier from '../../img/layout/magnifier.png';
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 
 
 
-const NavBarElements = () => {
+const NavBar = () => {
   useEffect(() => {
     const searchButton = document.querySelector('.search-button');
     const searchBox = document.querySelector('.search-box');
@@ -17,26 +19,26 @@ const NavBarElements = () => {
 
   
   return (
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-          <img src='img/logo.png' alt="로고"></img>
+    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="/">
+          <img src={logo1} alt="로고"></img>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item" >
-              <a class="nav-link" href="#">기관소개</a>
-              <div class="sub">
-                <div class="sub_tit"></div>
+        <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item" >
+              <a className="nav-link" href="#">기관소개</a>
+              <div className="sub">
+                <div className="sub_tit"></div>
               </div>
             </li>
-            <li class="nav-item" >
-              <a class="nav-link" href="#">사업안내</a>
-              <div class="sub">
-                <div class="sub_tit">
+            <li className="nav-item" >
+              <a className="nav-link" href="#">사업안내</a>
+              <div className="sub">
+                <div className="sub_tit">
                 </div>
                 <ul className="hidden-menu">
                   <li>
@@ -98,10 +100,10 @@ const NavBarElements = () => {
                 </ul>
               </div>
             </li>
-            <li class="nav-item" >
-              <a class="nav-link" href="#">신청·접수</a>
-              <div class="sub">
-                <div class="sub_tit">
+            <li className="nav-item" >
+              <a className="nav-link" href="#">신청·접수</a>
+              <div className="sub">
+                <div className="sub_tit">
                 </div>
                 <ul className="hidden-menu">
                   <li>
@@ -116,10 +118,10 @@ const NavBarElements = () => {
                 </ul>
               </div>
             </li>
-            <li class="nav-item" >
-              <a class="nav-link" href="#">공간대관</a>
-              <div class="sub">
-                <div class="sub_tit">
+            <li className="nav-item" >
+              <a className="nav-link" href="#">공간대관</a>
+              <div className="sub">
+                <div className="sub_tit">
                 </div>
                 <ul className="hidden-menu">
                   <li>
@@ -131,10 +133,10 @@ const NavBarElements = () => {
                 </ul>
               </div>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">책마당</a>
-              <div class="sub">
-                <div class="sub_tit">
+            <li className="nav-item">
+              <a className="nav-link" href="#">책마당</a>
+              <div className="sub">
+                <div className="sub_tit">
                 </div>
                 <ul className="hidden-menu">
                   <li>
@@ -146,10 +148,10 @@ const NavBarElements = () => {
                 </ul>
               </div>
             </li>
-            <li class="nav-item" >
-              <a class="nav-link" href="#">직장맘지원센터</a>
-              <div class="sub">
-                <div class="sub_tit">
+            <li className="nav-item" >
+              <a className="nav-link" href="#">직장맘지원센터</a>
+              <div className="sub">
+                <div className="sub_tit">
                 </div>
                 <ul className="hidden-menu">
                   <li>
@@ -161,10 +163,10 @@ const NavBarElements = () => {
                 </ul>
               </div>
             </li>
-            <li class="nav-item" >
-              <a class="nav-link" href="#">정보나눔</a>
-              <div class="sub">
-                <div class="sub_tit">
+            <li className="nav-item" >
+              <a className="nav-link" href="#">정보나눔</a>
+              <div className="sub">
+                <div className="sub_tit">
                 </div>
                 <ul className="hidden-menu">
                   <li>
@@ -189,11 +191,11 @@ const NavBarElements = () => {
               </div>
             </li>
           </ul>
-          <button class="search-button">
-            <img src="img/magnifier.png" alt="검색" style={{ width: '20px', height: '20px' }} />
+          <button className="search-button">
+            <img src={ magnifier } alt="검색" style={{ width: '20px', height: '20px' }} />
           </button>
-          <div class="search-box">
-            <input type="text" class="search-input" placeholder="검색어를 입력하세요."/>
+          <div className="search-box">
+            <input type="text" className="search-input" placeholder="검색어를 입력하세요."/>
           </div>
 
         </div>
@@ -203,4 +205,4 @@ const NavBarElements = () => {
   );
 }
 
-export default NavBarElements;
+export default NavBar;

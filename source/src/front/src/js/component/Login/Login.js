@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {SERVER_URL} from "../../../constants";
+import {SERVER_URL} from '../Common/constants';
 import {Button, Snackbar, Stack, TextField} from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
