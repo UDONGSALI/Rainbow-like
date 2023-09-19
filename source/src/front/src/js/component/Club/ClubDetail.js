@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
 import {useParams, useNavigate} from 'react-router-dom';
-import {SERVER_URL} from "./constants";
-import '../../../../../helpme/source/src/front/src/css/component/ClubDetail.css';
-=======
-import { useParams } from 'react-router-dom';
-
-import {SERVER_URL} from "./constants";
+import '../../../css/component/Club/ClubDetail.css';
+import {SERVER_URL} from "../Common/constants";
+// import {SERVER_URL} from "../common/constants.js";
 import {useProps} from "@mui/x-data-grid/internals";
->>>>>>> 4d1ef37 (no message)
 
 function ClubDetail() {
     const { id } = useParams();
     const [post, setPost] = useState(null);
     const [open, setOpen] = useState(false);
-<<<<<<< HEAD
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,11 +30,15 @@ function ClubDetail() {
 
 
 
-=======
+        fetch(SERVER_URL + "posts/" + id)
+            .then(response => response.json())
+            .then(data => setPost(data))
+            .catch(error => console.error(error));
+    }, [id]);
+
 
 
     useEffect(() => {
->>>>>>> 4d1ef37 (no message)
         fetch(SERVER_URL + "posts/" + id)
             .then(response => response.json())
             .then(data => setPost(data))
@@ -50,7 +48,7 @@ function ClubDetail() {
     useEffect(() => {
         fetchPost();
     }, []);
-    const fetchPost = () =>{
+    const fetchPost = () => {
         fetch(SERVER_URL + "posts/" + id)
             .then(response =>
                 response.json())
@@ -59,7 +57,6 @@ function ClubDetail() {
             .catch(err => console.error(err));
     };
 
-<<<<<<< HEAD
     const onDelClick = (url) => {
 
         fetch(SERVER_URL + "api/posts/" + id, {method: 'DELETE'})
@@ -68,7 +65,7 @@ function ClubDetail() {
             })
             .catch(err => console.error(err))
 
-            navigate('/posts');
+        navigate('/posts');
 
     };
 
@@ -78,8 +75,6 @@ function ClubDetail() {
     };
 
 
-
-=======
     // const PVcnt = (url) => {
     //     fetch(url, {method: 'put'})
     //         .then(response => {
@@ -87,25 +82,18 @@ function ClubDetail() {
     //             setOpen(true);
     //         })
     // };
->>>>>>> 4d1ef37 (no message)
     if (!post) {
         return <div>Loading...</div>;
     }
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 4d1ef37 (no message)
     return (
         <div className="post-detail">
             <h2>{post.post.title}</h2>
             <div className="post-meta">
-<<<<<<< HEAD
-                <p>작성자: {post.member.name}　　　　　　　　　　　　　　　　　　　
-                허가 여부: {post.post.clubAllowStatus}　
-                진행 상황: {post.post.clubRecuStatus}　
-                조회수: {post.post.pageView}</p>
+                <p>작성자: {post.member.name}
+                    허가 여부: {post.post.clubAllowStatus}
+                    진행 상황: {post.post.clubRecuStatus}
+                    조회수: {post.post.pageView}</p>
             </div>
 
             <div className="content">{post.post.content}</div>
@@ -114,24 +102,13 @@ function ClubDetail() {
                 <button onClick={() => onDelClick()}>삭제</button>
                 <button onClick={() => navigate("/posts")}>리스트로</button>
             </div>
-=======
-                <p>작성자: {post.member.name}</p>
-                <p>허가 여부: {post.post.clubAllowStatus}</p>
-                <p>진행 상황: {post.post.clubRecuStatus}</p>
-            </div>
-            <p>내용:</p>
-            <div>{post.post.content}</div>
-            <p>조회수: {post.post.pageView}</p>
->>>>>>> 4d1ef37 (no message)
         </div>
     );
 
-
-<<<<<<< HEAD
-=======
-    // const { id } = useParams();
-    // return (<h1>{id} clubdetailpage</h1>);
->>>>>>> 4d1ef37 (no message)
 }
+
+
+// const { id } = useParams();
+// return (<h1>{id} clubdetailpage</h1>);
 
 export default ClubDetail;

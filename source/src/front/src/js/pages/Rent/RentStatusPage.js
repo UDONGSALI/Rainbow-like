@@ -1,7 +1,7 @@
 import React from "react";
 import SpaceList from "../../component/Rent/SpaceList";
 import RentStatus from "../../component/Rent/RentStatus";
-import Footer from "../layout/footer";
+import Footer from "../../layout/Footer/footer";
 
 function RentStatusPage() {
 

@@ -1,13 +1,13 @@
 import React from "react";
 import RentProcess from "../../component/Rent/RentProcess";
-import Footer from "../layout/footer";
+import Footer from "../../layout/Footer/footer";
 
 
-function RentPage(){
+function RentPage() {
     return (
         <div id="rentBody">
-        <RentProcess className="rentProcess"/>
-        <Footer className="footer"/>
+            <RentProcess className="rentProcess"/>
+            <Footer className="footer"/>
         </div>
     )
 };

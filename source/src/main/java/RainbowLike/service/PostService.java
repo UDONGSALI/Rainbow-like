@@ -37,8 +37,5 @@ public void savePost(Post post) {
             postRepository.save(post);
         }
     }
-    @Transactional
-    public int updatePageView(Long id) {
-    return postRepository.updateView(id);
-}
+
 }

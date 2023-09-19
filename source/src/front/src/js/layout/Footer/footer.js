@@ -1,8 +1,8 @@
 
-import footer_bottom_logo from '../../img/layout/footer/footer_bottom_logo.png';
-import '../../css/layout/footer.css';
-import '../../css/layout/common.css';
-import '../../css/font.css';
+import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
+import './footer.css';
+import '../../../css/font.css';
+import '../../../css/layout/common.css';
 
 
 const Footer = () => {
@@ -11,7 +11,7 @@ const Footer = () => {
             <div className="layout">
                 <div className="logo">
                     <a href='https://sj-equity.or.kr/' className='footer_logo'>
-                        <img src={footer_bottom_logo} alt/>
+                        <img src={footer_bottom_logo} alt=""/>
 
                     </a>
                 </div>
