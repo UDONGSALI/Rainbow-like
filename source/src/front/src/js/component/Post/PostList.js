@@ -1,53 +1,38 @@
 import React, {useState, useEffect} from 'react';
 import {DataGrid} from "@mui/x-data-grid";
-import { SERVER_URL} from "./constants";
+import { SERVER_URL} from "../Common/constants";
 import Snackbar from '@mui/material/Snackbar';
-<<<<<<< HEAD
 import {useNavigate } from 'react-router-dom';
 
 function PostList(props) {
     const { boardNum } = props;
-=======
-import {useNavigate, useParams } from 'react-router-dom';
-
-function PostList() {
->>>>>>> 4d1ef37 (no message)
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 
 
     const columns = [
-<<<<<<< HEAD
         {
             field: 'board',
-=======
-        {field: 'board',
->>>>>>> 4d1ef37 (no message)
-            headerName: 'Board',
+            headerName: '게시판',
             width: 200,
             valueGetter: (params) => {
                 const boards = Array.isArray(params.row.board) ? params.row.board : [params.row.board];
                 return boards.map((b) => b.boardName).join(', ');
             }
-<<<<<<< HEAD
         },
-=======
-            },
->>>>>>> 4d1ef37 (no message)
         {
             field: 'member',
-            headerName: 'Members',
+            headerName: '작성자',
             width: 200,
             valueGetter: (params) => {
-<<<<<<< HEAD
                 const members = Array.isArray(params.row.member) ? params.row.member : [params.row.member];
-                return members.map((m) => m.memNum).join(', ');
+                return members.map((m) => m.name).join(', ');
             }
         },
         {
             field: 'title',
-            headerName: 'Title',
+            headerName: '제목',
             width: 200,
             renderCell: (params) => (
                 <div
@@ -59,8 +44,23 @@ function PostList() {
             ),
         },
         {
+            field: 'consField',
+            headerName: '상담 현황',
+            width: 150,
+        },
+        {
+            field: 'clubAllowStatus',
+            headerName: '소모임 허가 현황',
+            width: 150,
+        },
+        {
+            field: 'clubRecuStatus',
+            headerName: '소모임 현황',
+            width: 150,
+        },
+        {
             field: 'pageView',
-            headerName: 'PageView',
+            headerName: '조회수',
             width: 150,
         },
         {
@@ -90,22 +90,6 @@ function PostList() {
                     삭제
                 </button>
             ),
-=======
-                // member 필드가 배열이 아닌 경우에 대비하여 체크합니다.
-                const members = Array.isArray(params.row.member) ? params.row.member : [params.row.member];
-                return members.map((m) => m.memNum).join(', ');
-            }},
-        {field: 'title', headerName: 'Title', width: 200},
-        {field: 'pageView', headerName: 'PageView', width: 150},
-        {field: '_links.self.href',
-            headerName: '',
-            sortable: false,
-            filterable:false,
-            renderCell:row =>
-                <button
-                    onClick={() => onDelClick(row.id)}>Delete
-                </button>
->>>>>>> 4d1ef37 (no message)
         }
     ];
 
@@ -114,27 +98,17 @@ function PostList() {
     }, []);
 
     const fetchPosts = () =>{
-<<<<<<< HEAD
         fetch(SERVER_URL + "post/"+boardNum)
-=======
-        fetch(SERVER_URL + "posts/")
->>>>>>> 4d1ef37 (no message)
             .then(response =>
                response.json())
-            .then((data) => {
-                // 필터링: delYN이 'N'인 게시물만 남김
-                const filteredPosts = data.filter((post) => post.delYN === 'N');
-                setPosts(filteredPosts);
-            })
+            .then(data =>
+                setPosts(data))
             .catch(err => console.error(err));
     };
 
+
     useEffect(() => {
-<<<<<<< HEAD
         fetch(SERVER_URL + "post/"+boardNum)
-=======
-        fetch(SERVER_URL + "posts/")
->>>>>>> 4d1ef37 (no message)
             .then(response =>
                 response.json())
             .then(data =>
@@ -143,39 +117,27 @@ function PostList() {
     }, []);
 
 
-<<<<<<< HEAD
-    const onDelClick = ( url) => {
 
-=======
-    const onDelClick = (url) => {
->>>>>>> 4d1ef37 (no message)
+    const onDelClick = ( url) => {
         fetch(url, {method: 'DELETE'})
             .then(response => {
                 fetchPosts();
                 setOpen(true);
             })
-            .then(response => {
-               alert("게시글을 삭제했습니다.");
-            })
-
             .catch(err => console.error(err))
-<<<<<<< HEAD
     };
 
     const onEditClick = (params) => {
-
         const rowId = params.row.postNum;
         navigate(`/posts/edit/${rowId}`);
     };
-=======
-    }
->>>>>>> 4d1ef37 (no message)
 
 
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
-        navigate(`/posts/${rowId}`);
+        navigate(`/notice/detail/${rowId}`);
     };
+
 
     return (
         <div style={{ height: 500, width: '100%' }}>
@@ -183,24 +145,17 @@ function PostList() {
                       rows={posts}
                       disableRowSelectionOnClick={true}
                       getRowId={row => SERVER_URL + "api/posts/" + row.postNum}
-<<<<<<< HEAD
                     />
 
-=======
-                      onRowClick={onRowClick}/>
->>>>>>> 4d1ef37 (no message)
 
             <Snackbar
                 open={open}
                 autoHideDuration={2000}
                 onClose={() => setOpen(false)}
-                message="게시글을 삭제했습니다."
+                message="게시글을 지웠습니다."
             />
-<<<<<<< HEAD
             <button onClick = {() => navigate('/clubs/new')}>새 게시글 작성</button>
 
-=======
->>>>>>> 4d1ef37 (no message)
         </div>
 
 
