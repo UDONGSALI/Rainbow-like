@@ -2,13 +2,13 @@
     margin: 0;
     padding: 0;
     font-family: Prompt;
-    font-size: 20px;
+    font-size: 15px;
 
 }
 
 li{
     list-style: none;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 
 }
 
@@ -24,44 +24,49 @@ li{
 #title h2{
     margin-top: 25px;
     text-align: center;
-    font-size: 40px;
+    font-size: 30px;
     font-weight: bold;
 }
 
 /*대관 신청 절차 부분*/
 
 #title > .main1{
-    position: relative;
+
 }
 
 #title > .main1 > h3{
     margin-top: 5%;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
 }
 
 
 
 #title > .main1 > .boxWrap{
-
+width: 100%;
 
 }
 
 
-#title> .main1 > .boxWrap > boxStyle > h2{
-    font-size : 30px;
-    margin : 2%
+#title> .main1 > .boxWrap > .boxStyle > h2{
+    font-size : 25px;
+    width: 100%;
+    margin-top: 30px;
+    padding: 10px;
+    align-items: center;
+    color: #bdb0cc;
 }
 
 /*대관 운영 시간 부분*/
 
 #title > .main2 {
     margin-top: 3%;
+    width: 100%;
 }
 
 #title > .main2 > h3{
     margin-top: 5%;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
 
 }
@@ -73,21 +78,59 @@ li{
     width: 100%;
 }
 
-#title > .main2 > .table > th,td {
+#title > .main2 > .table > .rentTime > th,td {
     width: 25%;
     text-align: center;
     padding: 10px;
-    border:  1px solid #ccc;
-    position: relative;
-}
+    border:  1px solid #ba68c8;
 
-#title > .main2 > .table > thead{
 
 }
 
-#title > .main2 > .table > thead{
+
+
+#title > .main2 > .table > .rentTime > .table-header > .col1{
+    background: rgba(225, 174, 255, 0.43);
 
 }
+
+#title > .main2 > .table > .rentTime > .table-header > .col1 > td {
+    padding : 15px;
+
+}
+
+#title > .main2 > .table > .rentTime > .table-header > .col1 > td > b{
+   font-size: 20px;
+
+}
+
+#title > .main2 > .table > .rentTime > .table-body > .col2{
+    background: rgba(253, 246, 255, 0.49);
+
+}
+
+#title > .main2 > .table > .rentTime > .table-body > .col2 >td {
+    padding-top: 25px;
+    padding-bottom: 20px;
+
+}
+
+#title > .main2 > .table > .rentTime > .table-body > .col2 >td >p{
+    font-size: 18px;
+
+}
+
+#title > .main2 > p{
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+#title > .main2 > p >span{
+    font-size: 16px;
+    color: red;
+    font-weight: bold;
+}
+
 
 /*이용료 부분*/
 
@@ -99,8 +142,14 @@ li{
 #title > .main3 > h3{
     margin-top: 5%;
     margin-bottom: 10px;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
+
+}
+
+#title > .main3 > p{
+    font-size: 15px;
+
 
 }
 
@@ -108,7 +157,7 @@ li{
 
 #title > .main3 > .rentFee_standard >p{
     padding-top: 20px;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
     color : #8757B8;
 
@@ -119,11 +168,12 @@ li{
     margin: 10px 0px;
     margin-left: 10px;
 
+
 }
 
 #title > .main3 > .rentFee_accept >p{
     padding-top: 20px;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
     color : #8757B8;
 
@@ -139,7 +189,7 @@ li{
 
 #title > .main3 > .rentFee_return >p{
     padding-top: 20px;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
     color : #8757B8;
 
@@ -160,8 +210,8 @@ li{
 
 #title > .main4 > h3{
     margin-top: 5%;
-    margin-bottom: 1%;
-    font-size: 30px;
+    margin-bottom: 2%;
+    font-size: 25px;
     font-weight: bold;
 
 }
@@ -174,12 +224,15 @@ li{
       align-items: center;
       margin: 0 auto;
       margin-top: 5%;
-      margin-bottom: 15%;
+      margin-bottom: 10%;
 
 
 
 
   }
+
+
+
 
 
 
