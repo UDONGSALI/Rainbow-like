@@ -11,6 +11,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByName(String name);
 
+
     Member findByMemNum(Long memNum);
 
     Member findTopByOrderByMemNumDesc();

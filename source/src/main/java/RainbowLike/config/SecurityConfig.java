@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,17 +29,10 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    MemberService memberService;
-    @Autowired
-    MemberRepository memberRepository;
+    private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthEntryPoint exceptionHandler;
-
-    @Autowired
-    private AuthenticationFilter authenticationFilter;
+    private final  AuthEntryPoint exceptionHandler;
+    private final  AuthenticationFilter authenticationFilter;
 
     @Autowired
     SpaceService spaceService;
@@ -58,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 접근 권한을 모두 허용
                 .antMatchers("/**").permitAll()
                 // "/api/*" 엔드포인트에 대한 접근 권한을 "ADMIN" 역할을 가진 사용자로 설정
-                 .antMatchers("/admin").hasRole("ADMIN")
+//                 .antMatchers("/admin").hasRole("ADMIN")
                 // 모든 다른 요청은 인증된 사용자만 접근 가능
                 .anyRequest().authenticated().and()
                 .exceptionHandling()
