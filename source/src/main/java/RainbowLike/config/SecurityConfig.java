@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 접근 권한을 모두 허용
                 .antMatchers("/**").permitAll()
                 // "/api/*" 엔드포인트에 대한 접근 권한을 "ADMIN" 역할을 가진 사용자로 설정
-                 .antMatchers("/admin").hasRole("ADMIN")
+//                 .antMatchers("/admin").hasRole("ADMIN")
                 // 모든 다른 요청은 인증된 사용자만 접근 가능
                 .anyRequest().authenticated().and()
                 .exceptionHandling()

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import '../../css/layout/Navbar.css';
+import '../../../css/layout/Navbar/Navbar.css';
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 
 
@@ -15,7 +15,7 @@ const NavBarElements = () => {
     });
   }, []); // 빈 배열을 전달하여 useEffect가 한 번만 실행되도록 설정
 
-  
+
   return (
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">

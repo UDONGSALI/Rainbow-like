@@ -1,11 +1,14 @@
 package RainbowLike.entity;
 
 import RainbowLike.dto.SpaceDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,6 +37,14 @@ public class Space {
 
     @Column(nullable = false)
     private String facilities;
+
+    @OneToMany(mappedBy = "space", cascade = CascadeType.REMOVE)
+    @JsonBackReference(value="space-files")
+    private List<File> files = new ArrayList<>();
+
+    @OneToMany(mappedBy = "space", cascade = CascadeType.REMOVE)
+    @JsonBackReference(value="space-rentHists")
+    private List<RentHist> rentHists = new ArrayList<>();
 
     public Space(String spaceName, int maxPerson, String spaceUsage,String rentTime, String rentFee, String facilities){
         super();

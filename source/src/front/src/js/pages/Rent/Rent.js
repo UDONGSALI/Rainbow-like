@@ -1,5 +1,5 @@
 
-import RentProcess from "../component/rent/RentProcess";
+import RentProcess from "../../component/rent/RentProcess";
 function RentPage() {
 
     return (
