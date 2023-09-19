@@ -4,11 +4,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import '../../css/component/MemberEditor.css';
-<<<<<<< HEAD
-=======
-import {SERVER_URL} from "./constants";
->>>>>>> 4d1ef37 (no message)
+import '../../../css/component/Member/MemberEditor.css';
+
 
 function MemberEditor({ member, open, onClose, onUpdate }) {
     const [formData, setFormData] = useState({

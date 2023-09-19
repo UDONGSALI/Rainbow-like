@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 <<<<<<< HEAD
 import '../../css/components/ClubForm.css';
+import '../../../css/component/Club/ClubForm.css';
 import {useNavigate} from "react-router-dom";
 import '../../../../../helpme/source/src/front/src/css/component/ClubForm.css';
 function ClubForm(){

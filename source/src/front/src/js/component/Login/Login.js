@@ -1,11 +1,7 @@
 import React, {useState} from "react";
-<<<<<<< HEAD
-import {SERVER_URL} from "../../constants";
-=======
-import {SERVER_URL} from "./constants";
->>>>>>> 4d1ef37 (no message)
 import {Button, Snackbar, Stack, TextField} from '@mui/material'
 import { useNavigate } from 'react-router-dom';
+import {SERVER_URL} from "../Common/constants";
 
 function Login() {
 
@@ -51,10 +47,7 @@ function Login() {
     // 리렌더 방지
     const [isHovered, setHovered] = useState(false);
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 4d1ef37 (no message)
     return (
         <div>
             <Stack spacing={2} alignItems='center' mt={2}>
