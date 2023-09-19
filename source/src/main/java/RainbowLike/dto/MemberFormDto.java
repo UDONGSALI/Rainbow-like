@@ -64,23 +64,6 @@ public class MemberFormDto {
 
     public MemberFormDto() {
     }
-
-    static public MemberFormDto createtestman() {
-        MemberFormDto memberFormDto = new MemberFormDto();
-        memberFormDto.setMemId("test");
-        memberFormDto.setPwd("12341234");
-        memberFormDto.setName("관리자");
-        memberFormDto.setEmail("test@abc.com");
-        memberFormDto.setType(Type.ADMIN);
-        memberFormDto.setGender(Gender.FEMALE);
-        memberFormDto.setTel("01012345678");
-        memberFormDto.setBir(LocalDate.of(2000, 10, 10));
-        memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
-        memberFormDto.setAddrDtl("양호빌딩 6층");
-        memberFormDto.setAddrPost("35235");
-
-        return memberFormDto;
-    }
     static public MemberFormDto createAdmin() {
         MemberFormDto memberFormDto = new MemberFormDto();
         memberFormDto.setMemId("admin");

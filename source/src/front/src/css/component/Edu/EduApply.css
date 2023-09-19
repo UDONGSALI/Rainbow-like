@@ -1,41 +1,39 @@
-/* App.css 또는 다른 스타일시트에 추가 */
-
-.container {
+.edu-apply-container {
     width: 60%;
     margin: 0 auto;
     font-family: 'Arial', sans-serif;
 }
 
-h2, h3 {
+.edu-apply-container h2, .edu-apply-container h3 {
     color: #333;
     margin-bottom: 20px;
 }
 
-p {
+.edu-apply-container p {
     color: #666;
     margin-bottom: 10px;
 }
 
-form {
+.edu-apply-container form {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-div {
+.edu-apply-container div {
     margin-bottom: 15px;
 }
 
-label {
+.edu-apply-container label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"] {
+.edu-apply-container input[type="text"],
+.edu-apply-container input[type="email"],
+.edu-apply-container input[type="tel"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -43,7 +41,7 @@ input[type="tel"] {
     font-size: 16px;
 }
 
-button {
+.edu-apply-container button {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -54,6 +52,6 @@ button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+.edu-apply-container button:hover {
     background-color: #0058D1;
 }
