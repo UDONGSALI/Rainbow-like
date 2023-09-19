@@ -1,6 +1,5 @@
 import {Route, Routes, useNavigate} from "react-router-dom";
 import './App.css';
-import './css/font.css';
 import LoginPage from "./js/pages/Login/LoginPage";
 import React, {useEffect} from "react";
 import MemManagePage from "./js/pages/Member/MemManagePage";
@@ -14,8 +13,8 @@ import EduManagePage from "./js/pages/Edu/EduManagePage";
 import EduAddPage from "./js/pages/Edu/EduAddPage";
 import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
-import NoticeDetailPage from './js/pages/NoticeDetailPage';
-import NoticePage from './js/pages/NoticePage';
+import NoticeDetailPage from './js/pages/Post/NoticeDetailPage';
+import NoticePage from './js/pages/Post/NoticePage';
 import Main from "./js/component/screens/Main";
 
 function App() {
@@ -58,7 +57,7 @@ function App() {
         <div className="App">
             <NavBar/>
             <Routes>
-                <Route path="/" element={isAdmin ? <Main/> : null}/>
+                <Route path="/" element={<Main/>} />
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>

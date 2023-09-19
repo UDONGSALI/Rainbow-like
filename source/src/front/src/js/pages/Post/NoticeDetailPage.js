@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PostDetail from "../component/Post/PostDetail";
+import PostDetail from "../../component/Post/PostDetail";
 import { useParams } from 'react-router-dom'; // useParams를 import 합니다.
 
 function NoticeDetailPage() {

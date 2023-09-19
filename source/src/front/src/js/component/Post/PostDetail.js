@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
-import '../../../css/component/PostDetail.css';
+import '../../../css/component/Post/PostDetail.css';
 
 
 function PostDetail(props) {
@@ -99,12 +99,11 @@ function PostDetail(props) {
                 </div>
 
             </div>
-            <div className="content">{post.post.content}</div>
             <div className="file-list">
-                <div className="file-box">
-                    <div className="file-label">첨부파일</div>
-                    <div className="file-divider"></div>
-                    <div className="file-names">
+                <ul className="file-box">
+                    <li className="file-label">첨부파일</li>
+                    <li className="file-divider"></li>
+                    <li className="file-names">
                         {filteredFiles.map((file, index) => (
                             <a
                                 key={index}
@@ -115,8 +114,8 @@ function PostDetail(props) {
                                 {file.fileOriName}
                             </a>
                         ))}
-                    </div>
-                </div>
+                    </li>
+                </ul>
                 <div className="button-container">
                     <button onClick={onEditClick} className="edit-button">수정</button>
                     <button onClick={onDelClick} className="delete-button">삭제</button>
