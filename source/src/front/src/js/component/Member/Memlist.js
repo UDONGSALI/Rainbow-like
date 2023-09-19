@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
-import { SERVER_URL } from '../../constants';
-=======
-import { SERVER_URL } from './constants';
->>>>>>> 4d1ef37 (no message)
+import { SERVER_URL } from '../Common/constants';
 import { DataGrid } from '@mui/x-data-grid';
 import MemberEditor from './MemberEditor';
 
@@ -16,20 +12,16 @@ function Memlist() {
     const membersWithFiles = members.map((member) => {
 
         // 각 멤버에 대한 파일 정보를 찾는 로직 작성
-<<<<<<< HEAD
         const memberFiles = files.filter((file) => {
             if (!file.member) return false;
             return file.member.memNum == member._links.member.href.slice(-1);
         });
-=======
-        const memberFiles = files.filter((file) => file.member.memNum == member._links.member.href.slice(-1));
-
->>>>>>> 4d1ef37 (no message)
         return {
             ...member,
             memberFiles, // 각 멤버의 파일 정보를 추가합니다.
         };
     });
+    console.log(members)
 
     // 컴포넌트가 마운트될 때 멤버 목록을 불러오는 효과를 정의합니다.
     useEffect(() => {

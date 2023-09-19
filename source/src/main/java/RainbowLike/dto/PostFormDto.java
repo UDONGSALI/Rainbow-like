@@ -1,6 +1,5 @@
 package RainbowLike.dto;
 
-import RainbowLike.constant.DelYN;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
 import lombok.Getter;
@@ -26,8 +25,6 @@ public class PostFormDto {
     private Long parentsNum;
     private String clubAllowStatus;
     private String clubRecuStatus;
-    private DelYN delYN;
-
 
 
     public PostFormDto(){
@@ -75,7 +72,6 @@ public class PostFormDto {
         post1.setPageView(0);
         post1.setClubAllowStatus("허가");
         post1.setClubRecuStatus("모집중");
-        post1.setDelYN(DelYN.N);
         postList.add(post1);
 
         PostFormDto post2 = new PostFormDto();
@@ -87,7 +83,6 @@ public class PostFormDto {
         post2.setPageView(0);
         post2.setClubAllowStatus("허가");
         post2.setClubRecuStatus("진행중");
-        post2.setDelYN(DelYN.Y);
         postList.add(post2);
 
         PostFormDto post3 = new PostFormDto();
@@ -99,7 +94,6 @@ public class PostFormDto {
         post3.setPageView(0);
         post3.setClubAllowStatus("거부");
         post3.setClubRecuStatus("거부");
-        post3.setDelYN(DelYN.N);
         postList.add(post3);
 
 
@@ -111,7 +105,7 @@ public class PostFormDto {
         post4.setWriteDate(LocalDateTime.now());
         post4.setPageView(0);
         post4.setConsField("상담대기");
-        post4.setDelYN(DelYN.N);
+
         postList.add(post4);
 
 
@@ -123,7 +117,7 @@ public class PostFormDto {
         post5.setWriteDate(LocalDateTime.now());
         post5.setPageView(0);
         post5.setConsField("상담완료");
-        post5.setDelYN(DelYN.Y);
+
         postList.add(post5);
 
         PostFormDto post6 = new PostFormDto();

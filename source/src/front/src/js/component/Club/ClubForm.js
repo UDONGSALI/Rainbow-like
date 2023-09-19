@@ -1,12 +1,4 @@
 import React, {useState} from "react";
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-import '../../css/components/ClubForm.css';
-import '../../../css/component/Club/ClubForm.css';
-import {useNavigate} from "react-router-dom";
-import '../../../../../helpme/source/src/front/src/css/component/ClubForm.css';
-=======
 <<<<<<< HEAD:source/src/front/src/js/component/Club/ClubForm.js
 import '../../../css/component/ClubForm.css';
 import {useNavigate} from "react-router-dom";
@@ -16,21 +8,9 @@ import '../../css/components/ClubForm.css';
 import {useNavigate} from "react-router-dom";
 import '../../../../../helpme/source/src/front/src/css/component/ClubForm.css';
 >>>>>>> 3ba22f2 (no message):source/src/front/src/js/component/ClubForm.js
->>>>>>> 0d3c17c (no message)
-=======
-import '../../css/components/ClubForm.css';
-import {useNavigate} from "react-router-dom";
-import '../../../../../helpme/source/src/front/src/css/component/ClubForm.css';
->>>>>>> 583efb3 (no message)
 function ClubForm(){
     // 사용자가 선택한 멤버와 게시판의 ID를 저장하기 위한 상태 변수
     const navigate = useNavigate();
-=======
-import './ClubForm.css';
-
-function ClubForm(){
-    // 사용자가 선택한 멤버와 게시판의 ID를 저장하기 위한 상태 변수
->>>>>>> 4d1ef37 (no message)
 
     const [formData, setFormData] = useState({
         memNum: 1,
@@ -43,15 +23,6 @@ function ClubForm(){
         parentsNum: '',
         clubAllowStatus: '승인대기',
         clubRecuStatus: '',
-<<<<<<< HEAD
-=======
-        // member: {
-        //     memNum: 1
-        // },
-        // board: {
-        //     boardNum: 10
-        // },
->>>>>>> 4d1ef37 (no message)
     });
 
     const handleChange = (e) => {
@@ -62,11 +33,6 @@ function ClubForm(){
     const handleSubmit = (e) => {
         e.preventDefault();
 
-<<<<<<< HEAD
-=======
-        // 비밀번호 암호화
-
->>>>>>> 4d1ef37 (no message)
         // API 호출하여 게시글 정보 전송
         fetch('http://localhost:8090/posts/new', {
             method: 'POST',
@@ -78,26 +44,10 @@ function ClubForm(){
             .then((response) => response.json())
             .then((data) => {
                 alert('게시글을 작성했습니다.');
-<<<<<<< HEAD
 
                 const newPostId = data.postNum; // 예: 응답 데이터에서 게시글의 ID 필드를 추출합니다.
                 navigate(`/posts/${newPostId}`); // 추출한 ID를 사용하여 리디렉션합니다.
 
-=======
-                // 폼 초기화
-                setFormData({
-                    memNum: 1,
-                    boardNum: '',
-                    title: '',
-                    content: '',
-                    writeDate: new Date(),
-                    editDate: '',
-                    pageView: 0,
-                    parentsNum: '',
-                    clubAllowStatus: '승인대기',
-                    clubRecuStatus: '',
-                });
->>>>>>> 4d1ef37 (no message)
             })
             .catch((error) => {
                 // 오류 처리
@@ -115,11 +65,7 @@ function ClubForm(){
                         name="memNum"
                         value={formData.memNum}
                         onChange={handleChange}
-<<<<<<< HEAD
                         placeholder="멤버"
-=======
-                        placeholder="멤바"
->>>>>>> 4d1ef37 (no message)
                         required
                     />
                 </div>
@@ -165,30 +111,6 @@ function ClubForm(){
                         본문을 작성해주세요.
                     </textarea>
                 </div>
-<<<<<<< HEAD
-=======
-                {/*<div className="input-group" >*/}
-                {/*    <input*/}
-                {/*        type="number"*/}
-                {/*        name="parentNum"*/}
-                {/*        value={formData.parentNum}*/}
-                {/*        onChange={handleChange}*/}
-                {/*        placeholder="부모게시글"*/}
-                {/*        required*/}
-                {/*    />*/}
-                {/*</div>*/}
-
-                {/*<div className="input-group" >*/}
-                {/*    <input*/}
-                {/*        type="text"*/}
-                {/*        name="clubRecuStatus"*/}
-                {/*        value={formData.clubRecuStatus}*/}
-                {/*        onChange={handleChange}*/}
-                {/*        placeholder="진행현황"*/}
-                {/*        required*/}
-                {/*    />*/}
-                {/*</div>*/}
->>>>>>> 4d1ef37 (no message)
 
 
                 <button type="submit">게시글 작성</button>
