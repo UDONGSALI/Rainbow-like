@@ -7,11 +7,14 @@ import {useNavigate } from 'react-router-dom';
 
 function PostList(props) {
     const { boardNum } = props;
+<<<<<<< HEAD
 =======
 import {useNavigate, useParams } from 'react-router-dom';
 
 function PostList() {
 >>>>>>> 4d1ef37 (no message)
+=======
+>>>>>>> 0d3c17c (no message)
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
@@ -115,10 +118,14 @@ function PostList() {
 
     const fetchPosts = () =>{
 <<<<<<< HEAD
+<<<<<<< HEAD
         fetch(SERVER_URL + "post/"+boardNum)
 =======
         fetch(SERVER_URL + "posts/")
 >>>>>>> 4d1ef37 (no message)
+=======
+        fetch(SERVER_URL + "post/"+boardNum)
+>>>>>>> 0d3c17c (no message)
             .then(response =>
                response.json())
             .then((data) => {
@@ -129,6 +136,7 @@ function PostList() {
             .catch(err => console.error(err));
     };
 
+<<<<<<< HEAD
     useEffect(() => {
 <<<<<<< HEAD
         fetch(SERVER_URL + "post/"+boardNum)
@@ -149,6 +157,21 @@ function PostList() {
 =======
     const onDelClick = (url) => {
 >>>>>>> 4d1ef37 (no message)
+=======
+
+    useEffect(() => {
+        fetch(SERVER_URL + "post/"+boardNum)
+            .then(response =>
+                response.json())
+            .then(data =>
+                setPosts(data))
+            .catch(err => console.error(err));
+    }, []);
+
+
+
+    const onDelClick = ( url) => {
+>>>>>>> 0d3c17c (no message)
         fetch(url, {method: 'DELETE'})
             .then(response => {
                 fetchPosts();
@@ -163,7 +186,6 @@ function PostList() {
     };
 
     const onEditClick = (params) => {
-
         const rowId = params.row.postNum;
         navigate(`/posts/edit/${rowId}`);
     };
@@ -174,8 +196,9 @@ function PostList() {
 
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
-        navigate(`/posts/${rowId}`);
+        navigate(`/notice/detail/${rowId}`);
     };
+
 
     return (
         <div style={{ height: 500, width: '100%' }}>
