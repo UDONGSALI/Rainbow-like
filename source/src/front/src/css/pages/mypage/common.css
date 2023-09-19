@@ -11,11 +11,7 @@
 }
 
 a {
-<<<<<<< HEAD
-    transition: background .1s
-=======
     transition: background .1s;
->>>>>>> 4d1ef37 (no message)
 }
 
 /*reset*/
@@ -71,11 +67,8 @@ label {
     cursor: pointer
 }
 
-<<<<<<< HEAD
-input, textarea, select, button, table {;
-=======
+
 input, textarea, select, button, table {
->>>>>>> 4d1ef37 (no message)
     color: #555;
 }
 

@@ -11,7 +11,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Button from '@mui/material/Button';
-import './RentProcess.css';
+import '../../../css/component/Rent/RentProcess.css';
 
 
 //대관 신청 절차//
@@ -62,7 +62,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({theme}) => ({
 
 //대관신청하기 버튼//
 function redirectToURL(){
-    window.location.href="http://localhost:3000/rentStatus";
+    window.location.href="http://localhost:3000/rent/rentStatus";
 };
 
 
@@ -145,7 +145,7 @@ export default function RentProcess() {
 
                             }}
                         >
-                            <Grid clssName="contents3" container wrap="nowrap" spacing={3}
+                            <Grid className="contents3" container wrap="nowrap" spacing={3}
                                   style={{width: '150px', height: '100px'}}>
                                 <Grid item>
                                     <Avatar>03</Avatar>
@@ -250,20 +250,20 @@ export default function RentProcess() {
             </div>
             <div className="main3"><h3>이용료</h3>
                 <p>공유오피스 공간은 무료이고, 나머지 공간은 유료입니다. 다만, 다음과 같이 이용료 면제 기준이 있습니다.</p>
-                <ul className="rentFee_standard"><p>이용료 면제기준</p>
+                <ul className="rentFee_standard"><b>이용료 면제기준</b>
                     <li>○ 국가 또는 지방자치단체가 직접 이용하는 경우</li>
                     <li>○ 국가나 지방자치단체가 설치하거나 지정한 여성가족 관련 기관·시설이 이용하는 경우</li>
                     <li>○ 국가나 지방자치단체가 위탁 또는 보조하는 여성가족 관련 비영리법인 및 비영리단체가 이용하는 경우</li>
                     <li>○ 그 밖에 성평등 문화 확산을 위하여 시장이 필요하다고 인정하는 경우</li>
                     <li><b>* 이용료 면제 기준에 해당이 되면 담당자가 단체 및 시설을 확인하고 위한 추가 서류를 요청할 수 있음며, 증빙서류가 미충족될 경우 감면이 어려울 수 있습니다.</b>
-                    </li>
+                    </li><br/><br/>
                 </ul>
-                <ul className="rentFee_accept"><p>승인 및 결제</p>
+                <ul className="rentFee_accept"><b>승인 및 결제</b>
                     <li>○ 대관이 승인된 일로부터 2일 이내에 대관료 전액이 결제되어야 합니다.(카드결제 및 현장 납부 불가)</li>
                     <li>○ 대관료 입금 계좌 : 하나은행 533-910007-36604(세종여성플라자)</li>
                     <li>○ 이용료가 납부되면 납부확인서를 발행해 드립니다.(세금계산서 또는 현금영수증 발행 불가)</li>
-                </ul>
-                <ul className="rentFee_return"><p>이용료 반환 기준</p>
+                </ul><br/><br/>
+                <ul className="rentFee_return"><b>이용료 반환 기준</b>
                     <li>○ 국가적 행사, 세종특별자치시 또는 세종여성플라자의 특별한 사정으로 사용 취소 또는 중지된 경우 : 납부한 사용료 중 사용하지 아니한 일수에 해당하는 사용료 반환</li>
                     <li>○ 천재지변이나 불가항력의 사유로 인하여 사용이 불가능하게 된 경우 : 100% 반환</li>
                     <li>○ 이용허가를 받은 자가 이용일 전일까지 그 이용을 취소한 경우 : 50% 반환</li>

@@ -82,8 +82,7 @@ function ClubList() {
             />
         </div>
 
-<<<<<<< HEAD
-=======
+
 
         // <div>
         //     <table>
@@ -102,7 +101,6 @@ function ClubList() {
 
 
 
->>>>>>> 4d1ef37 (no message)
     );
 }
 
