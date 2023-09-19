@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {SERVER_URL} from "../Common/constants";
-import "../../../css/component/Edu/EduApply.css"
+
 
 function EduApply(props) {
     const {eduNum, memId} = props

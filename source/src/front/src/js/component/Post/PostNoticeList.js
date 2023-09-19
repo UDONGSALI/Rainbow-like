@@ -5,11 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from "../Common/constants";
 import File from '../../../img/component/file.png'
 
-<<<<<<< HEAD
-function PostNoticeList(props) {
-=======
 function PostList(props) {
->>>>>>> 27a10e8 (no message)
     const { boardNum } = props;
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -66,15 +62,10 @@ function PostList(props) {
     const getRowId = (row) => {
         return row.postNum.toString();
     };
-    const postsWithNumbers = posts.map((post, index) => ({
-        ...post,
-        id: index + 1, // 번호는 index를 기반으로 순차적으로 부여
-    }));
-
 
     const columns = [
         {
-            field: 'id',
+            field: '_links.member.href',
             headerName: '번호',
             sortable: false,
             filterable: false,
@@ -178,8 +169,4 @@ function PostList(props) {
     );
 }
 
-<<<<<<< HEAD
-export default PostNoticeList;
-=======
 export default PostList;
->>>>>>> 27a10e8 (no message)
