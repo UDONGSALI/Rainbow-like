@@ -6,13 +6,13 @@ import RainbowLike.repository.EduRepository;
 import RainbowLike.service.EduService;
 import RainbowLike.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RequestMapping("/edus")
 public class EduController {
@@ -31,8 +31,8 @@ public class EduController {
     }
 
     @PostMapping
-    private Edu saveEdu(@RequestBody Edu edu) {
-        return eduRepository.save(edu);
+    private ResponseEntity<Edu> saveEdu(@RequestBody Edu edu) {
+        return ResponseEntity.ok(eduRepository.save(edu));
     }
 
     @PostConstruct
