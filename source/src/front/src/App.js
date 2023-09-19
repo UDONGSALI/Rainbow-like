@@ -1,4 +1,4 @@
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import './App.css';
 import './css/font.css';
 import LoginPage from "./js/pages/Login/LoginPage";
@@ -17,7 +17,6 @@ import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 import NoticeDetailPage from './js/pages/NoticeDetailPage';
 import NoticePage from './js/pages/NoticePage';
 import Main from "./js/component/screens/Main";
->>>>>>> origin/master
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -60,17 +59,19 @@ function App() {
             {/*<NavBarElements/>*/}
             <NavBar/>
             <Routes>
-                <Route path="/" element={isAdmin ? <Main/> : null}/>
+                <Route path="/" element={<Main/>}/>
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
-                <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
+                <Route path="/admin/edu" element={isAdmin ? <EduManagePage /> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
+                <Route path="/admin/edu/apply" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/singUp" element={<SingUp/>}/>
                 <Route path="/edu/list" element={<EduList/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/edu/apply/:eduNum" element={<EduApplyPage memId = {memId} />}/>
                 <Route path="/posts" element={<PostList />}   />
                 <Route path="/clubs" element={<ClubList />}   />
                 <Route path="/clubs/new" element={<ClubForm />}   />
