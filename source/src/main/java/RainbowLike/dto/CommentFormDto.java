@@ -98,7 +98,7 @@ public class CommentFormDto {
         CommentFormDto comment6 = new CommentFormDto();
         comment6.setPost(post1);
         comment6.setMember(member1);
-        comment6.setContent("삭제된 댓글3");
+        comment6.setContent("삭제된 댓글 3");
         comment6.setParentNum(0L);
         comment6.setDelYN(DelYN.Y);
         commentList.add(comment6);
