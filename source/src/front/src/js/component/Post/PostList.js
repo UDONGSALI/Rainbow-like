@@ -8,13 +8,19 @@ import {useNavigate } from 'react-router-dom';
 function PostList(props) {
     const { boardNum } = props;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 583efb3 (no message)
 =======
 import {useNavigate, useParams } from 'react-router-dom';
 
 function PostList() {
 >>>>>>> 4d1ef37 (no message)
+<<<<<<< HEAD
 =======
 >>>>>>> 0d3c17c (no message)
+=======
+>>>>>>> 583efb3 (no message)
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
@@ -119,10 +125,14 @@ function PostList() {
     const fetchPosts = () =>{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 583efb3 (no message)
         fetch(SERVER_URL + "post/"+boardNum)
 =======
         fetch(SERVER_URL + "posts/")
 >>>>>>> 4d1ef37 (no message)
+<<<<<<< HEAD
 =======
         fetch(SERVER_URL + "post/"+boardNum)
 >>>>>>> 0d3c17c (no message)
@@ -137,6 +147,15 @@ function PostList() {
     };
 
 <<<<<<< HEAD
+=======
+            .then(response =>
+               response.json())
+            .then(data =>
+                setPosts(data))
+            .catch(err => console.error(err));
+    };
+
+>>>>>>> 583efb3 (no message)
     useEffect(() => {
 <<<<<<< HEAD
         fetch(SERVER_URL + "post/"+boardNum)
@@ -157,6 +176,7 @@ function PostList() {
 =======
     const onDelClick = (url) => {
 >>>>>>> 4d1ef37 (no message)
+<<<<<<< HEAD
 =======
 
     useEffect(() => {
@@ -172,20 +192,29 @@ function PostList() {
 
     const onDelClick = ( url) => {
 >>>>>>> 0d3c17c (no message)
+=======
+>>>>>>> 583efb3 (no message)
         fetch(url, {method: 'DELETE'})
             .then(response => {
                 fetchPosts();
                 setOpen(true);
             })
+<<<<<<< HEAD
             .then(response => {
                alert("게시글을 삭제했습니다.");
             })
 
+=======
+>>>>>>> 583efb3 (no message)
             .catch(err => console.error(err))
 <<<<<<< HEAD
     };
 
     const onEditClick = (params) => {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 583efb3 (no message)
         const rowId = params.row.postNum;
         navigate(`/posts/edit/${rowId}`);
     };
@@ -196,10 +225,16 @@ function PostList() {
 
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
+<<<<<<< HEAD
         navigate(`/notice/detail/${rowId}`);
     };
 
 
+=======
+        navigate(`/posts/${rowId}`);
+    };
+
+>>>>>>> 583efb3 (no message)
     return (
         <div style={{ height: 500, width: '100%' }}>
             <DataGrid columns={columns}
@@ -217,7 +252,11 @@ function PostList() {
                 open={open}
                 autoHideDuration={2000}
                 onClose={() => setOpen(false)}
+<<<<<<< HEAD
                 message="게시글을 삭제했습니다."
+=======
+                message="게시글을 지웠습니다."
+>>>>>>> 583efb3 (no message)
             />
 <<<<<<< HEAD
             <button onClick = {() => navigate('/clubs/new')}>새 게시글 작성</button>
