@@ -39,7 +39,7 @@ public class EduHistDto {
                 EduHistDto eduHistDto = new EduHistDto();
                 eduHistDto.setEduNum(Long.valueOf(j));
                 eduHistDto.setMemNum(Long.valueOf(i));
-                eduHistDto.setStatus(Status.WAIT);
+                eduHistDto.setStatus(Status.APPROVE);
                 eduHistDto.setApplyDate(LocalDateTime.now());
                 eduHists.add(eduHistDto);
             }

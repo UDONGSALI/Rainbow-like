@@ -2,7 +2,6 @@ import React from 'react';
 import {useParams} from "react-router-dom";
 import EduForm from "../../component/Edu/EduForm";
 import ResizeAndUploadButton from "../../component/Common/ResizeAndUploadButton";
-import EduApplyList from "../../component/Edu/EduApplyList";
 
 
 function EduEditpage() {
@@ -10,7 +9,8 @@ function EduEditpage() {
 
     return (
         <>
-            <EduApplyList/>
+            <EduForm eduNum ={eduNum}/>
+            <ResizeAndUploadButton />
         </>
     )
 };

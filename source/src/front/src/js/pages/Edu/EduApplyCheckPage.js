@@ -1,19 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import BackButton from "../../component/Common/BackButton";
-import EduApply from "../../component/Edu/EduApply";
+import EduApplyList from "../../component/Edu/EduApplyList";
 
-function EduApplyCheckPage() {
-    const [memId, setMemId] = useState(null); // memId 상태 설정
-    useEffect(() => {
-        // sessionStorage에서 username을 가져와 memId 상태에 설정
-        const memId = sessionStorage.getItem("memId");
-        setMemId(memId);
-    }, []);
+function EduApplyCheckPage(props) {
+    const {memId} = props;
+
 
     return (
         <div>
             <BackButton />
-            <EduApply memId = {memId} />
+            <EduApplyList memId = {memId} />
         </div>
     );
 }
