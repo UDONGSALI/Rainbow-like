@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 
 
 import footer_bottom_logo from '../../img/layout/footer/footer_bottom_logo.png';
 import '../../css/layout/footer.css';
 import '../../css/layout/common.css';
+=======
+import footer_bottom_logo from '../../img/layout/footer_bottom_logo.png';
+import '../../css/layout/footer.css';
+import '../../css/pages/mypage/common.css';
+>>>>>>> 4d1ef37 (no message)
 import '../../css/font.css';
 
 const Footer = () => {
