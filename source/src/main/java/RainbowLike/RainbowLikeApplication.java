@@ -31,7 +31,6 @@ public class RainbowLikeApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
 
-        defaultFileController.createDefaultFiles();
 
         rentHistController.createBasicRent();
 
@@ -39,6 +38,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
         commentController.createComms();
 
+        defaultFileController.createDefaultFiles();
 
     }
 }

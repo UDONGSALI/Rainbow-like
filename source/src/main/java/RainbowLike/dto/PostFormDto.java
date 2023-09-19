@@ -28,6 +28,7 @@ public class PostFormDto {
     private String clubRecuStatus;
     private DelYN delYN;
 
+
     public PostFormDto(){
 
     }
@@ -53,8 +54,11 @@ public class PostFormDto {
         ArrayList<PostFormDto> postList = new ArrayList<>();
         Board board1 = new Board();
         Board board2 = new Board();
+        Board board3 = new Board();
+
         board1.setBoardNum(9L);
         board2.setBoardNum(8L);
+        board3.setBoardNum(1L);
 
         Member member1 = new Member();
         Member member2 = new Member();
@@ -120,6 +124,29 @@ public class PostFormDto {
         post5.setConsField("상담완료");
         post5.setDelYN(DelYN.Y);
         postList.add(post5);
+
+        PostFormDto post6 = new PostFormDto();
+        post6.setBoard(board3);
+        post6.setMember(member1);
+        post6.setTitle("공지사항 첫 글입니다.");
+        post6.setContent("공지사항 테스트 글 입니다.");
+        post6.setWriteDate(LocalDateTime.now());
+        post6.setPageView(0);
+
+        postList.add(post6);
+
+        PostFormDto post7 = new PostFormDto();
+        post7.setBoard(board3);
+        post7.setMember(member1);
+        post7.setTitle("공지사항 두 번째 글 입니다.");
+        post7.setContent("공지사항 테스트 글 두 번째에요. 안녕하세영");
+        post7.setWriteDate(LocalDateTime.now());
+        post7.setPageView(0);
+
+        postList.add(post7);
+
+
+
 
         return postList;
     }
