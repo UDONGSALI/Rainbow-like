@@ -4,12 +4,15 @@ import './css/font.css';
 import LoginPage from "./js/pages/LoginPage";
 import React, {useEffect} from "react";
 import AdminPage from "./js/pages/AdminPage";
-import NavBarElements from './js/layout/NavBarElements';
+import NavBarElements from './js/layout/NavBar';
 import SingUp from "./js/component/Login/SingUp";
 import EduList from "./js/component/Edu/EduList";
 import EduCalendarPage from "./js/pages/EduCalendarPage";
 import EduListPage from "./js/pages/EduListPage";
 import EduDetailPage from "./js/pages/EduDetailPage";
+import NoticeDetailPage from "./js/pages/NoticeDetailPage";
+import NoticePage from "./js/pages/NoticePage";
+import Memlist from "./js/component/Member/Memlist";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -51,10 +54,13 @@ function App() {
                 <Route path="/admin" element={isAdmin ? <AdminPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/singUp" element={<SingUp/>}/>
+                <Route path="/member" element={<Memlist/>}/>
                 <Route path="/edu/list" element={<EduList/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
+                <Route path="/notice/:boardNum" element={<NoticePage/>}/>
             </Routes>
         </div>
     )
