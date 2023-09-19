@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import "../../../css/component/EduDetail.css";
+import "../../../css/component/Edu/EduDetail.css";
 import { SERVER_URL } from '../Common/constants';
 import { useParams } from "react-router-dom";
 

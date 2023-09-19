@@ -32,7 +32,7 @@ function ClubList() {
             filterable:false,
             renderCell:row =>
                 <button
-                    onClick={() => onDelClick(row.id)}>Delete
+                    onClick={() => onDelClick(row)}>Delete
                 </button>
         }
     ];
@@ -60,19 +60,51 @@ function ClubList() {
     }, []);
 
 
-    const onDelClick = (url) => {
-        fetch(url, {method: 'DELETE'})
-            .then(response => {
+    const onDelClick = (post) => {
+        console.log(post);
+        const updatedPostData = {
+
+            memNum: post.member.memNum,
+            boardNum: post.board.boardNum,
+            title: post.post.title,
+            content: post.post.content,
+            writeDate: post.post.writeDate,
+            editDate: post.post.editDate,
+            pageView: post.post.pageView,
+            parentsNum: post.post.parentsNum,
+            clubAllowStatus: post.post.clubAllowStatus,
+            clubRecuStatus: post.post.clubRecuStatus,
+            delYN : post.post.delYN
+        };
+
+        // PUT 요청 보내기
+        fetch(SERVER_URL + "posts/edit" + post.postNum, {
+            method: 'PUT', // PUT 요청을 사용
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedPostData),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                alert('댓글을 삭제했습니다.');
                 fetchPosts();
                 setOpen(true);
             })
-            .catch(err => console.error(err))
-    }
+            .catch((error) => {
+                console.error('댓글 삭제 중 오류 발생:', error);
+            });
+    };
 
 
     return (
         <div style={{ height: 500, width: '100%' }}>
-            <DataGrid columns={columns} rows={posts} disableRowSelectionOnClick={true} getRowId={row => "http://localhost:8090/api/posts/" + row.postNum} />
+            <DataGrid columns={columns} rows={posts} disableRowSelectionOnClick={true} getRowId={row => row.postNum} />
 
             <Snackbar
                 open={open}
@@ -82,27 +114,7 @@ function ClubList() {
             />
         </div>
 
-<<<<<<< HEAD
-=======
 
-        // <div>
-        //     <table>
-        //         <tbody>
-        //         {
-        //             posts &&
-        //             posts.map((post, index) =>
-        //             <tr key={index}>
-        //                 <td>{post.title}</td>
-        //                 <td>{post.content}</td>
-        //             </tr>)
-        //         }
-        //         </tbody>
-        //     </table>
-        // </div>
-
-
-
->>>>>>> 4d1ef37 (no message)
     );
 }
 

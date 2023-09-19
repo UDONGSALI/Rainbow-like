@@ -17,6 +17,7 @@ function ClubForm(){
         parentsNum: '',
         clubAllowStatus: '승인대기',
         clubRecuStatus: '',
+        delYN : 'N'
     });
 
     const handleChange = (e) => {

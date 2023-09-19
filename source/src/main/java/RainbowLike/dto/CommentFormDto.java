@@ -3,6 +3,7 @@ package RainbowLike.dto;
 import RainbowLike.constant.DelYN;
 import RainbowLike.entity.Member;
 import RainbowLike.entity.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,8 +15,10 @@ import java.util.ArrayList;
 public class CommentFormDto {
 
     private Long PostNum;
+    @JsonIgnore
     private Post post;
     private Long memNum;
+    @JsonIgnore
     private Member member;
     private String content;
     private Long parentNum;
