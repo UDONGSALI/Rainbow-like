@@ -28,6 +28,10 @@ public class MemberController {
     private Iterable<Member> getMembers() {
         return memberRepository.findAll();
     }
+    @GetMapping("/id/{memId}")
+    private Member getMembersByMemId(@PathVariable String memId) {
+        return memberRepository.findByMemId(memId);
+    }
 
     @PostMapping
     public Member saveMember(@RequestBody Member member) {
