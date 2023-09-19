@@ -1,5 +1,5 @@
 import React from "react";
-import RentProcess from "../component/RentProcess";
+import RentProcess from "../../component/Rent/RentProcess";
 import Footer from "../layout/footer";
 
 

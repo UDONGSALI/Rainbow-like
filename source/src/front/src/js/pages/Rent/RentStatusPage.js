@@ -1,6 +1,6 @@
 import React from "react";
-import SpaceList from "../component/SpaceList";
-import RentStatus from "../component/RentStatus";
+import SpaceList from "../../component/Rent/SpaceList";
+import RentStatus from "../../component/Rent/RentStatus";
 import Footer from "../layout/footer";
 
 function RentStatusPage() {

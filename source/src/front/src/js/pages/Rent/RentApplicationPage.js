@@ -1,7 +1,7 @@
 
 import Footer from "../layout/footer";
 import React from "react";
-import RentApplicationForm from "../component/RentApplicationForm";
+import RentApplicationForm from "../../component/Rent/RentApplicationForm";
 
 function RentApplicationPage(){
     return (

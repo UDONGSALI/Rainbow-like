@@ -7,11 +7,11 @@ import {Route, Routes} from "react-router";
 import AdminPage from "./js/pages/AdminPage";
 import LoginPage from "./js/pages/LoginPage";
 import SingUp from "./js/component/SingUp";
-import RentStatusPage from "./js/pages/RentStatusPage";
-import RentPage from "./js/pages/RentPage";
+import RentStatusPage from "./js/pages/Rent/RentStatusPage";
+import RentPage from "./js/pages/Rent/RentPage";
 
 import EduCalendarPage from "./js/pages/EduCalendarPage";
-import RentApplication from "./js/pages/RentApplicationPage";
+import RentApplication from "./js/pages/Rent/RentApplicationPage";
 
 
 =======

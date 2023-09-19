@@ -1,21 +1,9 @@
-<<<<<<< HEAD:source/src/front/src/js/layout/footer.js
 
 import footer_bottom_logo from '../../img/layout/footer/footer_bottom_logo.png';
 import '../../css/layout/footer.css';
 import '../../css/layout/common.css';
 import '../../css/font.css';
-=======
-<<<<<<<< HEAD:source/src/front/src/js/layouts/footer.js
-import footer_bottom_logo from '../../img/layouts/footer_bottom_logo.png';
-import '../../css/layouts/footer.css';
-import '../../../css/pages/mypage/common.css';
-========
-import footer_bottom_logo from '../../../img/layout/footer/footer_bottom_logo.png';
-import '../../../css/layout/Footer/footer.css';
-import '../../../css/layout/common.css';
->>>>>>>> e1c2fa4cefa80d3884e1c2dab03cd89e0b65e8c4:source/src/front/src/js/layout/footer.js
-import '../../../css/font.css';
->>>>>>> f7f8839c02cf7c33ea316adc5e91d202dfdd2879:source/src/front/src/js/layout/Footer/footer.js
+
 
 const Footer = () => {
     return (
