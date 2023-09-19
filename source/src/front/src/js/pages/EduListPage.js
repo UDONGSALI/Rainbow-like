@@ -5,7 +5,7 @@ function EduListPage() {
 
     return (
         <div>
-                <EduList  />
+            <EduList  />
         </div>
     );
 }

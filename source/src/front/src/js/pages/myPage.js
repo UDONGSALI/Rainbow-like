@@ -3,7 +3,7 @@ import Top from '../components/mypage/top';
 import Mypage_active from "../components/mypage/mypage_active";
 import Footer from "../layouts/footer";
 
-const Mypage=()=>{
+const MyPage=()=>{
     return(
         <main>
         <Top/>
@@ -13,4 +13,4 @@ const Mypage=()=>{
     );
 }
 
-export default Mypage;
+export default MyPage;
