@@ -23,7 +23,7 @@ public class Comment extends BaseEntity{
     private Post post;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="member-comments")
     @JoinColumn(name = "mem_num", nullable = false)
     private Member member;
 
