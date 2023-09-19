@@ -1,8 +1,11 @@
 package RainbowLike.entity;
 
+<<<<<<< HEAD
 import RainbowLike.constant.DelYN;
+=======
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+>>>>>>> 0227f31bf94db2499a7c6e6bd711a4f44586e2c4
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -54,8 +57,10 @@ public class Post extends BaseEntity{
     @Column(length = 50)
     private String clubRecuStatus;
 
+<<<<<<< HEAD
     @Column
     private DelYN delYN;
+=======
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @JsonBackReference(value="post-files")
     private List<File> files = new ArrayList<>();
@@ -63,6 +68,7 @@ public class Post extends BaseEntity{
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @JsonBackReference(value="post-comments")
     private List<Comment> comments = new ArrayList<>();
+>>>>>>> 0227f31bf94db2499a7c6e6bd711a4f44586e2c4
 
     public Post(Member member, Board board, String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus) {
         super();
