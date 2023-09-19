@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {SERVER_URL} from "../Common/constants";
+import {SERVER_URL} from '../Common/constants';
 import {Button, Snackbar, Stack, TextField} from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 
@@ -46,6 +46,7 @@ function Login() {
 
     // 리렌더 방지
     const [isHovered, setHovered] = useState(false);
+
 
     return (
         <div>

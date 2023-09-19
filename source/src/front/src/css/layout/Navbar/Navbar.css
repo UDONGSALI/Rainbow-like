@@ -5,26 +5,15 @@ ul, ol, li {
   margin: 0;
 }
 
-#navbarTogglerDemo02 {
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  padding: 0;
-  position: relative;
-  width: 100%; /* 너비를 100%로 설정하여 부모 너비에 따라 조절됩니다. */
-  max-width: 100%; /* 최대 너비도 100%로 설정하여 너비 비율을 유지합니다. */
-  height: auto; /* 높이는 내용에 따라 자동으로 조절됩니다. */
-}
+
 
 /* 네비게이션 메뉴 중앙 정렬 및 간격 설정 */
 #navbarTogglerDemo02 > ul {
   align-items: center;
   justify-content: center;
   margin: auto;
-  width: 100%;
-  height: 100%;
-  position: relative;
 }
+
 
 /* 초기에는 하위 메뉴 숨김 */
 .hidden-menu {
@@ -38,12 +27,7 @@ ul, ol, li {
   padding: 10px;
 }
 
-.nav-item:hover .hidden-menu ul,
-.hidden-menu ul li:hover ul {
-  display: block;
-}
-
-/* 네비게이션 메뉴 항목의 상하 정렬 */
+네비게이션 메뉴 항목의 상하 정렬
 .navbar-nav .nav-item {
   display: flex;
   flex-direction: column;
@@ -72,7 +56,10 @@ ul, ol, li {
   padding: 10px;
 }
 
-
+/* 하위 메뉴 항목에 호버 시 스타일링 */
+.hidden-menu li:hover {
+  background-color: #f0f0f0;
+}
 
 /* 네비게이션 메뉴 간격 설정 */
 .navbar-nav li {
@@ -135,7 +122,7 @@ ul, ol, li {
 
 /* 초기 설정 */
 .search-box {
-  position:absolute;
+  position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
@@ -164,85 +151,23 @@ ul, ol, li {
 
 /* 확장 상태 설정 */
 .search-box.expanded {
-  position: absolute;
-  width: 100%; /* 화면 전체 너비로 설정 */
   max-height: 500px; /* 최대 확장 높이를 원하는 값으로 조정 */
   padding: 20px; /* 내용에 패딩 추가 (원하는 값으로 조정) */
-  left: 0; /* 왼쪽 끝에 배치 */
-  transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out; /* 패딩에 대한 애니메이션 설정 */
+  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out; /* 패딩에 대한 애니메이션 설정 */
 }
 
 /* 검색 입력 필드 스타일 */
 .search-input {
   width: 100%;
-  padding: 0 auto;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   outline: none;
   transition: padding 0.3s ease-in-out; /* 입력 필드의 패딩에 대한 애니메이션 설정 */
 }
 
-.nav_btn_wrap {
-  width: 35%;
-  display: flex;
-  flex-direction: row; /* 가로로 정렬 */
-  align-items: center; /* 수직 가운데 정렬 */
-  text-align: center; /* 텍스트도 가운데 정렬 */
-  margin: auto;
+/* 검색 버튼 아이콘 스타일 */
+.search-button.expanded img {
+  opacity: 1; /* 확장 상태에서 이미지를 보이도록 설정 */
+  transition: opacity 0.3s ease-in-out; /* 이미지의 투명도에 대한 애니메이션 설정 */
 }
-
-.nav_btn_wrap .newsletter{
-    width: 100%;
-    height: 100%;
-    border: 1px solid gray;
-    top: 0;
-    left: 0;
-    border-radius: 10rem;
-    font-size: 11px;
-    align-items: center;
-    margin-right: 20px;  
-}
-
-.nav_btn_wrap .newsletter:hover {
-  background-color: gray; /* 커서를 올렸을 때 배경색 변경 */
-  color: white; /* 텍스트 색상 변경 */
-  }
-
-  .nav_btn_wrap .sns_quick{
-    height: 10px;
-    width: 100%;
-    display: flex;
-  }
-  .sns_wrap {
-    display: flex;
-    align-items: center;
-    width: 30%;
-    height: 100%;
-    margin: 0 auto;
-    padding: 0 auto;
-  }
-
-  .sns_wrap .sns_quick {
-    display: flex; /* 가로로 정렬 */
-    align-items: center; /* 수직 가운데 정렬 */
-  }
-  
-  .sns_wrap .sns_quick img {
-    width: 25px; /* 원하는 너비로 조절하세요 */
-    height: 25px; /* 원하는 높이로 조절하세요 */
-    margin-right: 5px; /* 이미지 간격 설정 (원하는 값으로 조절하세요) */
-    align-items: center;
-  }
-
-  .nav_btn_wrap .login_wrap {
-    display: flex;
-    align-items: center;
-    margin-right: 20px; /* 오른쪽 여백 추가 */
-  }
-  
-  .nav_btn_wrap .login_wrap .login {
-    margin-right: 10px; /* 로그인과 다른 요소 사이의 간격을 조절 (원하는 값으로 변경) */
-  }
-  
-
-  

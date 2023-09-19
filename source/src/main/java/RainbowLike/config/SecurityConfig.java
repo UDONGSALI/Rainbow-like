@@ -3,7 +3,9 @@ package RainbowLike.config;
 import RainbowLike.component.AuthEntryPoint;
 import RainbowLike.component.AuthenticationFilter;
 import RainbowLike.repository.MemberRepository;
+import RainbowLike.repository.SpaceRepository;
 import RainbowLike.service.MemberService;
+import RainbowLike.service.SpaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
     private final  AuthEntryPoint exceptionHandler;
     private final  AuthenticationFilter authenticationFilter;
+
+    @Autowired
+    SpaceService spaceService;
+    @Autowired
+    SpaceRepository spaceRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

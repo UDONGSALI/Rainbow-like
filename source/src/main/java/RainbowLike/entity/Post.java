@@ -56,6 +56,7 @@ public class Post extends BaseEntity{
 
     @Column
     private DelYN delYN;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @JsonBackReference(value="post-files")
     private List<File> files = new ArrayList<>();
@@ -74,7 +75,5 @@ public class Post extends BaseEntity{
         this.pageView = pageView;
         this.clubAllowStatus = clubAllowStatus;
         this.clubRecuStatus = clubRecuStatus;
-
-
     }
 }
