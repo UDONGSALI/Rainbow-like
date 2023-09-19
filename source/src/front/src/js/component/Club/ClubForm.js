@@ -1,9 +1,21 @@
 import React, {useState} from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import '../../css/components/ClubForm.css';
 import '../../../css/component/Club/ClubForm.css';
 import {useNavigate} from "react-router-dom";
 import '../../../../../helpme/source/src/front/src/css/component/ClubForm.css';
+=======
+<<<<<<< HEAD:source/src/front/src/js/component/Club/ClubForm.js
+import '../../../css/component/ClubForm.css';
+import {useNavigate} from "react-router-dom";
+
+=======
+import '../../css/components/ClubForm.css';
+import {useNavigate} from "react-router-dom";
+import '../../../../../helpme/source/src/front/src/css/component/ClubForm.css';
+>>>>>>> 3ba22f2 (no message):source/src/front/src/js/component/ClubForm.js
+>>>>>>> 0d3c17c (no message)
 function ClubForm(){
     // 사용자가 선택한 멤버와 게시판의 ID를 저장하기 위한 상태 변수
     const navigate = useNavigate();

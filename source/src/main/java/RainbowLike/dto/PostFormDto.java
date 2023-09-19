@@ -29,6 +29,7 @@ public class PostFormDto {
     private DelYN delYN;
 
 
+
     public PostFormDto(){
 
     }

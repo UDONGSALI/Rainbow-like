@@ -1,0 +1,6 @@
+diff a/source/src/front/src/js/component/Edu/EduDetail.js b/source/src/front/src/js/component/Edu/EduDetail.js	(rejected hunks)
+@@ -2,3 +3,4 @@
+++<<<<<<< HEAD
+ +import React, {useEffect, useMemo, useState} from "react";
+ +import "../../../css/component/Edu/EduDetail.css";
+ +import {SERVER_URL} from "../Common/constants";
