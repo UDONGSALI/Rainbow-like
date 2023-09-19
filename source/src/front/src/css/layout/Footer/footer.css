@@ -1,0 +1,83 @@
+#footer {
+    position: absolute;
+    width: 100%;
+    background-color: #4b4b4b;
+    bottom: 0;
+}
+
+.layout {
+    position: relative;
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#footer .layout {
+    padding: 6rem 0 0 29.5rem;
+    display: flex;
+    position: relative;
+    border-top: 1px solid #4b4b4b;
+    max-width: 1240px;
+    height: 15%;
+    width: 100%;
+
+}
+
+#footer .layout .information{
+    padding-bottom: 80px;
+}
+
+#footer .footer_logo {
+    position: absolute;
+    left: 0;
+    top: 6rem;
+    width: 17.7rem;
+    display: block;
+}
+
+#footer .other_list {
+    display: flex;
+    font-weight: 600;
+    margin-bottom: 2.6rem;
+    position: relative;
+}
+
+#footer .other_list li {
+    list-style: none;
+    margin-right: 2.4rem;
+}
+
+#footer .other_list li:last-of-type {
+    margin-right: 0;
+}
+
+#footer .other_list li a span {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+#footer .other_list li:first-of-type a span {
+    color: #B770FF;
+}
+
+#footer .address p {
+    display: flex;
+    position: relative;
+    font-size: 1.6rem;
+    font-weight: 300;
+    line-height: 3rem;
+    color: #fff;
+}
+
+#footer .address .copr {
+    color: #aaa9a9;
+}
+
+#footer address p:last-of-type {
+    color: #A2A2A2;
+}
+
+#footer .information {
+display: block;
+}

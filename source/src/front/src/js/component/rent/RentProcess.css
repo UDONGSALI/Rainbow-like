@@ -1,0 +1,187 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Prompt;
+    font-size: 20px;
+
+}
+
+li{
+    list-style: none;
+    margin-bottom: 5px;
+
+}
+
+
+
+#title{
+  position: relative;
+  margin-top: 5%;
+  padding-right: 20%;
+  padding-left: 20%;
+}
+
+#title h2{
+    margin-top: 25px;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+/*대관 신청 절차 부분*/
+
+#title > .main1{
+    position: relative;
+}
+
+#title > .main1 > h3{
+    margin-top: 5%;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+
+
+#title > .main1 > .boxWrap{
+
+
+}
+
+
+#title> .main1 > .boxWrap > boxStyle > h2{
+    font-size : 30px;
+    margin : 2%
+}
+
+/*대관 운영 시간 부분*/
+
+#title > .main2 {
+    margin-top: 3%;
+}
+
+#title > .main2 > h3{
+    margin-top: 5%;
+    font-size: 30px;
+    font-weight: bold;
+
+}
+
+#title > .main2 > .table{
+    margin-top: 20px;
+    padding : 0;
+    table-layout: fixed;
+    width: 100%;
+}
+
+#title > .main2 > .table > th,td {
+    width: 25%;
+    text-align: center;
+    padding: 10px;
+    border:  1px solid #ccc;
+    position: relative;
+}
+
+#title > .main2 > .table > thead{
+
+}
+
+#title > .main2 > .table > thead{
+
+}
+
+/*이용료 부분*/
+
+#title > .main3 {
+    margin-top: 3%;
+
+}
+
+#title > .main3 > h3{
+    margin-top: 5%;
+    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: bold;
+
+}
+
+
+
+#title > .main3 > .rentFee_standard >p{
+    padding-top: 20px;
+    font-size: 25px;
+    font-weight: bold;
+    color : #8757B8;
+
+}
+
+#title > .main3 > .rentFee_standard > li{
+    list-style: none;
+    margin: 10px 0px;
+    margin-left: 10px;
+
+}
+
+#title > .main3 > .rentFee_accept >p{
+    padding-top: 20px;
+    font-size: 25px;
+    font-weight: bold;
+    color : #8757B8;
+
+}
+
+#title > .main3 > .rentFee_accept > li{
+    list-style: none;
+    margin: 10px 0px;
+    margin-left: 10px;
+
+}
+
+
+#title > .main3 > .rentFee_return >p{
+    padding-top: 20px;
+    font-size: 25px;
+    font-weight: bold;
+    color : #8757B8;
+
+}
+
+#title > .main3 > .rentFee_return > li{
+    list-style: none;
+    margin: 10px 0px;
+    margin-left: 10px;
+
+}
+
+/*유의사항 부분*/
+
+#title > .main4 {
+    margin-top: 3%;
+}
+
+#title > .main4 > h3{
+    margin-top: 5%;
+    margin-bottom: 1%;
+    font-size: 30px;
+    font-weight: bold;
+
+}
+
+/*대관신청 버튼 부분*/
+
+  #title > .buttonWrap >.button{
+      display :flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      margin-top: 5%;
+      margin-bottom: 15%;
+
+
+
+
+  }
+
+
+
+
+

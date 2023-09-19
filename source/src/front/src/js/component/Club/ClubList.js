@@ -82,27 +82,6 @@ function ClubList() {
             />
         </div>
 
-<<<<<<< HEAD
-=======
-
-        // <div>
-        //     <table>
-        //         <tbody>
-        //         {
-        //             posts &&
-        //             posts.map((post, index) =>
-        //             <tr key={index}>
-        //                 <td>{post.title}</td>
-        //                 <td>{post.content}</td>
-        //             </tr>)
-        //         }
-        //         </tbody>
-        //     </table>
-        // </div>
-
-
-
->>>>>>> 4d1ef37 (no message)
     );
 }
 
