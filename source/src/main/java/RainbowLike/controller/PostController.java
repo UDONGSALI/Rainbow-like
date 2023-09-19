@@ -29,9 +29,9 @@ public class PostController {
         return postRepository.findAll();
     }
 
-    // 게시판 아이디로 게시물을 검색
-    @RequestMapping("/posts/{boardNum}")
-    public Iterable<Post> getPostById(@PathVariable Long boardNum) {
+    // 게시판 넘버로 게시물을 검색
+    @RequestMapping("/post/{boardNum}")
+    public Iterable<Post> getPostsByBoardNum(@PathVariable Long boardNum) {
         return postRepository.findByBoard(boardRepository.findByBoardNum(boardNum));
     }
 

@@ -1,5 +1,9 @@
 
+<<<<<<< HEAD
 import styled from 'styled-components'
+=======
+import styled from 'styled-components';
+>>>>>>> 4d1ef37 (no message)
 
 export const Header = styled.section`
 width: 100%;
