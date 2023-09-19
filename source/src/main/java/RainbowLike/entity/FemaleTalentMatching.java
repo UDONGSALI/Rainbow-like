@@ -1,6 +1,7 @@
 package RainbowLike.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,10 +19,12 @@ public class FemaleTalentMatching {
     private Long ftmNum;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "ft_worker_num")
     private FtWorker ftWorker;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "ft_consumer_num")
     private FtConsumer ftConsumer;
 

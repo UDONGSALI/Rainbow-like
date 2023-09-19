@@ -20,7 +20,7 @@ public class EduService {
 
     private final EduRepository eduRepository;
 
-    public void createEdu(ArrayList<EduDto> eduDtoList) {
+    public void createDefaultEdus(ArrayList<EduDto> eduDtoList) {
 
         for (EduDto eduDto : eduDtoList) {
 
