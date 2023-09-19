@@ -1,4 +1,5 @@
 import React from 'react';
+import "../../../css/component/Common/NavigationButton.css"
 
 function ResizeAndDownloadButton() {
     const fileInputRef = React.createRef();

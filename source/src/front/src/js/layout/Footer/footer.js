@@ -4,7 +4,6 @@ import './footer.css';
 import '../../../css/font.css';
 import '../../../css/layout/common.css';
 
-
 const Footer = () => {
     return (
         <footer id="footer" >

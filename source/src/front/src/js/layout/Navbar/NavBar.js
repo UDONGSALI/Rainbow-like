@@ -1,13 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-<<<<<<<< HEAD:source/src/front/src/js/layout/NavBar.js
-import '../../css/layout/Navbar.css';
-import logo1 from '../../img/layout/logo1.png';
-import magnifier from '../../img/layout/magnifier.png';
-========
 import '../../../css/layout/Navbar/Navbar.css';
->>>>>>>> 9a82a1e7f68a4b21320b7f21210a2672d9bb5779:source/src/front/src/js/layout/Navbar/NavBarElements.js
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
-
+import logo1 from '../../../img/layout/logo1.png';
+import magnifier from '../../../img/layout/magnifier.png';
 
 
 const NavBar = () => {
