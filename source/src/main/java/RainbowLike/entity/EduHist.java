@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,10 +19,12 @@ public class EduHist {
     private Long eduHistNum;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "edu_num", nullable = false)
     private Edu edu;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "mem_num", nullable = false)
     private Member member;
 

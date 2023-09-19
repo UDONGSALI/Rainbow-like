@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ public class SmsRecepTel {
     private Long smsRecepTelNum;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "sms_hist_num", nullable = false)
     private SmsHist smsHist;
 

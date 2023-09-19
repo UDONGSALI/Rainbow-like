@@ -8,7 +8,6 @@ function EduList({ onEduClick }) {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const navigate = useNavigate();
 
-
     const fetchEdus = () => {
         fetch(SERVER_URL + 'api/edus')
             .then((res) => res.json())

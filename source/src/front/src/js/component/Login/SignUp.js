@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import bcrypt from 'bcryptjs'; // bcryptjs 라이브러리를 임포트
-import '../../../css/component/SingUp.css';
+import '../../../css/component/Login/SingUp.css';
 import FileUpload from "../Common/FileUpload";
 import axios from "axios";
 import {SERVER_URL} from "../Common/constants"; // CSS 파일을 임포트

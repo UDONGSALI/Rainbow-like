@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
-import "../../../css/component/EduDetail.css";
+import "../../../css/component/Edu/EduDetail.css";
 import { useParams } from "react-router-dom";
 import {SERVER_URL} from "../Common/constants";
 
-function EduDetail({ onBackClick }) {
+function EduDetail(props) {
+    const {eduNum} = props;
     const [eduData, setEduData] = useState(null);
     const [files, setFiles] = useState([]);
-    const { eduNum } = useParams();
 
     useEffect(() => {
         fetch(SERVER_URL + `files`)
@@ -18,11 +18,14 @@ function EduDetail({ onBackClick }) {
                 console.error(error);
             });
     }, []);
+    console.log(files);
 
     const filteredFiles = useMemo(
         () => files.filter(file => file.edu && file.edu.eduNum == eduNum),
         [files, eduNum]
     );
+    console.log(filteredFiles);
+
 
     useEffect(() => {
         fetch(SERVER_URL + `api/edus/` + eduNum)

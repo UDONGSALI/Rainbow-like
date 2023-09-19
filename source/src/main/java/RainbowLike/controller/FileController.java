@@ -53,21 +53,26 @@ public class FileController {
         String midPath = "";
 
         // tableName에 따라 적절한 엔티티 검색
-        if (tableName.equals("member")) {
-            member = memberRepository.findTopByOrderByMemNumDesc();
-            midPath = tableName + "/" + member.getMemNum() + "/";
-        }
-        if (tableName.equals("space")) {
-            space = spaceRepository.findTopByOrderBySpaceNumDesc();
-            midPath = tableName + "/" + space.getSpaceNum() + "/";
-        }
-        if (tableName.equals("edu")) {
-            edu = eduRepository.findTopByOrderByEduNumDesc();
-            midPath = tableName + "/" + edu.getEduNum() + "/";
-        }
-        if (tableName.equals("post")) {
-            post = postRepository.findTopByOrderByPostNumDesc();
-            midPath = tableName + "/" + post.getPostNum() + "/";
+        switch (tableName) {
+            case "member":
+                member = memberRepository.findTopByOrderByMemNumDesc();
+                midPath = tableName + "/" + member.getMemNum() + "/";
+                break;
+            case "space":
+                space = spaceRepository.findTopByOrderBySpaceNumDesc();
+                midPath = tableName + "/" + space.getSpaceNum() + "/";
+                break;
+            case "edu":
+                edu = eduRepository.findTopByOrderByEduNumDesc();
+                midPath = tableName + "/" + edu.getEduNum() + "/";
+                break;
+            case "post":
+                post = postRepository.findTopByOrderByPostNumDesc();
+                midPath = tableName + "/" + post.getPostNum() + "/";
+                break;
+            default:
+                // 여기에는 tableName 값이 예상 범위 외일 경우의 처리 로직을 추가하실 수 있습니다.
+                break;
         }
 
 

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import '../../../css/component/ClubForm.css';
+import '../../../css/component/Club/ClubForm.css';
 import {useNavigate} from "react-router-dom";
 
 function ClubForm(){
