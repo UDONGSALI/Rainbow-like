@@ -78,6 +78,7 @@ public class PostController {
         newPost.setParentsNum(postFormDto.getParentsNum());
         newPost.setClubAllowStatus(postFormDto.getClubAllowStatus());
         newPost.setClubRecuStatus(postFormDto.getClubRecuStatus());
+        newPost.setDelYN(postFormDto.getDelYN());
 
         Board board = new Board();
         board.setBoardNum(postFormDto.getBoardNum());
@@ -87,6 +88,32 @@ public class PostController {
         newPost.setMember(member);
 
         Post savedPost = postRepository.save(newPost);
+
+        // 저장한 게시글을 반환
+        return ResponseEntity.ok(savedPost);
+    }
+
+    @RequestMapping("/posts/edit/{postId}")
+    public ResponseEntity<Post> editPost(@PathVariable Long postId, @RequestBody PostFormDto postFormDto) {
+        Post editPost = new Post();
+        editPost.setPostNum(postId);
+        editPost.setTitle(postFormDto.getTitle());
+        editPost.setContent(postFormDto.getContent());
+        editPost.setPageView(postFormDto.getPageView());
+        editPost.setConsField(postFormDto.getConsField());
+        editPost.setParentsNum(postFormDto.getParentsNum());
+        editPost.setClubAllowStatus(postFormDto.getClubAllowStatus());
+        editPost.setClubRecuStatus(postFormDto.getClubRecuStatus());
+        editPost.setDelYN(postFormDto.getDelYN());
+
+        Board board = new Board();
+        board.setBoardNum(postFormDto.getBoardNum());
+        editPost.setBoard(board);
+        Member member = new Member();
+        member.setMemNum(postFormDto.getMemNum());
+        editPost.setMember(member);
+
+        Post savedPost = postRepository.save(editPost);
 
         // 저장한 게시글을 반환
         return ResponseEntity.ok(savedPost);

@@ -2,6 +2,7 @@ package RainbowLike.dto;
 
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +14,10 @@ import java.util.ArrayList;
 public class PostFormDto {
 
     private Long memNum;
+    @JsonIgnore
     private Member member;
     private Long boardNum;
+    @JsonIgnore
     private Board board;
     private String title;
     private String content;
