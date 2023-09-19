@@ -4,7 +4,8 @@ import { SERVER_URL} from "../Common/constants";
 import Snackbar from '@mui/material/Snackbar';
 import {useNavigate } from 'react-router-dom';
 
-function PostList() {
+function PostList(props) {
+    const { boardNum } = props;
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
@@ -97,7 +98,7 @@ function PostList() {
     }, []);
 
     const fetchPosts = () =>{
-        fetch(SERVER_URL + "posts/")
+        fetch(SERVER_URL + "post/"+boardNum)
             .then(response =>
                response.json())
             .then(data =>
@@ -105,8 +106,19 @@ function PostList() {
             .catch(err => console.error(err));
     };
 
-    const onDelClick = ( url) => {
 
+    useEffect(() => {
+        fetch(SERVER_URL + "post/"+boardNum)
+            .then(response =>
+                response.json())
+            .then(data =>
+                setPosts(data))
+            .catch(err => console.error(err));
+    }, []);
+
+
+
+    const onDelClick = ( url) => {
         fetch(url, {method: 'DELETE'})
             .then(response => {
                 fetchPosts();
@@ -116,7 +128,6 @@ function PostList() {
     };
 
     const onEditClick = (params) => {
-
         const rowId = params.row.postNum;
         navigate(`/posts/edit/${rowId}`);
     };
@@ -124,8 +135,9 @@ function PostList() {
 
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
-        navigate(`/posts/${rowId}`);
+        navigate(`/notice/detail/${rowId}`);
     };
+
 
     return (
         <div style={{ height: 500, width: '100%' }}>

@@ -54,7 +54,6 @@ public class RainbowLikeApplication implements CommandLineRunner {
         Post club3 = new Post(member2, board2, "엄마는 나 안 보고 싶을 수도 있어", "사실 그럴 가능성이 더 큰 편이죠", LocalDateTime.now(), 0, "거부", "거부");
         postRepository.saveAll(Arrays.asList(club1, club2, club3));
 
-        defaultFileController.createDefaultFiles();
 
         rentHistController.createBasicRent();
 
@@ -62,6 +61,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
         commentController.createComms();
 
+        defaultFileController.createDefaultFiles();
 
     }
 }
