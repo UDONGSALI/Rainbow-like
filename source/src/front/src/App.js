@@ -17,6 +17,11 @@ import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 import NoticeDetailPage from './js/pages/NoticeDetailPage';
 import NoticePage from './js/pages/NoticePage';
 import Main from "./js/component/screens/Main";
+import PostList from "./js/component/Post/PostList";
+import ClubList from "./js/component/Club/ClubList";
+import ClubForm from "./js/component/Club/ClubForm";
+import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
+import ClubEditor from "./js/component/Club/ClubEditor";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
