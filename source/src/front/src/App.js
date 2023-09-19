@@ -56,6 +56,7 @@ function App() {
 
     return (
         <div className="App">
+            {/*<NavBarElements/>*/}
             <NavBar/>
             <Routes>
                 <Route path="/" element={<Main/>}/>
@@ -71,6 +72,18 @@ function App() {
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage memId = {memId} />}/>
+                <Route path="/posts" element={<PostList />}   />
+                <Route path="/clubs" element={<ClubList />}   />
+                <Route path="/clubs/new" element={<ClubForm />}   />
+                <Route
+                    path="/posts/:id" element={<ClubDtlPage />}
+                    render={(props) => <ClubDtlPage {...props} />} // props를 전달
+                />
+                <Route
+                    path="/posts/edit/:id" element={<ClubEditor />}
+                    render={(props) => <ClubDtlPage {...props} />} // props를 전달
+                />
+                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
                 <Route path="/notice/:boardNum" element={<NoticePage/>}/>
             </Routes>

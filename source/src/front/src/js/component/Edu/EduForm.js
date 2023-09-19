@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
 import '../../../css/component/Club/ClubForm.css';
 import FileUpload from "../Common/FileUpload";
+import axios from "axios";
 import {SERVER_URL} from "../Common/constants";
 import {useNavigate} from 'react-router-dom';
 
 
-function EduForm({ eduNum }) {
+function EduForm() {
     const currentDate = new Date();
     const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}T${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}`;
     const formattedCurrentDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
@@ -27,23 +28,6 @@ function EduForm({ eduNum }) {
         tel: ''
     });
 
-    useEffect(() => {
-        async function fetchEduData() {
-            if (eduNum) { // eduNum이 주어졌을 경우, 데이터를 가져와서 수정 모드로 설정
-                const response = await fetch(`${SERVER_URL}api/edus/${eduNum}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setFormData(data);
-                    // 필요하다면 기존 파일 정보도 설정합니다.
-                } else {
-                    console.error("Failed to fetch the education data");
-                }
-            }
-        }
-
-        fetchEduData();
-    }, [eduNum]);
-
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     const handleFileChange = (files) => {
@@ -59,85 +43,39 @@ function EduForm({ eduNum }) {
         e.preventDefault();
 
         try {
-            if (eduNum) {
-                // 수정 로직 (PATCH 요청)
+            // 교육 정보 전송
+            const response = await fetch(SERVER_URL + 'api/edus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
 
-                // Step 1: 기존의 파일들 삭제
-                await fetch(`${SERVER_URL}files/eduNum/${eduNum}`, {
-                    method: 'DELETE'
-                });
+            if (response.ok) {
+                // 응답이 성공적이면 파일 업로드 진행 (파일이 선택된 경우에만)
+                const data = await response.json();
+                alert('정보가 등록되었습니다.');
 
-                // Step 2: 데이터 수정
-                const response = await fetch(`${SERVER_URL}api/edus/${eduNum}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-
-                if (response.ok) {
-                    alert('정보가 수정되었습니다.');
-
-                    // Step 3: 새 파일들 업로드
-                    if (selectedFiles.length > 0) {
-                        const formDataWithFiles = new FormData();
-                        for (const file of selectedFiles) {
-                            formDataWithFiles.append('file', file);
-                        }
-                        formDataWithFiles.append('tableName', "edu");
-                        formDataWithFiles.append('number', eduNum);
-
-                        const fileUploadResponse = await fetch(`${SERVER_URL}files`, {
-                            method: 'POST',
-                            body: formDataWithFiles,
-                        });
-
-                        const fileUploadData = await fileUploadResponse.text();
-                        console.log('File upload response:', fileUploadData);
+                if (selectedFiles.length > 0) {  // <-- 이 부분을 추가함
+                    const formDataWithFiles = new FormData();
+                    for (const file of selectedFiles) {
+                        formDataWithFiles.append('file', file);
                     }
+                    formDataWithFiles.append('tableName', "edu");
 
-                    window.location.reload();
-                } else {
-                    const errorData = await response.text();
-                    console.error('Error:', errorData.message || "Unknown error");
+                    const fileUploadResponse = await axios.post(SERVER_URL + 'files', formDataWithFiles, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                    console.log('File upload response:', fileUploadResponse.data);
                 }
+                window.location.reload();
             } else {
-                // 기존의 생성 로직
-                const response = await fetch(`${SERVER_URL}api/edus`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    alert('정보가 등록되었습니다.');
-
-                    if (selectedFiles.length > 0) {
-                        const formDataWithFiles = new FormData();
-                        for (const file of selectedFiles) {
-                            formDataWithFiles.append('file', file);
-                        }
-                        formDataWithFiles.append('tableName', "edu");
-                        formDataWithFiles.append('number', 0);
-
-                        const fileUploadResponse = await fetch(`${SERVER_URL}files`, {
-
-                            method: 'POST',
-                            body: formDataWithFiles,
-                        });
-
-                        const fileUploadData = await fileUploadResponse.text();
-                        console.log('File upload response:', fileUploadData);
-                    }
-                    window.location.reload();
-                } else {
-                    const errorData = await response.text();
-                    console.error('Error:', errorData.message || "Unknown error");
-                }
+                // 응답에 문제가 있으면 오류 메시지 표시
+                const errorData = await response.json();
+                console.error('Error:', errorData.message || "Unknown error");
             }
         } catch (error) {
             console.error('Error:', error);
