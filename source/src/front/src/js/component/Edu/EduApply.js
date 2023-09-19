@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {SERVER_URL} from "../Common/constants";
 import "../../../css/component/Edu/EduApply.css"
 
-
 function EduApply(props) {
-    const {eduNum, memId} = props;
+    const {eduNum, memId} = props
 
     const [eduData, setEduData] = useState(null);
     const [member, setMember] = useState(null);
@@ -60,8 +59,47 @@ function EduApply(props) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        // 데이터 전송 및 로직 처리
-        // ... (위에서 설명한 로직을 그대로 사용하세요.)
+
+        if (!eduData || !memId) {
+            alert("필요한 정보가 누락되었습니다.");
+            return;
+        }
+
+        // 신청 상태 결정
+        let applyStatus;
+        if (eduData.recuMethod === "FIRST_COME") {
+            applyStatus = "APPROVE";
+        } else if (eduData.recuMethod === "ADMIN_APPROVAL") {
+            applyStatus = "WAIT";
+        } else {
+            alert("알 수 없는 승인 방식입니다.");
+            return;
+        }
+
+        // 정보를 서버로 전송
+        const requestData = {
+            eduNum: parseInt(eduNum),
+            memNum: member.memNum,
+            applyDate: new Date().toISOString(),  // 현재 날짜와 시간
+            status: applyStatus
+        };
+
+        fetch(SERVER_URL + "eduHist", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("신청이 완료되었습니다.");
+                // 필요한 후속 조치를 여기서 수행합니다.
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("신청 중 오류가 발생했습니다.");
+            });
     }
 
     return (
