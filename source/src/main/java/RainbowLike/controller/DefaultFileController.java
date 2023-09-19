@@ -105,6 +105,22 @@ public class DefaultFileController {
 
         fileList.add(edu4File2);
 
+        File post10File1 = new File();
+        post10File1.setPost(postRepository.findByPostNum(10L));
+        post10File1.setFileName("post/10/notice2.png");
+        post10File1.setFileOriName("notice2.png");
+        post10File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/10/notice2.png");
+
+        fileList.add(post10File1);
+
+        File post10File2 = new File();
+        post10File2.setPost(postRepository.findByPostNum(10L));
+        post10File2.setFileName("post/10/notice3.png");
+        post10File2.setFileOriName("notice3.png");
+        post10File2.setFileUri("https://storage.googleapis.com/rainbow_like/post/10/notice3.png");
+
+        fileList.add(post10File2);
+
         for (File file : fileList) {
             fileRepository.save(file);
         }

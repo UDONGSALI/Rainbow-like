@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
+<<<<<<< HEAD
+import { SERVER_URL } from '../../constants';
+=======
+import { SERVER_URL } from './constants';
+>>>>>>> 4d1ef37 (no message)
 import { DataGrid } from '@mui/x-data-grid';
 import MemberEditor from './MemberEditor';
-import {SERVER_URL} from "../Common/constants";
 
-function MemList() {
+function Memlist() {
     // 멤버 목록과 모달 상태를 관리하는 상태 변수들을 정의합니다.
     const [members, setMembers] = useState([]);
     const [files, setFiles] = useState([]);
@@ -12,10 +16,15 @@ function MemList() {
     const membersWithFiles = members.map((member) => {
 
         // 각 멤버에 대한 파일 정보를 찾는 로직 작성
+<<<<<<< HEAD
         const memberFiles = files.filter((file) => {
             if (!file.member) return false;
             return file.member.memNum == member._links.member.href.slice(-1);
         });
+=======
+        const memberFiles = files.filter((file) => file.member.memNum == member._links.member.href.slice(-1));
+
+>>>>>>> 4d1ef37 (no message)
         return {
             ...member,
             memberFiles, // 각 멤버의 파일 정보를 추가합니다.
@@ -110,7 +119,7 @@ function MemList() {
             renderCell: (row) => (
                 <div style={{ overflow: 'auto', maxHeight: '50px',  lineHeight: 0.5, width:200}}>
                     {row.value && row.value.map((file) => (
-                        <div key={file.id || file.fileUri}>
+                        <div>
                             <p><a href={file.fileUri}>{file.fileOriName}</a></p>
                         </div>
                     ))}
@@ -151,6 +160,7 @@ function MemList() {
     }
 
 
+
     return (
         <div style={{ height: 500, width: '100%' }}>
             {/* 데이터 그리드 컴포넌트를 렌더링합니다. */}
@@ -162,4 +172,4 @@ function MemList() {
     );
 }
 
-export default MemList;
+export default Memlist;
