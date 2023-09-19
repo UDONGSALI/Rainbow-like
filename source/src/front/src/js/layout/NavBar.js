@@ -1,7 +1,11 @@
 import React, { useEffect, useRef } from 'react';
+<<<<<<<< HEAD:source/src/front/src/js/layout/NavBar.js
 import '../../css/layout/Navbar.css';
 import logo1 from '../../img/layout/logo1.png';
 import magnifier from '../../img/layout/magnifier.png';
+========
+import '../../../css/layout/Navbar/Navbar.css';
+>>>>>>>> 9a82a1e7f68a4b21320b7f21210a2672d9bb5779:source/src/front/src/js/layout/Navbar/NavBarElements.js
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 
 
@@ -17,7 +21,7 @@ const NavBar = () => {
     });
   }, []); // 빈 배열을 전달하여 useEffect가 한 번만 실행되도록 설정
 
-  
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">

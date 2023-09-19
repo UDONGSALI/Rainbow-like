@@ -1,6 +1,7 @@
 package RainbowLike.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Chat {
     private Long chatNum;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "mem_num", nullable = false)
     private Member member;
 

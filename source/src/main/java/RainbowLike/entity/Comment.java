@@ -1,5 +1,10 @@
 package RainbowLike.entity;
 
+<<<<<<< HEAD
+import RainbowLike.constant.DelYN;
+=======
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+>>>>>>> 0227f31bf94db2499a7c6e6bd711a4f44586e2c4
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,10 +21,12 @@ public class Comment extends BaseEntity{
     private Long commNum;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "post_num", nullable = false)
     private Post post;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "mem_num", nullable = false)
     private Member member;
 
@@ -29,5 +36,9 @@ public class Comment extends BaseEntity{
 
     @Column
     private Long parentNum;
+
+    @Column
+    private DelYN delYN;
+
 
 }

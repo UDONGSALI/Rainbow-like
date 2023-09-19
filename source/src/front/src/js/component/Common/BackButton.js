@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../../css/component/BackButton.css';
+import '../../../css/component/Common/BackButton.css';
 
 function BackButton() {
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ function BackButton() {
     };
 
     return (
-        <button className="backButton" onClick={handleBackClick}>
+        <button className="BackButton" onClick={handleBackClick}>
             &lt;
         </button>
     );

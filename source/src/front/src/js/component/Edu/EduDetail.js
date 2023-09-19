@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useMemo } from "react";
-import "../../../css/component/EduDetail.css";
-import { SERVER_URL } from '../Common/constants';
-import { useParams } from "react-router-dom";
+import React, {useEffect, useMemo, useState} from "react";
+import "../../../css/component/Edu/EduDetail.css";
+import {SERVER_URL} from "../Common/constants";
 
-function EduDetail({ onBackClick }) {
+function EduDetail(props) {
+    const {eduNum} = props;
     const [eduData, setEduData] = useState(null);
     const [files, setFiles] = useState([]);
-    const { eduNum } = useParams();
 
     useEffect(() => {
         fetch(SERVER_URL + `files`)
@@ -18,11 +17,14 @@ function EduDetail({ onBackClick }) {
                 console.error(error);
             });
     }, []);
+    console.log(files);
 
     const filteredFiles = useMemo(
-        () => files.filter(file => file.edu && file.edu.eduNum == eduNum.slice(-1)),
+        () => files.filter(file => file.edu && file.edu.eduNum == eduNum),
         [files, eduNum]
     );
+    console.log(filteredFiles);
+
 
     useEffect(() => {
         fetch(SERVER_URL + `api/edus/` + eduNum)
@@ -67,11 +69,12 @@ function EduDetail({ onBackClick }) {
                 <div>
                     <div className="header-content">
                         <div className="left-top">
-                            {filteredFiles[0] && <img src={filteredFiles[0].fileUri} alt="First Image" />}
+                            {filteredFiles[0] && <img src={filteredFiles[0].fileUri} alt="First Image"/>}
                         </div>
                         <div className="right-top">
                             <h1 className="header">{eduData.eduname}</h1>
-                            <p className="detail"><strong>교육 일시:</strong> {renderDateRange(eduData.eduStdt, eduData.eduEddt)}</p>
+                            <p className="detail"><strong>교육
+                                일시:</strong> {renderDateRange(eduData.eduStdt, eduData.eduEddt)}</p>
                             <p className="detail"><strong>장소:</strong> {eduData.eduAddr}</p>
                             <p className="detail"><strong>대상:</strong> {eduData.target}</p>
                             <p className="detail"><strong>신청 기간:</strong> {eduData.recuStdt} ~ {eduData.recuEddt}</p>
@@ -81,10 +84,10 @@ function EduDetail({ onBackClick }) {
                     </div>
                     <br/>
                     <br/>
-                    <hr />
+                    <hr/>
                     <br/>
                     <div className="main-content">
-                        {filteredFiles[1] && <img src={filteredFiles[1].fileUri} alt="Second Image" />}
+                        {filteredFiles[1] && <img src={filteredFiles[1].fileUri} alt="Second Image"/>}
                         <br/>
                         <p className="detail-content">{eduData.content}</p>
                     </div>

@@ -22,13 +22,13 @@ public class JwtService {
 	static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // 서명 키 생성
 
 	// 사용자의 username과 role 정보를 바탕으로 JWT 토큰을 생성하고 반환합니다.
-	public String getToken(String username, String role) {
+	public String getToken(String memId, String role) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("role", role);
 
 		String token = Jwts.builder()
 				.setClaims(claims)
-				.setSubject(username)
+				.setSubject(memId)
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
 				.signWith(key)
 				.compact();
