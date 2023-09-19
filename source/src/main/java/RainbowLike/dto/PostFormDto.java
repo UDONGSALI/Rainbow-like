@@ -1,5 +1,6 @@
 package RainbowLike.dto;
 
+import RainbowLike.constant.DelYN;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
 import lombok.Getter;
@@ -25,6 +26,8 @@ public class PostFormDto {
     private Long parentsNum;
     private String clubAllowStatus;
     private String clubRecuStatus;
+    private DelYN delYN;
+
 
     public PostFormDto(){
 
@@ -51,8 +54,11 @@ public class PostFormDto {
         ArrayList<PostFormDto> postList = new ArrayList<>();
         Board board1 = new Board();
         Board board2 = new Board();
+        Board board3 = new Board();
+
         board1.setBoardNum(9L);
         board2.setBoardNum(8L);
+        board3.setBoardNum(1L);
 
         Member member1 = new Member();
         Member member2 = new Member();
@@ -68,6 +74,7 @@ public class PostFormDto {
         post1.setPageView(0);
         post1.setClubAllowStatus("허가");
         post1.setClubRecuStatus("모집중");
+        post1.setDelYN(DelYN.N);
         postList.add(post1);
 
         PostFormDto post2 = new PostFormDto();
@@ -79,6 +86,7 @@ public class PostFormDto {
         post2.setPageView(0);
         post2.setClubAllowStatus("허가");
         post2.setClubRecuStatus("진행중");
+        post2.setDelYN(DelYN.Y);
         postList.add(post2);
 
         PostFormDto post3 = new PostFormDto();
@@ -90,6 +98,7 @@ public class PostFormDto {
         post3.setPageView(0);
         post3.setClubAllowStatus("거부");
         post3.setClubRecuStatus("거부");
+        post3.setDelYN(DelYN.N);
         postList.add(post3);
 
 
@@ -101,7 +110,7 @@ public class PostFormDto {
         post4.setWriteDate(LocalDateTime.now());
         post4.setPageView(0);
         post4.setConsField("상담대기");
-
+        post4.setDelYN(DelYN.N);
         postList.add(post4);
 
 
@@ -113,8 +122,31 @@ public class PostFormDto {
         post5.setWriteDate(LocalDateTime.now());
         post5.setPageView(0);
         post5.setConsField("상담완료");
-
+        post5.setDelYN(DelYN.Y);
         postList.add(post5);
+
+        PostFormDto post6 = new PostFormDto();
+        post6.setBoard(board3);
+        post6.setMember(member1);
+        post6.setTitle("공지사항 첫 글입니다.");
+        post6.setContent("공지사항 테스트 글 입니다.");
+        post6.setWriteDate(LocalDateTime.now());
+        post6.setPageView(0);
+
+        postList.add(post6);
+
+        PostFormDto post7 = new PostFormDto();
+        post7.setBoard(board3);
+        post7.setMember(member1);
+        post7.setTitle("공지사항 두 번째 글 입니다.");
+        post7.setContent("공지사항 테스트 글 두 번째에요. 안녕하세영");
+        post7.setWriteDate(LocalDateTime.now());
+        post7.setPageView(0);
+
+        postList.add(post7);
+
+
+
 
         return postList;
     }
