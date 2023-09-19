@@ -1,4 +1,4 @@
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import './App.css';
 import './css/font.css';
 import LoginPage from "./js/pages/Login/LoginPage";
@@ -58,18 +58,19 @@ function App() {
         <div className="App">
             <NavBar/>
             <Routes>
-                <Route path="/" element={isAdmin ? <Main/> : null}/>
+                <Route path="/" element={<Main/>}/>
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
-                <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
+                <Route path="/admin/edu" element={isAdmin ? <EduManagePage /> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
+                <Route path="/admin/edu/apply" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/singUp" element={<SingUp/>}/>
                 <Route path="/edu/list" element={<EduList/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
-                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
+                <Route path="/edu/apply/:eduNum" element={<EduApplyPage memId = {memId} />}/>
                 <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
                 <Route path="/notice/:boardNum" element={<NoticePage/>}/>
             </Routes>
