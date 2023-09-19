@@ -2,7 +2,10 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import './App.css';
 import './css/font.css';
 import LoginPage from "./js/pages/LoginPage";
+<<<<<<< HEAD
 import LoginPage from "./js/pages/Login/LoginPage";
+=======
+>>>>>>> 0d35b0b (no message)
 import React, {useEffect} from "react";
 import AdminPage from "./js/pages/AdminPage";
 import NavBarElements from './js/layout/NavBar';
@@ -14,6 +17,7 @@ import EduDetailPage from "./js/pages/EduDetailPage";
 import NoticeDetailPage from "./js/pages/NoticeDetailPage";
 import NoticePage from "./js/pages/NoticePage";
 import Memlist from "./js/component/Member/Memlist";
+<<<<<<< HEAD
 import MemManagePage from "./js/pages/Member/MemManagePage";
 import NavBarElements from './js/layout/Navbar/NavBarElements';
 import SingUp from "./js/component/Login/SignUp";
@@ -29,6 +33,8 @@ import EduDetailPage from "./js/pages/Edu/EduDetailPage";
 import EduManagePage from "./js/pages/Edu/EduManagePage";
 import EduAddPage from "./js/pages/Edu/EduAddPage";
 import EduEditPage from "./js/pages/Edu/EduEditPage";
+=======
+>>>>>>> 0d35b0b (no message)
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -68,10 +74,13 @@ function App() {
             <NavBarElements/>
             <Routes>
                 <Route path="/admin" element={isAdmin ? <AdminPage/> : null}/>
+<<<<<<< HEAD
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
+=======
+>>>>>>> 0d35b0b (no message)
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/singUp" element={<SingUp/>}/>
                 <Route path="/member" element={<Memlist/>}/>
@@ -81,6 +90,7 @@ function App() {
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
                 <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
                 <Route path="/notice/:boardNum" element={<NoticePage/>}/>
+<<<<<<< HEAD
                 <Route path="/posts" element={<PostList />}   />
                 <Route path="/clubs" element={<ClubList />}   />
                 <Route path="/clubs/new" element={<ClubForm />}   />
@@ -92,6 +102,8 @@ function App() {
                     path="/posts/edit/:id" element={<ClubEditor />}
                     render={(props) => <ClubDtlPage {...props} />} // props를 전달
                 />
+=======
+>>>>>>> 0d35b0b (no message)
             </Routes>
         </div>
     )
