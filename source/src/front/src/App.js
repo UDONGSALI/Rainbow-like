@@ -17,6 +17,7 @@ import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 import NoticeDetailPage from './js/pages/NoticeDetailPage';
 import NoticePage from './js/pages/NoticePage';
 import Main from "./js/component/screens/Main";
+>>>>>>> origin/master
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -56,6 +57,7 @@ function App() {
 
     return (
         <div className="App">
+            {/*<NavBarElements/>*/}
             <NavBar/>
             <Routes>
                 <Route path="/" element={isAdmin ? <Main/> : null}/>
@@ -69,6 +71,17 @@ function App() {
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/posts" element={<PostList />}   />
+                <Route path="/clubs" element={<ClubList />}   />
+                <Route path="/clubs/new" element={<ClubForm />}   />
+                <Route
+                    path="/posts/:id" element={<ClubDtlPage />}
+                    render={(props) => <ClubDtlPage {...props} />} // props를 전달
+                />
+                <Route
+                    path="/posts/edit/:id" element={<ClubEditor />}
+                    render={(props) => <ClubDtlPage {...props} />} // props를 전달
+                />
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
                 <Route path="/notice/:boardNum" element={<NoticePage/>}/>
