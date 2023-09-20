@@ -1,5 +1,4 @@
-
-.member-detail-container {
+.memberDetailContainer {
     width: 350px;
     margin: 0 auto;
     padding: 20px;
@@ -9,19 +8,18 @@
     background-color: #f9f9f9;
 }
 
-.member-detail-container h2 {
+.memberDetailContainer h2 {
     text-align: center;
     margin-bottom: 20px;
 }
-.member-detail-container .input-group {
+
+.memberDetailContainer .inputGroup {
     width: 94.5%;
 }
 
-.member-detail-container input,
-.member-detail-container select,
-.member-detail-container button {
-    /*display: block;*/
-    /*width: 80%;*/
+.memberDetailContainer input,
+.memberDetailContainer select,
+.memberDetailContainer button {
     margin-bottom: 15px;
     padding: 10px;
     font-size: 16px;
@@ -29,15 +27,13 @@
     border-radius: 3px;
 }
 
-
-
-.member-detail-container button {
+.memberDetailContainer button {
     background-color: #007bff;
     color: #fff;
     border: none;
     cursor: pointer;
 }
 
-.member-detail-container button:hover {
+.memberDetailContainer button:hover {
     background-color: #0056b3;
 }

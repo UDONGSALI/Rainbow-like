@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import bcrypt from 'bcryptjs';
-import '../../../css/component/Login/SignUp.css';
+import styles from '../../../css/component/Login/SignUp.module.css';
 import FileUpload from "../Common/FileUpload";
 import axios from "axios";
 import { SERVER_URL } from "../Common/constants";
@@ -159,10 +159,10 @@ function SignUp() {
 
 
     return (
-        <div className="sign-form-container">
+        <div className={styles.signFormContainer}>
             <h2>회원가입 폼</h2>
-            <form onSubmit={handleSubmit} className="sign-form">
-                <div className="input-group">
+            <form onSubmit={handleSubmit} className={styles.signForm}>
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="memId"
@@ -176,7 +176,7 @@ function SignUp() {
                     <label>아이디</label>
                     {errors.memId && <span style={{color: 'red'}}>{errors.memId}</span>}
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="password"
                         name="pwd"
@@ -190,7 +190,7 @@ function SignUp() {
                     <label>비밀번호</label>
                     {errors.pwd && <span style={{color: 'red'}}>{errors.pwd}</span>}
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="name"
@@ -204,7 +204,7 @@ function SignUp() {
                     <label>이름</label>
                     {errors.name && <span style={{color: 'red'}}>{errors.name}</span>}
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                 <select
                     name="gender"
                     value={formData.gender}
@@ -216,7 +216,7 @@ function SignUp() {
                     <option value="FEMALE">여성</option>
                 </select>
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     {isDateInputFocused ? (
                         <input
                             type="date"
@@ -237,7 +237,7 @@ function SignUp() {
                     )}
                     {errors.bir && <span style={{color: 'red'}}>{errors.bir}</span>}
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="tel"
@@ -251,7 +251,7 @@ function SignUp() {
                     <label>전화번호</label>
                     {errors.tel && <span style={{color: 'red'}}>{errors.tel}</span>}
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="email"
                         name="email"
@@ -265,7 +265,7 @@ function SignUp() {
                     <label>이메일</label>
                     {errors.email && <span style={{color: 'red'}}>{errors.email}</span>}
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="addr"
@@ -276,7 +276,7 @@ function SignUp() {
                     />
                     <label>주소</label>
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="addrDtl"
@@ -285,7 +285,7 @@ function SignUp() {
                         placeholder="상세주소"
                     />
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="addrPost"
@@ -295,7 +295,7 @@ function SignUp() {
                     />
                 </div>
                 <FileUpload onFileChange={handleFileChange}/>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                 <button type="submit">회원가입</button>
                 </div>
             </form>
