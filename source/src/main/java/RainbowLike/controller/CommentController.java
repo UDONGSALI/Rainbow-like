@@ -65,6 +65,7 @@ public class CommentController {
 
         newComm.setContent(commentFormDto.getContent());
         newComm.setParentNum(commentFormDto.getParentNum());
+        newComm.setDelYN(commentFormDto.getDelYN());
 
         Comment savedComment = commentRepository.save(newComm);
 
