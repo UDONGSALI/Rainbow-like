@@ -1,8 +1,4 @@
-/* 콘텐츠 영역 */
-*{
+.globalStyles {
     margin: 0 auto;
     padding: 0;
 }
-
-
-

@@ -1,8 +1,9 @@
-import '../../../css/component/mypage_active.css' ;
+import React from 'react';
+import styles from '../../css/component/Mypage/mypage_active.module.css';
 
 const Mypage_active = () => {
     return(
-        <div id="content_wrap">
+        <div id="content_wrap" className={styles.globalStyles}>
             <div className="layout">
                 <header id="sub_tit">
                     <h3>활동 내역</h3>
