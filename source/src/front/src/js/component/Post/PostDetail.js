@@ -3,15 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
 import '../../../css/component/Post/PostDetail.css';
 
-
 function PostDetail(props) {
     const { postNum } = props;
     const [post, setPost] = useState(null);
     const [open, setOpen] = useState(false);
     const [files, setFiles] = useState([]);
+    const [prevPostTitle, setPrevPostTitle] = useState(null);
+    const [nextPostTitle, setNextPostTitle] = useState(null);
     const navigate = useNavigate();
 
-    console.log(post)
+    // 이전 글과 다음 글의 postNum 계산
+    const prevPostNum = parseInt(postNum) - 1;
+    const nextPostNum = parseInt(postNum) + 1;
+
     useEffect(() => {
         fetch(SERVER_URL + `files`)
             .then((response) => response.json())
@@ -28,7 +32,6 @@ function PostDetail(props) {
         [files, postNum]
     );
 
-
     useEffect(() => {
         // 게시글 조회수 증가 API 호출
         fetch(`${SERVER_URL}posts/${postNum}/increase-view`, {
@@ -39,7 +42,7 @@ function PostDetail(props) {
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    // throw an Error("Network response was not ok");
                 }
             })
             .catch((error) => {
@@ -64,6 +67,22 @@ function PostDetail(props) {
         navigate('/posts');
     };
 
+    useEffect(() => {
+        // 이전 글의 제목 가져오기
+        fetch(`${SERVER_URL}posts/${prevPostNum}`)
+            .then(response => response.json())
+            .then(data => setPrevPostTitle(data.post.title))
+            .catch(error => console.error(error));
+
+        // 다음 글의 제목 가져오기
+        fetch(`${SERVER_URL}posts/${nextPostNum}`)
+            .then(response => response.json())
+            .then(data => setNextPostTitle(data.post.title))
+            .catch(error => console.error(error));
+
+    }, [postNum, prevPostNum, nextPostNum]);
+
+
     const onEditClick = () => {
         navigate(`/posts/edit/${postNum}`);
     };
@@ -72,32 +91,29 @@ function PostDetail(props) {
         return <div>Loading...</div>;
     }
 
-    const downloadFile = (fileUri, fileOriName) => {
-        //첨부파일 클릭 시 다운로드
-        const link = document.createElement('a');
-        link.href = fileUri;
-        link.download = fileOriName; // 다운로드될 파일 이름 설정
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
     return (
         <div className="post-detail">
-            <div className="title-divider"></div> {/* 검정색 굵은 가로선 */}
-            <h3 className="title">{post.post.title}</h3>
+            <div className="title-divider"></div>
+            <h2 className="title">{post.post.title}</h2>
             <div className="post-meta">
                 <p className="post_data">
                     작성자: {post.member.name}{' '}
-                    작성일: {post.post.writeDate.slice(0, 10)} {/* 작성일을 날짜까지만 표시 */}
+                    작성일: {post.post.writeDate.slice(0, 10)}{' '}
                     조회수: {post.post.pageView}
                 </p>
                 <div className='post_menu_title'> - 공지사항 입니다.</div>
                 <div className="left-top">
-                    {filteredFiles[0] && <img src={filteredFiles[0].fileUri} alt="First Image" />}
-                    {filteredFiles[1] && <img src={filteredFiles[1].fileUri} alt="secound Image" />}
+                    {filteredFiles.map((file, index) => (
+                        <img
+                            key={index}
+                            src={file.fileUri}
+                            alt={`Image ${index + 1}`}
+                            className="post-image"
+                        />
+                    ))}
                 </div>
 
+                <div className="post-content" dangerouslySetInnerHTML={{ __html: post.post.content }}></div>
             </div>
             <div className="file-list">
                 <ul className="file-box">
@@ -116,14 +132,37 @@ function PostDetail(props) {
                         ))}
                     </li>
                 </ul>
-                <div className="button-container">
-                    <button onClick={onEditClick} className="edit-button">수정</button>
-                    <button onClick={onDelClick} className="delete-button">삭제</button>
-                    <button onClick={() => navigate("/posts")} className="list-button">목록으로</button>
-                </div>
+            </div>
+            <div className="post-button">
+                <button onClick={onEditClick} className="post-edit-button">수정</button>
+                <button onClick={onDelClick} className="post-delete-button">삭제</button>
+                <button onClick={() => navigate("/posts")} className="post-list-button">목록으로</button>
+            </div>
+            <div className="prev-next-buttons">
+                {prevPostNum >= 9 && (
+                    <div className="prev-button">
+                        &nbsp;&nbsp;∧ 이전 글 -&nbsp;
+                        <button
+                            onClick={() => navigate(`/notice/detail/${prevPostNum}`)}
+                            className="prev-button-style"
+                        >
+                            {prevPostTitle}
+                        </button>
+                    </div>
+                )}
+                {nextPostNum <= 13 && (
+                    <div className="next-button">
+                        &nbsp;&nbsp;∨ 다음 글 -&nbsp;
+                        <button
+                            onClick={() => navigate(`/notice/detail/${nextPostNum}`)}
+                            className="next-button-style"
+                        >
+                            {nextPostTitle}
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );
 }
-
 export default PostDetail;

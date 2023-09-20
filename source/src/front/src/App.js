@@ -70,7 +70,7 @@ function App() {
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
-                <Route path="/notice/:boardNum" element={<NoticePage/>}/>
+                <Route path="/post/notice" element={<NoticePage/>}/>
             </Routes>
         </div>
     )
