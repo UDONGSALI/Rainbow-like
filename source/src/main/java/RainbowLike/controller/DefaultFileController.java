@@ -121,6 +121,14 @@ public class DefaultFileController {
 
         fileList.add(post10File2);
 
+        File post11File1 = new File();
+        post11File1.setPost(postRepository.findByPostNum(11L));
+        post11File1.setFileName("post/11/notice4.png");
+        post11File1.setFileOriName("notice4.png");
+        post11File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/11/notice4.png");
+
+        fileList.add(post11File1);
+
         for (File file : fileList) {
             fileRepository.save(file);
         }
