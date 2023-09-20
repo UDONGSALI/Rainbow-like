@@ -4,8 +4,7 @@ import { SERVER_URL} from "../Common/constants";
 import Snackbar from '@mui/material/Snackbar';
 import {useNavigate } from 'react-router-dom';
 
-function PostList(props) {
-    const { boardNum } = props;
+function PostList() {
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
@@ -83,9 +82,9 @@ function PostList(props) {
             headerName: '삭제',
             sortable: false,
             filterable: false,
-            renderCell: (row) => (
+            renderCell: (params) => (
                 <button
-                    onClick={() => onDelClick(row.id)}
+                    onClick={() => onDelClick(params.row)}
                 >
                     삭제
                 </button>
@@ -98,36 +97,61 @@ function PostList(props) {
     }, []);
 
     const fetchPosts = () =>{
-        fetch(SERVER_URL + "post/"+boardNum)
+        fetch(SERVER_URL + "posts/")
             .then(response =>
-               response.json())
-            .then(data =>
-                setPosts(data))
+                response.json())
+            .then((data) => {
+                // 필터링: delYN이 'N'인 게시물만 남김
+                const filteredPosts = data.filter((post) => post.delYN === 'N');
+                setPosts(filteredPosts);
+            })
             .catch(err => console.error(err));
     };
 
+    const onDelClick = (post) => {
+        console.log(post);
+        const updatedPostData = {
 
-    useEffect(() => {
-        fetch(SERVER_URL + "post/"+boardNum)
-            .then(response =>
-                response.json())
-            .then(data =>
-                setPosts(data))
-            .catch(err => console.error(err));
-    }, []);
+            memNum: post.member.memNum,
+            boardNum: post.board.boardNum,
+            title: post.title,
+            content: post.content,
+            writeDate: post.writeDate,
+            editDate: post.editDate,
+            pageView: post.pageView,
+            parentsNum: post.parentsNum,
+            clubAllowStatus: post.clubAllowStatus,
+            clubRecuStatus: post.clubRecuStatus,
+            delYN : 'Y'
+        };
 
-
-
-    const onDelClick = ( url) => {
-        fetch(url, {method: 'DELETE'})
-            .then(response => {
+        // PUT 요청 보내기
+        fetch(SERVER_URL + "posts/edit/" + post.postNum, {
+            method: 'PUT', // PUT 요청을 사용
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedPostData),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                alert('게시글을 삭제했습니다.');
                 fetchPosts();
                 setOpen(true);
+
             })
-            .catch(err => console.error(err))
+            .catch((error) => {
+                console.error('게시글 삭제 중 오류 발생:', error);
+            });
     };
 
     const onEditClick = (params) => {
+
         const rowId = params.row.postNum;
         navigate(`/posts/edit/${rowId}`);
     };
@@ -135,24 +159,23 @@ function PostList(props) {
 
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
-        navigate(`/notice/detail/${rowId}`);
+        navigate(`/posts/${rowId}`);
     };
-
 
     return (
         <div style={{ height: 500, width: '100%' }}>
             <DataGrid columns={columns}
                       rows={posts}
                       disableRowSelectionOnClick={true}
-                      getRowId={row => SERVER_URL + "api/posts/" + row.postNum}
-                    />
+                      getRowId={row => row.postNum}
+            />
 
 
             <Snackbar
                 open={open}
                 autoHideDuration={2000}
                 onClose={() => setOpen(false)}
-                message="게시글을 지웠습니다."
+                message="게시글을 삭제했습니다."
             />
             <button onClick = {() => navigate('/clubs/new')}>새 게시글 작성</button>
 

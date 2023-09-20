@@ -1,5 +1,5 @@
 
-.registration-form-container {
+.registrationFormContainer {
     max-width: 60%;
     margin: 0 auto;
     padding: 20px;
@@ -9,16 +9,16 @@
     background-color: #f9f9f9;
 }
 
-.registration-form h2 {
+.registrationForm h2 {
     text-align: center;
     margin-bottom: 20px;
 }
-.registration-form .input-group {
+.registrationForm .inputGroup {
     width: 94.5%;
 }
 
-.registration-form input,
-.registration-form button {
+.registrationForm input,
+.registrationForm button {
     display: block;
     width: 100%;
     margin-bottom: 15px;
@@ -28,7 +28,7 @@
     border-radius: 3px;
 
 }
-.registration-form select{
+.registrationForm select{
     display: block;
     width: 50%;
     margin-bottom: 15px;
@@ -38,7 +38,7 @@
     border-radius: 3px;
 }
 
-.registration-form textarea {
+.registrationForm textarea {
     width: 100%;
     height: 300px;
     display: block;
@@ -50,18 +50,18 @@
     resize: none;
 }
 
-.registration-form button {
+.registrationForm button {
     max-width: 120px;
     margin-left: 40%;
     align-items: center;
     text-align: center;
-    background-color: #007bff;
+    background-color: #a38ced;
     color: #fff;
     border: none;
     cursor: pointer;
 
 }
 
-.registration-form button:hover {
-    background-color: #0056b3;
+.registrationForm button:hover {
+    background-color: #53468b;
 }
