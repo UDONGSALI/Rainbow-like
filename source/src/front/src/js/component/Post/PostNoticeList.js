@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from "../Common/constants";
 import File from '../../../img/component/file.png'
 
-function PostList(props) {
+function PostNoticeList(props) {
     const { boardNum } = props;
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -28,10 +28,11 @@ function PostList(props) {
             .then(response => response.json())
             .then(data => {
                 // 게시물 데이터와 첨부 파일 정보를 조합하여 저장합니다.
-                const postsWithFiles = data.map(post => {
+                const postsWithFiles = data.map((post, index) => {
                     const postFiles = files.filter(file => file.post && file.post.postNum === post.postNum);
                     return {
                         ...post,
+                        postNum: index + 1, // 게시글 번호를 1씩 증가시킴
                         postsFiles: postFiles,
                     };
                 });
@@ -39,7 +40,6 @@ function PostList(props) {
             })
             .catch(err => console.error(err));
     };
-
     const onDelClick = (url) => {
         fetch(url, { method: 'DELETE' })
             .then(response => {
@@ -55,7 +55,7 @@ function PostList(props) {
     };
 
     const onRowClick = (params) => {
-        const rowId = params.row.postNum;
+        const rowId = params.row.postNum + 8;
         navigate(`/notice/detail/${rowId}`);
     };
 
@@ -169,4 +169,4 @@ function PostList(props) {
     );
 }
 
-export default PostList;
+export default PostNoticeList;
