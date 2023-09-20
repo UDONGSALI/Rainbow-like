@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import '../../../css/component/ClubForm.css';
+import '../../../css/component/Club/ClubForm.css';
 import { useParams } from "react-router-dom";
 import { SERVER_URL } from "../Common/constants";
 import Snackbar from "@mui/material/Snackbar";
@@ -8,22 +8,32 @@ function Comment() {
     const { id } = useParams();
     const [comms, setComms] = useState([]);
     const [open, setOpen] = useState(false);
-
     const [replyFormData, setReplyFormData] = useState({
         postNum: id,
-        memNum: 1, // 여기에 작성자의 멤버 번호를 넣어주세요.
+        memNum: 1,
         content: '',
         parentNum: '0',
         delYN: 'N',
     });
     const [showReply, setShowReply] = useState({});
+
+    const [editFormData, setEditFormData] = useState({
+        postNum: id,
+        memNum: 1,
+        content: '',
+        parentNum: '0',
+        delYN: 'N',
+    });
     const [showEditForm, setShowEditForm] = useState({});
-    const [editMode, setEditMode] = useState({});
+
+
 
     useEffect(() => {
         fetchComms();
     }, []);
 
+
+//데이터 불러오기
     const fetchComms = () => {
         fetch(SERVER_URL + "postnumcomm/" + id)
             .then((response) => response.json())
@@ -34,6 +44,7 @@ function Comment() {
             .catch((err) => console.error(err));
     };
 
+// 데이터 편집
     const buildCommentTree = (comments) => {
         const commentMap = new Map();
         const commentTree = [];
@@ -59,18 +70,21 @@ function Comment() {
         return commentTree;
     };
 
+//댓글 삭제(delYN = Y)
     const onDelClick = (comment) => {
+        console.log(comment);
         const updatedCommentData = {
+
             editDate: new Date(),
             content : comment.content,
             delYN : 'Y',
             memNum : comment.member.memNum,
             parentNum : comment.parentNum,
-            postNum : comment.postNum
+            postNum : comment.post.postNum
         };
 
         // PUT 요청 보내기
-        fetch("http://localhost:8090/api/comments/" + comment.commNum, {
+        fetch(SERVER_URL + "comm/" + comment.commNum, {
             method: 'PUT', // PUT 요청을 사용
             headers: {
                 'Content-Type': 'application/json',
@@ -93,17 +107,8 @@ function Comment() {
             });
     };
 
-    // const onEditClick = (comment) => {
-    //     // 댓글 수정 모드를 토글
-    //     comment.isEditMode = !comment.isEditMode;
-    //     // 댓글 수정 모드 상태를 갱신하기 위해 댓글 객체를 복사한 후 상태를 업데이트
-    //     setComms((prevComms) =>
-    //         prevComms.map((prevComment) =>
-    //             prevComment.commNum === comment.commNum ? { ...comment } : prevComment
-    //         )
-    //     );
-    // };
 
+// 댓글 작성
     const [formData, setFormData] = useState({
         postNum: id,
         memNum: 1,
@@ -146,6 +151,8 @@ function Comment() {
             });
     };
 
+
+//답글 작성
     const handleReplyChange = (e) => {
         const { name, value } = e.target;
         setReplyFormData({ ...replyFormData, [name]: value });
@@ -195,54 +202,59 @@ function Comment() {
 
 
 
+//댓글 수정
+
 
     const handleEditChange = (e) => {
         const { name, value } = e.target;
-        setEditMode({ ...replyFormData, [name]: value });
+        setEditFormData({ ...editFormData, [name]: value });
     };
 
-    // const onEditClick = (comment) => {
-    //     setEditMode({
-    //         editDate: new Date(),
-    //         content : comment.content,
-    //         delYN : comment.delYN,
-    //         memNum : comment.member.memNum,
-    //         parentNum : comment.parentNum,
-    //         postNum : comment.postNum
-    //     });
-    //     setShowReply((prevShowEditForm) => ({
-    //         ...prevShowEditForm,
-    //         [comment.commNum]: !prevShowEditForm[comment.commNum],
-    //     }));
-    // };
-
     const onEditClick = (comment) => {
-        // 댓글 수정 모드를 토글
-        const isEditMode = !editMode[comment.commNum];
-        setEditMode((prevEditMode) => ({
-            ...prevEditMode,
-            [comment.commNum]: isEditMode,
+        setEditFormData({               // 해당 댓글 정보 가져오기
+            postNum: comment.post.postNum,
+            memNum: comment.member.memNum,
+            content: comment.content,
+            parentNum: comment.parentNum,
+            delYN: comment.delYN
+        });
+        setShowEditForm((prevShowEditForm) => ({
+            ...prevShowEditForm,
+            [comment.commNum]: !prevShowEditForm[comment.commNum],
         }));
     };
 
-    const onEditComm = (comment) => {
-        fetch(SERVER_URL + "api/comment/" + comment.commNum, {
+    const onPostEdit = (comment) => {
+        const updatedCommentData = {
+
+            editDate: new Date(),
+            content : editFormData.content,
+            delYN : comment.delYN,
+            memNum : comment.member.memNum,
+            parentNum : comment.parentNum,
+            postNum : comment.post.postNum
+
+        };
+        console.log(updatedCommentData);
+
+
+        fetch(SERVER_URL + "comm/" + comment.commNum, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(editMode),
+            body: JSON.stringify(updatedCommentData),
         })
             .then((response) => response.json())
             .then((data) => {
-                setEditMode({
+                setEditFormData({
                     postNum: id,
                     memNum: 1,
                     content: '',
                     parentNum: '0',
                     delYN : 'N'
                 });
-                alert('답글을 수정했습니다.');
+                alert('댓글을 수정했습니다.');
 
                 fetchComms();
 
@@ -260,7 +272,7 @@ function Comment() {
 
 
 
-
+// 댓글 편집출력
     const renderCommentContent = (comment) => {
         if (comment.delYN === 'Y' && (!comment.children || comment.children.length === 0)) {
             return "삭제된 댓글입니다.";
@@ -276,61 +288,49 @@ function Comment() {
                         <td width={100}>{comment.commNum}</td>
                         <td width={100}>{comment.member.name}</td>
                         <td width={400} style={{ paddingLeft: `${level * 20}px` }}>
-                            {comment.delYN === 'Y' ? "삭제된 댓글입니다." : (
-                                comment.isEditMode ? (
-                                    <>
-                                        {/* 수정 모드일 때 textarea를 표시하고 댓글 내용을 기본값으로 설정 */}
-                                        <textarea
-                                            name="content"
-                                            cols="40"
-                                            value={comment.content}
-                                            onChange={(e) => handleEditChange(e, comment)}
-                                        />
-                                        <br />
-                                        <button onClick={() => onEditComm(comment)}>저장</button>
-                                    </>
-                                ) : (
-                                    renderCommentContent(comment)
-                                )
-                            )}
+                            {comment.delYN === 'Y' ? "삭제된 댓글입니다." : renderCommentContent(comment)}
                         </td>
                         <td width={100}>{comment.parentNum}</td>
                         <td>
-                            <button onClick={() => onReplyClick(comment)}>답글</button>
+                            {comment.delYN === 'N' && (
+                                <button onClick={() => onReplyClick(comment)}>답글</button>
+                            )}
                         </td>
                         <td>
-                            {/* 수정 버튼 클릭 시 editMode[comment.commNum]을 true로 설정 */}
-                            <button onClick={() => onEditClick(comment)}>수정</button>
+                            {comment.delYN === 'N' && (
+                                <button onClick={() => onEditClick(comment)}>수정</button>
+                            )}
                         </td>
                         <td>
-                            <button onClick={() => onDelClick(comment)}>삭제</button>
+                            {comment.delYN === 'N' && (
+                                <button onClick={() => onDelClick(comment)}>삭제</button>
+                            )}
                         </td>
                     </tr>
                 )}
                 {showReply[comment.commNum] && (
                     <tr>
                         <td colSpan={7}>
-                    <textarea
-                        name="content"
-                        cols="100"
-                        value={replyFormData.content}
-                        onChange={handleReplyChange}
-                    />
+                        <textarea
+                            name="content"
+                            cols="100"
+                            value={replyFormData.content}
+                            onChange={handleReplyChange}
+                        />
                             <button onClick={() => onPostReply(comment)}>작성</button>
                         </td>
                     </tr>
                 )}
-                {showEditForm[comment] && (
+                {showEditForm[comment.commNum] && (
                     <tr>
                         <td colSpan={7}>
-                    <textarea
-                        name="content"
-                        cols="40"
-                        value={comment.content}
-                        onChange={(e) => handleEditChange(e, comment)}
-                    />
-                            <br />
-                            <button onClick={() => onEditComm(comment)}>저장</button>
+                        <textarea
+                            name="content"
+                            cols="100"
+                            value={editFormData.content}
+                            onChange={handleEditChange}
+                        />
+                            <button onClick={() => onPostEdit(comment)}>저장</button>
                         </td>
                     </tr>
                 )}
@@ -349,24 +349,31 @@ function Comment() {
         ));
     };
 
+
     return (
         <div className="comment">
             <div className="commList">
                 <table>
                     <thead>
                     <tr>
-                        <th>댓글 번호</th>
-                        <th>작성자</th>
-                        <th>댓글 본문</th>
-                        <th>부모 번호</th>
-                        <th>답글</th>
-                        <th>수정</th>
-                        <th>삭제</th>
+                        {/*<th>댓글 번호</th>*/}
+                        {/*<th>작성자</th>*/}
+                        {/*<th>댓글 본문</th>*/}
+                        {/*<th>부모 번호</th>*/}
+                        {/*<th>답글</th>*/}
+                        {/*<th>수정</th>*/}
+                        {/*<th>삭제</th>*/}
                     </tr>
                     </thead>
                     <tbody>
-                    {renderComments(comms)}
-                    </tbody>
+                    {comms.length === 0 ? (
+                        <tr>
+                            <td colSpan={7}>아직 댓글이 없습니다. 첫번째 댓글을 작성해보세요!</td>
+                            <br/>
+                        </tr>
+                    ) : (
+                        renderComments(comms)
+                    )}                    </tbody>
                 </table>
             </div>
             <form onSubmit={handleSubmit} className="comment-form">

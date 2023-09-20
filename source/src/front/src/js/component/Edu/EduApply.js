@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {SERVER_URL} from "../Common/constants";
 
-
 function EduApply(props) {
     const {eduNum, memId} = props
 
@@ -103,7 +102,7 @@ function EduApply(props) {
     }
 
     return (
-        <div className="container">
+        <div className="edu-apply-container">
             {eduData ? (
                 <div>
                     <h2>{eduData.eduname} 신청하기</h2>

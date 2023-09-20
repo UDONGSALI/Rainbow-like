@@ -18,6 +18,7 @@ function ClubEditor(){
         parentsNum: '',
         clubAllowStatus: '',
         clubRecuStatus: '',
+        delYN : 'N'
     });
 
 
@@ -46,6 +47,7 @@ function ClubEditor(){
                     parentsNum: formData.post.parentsNum,
                     clubAllowStatus: formData.post.clubAllowStatus,
                     clubRecuStatus: formData.post.clubRecuStatus,
+                    delYN: formData.post.delYN
                 });
             })
             .catch(error => console.error(error));
@@ -67,7 +69,7 @@ function ClubEditor(){
 
 
         // API 호출하여 게시글 정보 전송
-        fetch(SERVER_URL + "api/posts/" + id, {
+        fetch(SERVER_URL + "posts/edit/" + id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
