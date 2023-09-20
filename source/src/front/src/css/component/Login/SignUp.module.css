@@ -1,4 +1,4 @@
-.sign-form-container {
+.signFormContainer {
     width: 25vw;
     margin: 0 auto;
     border: 1px solid #ccc;
@@ -11,23 +11,23 @@
     justify-content: center;
 }
 
-.sign-form {
+.signForm {
     width: 80%;
     position: relative;
 }
 
 /* --- 제목 스타일 --- */
-.sign-form h2 {
+.signForm h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
 /* --- 입력 그룹과 레이블 스타일 --- */
-.sign-form .input-group {
+.signForm .inputGroup {
     position: relative;
 }
 
-.input-group label {
+.inputGroup label {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -47,9 +47,9 @@ input:not(:placeholder-shown) + label {
 }
 
 /* --- 입력 필드, 선택 및 버튼 스타일 --- */
-.sign-form input,
-.sign-form select,
-.sign-form button {
+.signForm input,
+.signForm select,
+.signForm button {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -61,18 +61,18 @@ input:not(:placeholder-shown) + label {
     appearance: none;
 }
 
-.sign-form button {
+.signForm button {
     background-color: #007bff;
     color: #fff;
     border: none;
     cursor: pointer;
 }
 
-.sign-form button:hover {
+.signForm button:hover {
     background-color: #0056b3;
 }
 
-.sign-form span {
+.signForm span {
     display: block;
     margin-top: -10px;
     margin-bottom: 5px;

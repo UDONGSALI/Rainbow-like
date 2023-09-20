@@ -1,0 +1,50 @@
+.calendarContainer {
+    position: relative;
+    width: 60%;
+    margin: 0 auto 50px auto;
+    padding-top: 40%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.calendarContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.rbcEvent {
+    background-color: #4C9AFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+.rbcToolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rbcToolbarButton {
+    font-size: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0 20px;
+}
+
+.rbcToolbarSpan {
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    bottom: -5px;
+}
