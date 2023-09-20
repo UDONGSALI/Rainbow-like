@@ -1,4 +1,4 @@
-.BackButton {
+.backButton {
     /* 위치, 크기, 모양 */
     position: fixed;
     top: calc(100vh / 6);
@@ -24,6 +24,6 @@
     outline: none;
 }
 
-.BackButton:hover {
+.backButton:hover {
     background-color: deepskyblue;
 }
