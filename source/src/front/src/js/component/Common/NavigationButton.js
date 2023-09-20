@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../../css/component/Common/NavigationButton.css';
+import styles from '../../../css/component/Common/NavigationButton.module.css';
 
-function NavigationButton({ name, url, fontSize = "calc(1vw + 1vh)" }) { // 기본값 설정
+function NavigationButton({ name, url, fontSize = "calc(1vw + 1vh)" }) {
     const navigate = useNavigate();
 
     const handleButtonClick = () => {
@@ -11,9 +11,9 @@ function NavigationButton({ name, url, fontSize = "calc(1vw + 1vh)" }) { // 기�
 
     return (
         <button
-            className="NavButton"
+            className={styles.navButton} // CSS module 적용
             onClick={handleButtonClick}
-            style={{ fontSize: fontSize }} // 인라인 스타일로 폰트 사이즈 적용
+            style={{ fontSize: fontSize }}
         >
             {name}
         </button>
