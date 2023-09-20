@@ -26,7 +26,7 @@ const NavBar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0" >
             <li className="nav-item" >
               <a className="nav-link" href="#">기관소개</a>
               <div className="sub">
