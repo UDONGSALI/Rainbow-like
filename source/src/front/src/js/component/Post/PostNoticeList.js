@@ -28,10 +28,11 @@ function PostNoticeList(props) {
             .then(response => response.json())
             .then(data => {
                 // 게시물 데이터와 첨부 파일 정보를 조합하여 저장합니다.
-                const postsWithFiles = data.map(post => {
+                const postsWithFiles = data.map((post, index) => {
                     const postFiles = files.filter(file => file.post && file.post.postNum === post.postNum);
                     return {
                         ...post,
+                        postNum: index + 1, // 게시글 번호를 1씩 증가시킴
                         postsFiles: postFiles,
                     };
                 });
@@ -39,7 +40,6 @@ function PostNoticeList(props) {
             })
             .catch(err => console.error(err));
     };
-
     const onDelClick = (url) => {
         fetch(url, { method: 'DELETE' })
             .then(response => {
@@ -55,22 +55,17 @@ function PostNoticeList(props) {
     };
 
     const onRowClick = (params) => {
-        const rowId = params.row.postNum;
+        const rowId = params.row.postNum + 8;
         navigate(`/notice/detail/${rowId}`);
     };
 
     const getRowId = (row) => {
         return row.postNum.toString();
     };
-    const postsWithNumbers = posts.map((post, index) => ({
-        ...post,
-        id: index + 1, // 번호는 index를 기반으로 순차적으로 부여
-    }));
-
 
     const columns = [
         {
-            field: 'id',
+            field: '_links.member.href',
             headerName: '번호',
             sortable: false,
             filterable: false,
