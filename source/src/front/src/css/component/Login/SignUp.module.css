@@ -1,5 +1,5 @@
 .signFormContainer {
-    width: 25vw;
+    width: 30vw;
     margin: 0 auto;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -25,6 +25,7 @@
 /* --- 입력 그룹과 레이블 스타일 --- */
 .signForm .inputGroup {
     position: relative;
+    width: 100%;
 }
 
 .inputGroup label {
@@ -76,4 +77,11 @@ input:not(:placeholder-shown) + label {
     display: block;
     margin-top: -10px;
     margin-bottom: 5px;
+}
+
+.passwordInput {
+    appearance: none ;
+    -webkit-appearance: none ;
+    border-radius: 0 ;
+    /* 추가로 다른 스타일 속성들도 초기화 할 수 있습니다. */
 }
