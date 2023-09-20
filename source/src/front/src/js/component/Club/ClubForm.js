@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import '../../../css/component/Club/ClubForm.css';
+import styles from '../../../css/component/Club/ClubForm.module.css';
 import {useNavigate} from "react-router-dom";
 
 function ClubForm(){
@@ -51,10 +51,10 @@ function ClubForm(){
     };
 
     return (
-        <div className="registration-form-container">
+        <div className={styles.registrationFormContainer}>
             <h2>게시글 작성 폼</h2>
-            <form onSubmit={handleSubmit} className="registration-form">
-                <div className="input-group">
+            <form onSubmit={handleSubmit} className={styles.registrationForm}>
+                <div className="{styles.inputGroup}">
                     <input
                         type="number"
                         name="memNum"
@@ -64,7 +64,7 @@ function ClubForm(){
                         required
                     />
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <select
                         name="boardNum"
                         value={formData.boardNum}
@@ -84,7 +84,7 @@ function ClubForm(){
                         <option value="10">club_test</option>
                     </select>
             </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="title"
@@ -95,7 +95,7 @@ function ClubForm(){
                         />
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <textarea
                         name="content"
                         value={formData.content}

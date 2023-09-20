@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import {SERVER_URL} from "../Common/constants";
-import '../../../css/component//Club/ClubDetail.css';
+import styles from '../../../css/component/Club/ClubDetail.module.css';
 
 
 function ClubDetail() {
@@ -108,20 +108,20 @@ function ClubDetail() {
     }
 
     return (
-        <div className="post-detail">
-            <h2>{post.post.title}</h2>
-            <div className="post-meta">
-                <p>작성자: {post.member.name}　　　　　　　　　　　　　　　　　　　
-                허가 여부: {post.post.clubAllowStatus}　
-                진행 상황: {post.post.clubRecuStatus}　
-                조회수: {post.post.pageView}</p>
+        <div className={styles.postDetailPage}>
+            <h3>{post.post.title}</h3>
+            <div className={styles.postMeta}>
+                <p>{post.member.name}　　　　　　　　　　　　　　　　　　　
+                {post.post.clubAllowStatus}　
+                {post.post.clubRecuStatus}　
+                조회수 {post.post.pageView}</p>
             </div>
 
-            <div className="content">{post.post.content}</div>
-            <div className="post-button">
+            <div className={styles.content}>{post.post.content}</div>
+            <div className={styles.postButton}>
                 <button onClick={() => onEditClick()}>수정</button>
                 <button onClick={() => onDelClick(post.post)}>삭제</button>
-                <button onClick={() => navigate("/posts")}>리스트로</button>
+                <button onClick={() => navigate("/clubs")}>리스트로</button>
             </div>
 
         </div>
