@@ -46,7 +46,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
         commentController.createComms();
 
-//        eduHistController.createDefaultEduHists();
+        eduHistController.createDefaultEduHists();
 
         defaultFileController.createDefaultFiles();
     }

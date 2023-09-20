@@ -34,6 +34,21 @@ public class MemberController {
         return memberRepository.findByMemId(memId);
     }
 
+    @GetMapping("/id_ck/{memId}")
+    private boolean checkMemId(@PathVariable String memId) {
+        return memberRepository.findByMemId(memId) != null;
+    }
+
+    @GetMapping("/email_ck/{email}")
+    private boolean checkEmail(@PathVariable String email) {
+        return memberRepository.findByEmail(email) != null;
+    }
+
+    @GetMapping("/tel_ck/{tel}")
+    private boolean checkTel(@PathVariable String tel) {
+        return memberRepository.findByTel(tel) != null;
+    }
+
     @PostMapping
     public ResponseEntity<Member> saveMember(@RequestBody Member member) {
 
