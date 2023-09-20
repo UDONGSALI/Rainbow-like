@@ -1,6 +1,5 @@
 import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
 import styles from '../../../css/layout/Footer/footer.module.css';
-import '../../../css/pages/mypage/common.css';
 import '../../../css/font.css';
 
 const Footer = () => {
