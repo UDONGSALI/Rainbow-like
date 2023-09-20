@@ -1,39 +1,42 @@
-.edu-apply-container {
+/* EduApply.module.css */
+
+.eduApplyContainer {
     width: 60%;
     margin: 0 auto;
     font-family: 'Arial', sans-serif;
 }
 
-.edu-apply-container h2, .edu-apply-container h3 {
+.eduApplyContainer h2,
+.eduApplyContainer h3 {
     color: #333;
     margin-bottom: 20px;
 }
 
-.edu-apply-container p {
+.eduApplyContainer p {
     color: #666;
     margin-bottom: 10px;
 }
 
-.edu-apply-container form {
+.eduApplyContainer form {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.edu-apply-container div {
+.eduApplyContainer div {
     margin-bottom: 15px;
 }
 
-.edu-apply-container label {
+.eduApplyContainer label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-.edu-apply-container input[type="text"],
-.edu-apply-container input[type="email"],
-.edu-apply-container input[type="tel"] {
+.eduApplyContainer input[type="text"],
+.eduApplyContainer input[type="email"],
+.eduApplyContainer input[type="tel"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -41,7 +44,7 @@
     font-size: 16px;
 }
 
-.edu-apply-container button {
+.eduApplyContainer button {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -52,6 +55,6 @@
     transition: background-color 0.3s;
 }
 
-.edu-apply-container button:hover {
+.eduApplyContainer button:hover {
     background-color: #0058D1;
 }

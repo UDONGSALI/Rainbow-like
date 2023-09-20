@@ -142,11 +142,43 @@ public class PostFormDto {
         post7.setBoard(board3);
         post7.setMember(member1);
         post7.setTitle("공지사항 두 번째 글 입니다.");
-        post7.setContent("공지사항 테스트 글 두 번째에요. 안녕하세영");
+        post7.setContent("공지사항 테스트 글 두 번째에요.<br> 안녕하세영");
         post7.setWriteDate(LocalDateTime.now());
         post7.setPageView(0);
 
         postList.add(post7);
+
+        PostFormDto post8 = new PostFormDto();
+        post8.setBoard(board3);
+        post8.setMember(member1);
+        post8.setTitle("공지사항 세 번째 글 입니다.");
+        post8.setContent("공지사항 테스트 글 세 번째에요.<br>" +
+              "본문의 길이를 늘려서 써본 테스트 글 입니다.<br> 오늘도 행복한 하루 되세요.<br>" );
+
+        post8.setWriteDate(LocalDateTime.now());
+        post8.setPageView(0);
+
+        postList.add(post8);
+
+        PostFormDto post9 = new PostFormDto();
+        post9.setBoard(board3);
+        post9.setMember(member1);
+        post9.setTitle("공지사항 네 번째 글 입니다.");
+        post9.setContent("공지사항 테스트 글 네 번째에요. 안녕하세영");
+        post9.setWriteDate(LocalDateTime.now());
+        post9.setPageView(0);
+
+        postList.add(post9);
+
+        PostFormDto post10 = new PostFormDto();
+        post10.setBoard(board3);
+        post10.setMember(member1);
+        post10.setTitle("공지사항 다섯 번째 글 입니다.");
+        post10.setContent("공지사항 테스트 글 다섯 번째에요. 글 목록을 늘려보려고 합니다.");
+        post10.setWriteDate(LocalDateTime.now());
+        post10.setPageView(0);
+
+        postList.add(post10);
 
 
 

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 @Service
 @Transactional
 @RequiredArgsConstructor
-
 public class PostService {
     @Autowired
     ClubRepository clubRepository;

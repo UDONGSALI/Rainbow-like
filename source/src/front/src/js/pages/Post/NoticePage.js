@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import PostNoticeList from "../component/Post/PostNoticeList";
+import PostNoticeList from "../../component/Post/PostNoticeList";
+
+
 
 
 
