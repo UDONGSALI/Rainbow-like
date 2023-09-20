@@ -1,15 +1,16 @@
-import React, {useState} from 'react';
-import bcrypt from 'bcryptjs'; // bcryptjs 라이브러리를 임포트
-import '../../../css/component/Login/SingUp.css';
+import React, { useState } from 'react';
+import bcrypt from 'bcryptjs';
+import styles from '../../../css/component/Login/SignUp.module.css';
 import FileUpload from "../Common/FileUpload";
 import axios from "axios";
-import {SERVER_URL} from "../Common/constants"; // CSS 파일을 임포트
+import { SERVER_URL } from "../Common/constants";
 
 function SignUp() {
+    // State
     const [formData, setFormData] = useState({
         memId: '',
         pwd: '',
-        type: '',
+        type: 'USER',
         name: '',
         gender: '',
         bir: '',
@@ -20,16 +21,81 @@ function SignUp() {
         addrPost: '',
         jdate: new Date().toISOString().split('T')[0],
     });
-
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [errors, setErrors] = useState({});
+    const [isDateInputFocused, setDateInputFocus] = useState(false);
+    const [isDuplicateChecked, setDuplicateChecked] = useState(false);
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
+    const validate = (name, value) => {
+        let error = null;
+
+        switch (name) {
+            case 'memId':
+                if (!/^[a-zA-Z0-9]+$/.test(value)) {
+                    error = '아이디는 영어, 숫자만 사용 가능합니다.';
+                }
+                break;
+            case 'pwd':
+                if (!/^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+).{8,15}$/.test(value)) {
+                    error = '비밀번호는 영어, 숫자, 특수문자를 포함하여 8~15 자리로 만들어 주세요..';
+                }
+                break;
+            case 'name':
+                if (!/^[a-zA-Z가-힣]+$/.test(value)) {
+                    error = '이름은 한글, 영어만 사용 가능합니다.';
+                }
+                break;
+            case 'bir':
+                const birthYear = new Date(value).getFullYear();
+                if (new Date(value) > new Date() || birthYear < 1900) {
+                    error = '유효하지 않은 날짜입니다.';
+                }
+                break;
+            case 'tel':
+                if (!/^\d{11,12}$/.test(value)) {
+                    error = '전화번호는 11~12자리 숫자만 가능합니다.';
+                }
+                break;
+            case 'email':
+                if (!/^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,4}$/.test(value)) {
+                    error = '유효하지 않은 이메일 형식입니다.';
+                }
+                break;
+            default:
+                break;
+        }
+
+        setErrors(prevErrors => ({ ...prevErrors, [name]: error }));
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        validate(name, value);
     };
 
     const handleFileChange = (files) => {
         setSelectedFiles(files);
+    };
+
+
+    const handleDateInputBlur = (e) => {
+        const { name, value } = e.target;
+        validate(name, value);
+
+        // 입력값이 없을 때, isDateInputFocused를 false로 설정하여 "생년월일" 텍스트를 보여주게 합니다.
+        if (!value) {
+            setDateInputFocus(false);
+        }
+    };
+
+    const handleDateInputFocus = () => {
+        setDateInputFocus(true);
     };
 
     const handleSubmit = async (e) => {
@@ -56,7 +122,7 @@ function SignUp() {
                 setFormData({
                     memId: '',
                     pwd: '',
-                    type: '',
+                    type: 'USER',
                     name: '',
                     gender: '',
                     bir: '',
@@ -91,125 +157,147 @@ function SignUp() {
         }
     };
 
+
     return (
-        <div className="registration-form-container">
+        <div className={styles.signFormContainer}>
             <h2>회원가입 폼</h2>
-            <form onSubmit={handleSubmit} className="registration-form">
-                <div className="input-group">
+            <form onSubmit={handleSubmit} className={styles.signForm}>
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="memId"
                         value={formData.memId}
-                        onChange={handleChange}
-                        placeholder="아이디"
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        placeholder=" "
                         required
+                        style={{ borderColor: errors.memId ? 'red' : '' }} // 여기서 스타일을 추가합니다.
                     />
+                    <label>아이디</label>
+                    {errors.memId && <span style={{color: 'red'}}>{errors.memId}</span>}
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="password"
                         name="pwd"
                         value={formData.pwd}
-                        onChange={handleChange}
-                        placeholder="비밀번호"
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        placeholder=" "
                         required
+                        style={{ borderColor: errors.pwd ? 'red' : '' }}
                     />
-                </ div>
-                <select
-                    name="type"
-                    value={formData.type}
-                    onChange={handleChange}
-                    required
-                >
-                    <option value="">회원 유형 선택</option>
-                    <option value="ADMIN">관리자</option>
-                    <option value="USER">일반 사용자</option>
-                    <option value="LABOR">노무사</option>
-                    <option value="COUNSELOR">상담사</option>
-                </select>
-
-                <div className="input-group">
+                    <label>비밀번호</label>
+                    {errors.pwd && <span style={{color: 'red'}}>{errors.pwd}</span>}
+                </div>
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="name"
                         value={formData.name}
-                        onChange={handleChange}
-                        placeholder="이름"
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        placeholder=" "
                         required
+                        style={{ borderColor: errors.name ? 'red' : '' }}
                     />
+                    <label>이름</label>
+                    {errors.name && <span style={{color: 'red'}}>{errors.name}</span>}
                 </div>
+                <div className={styles.inputGroup}>
                 <select
                     name="gender"
                     value={formData.gender}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     required
                 >
                     <option value="">성별 선택</option>
                     <option value="MALE">남성</option>
                     <option value="FEMALE">여성</option>
                 </select>
-                <div className="input-group">
-                    <input
-                        type="date"
-                        name="bir"
-                        value={formData.bir}
-                        onChange={handleChange}
-                        placeholder="생년월일"
-                        required
-                    />
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
+                    {isDateInputFocused ? (
+                        <input
+                            type="date"
+                            name="bir"
+                            value={formData.bir}
+                            onChange={handleInputChange}
+                            onBlur={handleDateInputBlur}
+                            required
+                            style={{ borderColor: errors.bir ? 'red' : '' }}
+                        />
+                    ) : (
+                        <input
+                            type="text"
+                            name="bir"
+                            value={formData.bir || "생년월일"}
+                            onFocus={handleDateInputFocus}
+                        />
+                    )}
+                    {errors.bir && <span style={{color: 'red'}}>{errors.bir}</span>}
+                </div>
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="tel"
                         value={formData.tel}
-                        onChange={handleChange}
-                        placeholder="전화번호"
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        placeholder=" "
                         required
+                        style={{ borderColor: errors.tel ? 'red' : '' }}
                     />
+                    <label>전화번호</label>
+                    {errors.tel && <span style={{color: 'red'}}>{errors.tel}</span>}
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="email"
                         name="email"
                         value={formData.email}
-                        onChange={handleChange}
-                        placeholder="이메일"
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
+                        placeholder=" "
                         required
+                        style={{ borderColor: errors.email ? 'red' : '' }}
                     />
+                    <label>이메일</label>
+                    {errors.email && <span style={{color: 'red'}}>{errors.email}</span>}
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="addr"
                         value={formData.addr}
-                        onChange={handleChange}
-                        placeholder="주소"
+                        onChange={handleInputChange}
+                        placeholder=""
                         required
                     />
+                    <label>주소</label>
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="addrDtl"
                         value={formData.addrDtl}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         placeholder="상세주소"
                     />
                 </div>
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="addrPost"
                         value={formData.addrPost}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         placeholder="우편번호"
                     />
                 </div>
-                {/*<FileUpload  />*/}
                 <FileUpload onFileChange={handleFileChange}/>
-
+                <div className={styles.inputGroup}>
                 <button type="submit">회원가입</button>
+                </div>
             </form>
         </div>
     );
