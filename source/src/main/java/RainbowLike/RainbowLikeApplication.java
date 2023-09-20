@@ -28,6 +28,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     private final PostController postController;
     private final CommentController commentController;
     private final RentHistController rentHistController;
+    private final EduHistController eduHistController;
     private final DefaultFileController defaultFileController;
     private final FileController fileController;
 
@@ -61,9 +62,9 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
         commentController.createComms();
 
+        eduHistController.createDefaultEduHists();
+
         defaultFileController.createDefaultFiles();
-
-
-    };
-};
+    }
+}
 

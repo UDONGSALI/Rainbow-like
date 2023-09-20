@@ -16,6 +16,9 @@ public interface PostRepository extends JpaRepository <Post,Long> {
 
     Iterable<Post> findByBoard(Board clubBoard);
 
+//    List<Post> findByIdAndContent(Long id, String content);
+
+
     @Modifying
     @Query("update Post p set p.pageView = p.pageView + 1 where p.id = :id")
     int updateView(Long id);
