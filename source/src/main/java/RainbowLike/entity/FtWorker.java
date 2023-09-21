@@ -1,5 +1,7 @@
 package RainbowLike.entity;
 
+import RainbowLike.constant.DelYN;
+import RainbowLike.constant.LicenseYN;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
@@ -30,9 +32,9 @@ public class FtWorker extends BaseEntity{
     private String speField;
 
     @Column(nullable = false)
-    private boolean licenseYn;
+    private LicenseYN licenseYN;
 
-    @Column(nullable = false)
+    @Column
     @Lob
     private String licenseDtl;
 
@@ -40,7 +42,14 @@ public class FtWorker extends BaseEntity{
     private String ftDtl;
 
     @Column(nullable = false)
-    private boolean ftmYn;
+    private String ftStatus;
+
+    @Column
+    private String statusDtl;
+
+    @Column(nullable = false)
+    private DelYN delYN;
+
 
     @OneToMany(mappedBy = "ftWorker", cascade = CascadeType.REMOVE)
     @JsonBackReference(value="ftWorker-femaleTalentMatchings")
