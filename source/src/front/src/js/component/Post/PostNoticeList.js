@@ -5,11 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from "../Common/constants";
 import File from '../../../img/component/file.png'
 
-<<<<<<< HEAD
+
 function PostNoticeList(props) {
-=======
-function PostList(props) {
->>>>>>> e0843b4 (eduApply.css PostDto 삭제)
+
     const { boardNum } = props;
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -173,8 +171,5 @@ function PostList(props) {
     );
 }
 
-<<<<<<< HEAD
+
 export default PostNoticeList;
-=======
-export default PostList;
->>>>>>> e0843b4 (eduApply.css PostDto 삭제)
