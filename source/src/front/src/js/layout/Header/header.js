@@ -18,7 +18,7 @@ const Header=()=>{
                     <ul>
                         <li><a href="/greeting" className=""><span>기관소개</span></a>
                             <div className="sub">
-                                <div className="sub_tit">
+                                <div className="subTit">
                                     <strong>기관소개</strong>
                                     <p><span></span></p>
                                 </div>
@@ -49,7 +49,7 @@ const Header=()=>{
                         </li>
                         <li><a href="/sub0201" className=""><span>사업안내</span></a>
                             <div className="sub">
-                                <div className="sub_tit">
+                                <div className="subTit">
                                     <strong>사업안내</strong>
                                     <p><span></span></p>
                                 </div>
@@ -91,7 +91,7 @@ const Header=()=>{
                         </li>
                         <li><a href="/sub020601" className=""><span>신청 · 접수</span></a>
                             <div className="sub">
-                                <div className="sub_tit">
+                                <div className="subTit">
                                     <strong>신청 · 접수</strong>
                                     <p><span></span></p>
                                 </div>
@@ -110,7 +110,7 @@ const Header=()=>{
                         </li>
                         <li><a href="/sub0301" class=""><span>정보나눔</span></a>
                             <div class="sub">
-                                <div class="sub_tit">
+                                <div class="subTit">
                                     <strong>정보나눔</strong>
                                     <p><span></span></p>
                                 </div>
@@ -138,7 +138,7 @@ const Header=()=>{
                         </li>
                         <li><a href="/sub0401" class=""><span>공간대관</span></a>
                             <div class="sub">
-                                <div class="sub_tit">
+                                <div class="subTit">
                                     <strong>공간대관</strong>
                                     <p><span></span></p>
                                 </div>
@@ -154,7 +154,7 @@ const Header=()=>{
                         </li>
                         <li><a href="/sub0501" class=""><span>책마당</span></a>
                             <div class="sub">
-                                <div class="sub_tit">
+                                <div class="subTit">
                                     <strong>책마당</strong>
                                     <p><span></span></p>
                                 </div>
@@ -170,7 +170,7 @@ const Header=()=>{
                         </li>
                         <li><a href="/sub1001" class=""><span>직장맘지원센터</span></a>
                             <div class="sub">
-                                <div class="sub_tit">
+                                <div class="subTit">
                                     <strong>직장맘지원센터</strong>
                                     <p><span></span></p>
                                 </div>
