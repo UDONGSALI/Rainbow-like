@@ -142,7 +142,7 @@
 }
 
 /* 서브 메뉴 */
-#header #gnb > ul > li .sub .sub_tit {
+#header #gnb > ul > li .sub .subTit {
     position: relative;
     padding: 4.7rem 7.2rem;
     background: #431274;
@@ -150,7 +150,7 @@
     width: 30rem;
 }
 
-#header #gnb > ul > li .sub .sub_tit strong {
+#header #gnb > ul > li .sub .subTit strong {
     font-size: 3rem;
     font-weight: 800;
     color: #fff;
@@ -159,7 +159,7 @@
     position: relative;
 }
 
-#header #gnb > ul > li .sub .sub_tit strong:before {
+#header #gnb > ul > li .sub .subTit strong:before {
     content: "";
     display: block;
     position: absolute;
@@ -171,7 +171,7 @@
     transition: all .5s;
 }
 
-#header #gnb > ul > li .sub .sub_tit strong:after {
+#header #gnb > ul > li .sub .subTit strong:after {
     content: "";
     display: block;
     position: absolute;
@@ -183,26 +183,26 @@
     transition: all .5s;
 }
 
-#header #gnb > ul > li .sub.on .sub_tit strong:before {
+#header #gnb > ul > li .sub.on .subTit strong:before {
     width: 0;
 }
 
-#header #gnb > ul > li .sub.on .sub_tit strong:after {
+#header #gnb > ul > li .sub.on .subTit strong:after {
     width: 0;
 }
 
-#header #gnb > ul > li .sub .sub_tit p {
+#header #gnb > ul > li .sub .subTit p {
     opacity: 0;
     transform: translateY(2rem);
     transition: all .5s .3s;
 }
 
-#header #gnb > ul > li .sub.on .sub_tit p {
+#header #gnb > ul > li .sub.on .subTit p {
     transform: translateY(0);
     opacity: 1;
 }
 
-#header #gnb > ul > li .sub .sub_tit p span {
+#header #gnb > ul > li .sub .subTit p span {
     color: #fff;
     font-size: 1.4rem;
     font-weight: 400;
