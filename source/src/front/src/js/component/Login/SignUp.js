@@ -313,7 +313,7 @@ function SignUp({ onSignUpClick }) {
 
     return (
         <div className={styles.signFormContainer} onClick={onSignUpClick}>
-            <h2>회원가입</h2>
+            <h2><strong>회원가입</strong></h2>
             <form onSubmit={handleSubmit} className={styles.signForm}>
                 <div className={styles.inputGroup}>
                     <input
