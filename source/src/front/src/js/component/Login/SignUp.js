@@ -283,6 +283,7 @@
                                 name="bir"
                                 value={formData.bir || "생년월일"}
                                 onFocus={handleDateInputFocus}
+                                readOnly
                             />
                         )}
                         {errors.bir && <span style={{color: 'red'}}>{errors.bir}</span>}
