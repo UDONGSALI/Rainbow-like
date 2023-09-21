@@ -65,7 +65,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Main/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
-                <Route path="/singUp" element={<SingUp/>}/>
+                <Route path="/sin gUp" element={<SingUp/>}/>
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
