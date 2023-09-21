@@ -1,22 +1,6 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.title {
-    text-align: center;
-    font-weight: bold;
-    margin-top: 20px;
-    margin-bottom: 20px;
-
-}
-
-.post-detail {
+/* 추가된 CSS 스타일 */
+/* .postDetail 클래스 스타일 */
+.postDetail {
     max-width: 60%;
     margin: 0 auto;
     padding: 20px;
@@ -27,26 +11,40 @@ body {
     flex-direction: column;
 }
 
-.post-meta {
+/* .titleDivider 클래스 스타일 */
+.titleDivider {
+    border-top: 1px solid black;
+    width: 100%;
+}
+
+/* .title 클래스 스타일 */
+.title {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* .postMeta 클래스 스타일 */
+.postMeta {
     margin-bottom: 20px;
     width: 100%;
 }
 
-.post-meta p {
-    font-size: 12px;
-    color: #555;
-}
-
-.post_data {
+/* .postData 클래스 스타일 */
+.postData {
     text-align: center;
     padding: 5px;
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     background-color: #f8f9fa;
     margin-bottom: 0;
+    font-size: 12px;
+    color: #555;
 }
 
-.post_menu_title {
+/* .postMenuTitle 클래스 스타일 */
+.postMenuTitle {
     padding: 0.8em;
     border-right: 1px solid #E4E4E4;
     color: #333;
@@ -56,12 +54,8 @@ body {
     border-bottom: 1px solid #E4E4E4;
 }
 
-.title-divider {
-    border-top: 1px solid black;
-    width: 100%;
-}
-
-.left-top {
+/* .leftTop 클래스 스타일 */
+.leftTop {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -70,26 +64,30 @@ body {
     height: auto;
 }
 
-.post-image {
+/* .postImage 클래스 스타일 */
+.postImage {
     max-width: 100%;
     height: auto;
 }
 
-.post-content {
+/* .postContent 클래스 스타일 */
+.postContent {
     text-align: left;
     margin-top: 2em;
     margin-bottom: 1em;
     line-height: 2.5em;
 }
 
-.file-list {
+/* .fileList 클래스 스타일 */
+.postFileList {
     margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.file-box {
+/* .fileBox 클래스 스타일 */
+.postFileBox {
     width: 100%;
     display: flex;
     align-items: center;
@@ -99,44 +97,51 @@ body {
     margin: 10px;
 }
 
-.file-label {
+/* .fileLabel 클래스 스타일 */
+.postFileLabel {
     margin-left: 25px;
     margin-right: 50px;
 }
 
-.file-divider {
+/* .fileDivider 클래스 스타일 */
+.postFileDivider {
     border-left: 1px solid #ddd;
     height: 100%;
     margin: 0 10px;
 }
 
-.file-names {
+/* .fileNames 클래스 스타일 */
+.postFileNames {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
 }
 
-.file-name {
+/* .fileName 클래스 스타일 */
+.postFileName {
     margin: 10px 0;
     display: block;
-
+    color: black;
 }
 
-.file-name:hover {
+/* .fileName:hover 클래스 스타일 */
+.postFileName:hover {
     font-weight: bold;
+    color: black;
 }
 
-.post-button {
+/* .postButton 클래스 스타일 */
+.postButton {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
-.post-edit-button,
-.post-delete-button,
-.post-list-button {
+/* .postEditButton, .postDeleteButton, .postListButton 클래스 스타일 */
+.postEditButton,
+.postDeleteButton,
+.postListButton {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
@@ -145,43 +150,52 @@ body {
     transition: background-color 0.3s, color 0.3s;
     margin-right: 10px;
 }
-.post-delete-button{
+
+/* .postDeleteButton 클래스 스타일 */
+.postDeleteButton {
     margin-right: 50px;
 }
 
-.post-list-button {
+/* .postListButton 클래스 스타일 */
+.postListButton {
     /*margin-left: auto;*/
 }
 
-.post-edit-button:hover,
-.post-delete-button:hover,
-.post-list-button:hover {
+/* .postEditButton:hover, .postDeleteButton:hover, .postListButton:hover 클래스 스타일 */
+.postEditButton:hover,
+.postDeleteButton:hover,
+.postListButton:hover {
     background-color: #9c6ed9;
     color: #fff;
 }
 
-/* CSS 파일 혹은 스타일시트에 추가 */
-.prev-button.prev-button-style,
-.next-button.next-button-style {
-    width: 100%;
-    text-align: left;
+/* .prevButton, .nextButton 클래스 스타일 */
+.prevButton .prevButtonStyle,
+.nextButton .nextButtonStyle {
+    border: none;
+    background-color: white;
 }
-.prev-button {
+
+/* .prevButton 클래스 스타일 */
+.prevButton {
     margin-top: 20px;
-    border-top: 1px solid black;
+    border: none;
+    border-top: 1px solid black ;
     border-bottom: 1px solid #99959E;
     padding-top: 10px;
     padding-bottom: 8px;
 }
-.next-button {
+
+/* .nextButton 클래스 스타일 */
+.nextButton {
     border-bottom: 1px solid black;
     padding-top: 10px;
     padding-bottom: 8px;
     margin-bottom: 30px;
 }
 
-.prev-button-style:hover,
-.next-button-style:hover{
+/* .prevButtonStyle:hover, .nextButtonStyle:hover 클래스 스타일 */
+.prevButtonStyle:hover,
+.nextButtonStyle:hover {
     color: #99959E;
-
 }

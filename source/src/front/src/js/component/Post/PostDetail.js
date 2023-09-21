@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
-import styles from '../../../css/component/Post/PostDetail.css';
+import styles from '../../../css/component/Post/PostDetail.module.css';
 
 function PostDetail(props) {
     const { postNum } = props;
@@ -115,15 +115,15 @@ function PostDetail(props) {
 
                 <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.post.content }}></div>
             </div>
-            <div className={styles.fileList}>
-                <ul className={styles.fileBox}>
-                    <li className={styles.fileLabel}>첨부파일</li>
-                    <li className={styles.fileDivider}></li>
-                    <li className={styles.fileNames}>
+            <div className={styles.postFileList}>
+                <ul className={styles.postFileBox}>
+                    <li className={styles.postFileLabel}>첨부파일</li>
+                    <li className={styles.postFileDivider}></li>
+                    <li className={styles.postFileNames}>
                         {filteredFiles.map((file, index) => (
                             <a
                                 key={index}
-                                className={styles.fileName}
+                                className={styles.postFileName}
                                 href={file.fileUri}
                                 download
                             >
@@ -139,7 +139,7 @@ function PostDetail(props) {
                 <button onClick={() => navigate("/posts")} className={styles.postListButton}>목록으로</button>
             </div>
             <div className={styles.prevNextButtons}>
-                {prevPostNum >= 9 && (
+                {prevPostNum >= 6 && (
                     <div className={styles.prevButton}>
                         &nbsp;&nbsp;∧ 이전 글 -&nbsp;
                         <button
@@ -150,7 +150,7 @@ function PostDetail(props) {
                         </button>
                     </div>
                 )}
-                {nextPostNum <= 13 && (
+                {nextPostNum <= 10 && (
                     <div className={styles.nextButton}>
                         &nbsp;&nbsp;∨ 다음 글 -&nbsp;
                         <button

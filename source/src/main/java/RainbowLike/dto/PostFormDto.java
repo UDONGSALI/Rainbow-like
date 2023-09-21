@@ -193,8 +193,65 @@ public class PostFormDto {
 
         postList.add(post11);
 
+        PostFormDto post12 = new PostFormDto();
+        post12.setBoard(board4);
+        post12.setMember(member1);
+        post12.setTitle("썸네일 게시판 두 번째 글");
+        post12.setContent("썸네일 게시판 입니다222.");
+        post12.setWriteDate(LocalDateTime.now());
+        post12.setPageView(0);
 
+        postList.add(post12);
 
+        PostFormDto post13 = new PostFormDto();
+        post13.setBoard(board4);
+        post13.setMember(member1);
+        post13.setTitle("썸네일 게시판 세 번쨰 글");
+        post13.setContent("썸네일 게시판 입니다333.");
+        post13.setWriteDate(LocalDateTime.now());
+        post13.setPageView(0);
+
+        postList.add(post13);
+
+        PostFormDto post14 = new PostFormDto();
+        post14.setBoard(board4);
+        post14.setMember(member1);
+        post14.setTitle("썸네일 게시판 네 번째에뇸");
+        post14.setContent("썸네일 게시판 입니다.<br>444<br>444<br>");
+        post14.setWriteDate(LocalDateTime.now());
+        post14.setPageView(0);
+
+        postList.add(post14);
+
+        PostFormDto post15 = new PostFormDto();
+        post15.setBoard(board4);
+        post15.setMember(member1);
+        post15.setTitle("썸네일 게시판 다섯 번째 글");
+        post15.setContent("썸네일<br> 게시판<br> 입니다.<br>555<br>");
+        post15.setWriteDate(LocalDateTime.now());
+        post15.setPageView(0);
+
+        postList.add(post15);
+
+        PostFormDto post16 = new PostFormDto();
+        post16.setBoard(board4);
+        post16.setMember(member1);
+        post16.setTitle("썸네일 게시판 여섯 번째 글");
+        post16.setContent("썸네일 게시판 입니다.666");
+        post16.setWriteDate(LocalDateTime.now());
+        post16.setPageView(0);
+
+        postList.add(post16);
+
+        PostFormDto post17 = new PostFormDto();
+        post17.setBoard(board4);
+        post17.setMember(member1);
+        post17.setTitle("썸네일 게시판 일곱 번째 글");
+        post17.setContent("썸네일 게시판 입니다.7777");
+        post17.setWriteDate(LocalDateTime.now());
+        post17.setPageView(0);
+
+        postList.add(post17);
 
 
         return postList;
