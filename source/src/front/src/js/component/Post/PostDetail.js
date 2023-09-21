@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
-import styles from './PostDetail.module.css'; // CSS 모듈 가져오기
+import styles from '../../../css/component/Post/PostDetail.css';
 
 function PostDetail(props) {
     const { postNum } = props;
