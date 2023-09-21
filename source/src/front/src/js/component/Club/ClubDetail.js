@@ -78,7 +78,7 @@ function ClubDetail() {
             .then((data) => {
                 alert('게시글을 삭제했습니다.');
                 setOpen(true);
-                navigate('/posts');
+                navigate('/clubs');
 
             })
             .catch((error) => {
@@ -90,7 +90,7 @@ function ClubDetail() {
     
     const onEditClick = () => {
 
-        navigate("/posts/edit/" + id);
+        navigate("/clubs/edit/" + id);
     };
 
 
@@ -111,10 +111,14 @@ function ClubDetail() {
         <div className={styles.postDetailPage}>
             <h3>{post.post.title}</h3>
             <div className={styles.postMeta}>
-                <p>{post.member.name}　　　　　　　　　　　　　　　　　　　
-                {post.post.clubAllowStatus}　
-                {post.post.clubRecuStatus}　
-                조회수 {post.post.pageView}</p>
+                <div className={styles.postMeta1}>
+                    {post.member.name}
+                </div>
+                <div className={styles.postMeta2}>
+                    <span className={styles.metaItem}>{post.post.clubAllowStatus}</span>
+                    <span className={styles.metaItem}>{post.post.clubRecuStatus}</span>
+                    <span className={styles.metaItem}>조회수 {post.post.pageView}</span>
+                </div>
             </div>
 
             <div className={styles.content}>{post.post.content}</div>

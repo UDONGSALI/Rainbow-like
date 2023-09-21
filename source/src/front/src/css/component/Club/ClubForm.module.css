@@ -9,12 +9,13 @@
     background-color: #f9f9f9;
 }
 
-.registrationForm h2 {
+.registrationFormContainer h2 {
     text-align: center;
-    margin-bottom: 20px;
+    padding: 30px;
 }
 .registrationForm .inputGroup {
-    width: 94.5%;
+    width: 90%;
+    margin: 0 auto;
 }
 
 .registrationForm input,
@@ -28,6 +29,7 @@
     border-radius: 3px;
 
 }
+
 .registrationForm select{
     display: block;
     width: 50%;
@@ -52,9 +54,7 @@
 
 .registrationForm button {
     max-width: 120px;
-    margin-left: 40%;
-    align-items: center;
-    text-align: center;
+    margin: 0 auto;
     background-color: #a38ced;
     color: #fff;
     border: none;
