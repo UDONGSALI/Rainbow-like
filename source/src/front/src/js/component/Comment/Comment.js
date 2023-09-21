@@ -285,7 +285,7 @@ function Comment() {
                     <tr>
                         {/*<td width={100} height={40}>{comment.commNum}</td>*/}
                         <td width={100}>{comment.member.name}</td>
-                        <td width={500} style={{ paddingLeft: `${level * 20}px` }}>
+                        <td width={650} style={{ paddingLeft: `${level * 20}px` }}>
                             {comment.delYN === 'Y' ? "삭제된 댓글입니다." : renderCommentContent(comment)}
                         </td>
                         <td>
@@ -366,7 +366,7 @@ function Comment() {
             <form onSubmit={handleSubmit} className={styles.commentForm}>
                 <textarea
                     name="content"
-                    cols="85"
+                    cols="105"
                     value={formData.content}
                     onChange={handleChange}
                 />

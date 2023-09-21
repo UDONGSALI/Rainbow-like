@@ -1,11 +1,6 @@
 package RainbowLike;
 
-import RainbowLike.constant.Gender;
-import RainbowLike.constant.Type;
 import RainbowLike.controller.*;
-import RainbowLike.entity.Board;
-import RainbowLike.entity.Member;
-import RainbowLike.entity.Post;
 import RainbowLike.repository.BoardRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
@@ -13,10 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -31,6 +22,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     private final EduHistController eduHistController;
     private final DefaultFileController defaultFileController;
     private final FileController fileController;
+    private final FtalentController ftalentController;
 
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
@@ -49,6 +41,10 @@ public class RainbowLikeApplication implements CommandLineRunner {
         eduHistController.createDefaultEduHists();
 
         defaultFileController.createDefaultFiles();
+
+        ftalentController.createTestFtw();
+        ftalentController.createTestFtc();
+        ftalentController.createTestFtm();
     }
 }
 
