@@ -46,6 +46,14 @@ public class FileController {
     private Iterable<File> getFilesByEduNum(@PathVariable Long eduNum) {
         return fileRepository.findByEdu(eduRepository.findByEduNum(eduNum));
     }
+    @GetMapping("/postNum/{postNum}")
+    private Iterable<File> getFilesByPostNum(@PathVariable Long postNum) {
+       return fileRepository.findByPost(postRepository.findByPostNum(postNum));
+    }
+    @GetMapping("/post")
+    private Iterable<File> getFindByPostIsNotNull(){
+        return fileRepository.findByPostIsNotNull();
+    }
 
     @DeleteMapping("/eduNum/{eduNum}")
     private void deleteFilesByEduNum(@PathVariable Long eduNum) {
