@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
-import '../../../css/component/Club/ClubForm.module.css';
+import styles from  '../../../css/component/Club/ClubForm.module.css';
 import {useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../Common/constants";
 
-function ClubEditor(){
-    const { id } = useParams();
+function ClubEditor({postNum}){
+    // const { id } = useParams();
+    const id = postNum;
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -31,7 +32,6 @@ function ClubEditor(){
     }, [id]);
 
     useEffect(() => {
-        // id를 사용하여 데이터를 불러온다고 가정하고, API 호출 등으로 데이터를 가져옴
         fetch(SERVER_URL + "posts/" + id)
             .then(response => response.json())
             .then(formData => {
@@ -81,7 +81,7 @@ function ClubEditor(){
                 alert('게시글을 수정했습니다.');
 
                 //게시글 상세로 이동
-                navigate(`/posts/${id}`);
+                navigate(`/clubs/${id}`);
             })
             .catch((error) => {
                 // 오류 처리
@@ -90,40 +90,11 @@ function ClubEditor(){
     };
 
     return (
-        <div className="registration-form-container">
+        <div className={styles.registrationFormContainer}>
             <h2>게시글 수정 폼</h2>
-            <form onSubmit={handleSubmit} className="registration-form">
-                <div className="{styles.inputGroup}">
-                    <input
-                        type="number"
-                        name="memNum"
-                        value={formData.memNum}
-                        onChange={handleChange}
-                        placeholder="멤바"
-                        required
-                    />
-                </div>
-                <div className="{styles.inputGroup}">
-                    <select
-                        name="boardNum"
-                        value={formData.boardNum}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">게시판 선택</option>
-                        <option value="1">공지사항</option>
-                        <option value="2">언론보도</option>
-                        <option value="3">세종시 기관 및 단체소식</option>
-                        <option value="4">여플 소식</option>
-                        <option value="5">뉴스레터</option>
-                        <option value="6">대관 이용 후기</option>
-                        <option value="7">노무 상담 게시판</option>
-                        <option value="8">온라인 상담</option>
-                        <option value="9">모임 페이지</option>
-                        <option value="10">club_test</option>
-                    </select>
-            </div>
-                <div className="{styles.inputGroup}">
+            <form onSubmit={handleSubmit} className={styles.registrationForm}>
+
+                <div className={styles.inputGroup}>
                     <select
                         name="clubAllowStatus"
                         value={formData.clubAllowStatus}
@@ -136,7 +107,7 @@ function ClubEditor(){
 
                     </select>
                 </div>
-                <div className="{styles.inputGroup}">
+                <div className={styles.inputGroup}>
                     <select
                         name="clubRecuStatus"
                         value={formData.clubRecuStatus}
@@ -153,7 +124,7 @@ function ClubEditor(){
                     </select>
                 </div>
 
-                <div className="{styles.inputGroup}">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="title"
@@ -163,7 +134,7 @@ function ClubEditor(){
                         />
                 </div>
 
-                <div className="{styles.inputGroup}">
+                <div className={styles.inputGroup}>
                     <textarea
                         name="content"
                         value={formData.content}

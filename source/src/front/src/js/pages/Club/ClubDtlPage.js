@@ -1,13 +1,13 @@
 import ClubDetail from "../../component/Club/ClubDetail";
 import Comment from "../../component/Comment/Comment";
-// import styles from '../../../css/component/Club/ClubDetail.module.css';
+import styles from '../../../css/pages/Club/ClubDtlPage.module.css';
 
 
 function ClubDtlPage(){
 
 
     return(
-        <div className="ex">
+        <div className={styles.postDetailPage}>
 
             <ClubDetail />
             <div className="comment">

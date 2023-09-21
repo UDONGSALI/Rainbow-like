@@ -17,30 +17,12 @@ public class ClubController {
    PostRepository postRepository;
     @Autowired
     ClubRepository clubRepository;
-//    @Autowired
-//    ClubService clubService;
-
-
-//    @GetMapping("/clubs")
-//    public Iterable<Post> getClubs() {
-//        Board board = new Board();
-//        board.setBoardNum(10L);
-//        return postRepository.findByBoard(board);
-//    }
 
     @GetMapping("/clubs/{postId}") // /clubs/post/{postId} 엔드포인트를 정의
     public Optional<Post> getPostById(@PathVariable Long postId) {
         return clubRepository.findById(postId);
     }
 
-
-
-//    @PostMapping("/clubs/new")
-//    public Iterable<Post> addClubsPost(@RequestParam Post post) {
-//        private void Postclub(ClubFormDto clubFormDto) {
-//            clubService.saveMember(clubFormDto);
-//        }
-//    }
 
 
 }

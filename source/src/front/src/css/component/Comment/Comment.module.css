@@ -1,8 +1,11 @@
 .comment{
     margin: 0 auto;
-    max-width: 60%;
-    padding-left: 8%;
+    max-width: 100%;
+    padding: 5%;
 
+    /*border: 1px solid #ccc;*/
+    /*border-radius: 5px;*/
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);*/
 }
 
 .commList{
@@ -10,9 +13,14 @@
 
 }
 
+.commList td{
+    padding-top: 5px;
+    padding-bottom
+    : 5px;
+}
+
 .commentForm{
-    margin-top: 10%;
-    margin: 0 auto;
+margin-top: 2%;
 }
 
 .comment button {
