@@ -21,6 +21,7 @@ import ClubEditor from "./js/component/Club/ClubEditor";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 import NoticePage from "./js/pages/Post/NoticePage";
 import NoticeDetailPage from "./js/pages/Post/NoticeDetailPage";
+import SignUpPage from "./js/pages/Login/SignUpPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -65,7 +66,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Main/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
-                <Route path="/singUp" element={<SingUp/>}/>
+                <Route path="/signUp" element={<SignUpPage/>}/>
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
