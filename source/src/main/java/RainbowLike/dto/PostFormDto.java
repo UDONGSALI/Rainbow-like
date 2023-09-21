@@ -58,10 +58,13 @@ public class PostFormDto {
         Board board1 = new Board();
         Board board2 = new Board();
         Board board3 = new Board();
+        Board board4 = new Board();
 
         board1.setBoardNum(9L);
         board2.setBoardNum(8L);
         board3.setBoardNum(1L);
+        board4.setBoardNum(3L);
+
 
         Member member1 = new Member();
         Member member2 = new Member();
@@ -179,6 +182,17 @@ public class PostFormDto {
         post10.setPageView(0);
 
         postList.add(post10);
+
+        PostFormDto post11 = new PostFormDto();
+        post11.setBoard(board4);
+        post11.setMember(member1);
+        post11.setTitle("썸네일 게시판 첫 글");
+        post11.setContent("썸네일 게시판 입니다.");
+        post11.setWriteDate(LocalDateTime.now());
+        post11.setPageView(0);
+
+        postList.add(post11);
+
 
 
 

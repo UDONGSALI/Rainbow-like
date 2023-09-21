@@ -125,7 +125,7 @@ body {
 }
 
 .file-name:hover {
-    font-family: "Britannic Bold";
+    font-weight: bold;
 }
 
 .post-button {
@@ -183,4 +183,5 @@ body {
 .prev-button-style:hover,
 .next-button-style:hover{
     color: #99959E;
+
 }

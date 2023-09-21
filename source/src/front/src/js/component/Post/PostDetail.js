@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
-import '../../../css/component/Post/PostDetail.css';
+import styles from './PostDetail.module.css'; // CSS 모듈 가져오기
 
 function PostDetail(props) {
     const { postNum } = props;
@@ -92,38 +92,38 @@ function PostDetail(props) {
     }
 
     return (
-        <div className="post-detail">
-            <div className="title-divider"></div>
-            <h2 className="title">{post.post.title}</h2>
-            <div className="post-meta">
-                <p className="post_data">
+        <div className={styles.postDetail}> {/* CSS 모듈 적용 */}
+            <div className={styles.titleDivider}></div>
+            <h2 className={styles.title}>{post.post.title}</h2>
+            <div className={styles.postMeta}>
+                <p className={styles.postData}>
                     작성자: {post.member.name}{' '}
                     작성일: {post.post.writeDate.slice(0, 10)}{' '}
                     조회수: {post.post.pageView}
                 </p>
-                <div className='post_menu_title'> - 공지사항 입니다.</div>
-                <div className="left-top">
+                <div className={styles.postMenuTitle}> - 공지사항 입니다.</div>
+                <div className={styles.leftTop}>
                     {filteredFiles.map((file, index) => (
                         <img
                             key={index}
                             src={file.fileUri}
                             alt={`Image ${index + 1}`}
-                            className="post-image"
+                            className={styles.postImage}
                         />
                     ))}
                 </div>
 
-                <div className="post-content" dangerouslySetInnerHTML={{ __html: post.post.content }}></div>
+                <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.post.content }}></div>
             </div>
-            <div className="file-list">
-                <ul className="file-box">
-                    <li className="file-label">첨부파일</li>
-                    <li className="file-divider"></li>
-                    <li className="file-names">
+            <div className={styles.fileList}>
+                <ul className={styles.fileBox}>
+                    <li className={styles.fileLabel}>첨부파일</li>
+                    <li className={styles.fileDivider}></li>
+                    <li className={styles.fileNames}>
                         {filteredFiles.map((file, index) => (
                             <a
                                 key={index}
-                                className="file-name"
+                                className={styles.fileName}
                                 href={file.fileUri}
                                 download
                             >
@@ -133,29 +133,29 @@ function PostDetail(props) {
                     </li>
                 </ul>
             </div>
-            <div className="post-button">
-                <button onClick={onEditClick} className="post-edit-button">수정</button>
-                <button onClick={onDelClick} className="post-delete-button">삭제</button>
-                <button onClick={() => navigate("/posts")} className="post-list-button">목록으로</button>
+            <div className={styles.postButton}>
+                <button onClick={onEditClick} className={styles.postEditButton}>수정</button>
+                <button onClick={onDelClick} className={styles.postDeleteButton}>삭제</button>
+                <button onClick={() => navigate("/posts")} className={styles.postListButton}>목록으로</button>
             </div>
-            <div className="prev-next-buttons">
+            <div className={styles.prevNextButtons}>
                 {prevPostNum >= 9 && (
-                    <div className="prev-button">
+                    <div className={styles.prevButton}>
                         &nbsp;&nbsp;∧ 이전 글 -&nbsp;
                         <button
                             onClick={() => navigate(`/notice/detail/${prevPostNum}`)}
-                            className="prev-button-style"
+                            className={styles.prevButtonStyle}
                         >
                             {prevPostTitle}
                         </button>
                     </div>
                 )}
                 {nextPostNum <= 13 && (
-                    <div className="next-button">
+                    <div className={styles.nextButton}>
                         &nbsp;&nbsp;∨ 다음 글 -&nbsp;
                         <button
                             onClick={() => navigate(`/notice/detail/${nextPostNum}`)}
-                            className="next-button-style"
+                            className={styles.nextButtonStyle}
                         >
                             {nextPostTitle}
                         </button>
@@ -165,4 +165,5 @@ function PostDetail(props) {
         </div>
     );
 }
+
 export default PostDetail;
