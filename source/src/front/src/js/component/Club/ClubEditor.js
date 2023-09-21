@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import '../../../css/component/Club/ClubForm.css';
+import '../../../css/component/Club/ClubForm.module.css';
 import {useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../Common/constants";
 
@@ -93,7 +93,7 @@ function ClubEditor(){
         <div className="registration-form-container">
             <h2>게시글 수정 폼</h2>
             <form onSubmit={handleSubmit} className="registration-form">
-                <div className="input-group">
+                <div className="{styles.inputGroup}">
                     <input
                         type="number"
                         name="memNum"
@@ -103,7 +103,7 @@ function ClubEditor(){
                         required
                     />
                 </div>
-                <div className="input-group">
+                <div className="{styles.inputGroup}">
                     <select
                         name="boardNum"
                         value={formData.boardNum}
@@ -123,7 +123,7 @@ function ClubEditor(){
                         <option value="10">club_test</option>
                     </select>
             </div>
-                <div className="input-group">
+                <div className="{styles.inputGroup}">
                     <select
                         name="clubAllowStatus"
                         value={formData.clubAllowStatus}
@@ -136,7 +136,7 @@ function ClubEditor(){
 
                     </select>
                 </div>
-                <div className="input-group">
+                <div className="{styles.inputGroup}">
                     <select
                         name="clubRecuStatus"
                         value={formData.clubRecuStatus}
@@ -153,7 +153,7 @@ function ClubEditor(){
                     </select>
                 </div>
 
-                <div className="input-group">
+                <div className="{styles.inputGroup}">
                     <input
                         type="text"
                         name="title"
@@ -163,7 +163,7 @@ function ClubEditor(){
                         />
                 </div>
 
-                <div className="input-group">
+                <div className="{styles.inputGroup}">
                     <textarea
                         name="content"
                         value={formData.content}

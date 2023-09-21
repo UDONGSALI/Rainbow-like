@@ -12,15 +12,15 @@ import EduDetailPage from "./js/pages/Edu/EduDetailPage";
 import EduAddPage from "./js/pages/Edu/EduAddPage";
 import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
-import NoticeDetailPage from './js/pages/NoticeDetailPage';
-import NoticePage from './js/pages/NoticePage';
 import Main from "./js/component/screens/Main";
 import PostList from "./js/component/Post/PostList";
-import ClubList from "./js/component/Club/ClubList";
+import ClubPage from "./js/pages/Club/ClubPage";
 import ClubForm from "./js/component/Club/ClubForm";
 import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
 import ClubEditor from "./js/component/Club/ClubEditor";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
+import NoticePage from "./js/pages/Post/NoticePage";
+import NoticeDetailPage from "./js/pages/Post/NoticeDetailPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -78,10 +78,10 @@ function App() {
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/posts" element={<PostList />}   />
-                <Route path="/clubs" element={<ClubList />}   />
+                <Route path="/clubs" element={<ClubPage />}   />
                 <Route path="/clubs/new" element={<ClubForm />}   />
                 <Route
-                    path="/posts/:id" element={<ClubDtlPage />}
+                    path="/clubs/:id" element={<ClubDtlPage />}
                     render={(props) => <ClubDtlPage {...props} />} // props를 전달
                 />
                 <Route

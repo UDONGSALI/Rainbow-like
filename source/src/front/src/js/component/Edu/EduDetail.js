@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import '../../../css/component/Edu/EduDetail.css';
+import styles from '../../../css/component/Edu/EduDetail.module.css';
 import { SERVER_URL } from '../Common/constants';
 import { useParams } from "react-router-dom";
 
@@ -62,31 +62,31 @@ function EduDetail({ onBackClick }) {
     }
 
     return (
-        <div className="container">
+        <div className={styles.container}>
             {eduData ? (
                 <div>
-                    <div className="header-content">
-                        <div className="left-top">
+                    <div className={styles.headerContent}>
+                        <div className={styles.leftTop}>
                             {filteredFiles[0] && <img src={filteredFiles[0].fileUri} alt="First Image" />}
                         </div>
-                        <div className="right-top">
-                            <h1 className="header">{eduData.eduname}</h1>
-                            <p className="detail"><strong>교육 일시:</strong> {renderDateRange(eduData.eduStdt, eduData.eduEddt)}</p>
-                            <p className="detail"><strong>장소:</strong> {eduData.eduAddr}</p>
-                            <p className="detail"><strong>대상:</strong> {eduData.target}</p>
-                            <p className="detail"><strong>신청 기간:</strong> {eduData.recuStdt} ~ {eduData.recuEddt}</p>
-                            <p className="detail"><strong>신청 방법:</strong> {eduData.recuMethod}</p>
-                            <p className="detail"><strong>문의 전화번호:</strong> {eduData.tel}</p>
+                        <div className={styles.rightTop}>
+                            <h1 className={styles.header}>{eduData.eduname}</h1>
+                            <p className={styles.detail}><strong>교육 일시:</strong> {renderDateRange(eduData.eduStdt, eduData.eduEddt)}</p>
+                            <p className={styles.detail}><strong>장소:</strong> {eduData.eduAddr}</p>
+                            <p className={styles.detail}><strong>대상:</strong> {eduData.target}</p>
+                            <p className={styles.detail}><strong>신청 기간:</strong> {eduData.recuStdt} ~ {eduData.recuEddt}</p>
+                            <p className={styles.detail}><strong>신청 방법:</strong> {eduData.recuMethod}</p>
+                            <p className={styles.detail}><strong>문의 전화번호:</strong> {eduData.tel}</p>
                         </div>
                     </div>
                     <br/>
                     <br/>
                     <hr />
                     <br/>
-                    <div className="main-content">
+                    <div className={styles.mainContent}>
                         {filteredFiles[1] && <img src={filteredFiles[1].fileUri} alt="Second Image" />}
                         <br/>
-                        <p className="detail-content">{eduData.content}</p>
+                        <p className={styles.detailContent}>{eduData.content}</p>
                     </div>
                 </div>
             ) : (

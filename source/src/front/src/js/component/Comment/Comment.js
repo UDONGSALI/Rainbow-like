@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import '../../../css/component/Club/ClubForm.css';
+import styles from '../../../css/component/Comment/Comment.module.css';
 import { useParams } from "react-router-dom";
 import { SERVER_URL } from "../Common/constants";
 import Snackbar from "@mui/material/Snackbar";
@@ -44,7 +44,7 @@ function Comment() {
             .catch((err) => console.error(err));
     };
 
-// 데이터 편집
+// 데이터 편집(parentNum 0인 것이 부모댓글, 부모댓글의 commNum을 parentNum으로 가진 것이 자식댓글로 배열화)
     const buildCommentTree = (comments) => {
         const commentMap = new Map();
         const commentTree = [];
@@ -70,7 +70,7 @@ function Comment() {
         return commentTree;
     };
 
-//댓글 삭제(delYN = Y)
+    //댓글 삭제(delYN을 Y로 바꿔 리스트에 노출하지 않게 함)
     const onDelClick = (comment) => {
         console.log(comment);
         const updatedCommentData = {
@@ -203,8 +203,6 @@ function Comment() {
 
 
 //댓글 수정
-
-
     const handleEditChange = (e) => {
         const { name, value } = e.target;
         setEditFormData({ ...editFormData, [name]: value });
@@ -272,7 +270,7 @@ function Comment() {
 
 
 
-// 댓글 편집출력
+// 출력할 댓글 편집(게시글의 댓글 여부, delYN 등)
     const renderCommentContent = (comment) => {
         if (comment.delYN === 'Y' && (!comment.children || comment.children.length === 0)) {
             return "삭제된 댓글입니다.";
@@ -285,12 +283,11 @@ function Comment() {
             <React.Fragment key={comment.commNum}>
                 {(comment.delYN === 'N' || (comment.delYN === 'Y' && comment.children && comment.children.length > 0)) && (
                     <tr>
-                        <td width={100}>{comment.commNum}</td>
+                        {/*<td width={100} height={40}>{comment.commNum}</td>*/}
                         <td width={100}>{comment.member.name}</td>
-                        <td width={400} style={{ paddingLeft: `${level * 20}px` }}>
+                        <td width={500} style={{ paddingLeft: `${level * 20}px` }}>
                             {comment.delYN === 'Y' ? "삭제된 댓글입니다." : renderCommentContent(comment)}
                         </td>
-                        <td width={100}>{comment.parentNum}</td>
                         <td>
                             {comment.delYN === 'N' && (
                                 <button onClick={() => onReplyClick(comment)}>답글</button>
@@ -351,20 +348,10 @@ function Comment() {
 
 
     return (
-        <div className="comment">
-            <div className="commList">
+        <div className={styles.comment}>
+            <div className={styles.commList}>
                 <table>
-                    <thead>
-                    <tr>
-                        {/*<th>댓글 번호</th>*/}
-                        {/*<th>작성자</th>*/}
-                        {/*<th>댓글 본문</th>*/}
-                        {/*<th>부모 번호</th>*/}
-                        {/*<th>답글</th>*/}
-                        {/*<th>수정</th>*/}
-                        {/*<th>삭제</th>*/}
-                    </tr>
-                    </thead>
+
                     <tbody>
                     {comms.length === 0 ? (
                         <tr>
@@ -376,14 +363,14 @@ function Comment() {
                     )}                    </tbody>
                 </table>
             </div>
-            <form onSubmit={handleSubmit} className="comment-form">
+            <form onSubmit={handleSubmit} className={styles.commentForm}>
                 <textarea
                     name="content"
-                    cols="100"
+                    cols="85"
                     value={formData.content}
                     onChange={handleChange}
                 />
-                <button type="submit">댓글 작성</button>
+                <button type="submit">작성</button>
             </form>
         </div>
     );

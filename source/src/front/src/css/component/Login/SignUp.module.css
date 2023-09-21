@@ -1,0 +1,87 @@
+.signFormContainer {
+    width: 30vw;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.signForm {
+    width: 80%;
+    position: relative;
+}
+
+/* --- 제목 스타일 --- */
+.signForm h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* --- 입력 그룹과 레이블 스타일 --- */
+.signForm .inputGroup {
+    position: relative;
+    width: 100%;
+}
+
+.inputGroup label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transition: all 0.3s;
+    color: #777;
+    pointer-events: none;
+    background-color: #f9f9f9;
+    padding: 0 5px;
+    margin-left: -5px;
+}
+
+input:focus + label,
+input:not(:placeholder-shown) + label {
+    transform: translateY(-18px);
+    font-size: 14px;
+    color: #007bff;
+}
+
+/* --- 입력 필드, 선택 및 버튼 스타일 --- */
+.signForm input,
+.signForm select,
+.signForm button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    appearance: none;
+}
+
+.signForm button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.signForm button:hover {
+    background-color: #0056b3;
+}
+
+.signForm span {
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+.passwordInput {
+    appearance: none ;
+    -webkit-appearance: none ;
+    border-radius: 0 ;
+    /* 추가로 다른 스타일 속성들도 초기화 할 수 있습니다. */
+}

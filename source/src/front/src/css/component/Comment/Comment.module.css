@@ -1,0 +1,40 @@
+.comment{
+    margin: 0 auto;
+    max-width: 60%;
+    padding-left: 8%;
+
+}
+
+.commList{
+    margin: 0 auto;
+
+}
+
+.commentForm{
+    margin-top: 10%;
+    margin: 0 auto;
+}
+
+.comment button {
+    width: 100%;
+    /*margin-top: 15px;*/
+    margin-bottom: 5px;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+
+    max-width: 60px;
+    margin-left: 20px;
+    align-items: center;
+    text-align: center;
+    background-color: #a38ced;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.comment button:hover {
+    background-color: #53468b;
+}
+
