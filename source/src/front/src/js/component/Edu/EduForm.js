@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import '../../../css/component/Club/ClubForm.css';
 import FileUpload from "../Common/FileUpload";
 import {SERVER_URL} from "../Common/constants";
 import {useNavigate} from 'react-router-dom';

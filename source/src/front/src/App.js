@@ -1,4 +1,4 @@
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import './App.css';
 import './css/font.css';
 import LoginPage from "./js/pages/Login/LoginPage";
@@ -7,20 +7,42 @@ import NoticeDetailPage from "./js/pages/NoticeDetailPage";
 import NoticePage from "./js/pages/NoticePage";
 import MemManagePage from "./js/pages/Member/MemManagePage";
 import SingUp from "./js/component/Login/SignUp";
+<<<<<<< HEAD
 import PostList from "./js/component/Post/PostList";
 import ClubList from "./js/component/Club/ClubList";
 import ClubForm from "./js/component/Club/ClubForm";
 import ClubEditor from "./js/component/Club/ClubEditor";
 import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
+=======
+>>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
 import EduCalendarPage from "./js/pages/Edu/EduCalendarPage";
 import EduListPage from "./js/pages/Edu/EduListPage";
 import EduDetailPage from "./js/pages/Edu/EduDetailPage";
-import EduManagePage from "./js/pages/Edu/EduManagePage";
 import EduAddPage from "./js/pages/Edu/EduAddPage";
 import EduEditPage from "./js/pages/Edu/EduEditPage";
+<<<<<<< HEAD
 import RentPage from "./js/pages/Rent/RentPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
 import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
+=======
+import EduApplyPage from "./js/pages/Edu/EduApplyPage";
+import Main from "./js/component/screens/Main";
+import PostList from "./js/component/Post/PostList";
+import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
+import NoticePage from "./js/pages/Post/NoticePage";
+import NoticeDetailPage from "./js/pages/Post/NoticeDetailPage";
+import ClubPage from "./js/pages/Club/ClubPage";
+import ClubForm from "./js/pages/Club/ClubFormPage";
+import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
+import ClubEditor from "./js/pages/Club/ClubEditorPage";
+import FTMainPage from "./js/pages/FT/FTMainPage";
+import FTWListPage from "./js/pages/FT/FTW/FTWListPage";
+import FTWFormPage from "./js/pages/FT/FTW/FTWFormPage";
+import FTWDtlPage from "./js/pages/FT/FTW/FTWDtlPage";
+import FTWEditPage from "./js/pages/FT/FTW/FTWEditPage";
+import SignUpPage from "./js/pages/Login/SignUpPage";
+
+>>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -60,11 +82,28 @@ function App() {
 
     return (
         <div className="App">
+<<<<<<< HEAD
             <Routes>
+=======
+            {/*<NavBarElements/>*/}
+            <NavBar/>
+            <Routes>
+                <Route path="/" element={<Main/>}/>
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/signUp" element={<SignUpPage/>}/>
+>>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
-                <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
+                <Route path="/edu/list" element={<EduListPage/>}/>
+                <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/edu/apply/:eduNum" element={<EduApplyPage memId = {memId} />}/>
+                <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
+                <Route path="/edu/applyCheck" element={<EduApplyCheckPage memId = {memId} />}/>
+                <Route path="/admin/edu/apply" element={isAdmin ? <EduApplyCheckPage memId = {memId}/> : null}/>
+                <Route path="/admin/edu/apply" element={<EduApplyCheckPage memId = {memId}/> }/>
+                <Route path="/admin/edu" element={isAdmin ? <EduListPage /> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
+<<<<<<< HEAD
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/singUp" element={<SingUp/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
@@ -86,6 +125,22 @@ function App() {
                     path="/posts/edit/:id" element={<ClubEditor/>}
                     render={(props) => <ClubDtlPage {...props} />} // props를 전달
                 />
+=======
+                <Route path="/posts" element={<PostList />}   />
+
+                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
+                <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
+                <Route path="/notice/:boardNum" element={<NoticePage/>}/>
+                <Route path="/clubs" element={<ClubPage />}   />
+                <Route path="/clubs/new" element={<ClubForm />}   />
+                <Route path="/clubs/:id" element={<ClubDtlPage />} />
+                <Route path="/clubs/edit/:postNum" element={<ClubEditor />} />
+                <Route path="/ftmain" element={<FTMainPage/>}/>
+                <Route path="/ftw" element={<FTWListPage/>}/>
+                <Route path="/ftw/new" element={<FTWFormPage/>}/>
+                <Route path="/ftw/:ftwNum" element={<FTWDtlPage/>}/>
+                <Route path="/ftw/edit/:ftwNum" element={<FTWEditPage/>}/>
+>>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
             </Routes>
         </div>
     )

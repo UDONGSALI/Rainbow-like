@@ -82,9 +82,9 @@ function PostList() {
             headerName: '삭제',
             sortable: false,
             filterable: false,
-            renderCell: (row) => (
+            renderCell: (params) => (
                 <button
-                    onClick={() => onDelClick(row.id)}
+                    onClick={() => onDelClick(params.row)}
                 >
                     삭제
                 </button>
@@ -108,18 +108,61 @@ function PostList() {
             .catch(err => console.error(err));
     };
 
+<<<<<<< HEAD
     const onDelClick = ( url) => {
 
         fetch(url, {method: 'DELETE'})
             .then(response => {
+=======
+    const onDelClick = (post) => {
+        console.log(post);
+        const updatedPostData = {
+
+            memNum: post.member.memNum,
+            boardNum: post.board.boardNum,
+            title: post.title,
+            content: post.content,
+            writeDate: post.writeDate,
+            editDate: post.editDate,
+            pageView: post.pageView,
+            parentsNum: post.parentsNum,
+            clubAllowStatus: post.clubAllowStatus,
+            clubRecuStatus: post.clubRecuStatus,
+            delYN : 'Y'
+        };
+
+        // PUT 요청 보내기
+        fetch(SERVER_URL + "posts/edit/" + post.postNum, {
+            method: 'PUT', // PUT 요청을 사용
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedPostData),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                alert('게시글을 삭제했습니다.');
+>>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
                 fetchPosts();
                 setOpen(true);
+
             })
+<<<<<<< HEAD
             .then(response => {
                 alert("게시글을 삭제했습니다.");
             })
 
             .catch(err => console.error(err))
+=======
+            .catch((error) => {
+                console.error('게시글 삭제 중 오류 발생:', error);
+            });
+>>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
     };
 
     const onEditClick = (params) => {
@@ -139,7 +182,11 @@ function PostList() {
             <DataGrid columns={columns}
                       rows={posts}
                       disableRowSelectionOnClick={true}
+<<<<<<< HEAD
                       getRowId={row => SERVER_URL + "api/posts/" + row.postNum}
+=======
+                      getRowId={row => row.postNum}
+>>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
             />
 
 

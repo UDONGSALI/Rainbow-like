@@ -21,4 +21,10 @@ public interface PostRepository extends JpaRepository <Post,Long> {
 //    List<Post> findByIdAndContent(Long id, String content);
 
 
+<<<<<<< HEAD
+=======
+    @Modifying
+    @Query("update Post p set p.pageView = p.pageView + 1 where p.id = :id")
+    int updateView(Long id);
+>>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
 }

@@ -4,7 +4,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import '../../../css/component/Member/MemberEditor.css'
+import styles from '../../../css/component/Member/MemberEdit.module.css'
 
 
 
@@ -206,7 +206,7 @@ function MemberEditor({ member, open, onClose, onUpdate }) {
                     </div>
                 )}
             </DialogContent>
-            <DialogActions className="member-detail-container">
+            <DialogActions className={styles.memberDetailContainer}>
                     <Button onClick={handleSave}>수정완료</Button>
                 <Button onClick={onClose}>닫기</Button>
             </DialogActions>

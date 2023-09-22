@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import RainbowLike.constant.FtmYN;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
@@ -34,8 +35,12 @@ public class FtConsumer extends BaseEntity{
     @Lob
     private String applyContent;
 
+    @Column
+    private String statusDtl;
+
+
     @Column(nullable = false)
-    private boolean ftmYn;
+    private FtmYN ftmYN;
 
     @OneToMany(mappedBy = "ftConsumer", cascade = CascadeType.REMOVE)
     @JsonBackReference(value="ftConsumer-femaleTalentMatchings")

@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {SERVER_URL} from "../Common/constants";
-import '../../../css/component/Edu/EduCalendar.css';
+import styles from '../../../css/component/Edu/EduCalendar.module.css';
 
 const localizer = momentLocalizer(moment);
 
@@ -67,8 +67,8 @@ function EduCalendar() {
         };
 
         return (
-            <div className="rbc-toolbar">
-            <span className="rbc-btn-group">
+            <div className={styles.rbcToolbar}>  {/* 변경된 부분 */}
+                <span className={styles.rbcBtnGroup}>  {/* 클래스 이름 변경 */}
                 <button type="button" onClick={goToBack}>&lt;</button>
                 <span onClick={goToToday}>{formatDate(toolbar.date)}</span>
                 <button type="button" onClick={goToNext}>&gt;</button>
@@ -78,8 +78,8 @@ function EduCalendar() {
     };
 
     return (
-        <div className="calendar-container">
-            <div className="calendar-content">
+        <div className={styles.calendarContainer}>
+            <div className={styles.calendarContent}>
                 <Calendar
                     localizer={localizer}
                     events={events}
