@@ -170,8 +170,6 @@ function ClubList() {
             />
 
         </div>
-
-
     );
 }
 

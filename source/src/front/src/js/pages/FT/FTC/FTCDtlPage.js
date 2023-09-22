@@ -1,12 +1,13 @@
-import FTWList from "../../../component/FT/FTW/FTWList";
+import FTCDtl from "../../../component/FT/FTC/FTCDtl";
 import styles from '../../../../css/pages/Club/ClubDtlPage.module.css';
 
-function FTWListPage(){
+function FTCDtlPage(){
+
     return(
         <div className={styles.postDetailPage}>
-            <FTWList />
+            <FTCDtl />
         </div>
     );
 }
 
-export default FTWListPage;
+export default FTCDtlPage;

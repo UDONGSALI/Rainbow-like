@@ -24,7 +24,7 @@ li{
 #title h2{
     margin-top: 25px;
     text-align: center;
-    font-size: 30px;
+    font-size: 40px;
     font-weight: bold;
 }
 
@@ -149,13 +149,15 @@ width: 100%;
 
 #title > .main3 > p{
     font-size: 15px;
+    margin-bottom: 30px;
+
 
 
 }
 
 
 
-#title > .main3 > .rentFee_standard >p{
+#title > .main3 > .rentFee_standard >b{
     padding-top: 20px;
     font-size: 20px;
     font-weight: bold;
@@ -169,15 +171,18 @@ width: 100%;
     margin-left: 10px;
 
 
+
 }
 
-#title > .main3 > .rentFee_accept >p{
+#title > .main3 > .rentFee_accept >b{
     padding-top: 20px;
     font-size: 20px;
     font-weight: bold;
     color : #8757B8;
 
+
 }
+
 
 #title > .main3 > .rentFee_accept > li{
     list-style: none;
@@ -187,7 +192,7 @@ width: 100%;
 }
 
 
-#title > .main3 > .rentFee_return >p{
+#title > .main3 > .rentFee_return >b{
     padding-top: 20px;
     font-size: 20px;
     font-weight: bold;
