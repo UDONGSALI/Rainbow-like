@@ -142,7 +142,7 @@ function ClubList() {
     const onEditClick = (params) => {
 
         const rowId = params.row.postNum;
-        navigate(`/posts/edit/${rowId}`);
+        navigate(`/clubs/edit/${rowId}`);
     };
 
 
@@ -153,6 +153,8 @@ function ClubList() {
 
     return (
         <div className={styles.List} style={{ height: 500, width: '100%' }}>
+            <button onClick = {() => navigate('/clubs/new')}>소모임 신청</button>
+
             <DataGrid columns={columns}
                       rows={posts}
                       disableRowSelectionOnClick={true}
@@ -166,7 +168,6 @@ function ClubList() {
                 onClose={() => setOpen(false)}
                 message="게시글을 삭제했습니다."
             />
-            <button onClick = {() => navigate('/clubs/new')}>새 게시글 작성</button>
 
         </div>
 

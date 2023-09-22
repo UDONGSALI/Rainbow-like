@@ -5,7 +5,7 @@ const Mypage_active = () => {
     return(
         <div id="content_wrap" className={styles.globalStyles}>
             <div className="layout">
-                <header id="sub_tit">
+                <header id="subTit">
                     <h3>활동 내역</h3>
                 </header>
                 <ariticle id="txt">

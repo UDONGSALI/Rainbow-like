@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from "../Common/constants";
 import File from '../../../img/component/file.png'
 
+
 function PostNoticeList(props) {
     const { boardNum } = props;
     const [files, setFiles] = useState([]);
@@ -168,5 +169,6 @@ function PostNoticeList(props) {
         </div>
     );
 }
+
 
 export default PostNoticeList;

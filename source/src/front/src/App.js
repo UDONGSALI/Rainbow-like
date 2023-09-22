@@ -14,13 +14,20 @@ import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 import Main from "./js/component/screens/Main";
 import PostList from "./js/component/Post/PostList";
-import ClubPage from "./js/pages/Club/ClubPage";
-import ClubForm from "./js/component/Club/ClubForm";
-import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
-import ClubEditor from "./js/component/Club/ClubEditor";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 import NoticePage from "./js/pages/Post/NoticePage";
 import NoticeDetailPage from "./js/pages/Post/NoticeDetailPage";
+import ClubPage from "./js/pages/Club/ClubPage";
+import ClubForm from "./js/pages/Club/ClubFormPage";
+import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
+import ClubEditor from "./js/pages/Club/ClubEditorPage";
+import FTMainPage from "./js/pages/FT/FTMainPage";
+import FTWListPage from "./js/pages/FT/FTW/FTWListPage";
+import FTWFormPage from "./js/pages/FT/FTW/FTWFormPage";
+import FTWDtlPage from "./js/pages/FT/FTW/FTWDtlPage";
+import FTWEditPage from "./js/pages/FT/FTW/FTWEditPage";
+import SignUpPage from "./js/pages/Login/SignUpPage";
+
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -65,7 +72,11 @@ function App() {
             <Routes>
                 <Route path="/" element={<Main/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
+<<<<<<< HEAD
                 <Route path="/sin gUp" element={<SingUp/>}/>
+=======
+                <Route path="/signUp" element={<SignUpPage/>}/>
+>>>>>>> 1ea2e7d14f2047fef0d54e659ab7206c4c73d6a7
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
@@ -78,19 +89,19 @@ function App() {
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/posts" element={<PostList />}   />
-                <Route path="/clubs" element={<ClubPage />}   />
-                <Route path="/clubs/new" element={<ClubForm />}   />
-                <Route
-                    path="/clubs/:id" element={<ClubDtlPage />}
-                    render={(props) => <ClubDtlPage {...props} />} // props를 전달
-                />
-                <Route
-                    path="/posts/edit/:id" element={<ClubEditor />}
-                    render={(props) => <ClubDtlPage {...props} />} // props를 전달
-                />
+
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
                 <Route path="/notice/:boardNum" element={<NoticePage/>}/>
+                <Route path="/clubs" element={<ClubPage />}   />
+                <Route path="/clubs/new" element={<ClubForm />}   />
+                <Route path="/clubs/:id" element={<ClubDtlPage />} />
+                <Route path="/clubs/edit/:postNum" element={<ClubEditor />} />
+                <Route path="/ftmain" element={<FTMainPage/>}/>
+                <Route path="/ftw" element={<FTWListPage/>}/>
+                <Route path="/ftw/new" element={<FTWFormPage/>}/>
+                <Route path="/ftw/:ftwNum" element={<FTWDtlPage/>}/>
+                <Route path="/ftw/edit/:ftwNum" element={<FTWEditPage/>}/>
             </Routes>
         </div>
     )
