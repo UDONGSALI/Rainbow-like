@@ -1,9 +1,5 @@
 import React, {useState} from "react";
-<<<<<<< HEAD
-import '../../../css/component/Club/ClubForm.css';
-=======
 import styles from '../../../css/component/Club/ClubForm.module.css';
->>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
 import {useNavigate} from "react-router-dom";
 
 function ClubForm(){
@@ -58,61 +54,37 @@ function ClubForm(){
         <div className={styles.registrationFormContainer}>
             <h2>소모임 신청 폼</h2>
             <form onSubmit={handleSubmit} className={styles.registrationForm}>
+                {/*<div className={styles.inputGroup}>*/}
+                {/*    <input*/}
+                {/*        type="number"*/}
+                {/*        name="memNum"*/}
+                {/*        value={formData.memNum}*/}
+                {/*        onChange={handleChange}*/}
+                {/*        placeholder="멤버"*/}
+                {/*        required*/}
+                {/*    />*/}
+                {/*</div>*/}
+                {/*<div className="input-group">*/}
+                    {/*<select*/}
+                    {/*    name="boardNum"*/}
+                    {/*    value={formData.boardNum}*/}
+                    {/*    onChange={handleChange}*/}
+                    {/*    required*/}
+                    {/*>*/}
+                    {/*    <option value="">게시판 선택</option>*/}
+                    {/*    <option value="1">공지사항</option>*/}
+                    {/*    <option value="2">언론보도</option>*/}
+                    {/*    <option value="3">세종시 기관 및 단체소식</option>*/}
+                    {/*    <option value="4">여플 소식</option>*/}
+                    {/*    <option value="5">뉴스레터</option>*/}
+                    {/*    <option value="6">대관 이용 후기</option>*/}
+                    {/*    <option value="7">노무 상담 게시판</option>*/}
+                    {/*    <option value="8">온라인 상담</option>*/}
+                    {/*    <option value="9">모임 페이지</option>*/}
+                    {/*    <option value="10">club_test</option>*/}
+                    {/*</select>*/}
+                {/*</div>*/}
                 <div className={styles.inputGroup}>
-                    <input
-                        type="number"
-                        name="memNum"
-                        value={formData.memNum}
-                        onChange={handleChange}
-                        placeholder="멤버"
-                        required
-                    />
-                </div>
-<<<<<<< HEAD
-                <div className="input-group">
-                    <select
-                        name="boardNum"
-                        value={formData.boardNum}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">게시판 선택</option>
-                        <option value="1">공지사항</option>
-                        <option value="2">언론보도</option>
-                        <option value="3">세종시 기관 및 단체소식</option>
-                        <option value="4">여플 소식</option>
-                        <option value="5">뉴스레터</option>
-                        <option value="6">대관 이용 후기</option>
-                        <option value="7">노무 상담 게시판</option>
-                        <option value="8">온라인 상담</option>
-                        <option value="9">모임 페이지</option>
-                        <option value="10">club_test</option>
-                    </select>
-                </div>
-                <div className="input-group">
-=======
-            {/*    <div className={styles.inputGroup}>*/}
-            {/*        <select*/}
-            {/*            name="boardNum"*/}
-            {/*            value={formData.boardNum}*/}
-            {/*            onChange={handleChange}*/}
-            {/*            required*/}
-            {/*        >*/}
-            {/*            <option value="">게시판 선택</option>*/}
-            {/*            <option value="1">공지사항</option>*/}
-            {/*            <option value="2">언론보도</option>*/}
-            {/*            <option value="3">세종시 기관 및 단체소식</option>*/}
-            {/*            <option value="4">여플 소식</option>*/}
-            {/*            <option value="5">뉴스레터</option>*/}
-            {/*            <option value="6">대관 이용 후기</option>*/}
-            {/*            <option value="7">노무 상담 게시판</option>*/}
-            {/*            <option value="8">온라인 상담</option>*/}
-            {/*            <option value="9">모임 페이지</option>*/}
-            {/*            <option value="10">club_test</option>*/}
-            {/*        </select>*/}
-            {/*</div>*/}
-                <div className={styles.inputGroup}>
->>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
                     <input
                         type="text"
                         name="title"

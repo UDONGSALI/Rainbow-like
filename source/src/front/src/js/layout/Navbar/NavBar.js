@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import logo1 from '../../../img/layout/logo1.png';
 import magnifier from '../../../img/layout/magnifier.png';
-import '../../../css/layout/Navbar/Navbar.css';
+import '../../../css/layout/Navbar/Navbar.module.css';
 
 
 const NavBar = () => {

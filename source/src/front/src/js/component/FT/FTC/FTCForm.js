@@ -4,22 +4,17 @@ import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 
 
-function FTWForm(){
+function FTCForm(){
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         memNum: 1,
         speField: '',
-        licenseYN: 'N',
-        licenseDtl: '',
-        ftDtl: '',
-        ftStatus: '승인대기',
-        delYN : 'N'
-    });
+        applyContent: '',
+        statusDtl: '',
+        ftmYN: 'N',
 
-    const handleLicenseChange = (e) => {
-        setFormData({ ...formData, licenseYN: e.target.value });
-    };
+    });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,7 +24,7 @@ function FTWForm(){
         e.preventDefault();
 
         // API 호출하여 게시글 정보 전송
-        fetch(SERVER_URL + 'ftw/new', {
+        fetch(SERVER_URL + 'ftc/new', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,8 +35,8 @@ function FTWForm(){
             .then((data) => {
                 alert('게시글을 작성했습니다.');
                 console.log(data);
-                const newPostId = data.ftWorkerNum; // 예: 응답 데이터에서 게시글의 ID 필드를 추출합니다.
-                navigate(`/ftw/${newPostId}`); // 추출한 ID를 사용하여 리디렉션합니다.
+                const newPostId = data.ftConsumerNum; // 예: 응답 데이터에서 게시글의 ID 필드를 추출합니다.
+                navigate(`/ftc/${newPostId}`); // 추출한 ID를 사용하여 리디렉션합니다.
 
             })
             .catch((error) => {
@@ -52,7 +47,7 @@ function FTWForm(){
 
     return(
         <div className={styles.registrationFormContainer}>
-            <h2>여성인재풀DB 신청</h2>
+            <h2>여성인재 신청</h2>
             <form onSubmit={handleSubmit} className={styles.registrationForm}>
 
                 <div className={styles.inputGroup}>
@@ -87,46 +82,11 @@ function FTWForm(){
                 </select>
                 </div>
 
-                <div className={styles.inputGroup}>
-                    <div className={styles.radioGroup}>
-                        <label>
-                            <input
-                                type="radio"
-                                name="licenseYN"
-                                value="Y"
-                                checked={formData.licenseYN === 'Y'}
-                                onChange={handleChange}
-                            />
-                            자격증 있음
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="licenseYN"
-                                value="N"
-                                checked={formData.licenseYN === 'N'}
-                                onChange={handleChange}
-                            />
-                            자격증 없음
-                        </label>
-                    </div>
-                </div>
-
-                <div className={styles.inputGroup}>
-                    <input
-                        type="text"
-                        name="licenseDtl"
-                        value={formData.licenseDtl}
-                        onChange={handleChange}
-                        placeholder="보유 자격증을 적어주세요."
-                        required
-                    />
-                </div>
 
                 <div className={styles.inputGroup}>
                     <textarea
-                        name="ftDtl"
-                        value={formData.ftDtl}
+                        name="applyContent"
+                        value={formData.applyContent}
                         onChange={handleChange}
                         placeholder="연락처, 포트폴리오 주소, 자기소개 등을 적어주세요.
 "
@@ -144,4 +104,4 @@ function FTWForm(){
 };
 
 
-export default FTWForm;
+export default FTCForm;
