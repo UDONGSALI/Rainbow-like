@@ -1,10 +1,11 @@
-import {Route, Routes, useNavigate, useParams} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import './App.css';
-import './css/font.css';
 import LoginPage from "./js/pages/Login/LoginPage";
 import React, {useEffect} from "react";
 import MemManagePage from "./js/pages/Member/MemManagePage";
+import NavBar from './js/layout/Navbar/NavBar';
 import SingUp from "./js/component/Login/SignUp";
+import EduList from "./js/component/Edu/EduList";
 import EduCalendarPage from "./js/pages/Edu/EduCalendarPage";
 import EduListPage from "./js/pages/Edu/EduListPage";
 import EduDetailPage from "./js/pages/Edu/EduDetailPage";
@@ -14,7 +15,11 @@ import RentPage from "./js/pages/Rent/RentPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
 import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
+import NoticeDetailPage from './js/pages/Post/NoticeDetailPage';
+import NoticePage from './js/pages/Post/NoticePage';
 import Main from "./js/component/screens/Main";
+import EduManagePage from '../src/js/pages/Member/MemManagePage';
+import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import PostList from "./js/component/Post/PostList";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 import NoticePage from "./js/pages/Post/NoticePage";
@@ -35,9 +40,9 @@ import FTCEditPage from "./js/pages/FT/FTC/FTCEditPage";
 import SignUpPage from "./js/pages/Login/SignUpPage";
 import NavBar from "./js/layout/Navbar/NavBar";
 
-
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
+    const memId =  sessionStorage.getItem("memId");
     const navigate = useNavigate();
     const {memId} = useParams();
 
@@ -52,7 +57,6 @@ function App() {
             sessionStorage.setItem("role", decodedToken.role);
             // username을 세션 스토리지에 저장
             sessionStorage.setItem("memId", decodedToken.sub);
-
         }
     }, [navigate]);
 
@@ -75,6 +79,9 @@ function App() {
 
     return (
         <div className="App">
+            <NavBar/>
+            <Routes>
+                <Route path="/" element={<Main/>} />
             {/*<NavBarElements/>*/}
             <NavBar/>
             <Routes>
@@ -82,21 +89,19 @@ function App() {
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
-                <Route path="/edu/list" element={<EduListPage/>}/>
-                <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
-                <Route path="/edu/apply/:eduNum" element={<EduApplyPage memId = {memId} />}/>
-                <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
-                <Route path="/edu/applyCheck" element={<EduApplyCheckPage memId = {memId} />}/>
-                <Route path="/admin/edu/apply" element={isAdmin ? <EduApplyCheckPage memId = {memId}/> : null}/>
-                <Route path="/admin/edu/apply" element={<EduApplyCheckPage memId = {memId}/> }/>
-                <Route path="/admin/edu" element={isAdmin ? <EduListPage /> : null}/>
+                <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/singUp" element={<SingUp/>}/>
+                <Route path="/edu/list" element={<EduList/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
+                <Route path="/notice/:postNum" element={<NoticeDetailPage/>}/>
+                <Route path="/notice" element={<NoticePage/>}/>
+                <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
                 <Route path="/notice/:boardNum" element={<NoticePage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
