@@ -1,25 +1,15 @@
-<<<<<<< HEAD
+
 import '../../../css/font.css';
 import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
-import styles from '../../../css/layout/Footer/footer.module.css';
-=======
-import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
-import '../../../css/font.css';
 import styles from '../../../css/layout/Footer/Footer.module.css';
->>>>>>> 529962d (js 폴더 안 Footer.css,Footer.module.css 삭제)
 
 const Footer = () => {
     return (
         <footer className={styles.footer}>
             <div className={styles.layout}>
                 <div className="logo">
-<<<<<<< HEAD
-                    <a href='https://sj-equity.or.kr/' className='footer_logo'>
-                        <img src={footer_bottom_logo} alt="" />
-=======
                     <a href='https://sj-equity.or.kr/' className={styles.footerLogo}>
                         <img src={footer_bottom_logo} alt="Footer Logo"/>
->>>>>>> 529962d (js 폴더 안 Footer.css,Footer.module.css 삭제)
                     </a>
                 </div>
                 <div className={styles.information}>
