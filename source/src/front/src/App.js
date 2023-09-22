@@ -22,8 +22,6 @@ import EduManagePage from '../src/js/pages/Member/MemManagePage';
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import PostList from "./js/component/Post/PostList";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
-import NoticePage from "./js/pages/Post/NoticePage";
-import NoticeDetailPage from "./js/pages/Post/NoticeDetailPage";
 import ClubPage from "./js/pages/Club/ClubPage";
 import ClubForm from "./js/pages/Club/ClubFormPage";
 import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
@@ -38,13 +36,11 @@ import FTCFormPage from "./js/pages/FT/FTC/FTCFormPage";
 import FTCDtlPage from "./js/pages/FT/FTC/FTCDtlPage";
 import FTCEditPage from "./js/pages/FT/FTC/FTCEditPage";
 import SignUpPage from "./js/pages/Login/SignUpPage";
-import NavBar from "./js/layout/Navbar/NavBar";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
     const memId =  sessionStorage.getItem("memId");
     const navigate = useNavigate();
-    const {memId} = useParams();
 
     useEffect(() => {
         // sessionStorage에서 JWT 토큰을 가져옵니다.
@@ -79,10 +75,6 @@ function App() {
 
     return (
         <div className="App">
-            <NavBar/>
-            <Routes>
-                <Route path="/" element={<Main/>} />
-            {/*<NavBarElements/>*/}
             <NavBar/>
             <Routes>
                 <Route path="/" element={<Main/>}/>

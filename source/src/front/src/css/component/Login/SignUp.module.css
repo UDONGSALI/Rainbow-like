@@ -65,7 +65,7 @@
 }
 
 .signForm button {
-    background-color: #98ffb0; /* 연한 민트색 */
+    background-color:  #a38ced; /* 연한 보라색 */
     color: #000000;
     border: none;
     cursor: pointer;
@@ -76,7 +76,7 @@
 }
 
 .signForm button:hover {
-    background-color: #80ffdb; /* 호버 시 좀 더 진한 민트색 */
+    background-color: #53468b; /* 호버 시 좀 더 진한 보라색 */
     transform: translateY(-2px); /* 호버 시 버튼을 위로 약간 움직입니다 */
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4); /* 호버 시 그림자를 조금 줄입니다 */
 }
@@ -129,7 +129,7 @@
     height: 20px;
     vertical-align: middle;
     cursor: pointer;
-    accent-color: #98ffb0;
+    accent-color: #a38ced;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
 
 }
