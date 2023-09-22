@@ -37,12 +37,11 @@ public void savePost(Post post) {
         }
     }
 
-<<<<<<< HEAD
-}
-=======
 
 }
 
 
 
->>>>>>> 529962d (js 폴더 안 Footer.css,Footer.module.css 삭제)
+
+
+
