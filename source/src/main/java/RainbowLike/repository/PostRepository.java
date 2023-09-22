@@ -1,11 +1,14 @@
 package RainbowLike.repository;
 
 import RainbowLike.entity.Board;
+import RainbowLike.entity.Member;
 import RainbowLike.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository <Post,Long> {
@@ -22,4 +25,7 @@ public interface PostRepository extends JpaRepository <Post,Long> {
     @Modifying
     @Query("update Post p set p.pageView = p.pageView + 1 where p.id = :id")
     int updateView(Long id);
+
+
+    List<Post> findByMember(Member member);
 }
