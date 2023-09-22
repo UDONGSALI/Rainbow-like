@@ -1,0 +1,111 @@
+/* EduDetail.module.css */
+
+/* Container Styles */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2.25rem;
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    transition: box-shadow 0.3s;
+}
+
+.container:hover {
+    box-shadow: 0 9px 27px rgba(0, 0, 0, 0.15);
+}
+
+/* Back Button Styles */
+backButton {  /* Changed to camelCase */
+    border: none;
+    background-color: #3498db;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    margin-bottom: 1.5rem;
+    font-size: 16px;
+    display: block;
+    margin: 2rem auto 0;
+}
+
+backButton:hover {  /* Changed to camelCase */
+    background-color: #2980b9;
+}
+
+/* Content Wrapper and Layout Styles */
+.headerContent {  /* Changed to camelCase */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.leftTop {  /* Changed to camelCase */
+    flex: 1;
+    max-width: calc(100% / 2.7);
+    margin-right: 2rem;
+}
+
+.leftTop img {  /* Changed to camelCase */
+    width: 100%;
+    height: auto;
+}
+
+.rightTop {  /* Changed to camelCase */
+    flex: 1.7;
+    max-width: calc(100% - (100% / 2.7));
+}
+
+.rightTop h1 {  /* Changed to camelCase */
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.rightTop .detail {  /* Changed to camelCase */
+    font-size: 20px;
+}
+
+.rightTop .detail strong {  /* Changed to camelCase */
+    font-size: inherit;
+}
+
+.mainContent {  /* Changed to camelCase */
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.mainContent img {  /* Changed to camelCase */
+    width: 75%;
+    height: auto;
+    margin: 0 auto 1.5rem;
+    display: block;
+}
+
+/* Headers and Detail Styles */
+.header {
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 1rem;
+}
+
+.detail {
+    margin-bottom: 1.2rem;
+    font-size: 27.2px;
+    color: #34495e;
+}
+
+.detail strong {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.detailContent {  /* Changed to camelCase */
+    white-space: pre-line;
+    line-height: 1.6;
+    color: black;
+    font-size: 18px;
+}

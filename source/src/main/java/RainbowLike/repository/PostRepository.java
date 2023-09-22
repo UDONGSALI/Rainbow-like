@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface PostRepository extends JpaRepository <Post,Long> {
 
@@ -21,4 +19,7 @@ public interface PostRepository extends JpaRepository <Post,Long> {
 //    List<Post> findByIdAndContent(Long id, String content);
 
 
+    @Modifying
+    @Query("update Post p set p.pageView = p.pageView + 1 where p.id = :id")
+    int updateView(Long id);
 }
