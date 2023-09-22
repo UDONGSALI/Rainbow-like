@@ -27,6 +27,10 @@ import FTWFormPage from "./js/pages/FT/FTW/FTWFormPage";
 import FTWDtlPage from "./js/pages/FT/FTW/FTWDtlPage";
 import FTWEditPage from "./js/pages/FT/FTW/FTWEditPage";
 import SignUpPage from "./js/pages/Login/SignUpPage";
+import RentPage from "./js/pages/Rent/RentPage";
+import RentStatusPage from "./js/pages/Rent/RentStatusPage";
+import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
+import MyActivePage from "./js/pages/My/MyActivePage";
 
 
 function App() {
@@ -98,6 +102,11 @@ function App() {
                 <Route path="/ftw/new" element={<FTWFormPage/>}/>
                 <Route path="/ftw/:ftwNum" element={<FTWDtlPage/>}/>
                 <Route path="/ftw/edit/:ftwNum" element={<FTWEditPage/>}/>
+                <Route path="/rent" element={<RentPage/>}/>
+                <Route path="/rent/status" element={<RentStatusPage/>}/>
+                <Route path="/rent/application/:spaceNum" element={<RentApplicationPage/>}/>
+                <Route path="/mypage/active" element={<MyActivePage/>}/>
+
             </Routes>
         </div>
     )
