@@ -1,4 +1,4 @@
-import '../../../css/component/Rent/RentSpace.css';
+import '../../../css/component/Rent/RentSpace.module.css';
 import React from "react";
 
 function RentSpace() {
