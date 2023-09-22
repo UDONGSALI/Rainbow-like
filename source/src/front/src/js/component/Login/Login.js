@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SERVER_URL } from '../Common/constants';
 import { Button, Snackbar, Stack, TextField, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
+import FindIdPasswordModal from "./FindIdPasswordModal";
 
 function Login() {
     // 로그인 실패 횟수를 localStorage에서 가져옵니다.
@@ -17,7 +18,9 @@ function Login() {
     const [firstNum, setFirstNum] = useState(Math.floor(Math.random() * 90 + 10));
     const [secondNum, setSecondNum] = useState(Math.floor(Math.random() * 90 + 10));
     const [captchaAnswer, setCaptchaAnswer] = useState('');
-    const [buttonColor, setButtonColor] = useState("#98ffb0");
+    const [buttonColor, setButtonColor] = useState(" #a38ced");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     const [user, setUser] = useState({
         username: '',
@@ -26,7 +29,7 @@ function Login() {
 
     const customLinkStyle = {
         textDecoration: 'none',
-        color: '#00ffff'
+        color: '#a38ced'
     };
 
     const [isAuthenticated, setAuth] = useState(false);
@@ -79,6 +82,14 @@ function Login() {
         login();
     };
 
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <div style={{ width: '60%', margin: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', backgroundColor: '#f9f9f9', boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)', borderRadius:'5px' }}>
             <Stack alignItems='flex-start' style={{ width: '50%', padding: '20px', backgroundColor: '#ffffff', boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)', borderRadius:'5px' }}>
@@ -110,9 +121,8 @@ function Login() {
                         variant="contained"
                         style={{
                             maxHeight: '250px',
-                            marginLeft: '16px',
+                            marginLeft: '10px',
                             backgroundColor: buttonColor,
-                            color: '#000',
                             fontWeight: 'bold',
                             border: 'none',
                             borderRadius: '5px',
@@ -121,11 +131,11 @@ function Login() {
                         }}
                         onClick={handleSubmit}
                         onMouseEnter={() => {
-                            setButtonColor("#80ffdb");
+                            setButtonColor("#53468b");
                             // 마우스가 버튼 위에 올라갔을 때
                         }}
                         onMouseLeave={() => {
-                            setButtonColor("#98ffb0");
+                            setButtonColor("#a38ced");
                             // 마우스가 버튼에서 빠져나갔을 때
                         }}
                     >
@@ -133,10 +143,15 @@ function Login() {
                     </Button>
                 </div>
                 <div style={{ padding: '16px', borderRadius: '4px', width: '100%' }}>
-                    <Typography variant="body2" style={{ fontSize: '16px' }}>
+                    <Typography variant="body2">
                         <span role="img" aria-label="Question mark in circle">😳</span>
                         아이디나 비밀번호를 잊어버리셨나요?
-                        <Link to="/find-id-password" style={customLinkStyle}><strong>     아이디/비밀번호 찾기</strong></Link>
+                        <Link
+                            onClick={handleOpenModal}
+                            style={customLinkStyle}
+                        >
+                            <strong> 아이디/비밀번호 찾기</strong>
+                        </Link>
                     </Typography>
                     <br />
                     <Typography variant="body2" style={{ fontSize: '16px' }}>
@@ -152,6 +167,7 @@ function Login() {
                 onClose={() => setOpen(false)}
                 message="로그인에 실패했습니다."
             />
+            <FindIdPasswordModal isOpen={isModalOpen} handleClose={handleCloseModal} />
         </div>
     );
 }
