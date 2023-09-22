@@ -1,28 +1,14 @@
-<<<<<<< HEAD
-
 import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
-import './footer.css';
 import '../../../css/font.css';
-import '../../../css/layout/common.css';
-=======
-import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
-import styles from '../../../css/layout/Footer/footer.module.css';
-import '../../../css/font.css';
->>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
+import styles from '../../../css/layout/Footer/Footer.module.css';
 
 const Footer = () => {
     return (
         <footer className={styles.footer}>
             <div className={styles.layout}>
                 <div className="logo">
-<<<<<<< HEAD
-                    <a href='https://sj-equity.or.kr/' className='footer_logo'>
-                        <img src={footer_bottom_logo} alt=""/>
-
-=======
                     <a href='https://sj-equity.or.kr/' className={styles.footerLogo}>
                         <img src={footer_bottom_logo} alt="Footer Logo"/>
->>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
                     </a>
                 </div>
                 <div className={styles.information}>
