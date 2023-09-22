@@ -11,7 +11,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Button from '@mui/material/Button';
-import '../../../css/component/Rent/RentProcess.css';
+import '../../../css/component/Rent/RentProcess.module.css';
 
 
 //대관 신청 절차//

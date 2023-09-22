@@ -1,5 +1,5 @@
 import React from 'react';
-import MemList from "../../component/Member/Memlist";
+import MemList from "../../component/Member/MemList";
 
 function MemManagePage() {
         return <MemList/>
