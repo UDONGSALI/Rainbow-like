@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.io.Console;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,13 +35,29 @@ public class MemberController {
         return memberRepository.findByMemId(memId);
     }
 
+    @GetMapping("/check/{type}/{value}")
+    private boolean checkDuplicate(@PathVariable String type, @PathVariable String value) {
+        switch(type) {
+            case "memId":
+                return memberRepository.findByMemId(value) != null;
+            case "email":
+                return memberRepository.findByEmail(value) != null;
+            case "tel":
+                return memberRepository.findByTel(value) != null;
+            default:
+                throw new IllegalArgumentException("Invalid type provided");
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Member> saveMember(@RequestBody Member member) {
 
+        System.out.println("암호화 전 " + member.getPwd());
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(member.getPwd());
         member.setPwd(encodedPassword);
 
+        System.out.println("암호화 후 " +  encodedPassword);
         // 데이터베이스에 저장
         return ResponseEntity.ok(memberRepository.save(member));
     }
