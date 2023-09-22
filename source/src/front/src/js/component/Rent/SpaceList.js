@@ -1,16 +1,18 @@
 import React, {useEffect, useState} from "react";
-import {SERVER_URL} from './constants';
+
 import {DataGrid} from '@mui/x-data-grid';
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import {SERVER_URL} from "../Common/constants";
 
 
 function SpaceList() {
     const [spaces, setSpaces] = useState([]);
     const [loading, setLoading] = useState(true);
+
     //신청하기 버튼//
-    function redirectToURL(){
-        window.location.href="http://localhost:3000/rentApplication";
+    function redirectToURL() {
+        window.location.href = "http://localhost:3000/rent/rentApplication/{:spaceNum}";
     };
 
     const columns = [
@@ -22,22 +24,24 @@ function SpaceList() {
         {field: 'facilities', headerName: '구비시설', width: 200},
         {field: 'date', headerName: '날짜', width: 200},
         {field: 'time', headerName: '시간', width: 200},
-        {field: 'application', headerName: '예약신청', width: 200,
-        renderCell :(params)=>(
-            <Stack className="buttonWrap" spacing={2} direction="row">
-                <Button className="button"
-                        onClick={redirectToURL}
-                        style={{
-                            width: "80px",
-                            height: "40px",
-                            backgroundColor: "rgb(91,49,121)",
-                            color: "rgb(255,255,255)",
-                            borderRadius: '5px',
-                            fontSize: "15px",
-                            fontWeight: "bold",
-                        }}>신청하기</Button>
-            </Stack>
-        )},
+        {
+            field: 'application', headerName: '예약신청', width: 200,
+            renderCell: (params) => (
+                <Stack className="buttonWrap" spacing={2} direction="row">
+                    <Button className="button"
+                            onClick={redirectToURL}
+                            style={{
+                                width: "80px",
+                                height: "40px",
+                                backgroundColor: "rgb(91,49,121)",
+                                color: "rgb(255,255,255)",
+                                borderRadius: '5px',
+                                fontSize: "15px",
+                                fontWeight: "bold",
+                            }}>신청하기</Button>
+                </Stack>
+            )
+        },
 
     ];
 
@@ -47,7 +51,7 @@ function SpaceList() {
             .then(data => {
                 setSpaces(data._embedded.spaces);
                 setLoading(false);
-               })
+            })
             .catch(err => {
                 console.error(err);
                 setLoading(false);
@@ -55,20 +59,19 @@ function SpaceList() {
     }, []);
 
 
-
     return (
 
-    <div style={{height: 500, width: '100%'}}>
+        <div style={{height: 500, width: '100%'}}>
 
-        {loading ? (
+            {loading ? (
                 <p>Loading....</p>
-            ): (
-            <DataGrid columns={columns}
-                      rows={spaces}
-                      getRowId={(row) => row._links.self.href}
-                      />
+            ) : (
+                <DataGrid columns={columns}
+                          rows={spaces}
+                          getRowId={(row) => row._links.self.href}
+                />
             )}
-    </div>
+        </div>
     );
 }
 

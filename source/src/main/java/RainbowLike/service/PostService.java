@@ -37,4 +37,8 @@ public void savePost(Post post) {
         }
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4d87f0450afc0eb84e43614b0424576e0a14d7b3
