@@ -75,6 +75,8 @@ function ClubDetail() {
                 }
                 return response.json();
             })
+            .catch(err => console.error(err))
+
             .then((data) => {
                 alert('게시글을 삭제했습니다.');
                 setOpen(true);
@@ -93,22 +95,14 @@ function ClubDetail() {
         navigate("/clubs/edit/" + id);
     };
 
-
-
-    // const PVcnt = (url) => {
-    //     fetch(url, {method: 'put'})
-    //         .then(response => {
-    //             fetchPost();
-    //             setOpen(true);
-    //         })
-    // };
-
     if (!post) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div className={styles.postDetailPage}>
+
+
+                <div className={styles.postDetailPage}>
             <h3>{post.post.title}</h3>
             <div className={styles.postMeta}>
                 <div className={styles.postMeta1}>

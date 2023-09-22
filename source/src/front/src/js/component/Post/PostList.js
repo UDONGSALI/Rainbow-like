@@ -108,6 +108,7 @@ function PostList() {
             .catch(err => console.error(err));
     };
 
+
     const onDelClick = (post) => {
         console.log(post);
         const updatedPostData = {

@@ -54,6 +54,7 @@ public class Post extends BaseEntity{
     @Column(length = 50)
     private String clubRecuStatus;
 
+
     @Column
     private DelYN delYN;
 
@@ -65,6 +66,7 @@ public class Post extends BaseEntity{
     @JsonBackReference(value="post-comments")
     private List<Comment> comments = new ArrayList<>();
 
+
     public Post(Member member, Board board, String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus) {
         super();
         this.member = member;
@@ -75,5 +77,7 @@ public class Post extends BaseEntity{
         this.pageView = pageView;
         this.clubAllowStatus = clubAllowStatus;
         this.clubRecuStatus = clubRecuStatus;
+
+
     }
 }
