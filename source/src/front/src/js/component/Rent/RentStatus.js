@@ -1,5 +1,5 @@
 import * as React from "react";
-import '../../../css/component/Rent/RentStatus.css';
+import '../../../css/component/Rent/RentStatus.module.css';
 
 
 
