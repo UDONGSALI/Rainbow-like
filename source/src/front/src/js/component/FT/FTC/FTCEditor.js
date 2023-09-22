@@ -1,55 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import styles from  '../../../../css/component/Club/ClubForm.module.css';
-import { useNavigate, useParams } from "react-router-dom";
-import { SERVER_URL } from "../../Common/constants";
+import {useNavigate, useParams} from "react-router-dom";
+import {SERVER_URL} from "../../Common/constants";
 
-function FTWEditor() {
+function FTCEditor(){
     const { id } = useParams();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        memNum: '',
+        memNum: 1,
         speField: '',
-        licenseYN: '',
-        licenseDtl: '',
-        ftDtl: '',
-        ftStatus: '',
+        applyContent: '',
         statusDtl: '',
-        delYN: 'N'
+        ftmYN: 'N',
     });
 
     useEffect(() => {
-        fetch(SERVER_URL + "ftw/" + id)
+        fetch(SERVER_URL + "ftc/" + id)
             .then(response => response.json())
             .then(data => setFormData(data))
             .catch(error => console.error(error));
     }, [id]);
 
     useEffect(() => {
-        fetch(SERVER_URL + "ftw/" + id)
+        fetch(SERVER_URL + "ftc/" + id)
 
             .then(response => response.json())
             .then(formData => {
                 // 데이터를 가져와서 formData 상태를 업데이트
                 setFormData({
                     memNum: formData.member.memNum,
-                    speField: formData.ftw.speField,
-                    licenseYN: formData.ftw.licenseYN,
-                    licenseDtl: formData.ftw.licenseDtl,
-                    ftDtl: formData.ftw.ftDtl,
-                    ftStatus: formData.ftw.ftStatus,
-                    statusDtl: formData.ftw.statusDtl,
-                    editDate: new Date(),
-                    delYN: formData.ftw.delYN
+                    speField: formData.ftc.speField,
+                    applyContent: formData.ftc.applyContent,
+                    statusDtl: formData.ftc.statusDtl,
+                    ftmYN: formData.ftc.ftmYN
                 });
             })
             .catch(error => console.error(error));
     }, [id]);
 
 
-    const handleLicenseChange = (e) => {
-        setFormData({ ...formData, licenseYN: e.target.value });
-    };
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -64,8 +54,9 @@ function FTWEditor() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+
         // API 호출하여 게시글 정보 전송
-        fetch(SERVER_URL + "ftw/edit/" + id, {
+        fetch(SERVER_URL + "ftc/edit/" + id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,8 +67,8 @@ function FTWEditor() {
             .then((data) => {
                 alert('게시글을 수정했습니다.');
 
-                // 게시글 상세로 이동
-                navigate(`/ftw/${id}`);
+                //게시글 상세로 이동
+                navigate(`/ftc/${id}`);
             })
             .catch((error) => {
                 // 오류 처리
@@ -85,9 +76,11 @@ function FTWEditor() {
             });
     };
 
-    return (
+
+
+    return(
         <div className={styles.registrationFormContainer}>
-            <h2>여성인재풀DB 수정</h2>
+            <h2>여성인재 신청 수정</h2>
             <form onSubmit={handleSubmit} className={styles.registrationForm}>
 
                 <div className={styles.inputGroup}>
@@ -123,76 +116,43 @@ function FTWEditor() {
                 </div>
                 <div className={styles.inputGroup}>
                     <select
-                        name="ftStatus"
-                        value={formData.ftStatus}
+                        name="ftmYN"
+                        value={formData.ftmYN}
                         onChange={handleChange}
                         required
                     >
-                        <option value="">승인여부</option>
-                        <option value="승인대기">승인대기</option>
-                        <option value="승인">승인</option>
-                        <option value="거부">거부</option>
-                    </select>
+                        <option value="">매칭현황</option>
+                        <option value="Y">매칭완료</option>
+                        <option value="N">매칭대기</option>
+                     </select>
                 </div>
                 <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="statusDtl"
                         value={formData.statusDtl}
+                        placeholder="매칭 거부 사유를 적어주세요."
                         onChange={handleChange}
-                        placeholder="거부사유"
-                    />
-                </div>
-                <div className={styles.inputGroup}>
-                    <div className={styles.radioGroup}>
-                        <label>
-                            <input
-                                type="radio"
-                                name="licenseYN"
-                                value="Y"
-                                checked={formData.licenseYN === 'Y'}
-                                onChange={handleLicenseChange}
-                            />
-                            자격증 있음
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="licenseYN"
-                                value="N"
-                                checked={formData.licenseYN === 'N'}
-                                onChange={handleLicenseChange}
-                            />
-                            자격증 없음
-                        </label>
-                    </div>
-                </div>
-
-                <div className={styles.inputGroup}>
-                    <input
-                        type="text"
-                        name="licenseDtl"
-                        value={formData.licenseDtl}
-                        onChange={handleChange}
-                        placeholder="보유 자격증을 적어주세요."
                     />
                 </div>
 
                 <div className={styles.inputGroup}>
                     <textarea
-                        name="ftDtl"
-                        value={formData.ftDtl}
+                        name="applyContent"
+                        value={formData.applyContent}
                         onChange={handleChange}
-                        placeholder="연락처, 포트폴리오 주소, 자기소개 등을 적어주세요."
+                        placeholder="매칭 요구사항을 적어주세요."
                         required
                     >
                     </textarea>
                 </div>
 
+
                 <button type="submit">수정</button>
             </form>
         </div>
     );
-}
 
-export default FTWEditor;
+};
+
+export default FTCEditor;

@@ -1,7 +1,7 @@
-import '../../../css/pages/mypage/container_common.css';
-import '../../../css/pages/mypage/common.css';
-import '../../../css/layout/Container/container_common.css';
-import '../../../css/layout/common.css';
+import '../../../css/pages/mypage/container_common.module.css';
+import '../../../css/pages/mypage/common.module.css';
+import '../../../css/layout/Container/container_common.module.css';
+import '../../../css/layout/common.module.css';
 import '../../../css/font.css';
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
