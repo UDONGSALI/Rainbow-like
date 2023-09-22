@@ -2,9 +2,6 @@
 import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
 import '../../../css/font.css';
 import styles from '../../../css/layout/Footer/Footer.module.css';
-import '../../../css/font.css';
-import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
-import styles from '../../../css/layout/Footer/footer.module.css';
 const Footer = () => {
     return (
         <footer className={styles.footer}>
@@ -12,8 +9,6 @@ const Footer = () => {
                 <div className="logo">
                     <a href='https://sj-equity.or.kr/' className={styles.footerLogo}>
                         <img src={footer_bottom_logo} alt="Footer Logo"/>
-                    <a href='https://sj-equity.or.kr/' className='footer_logo'>
-                        <img src={footer_bottom_logo} alt="" />
                     </a>
                 </div>
                 <div className={styles.information}>
