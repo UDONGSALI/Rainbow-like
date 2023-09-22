@@ -4,7 +4,7 @@ import '../../../css/component/mypage_active.css' ;
 =======
 <<<<<<<< HEAD:source/src/front/src/js/components/mypage/mypage_active.js
 ========
-import '../../../css/component/Mypage/mypage_active.css' ;
+import '../../../css/component/Mypage/mypage_active.module.css' ;
 >>>>>>>> e1c2fa4cefa80d3884e1c2dab03cd89e0b65e8c4:source/src/front/src/js/compnent/mypage/mypage_active.js
 >>>>>>> f7f8839c02cf7c33ea316adc5e91d202dfdd2879
 
@@ -12,7 +12,7 @@ const Mypage_active = () => {
     return(
         <div id="content_wrap">
             <div className="layout">
-                <header id="sub_tit">
+                <header id="subTit">
                     <h3>활동 내역</h3>
                 </header>
                 <ariticle id="txt">

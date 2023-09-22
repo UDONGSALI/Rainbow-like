@@ -65,8 +65,31 @@ public class CommentController {
 
         newComm.setContent(commentFormDto.getContent());
         newComm.setParentNum(commentFormDto.getParentNum());
+        newComm.setDelYN(commentFormDto.getDelYN());
 
         Comment savedComment = commentRepository.save(newComm);
+
+        // 저장한 게시글을 반환
+        return ResponseEntity.ok(savedComment);
+    }
+
+    @RequestMapping("/comm/{commId}")
+    public ResponseEntity<Comment> commentsTEST (@PathVariable Long commId, @RequestBody CommentFormDto commentFormDto) {
+        Comment editComm = new Comment();
+        editComm.setCommNum(commId);
+
+        Post post = new Post();
+        post.setPostNum(commentFormDto.getPostNum());
+        editComm.setPost(post);
+        Member member = new Member();
+        member.setMemNum(commentFormDto.getMemNum());
+        editComm.setMember(member);
+
+        editComm.setContent(commentFormDto.getContent());
+        editComm.setParentNum(commentFormDto.getParentNum());
+        editComm.setDelYN(commentFormDto.getDelYN());
+
+        Comment savedComment = commentRepository.save(editComm);
 
         // 저장한 게시글을 반환
         return ResponseEntity.ok(savedComment);
@@ -76,6 +99,7 @@ public class CommentController {
         ArrayList<CommentFormDto> commentDtoList = CommentFormDto.createTestComments();
         commentService.createcomments(commentDtoList);
     }
+
 
 
 

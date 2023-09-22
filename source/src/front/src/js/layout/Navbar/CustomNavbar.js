@@ -10,8 +10,8 @@ function CustomNavbar() {
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className="justify-content-between">
             <Navbar.Brand href="#home">Logo</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-            <Navbar.Collapse id="basic-navbar-nav">
+            <Navbar.Toggle aria-controls="basic-navbarNav"/>
+            <Navbar.Collapse id="basic-navbarNav">
                 <Nav className="mr-auto">
                     <NavDropdown title="home" id="basic-nav-dropdown" className="full-width-dropdown">
                         <NavDropdown.Item href="#action/1">homeService 1</NavDropdown.Item>

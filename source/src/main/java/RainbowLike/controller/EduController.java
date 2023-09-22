@@ -3,9 +3,8 @@ package RainbowLike.controller;
 import RainbowLike.dto.EduDto;
 import RainbowLike.entity.Edu;
 import RainbowLike.repository.EduRepository;
-import RainbowLike.service.EduService;
-import RainbowLike.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +16,9 @@ import java.util.ArrayList;
 @RequestMapping("/edus")
 public class EduController {
 
-    private final EduService eduService;
-
     private final EduRepository eduRepository;
 
-    private final FileService fileService;
-
-    private final FileController fileController;
+    private final ModelMapper mapper;
 
     @GetMapping
     private Iterable<Edu> getEdus() {
@@ -32,12 +27,15 @@ public class EduController {
 
     @PostMapping
     private ResponseEntity<Edu> saveEdu(@RequestBody Edu edu) {
-        return ResponseEntity.ok(eduRepository.save(edu));
+        return ResponseEntity.ok((eduRepository.save(edu)));
     }
 
     @PostConstruct
     private void createDefaultEdus() {
-        ArrayList<EduDto> eduDtoList = EduDto.createDefaultEdu();
-        eduService.createDefaultEdus(eduDtoList);
+        ArrayList<EduDto> eduDtos = EduDto.createDefaultEdu();
+        for (EduDto eduDto: eduDtos) {
+            Edu edu = mapper.map(eduDto, Edu.class);
+            saveEdu(edu);
+        }
     }
 }

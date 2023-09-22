@@ -1,0 +1,60 @@
+/* EduApply.module.css */
+
+.eduApplyContainer {
+    width: 60%;
+    margin: 0 auto;
+    font-family: 'Arial', sans-serif;
+}
+
+.eduApplyContainer h2,
+.eduApplyContainer h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.eduApplyContainer p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.eduApplyContainer form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.eduApplyContainer div {
+    margin-bottom: 15px;
+}
+
+.eduApplyContainer label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.eduApplyContainer input[type="text"],
+.eduApplyContainer input[type="email"],
+.eduApplyContainer input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.eduApplyContainer button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007AFF; /* 애플 블루 */
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.eduApplyContainer button:hover {
+    background-color: #0058D1;
+}

@@ -3,9 +3,9 @@ import { SERVER_URL } from '../Common/constants';
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from 'react-router-dom';
 
-function EduList({ onEduClick }) {
+function EduList() {
     const [edus, setEdus] = useState([]);
-    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
     const navigate = useNavigate();
 
 
@@ -21,8 +21,6 @@ function EduList({ onEduClick }) {
             })
             .catch((err) => console.error(err));
     };
-
-    console.log(edus)
 
     useEffect(() => {
         fetchEdus();

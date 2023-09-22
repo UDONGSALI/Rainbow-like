@@ -13,6 +13,9 @@ public interface FileRepository extends JpaRepository <File,Long> {
 
     List<File> findByEdu(Edu edu);
 
+    List<File> findByPost(Post post);
+    List<File> findByPostIsNotNull();
+
     Void deleteAllByEdu(Edu edu);
     Void deleteAllByMember(Member member);
     Void deleteAllBySpace(Space space);
