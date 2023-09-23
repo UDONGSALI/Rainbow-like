@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 
 @Service
@@ -22,13 +21,13 @@ public class RentHistService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public RentHistService(RentHistRepository rentHistRepository, ModelMapper modelMapper, MemberRepository memberRepository, SpaceRepository spaceRepository){
+    public RentHistService(RentHistRepository rentHistRepository, ModelMapper modelMapper, MemberRepository memberRepository, SpaceRepository spaceRepository) {
         this.rentHistRepository = rentHistRepository;
         this.modelMapper = modelMapper;
     }
 
-    public List<RentHist> getAllRentHists(){
-       return rentHistRepository.findAll();
+    public List<RentHist> getAllRentHists() {
+        return rentHistRepository.findAll();
 
     }
 
@@ -40,7 +39,8 @@ public class RentHistService {
         }
     }
 
-    public void cancelRentHist(Long rentHistNum){
+    public void cancelRentHist(Long rentHistNum) {
         rentHistRepository.deleteById(rentHistNum);
     }
+
 }
