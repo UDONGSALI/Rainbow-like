@@ -18,6 +18,9 @@ import Main from "./js/component/screens/Main";
 import EduManagePage from '../src/js/pages/Member/MemManagePage';
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import PostList from "./js/component/Post/PostList";
+import RentPage from "./js/pages/Rent/RentPage";
+import RentStatusPage from "./js/pages/Rent/RentStatusPage";
+import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
