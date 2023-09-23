@@ -2,12 +2,114 @@ import React, { useEffect, useState } from "react";
 import { SERVER_URL } from '../Common/constants';
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from 'react-router-dom';
+import styled from '@emotion/styled';
+import SearchComponent from "../Common/SearchComponent";
+
 
 function EduList() {
     const [edus, setEdus] = useState([]);
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
     const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
+    const [selectedSearchOption, setSelectedSearchOption] = useState("");
 
+    // 검색어 기반으로 edus 필터링
+    const filteredEdus = edus.filter((edu) =>
+        edu.eduName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const searchOptions = [
+        { label: "프로그램명", value: "eduName" },
+        { label: "구분", value: "type" },
+    ];
+
+    const StyledDataGrid = styled(DataGrid)`
+      & .MuiDataGrid {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      & .MuiDataGrid-columnHeaderTitle {
+        font-size: 14px;
+      }
+
+      & .MuiDataGrid-columnHeaderTitleContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-right: 10px;
+      }
+
+      & .MuiDataGrid-cell {
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      button {
+        border: none;
+      }
+
+      & .MuiDataGrid-cell[data-field="eduName"] {
+        justify-content: left;
+      }
+
+      & .typeCell {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+
+        &.BUSINESS {
+          color: mediumpurple;
+        }
+
+        &.EDU {
+          color: skyblue;
+        }
+      }
+
+      & .eduNameCell {
+        cursor: pointer;
+        white-space: nowrap; // 내용을 한 줄에 표시
+        overflow: hidden; // 내용이 넘치면 숨김
+        text-overflow: ellipsis; // 넘치는 내용을 '...'로 표시
+        max-width: 280px; // 셀의 최대 너비. 필요에 따라 조절하세요.
+      }
+
+      & .statusCell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 8px;
+        border-radius: 3px;
+
+        &.WAITING {
+          background-color: #a38ced;
+          color: white; // 글자 색상 추가
+        }
+
+        &.PROCESSING {
+          background-color: #53468b;
+          color: white; // 글자 색상 추가
+        }
+
+        &.REGISTRATION_CLOSED {
+          background-color: gray;
+          color: white; // 글자 색상 추가
+        }
+
+        &.REGISTRATION_OPEN {
+          background-color: #5ae507;
+          color: white; // 글자 색상 추가
+        }
+      }
+
+    `;
 
     const fetchEdus = () => {
         fetch(SERVER_URL + 'api/edus')
@@ -27,7 +129,7 @@ function EduList() {
     }, []);
 
     const handleTitleClick = (eduNum) => {
-        navigate('/edu/detail/' + eduNum.slice(-1));
+        navigate('/edu/detail/' + eduNum.split('/').pop());
     };
 
     // 동적으로 열을 구성하는 함수
@@ -36,19 +138,17 @@ function EduList() {
             {
                 field: '_links.edu.href',
                 headerName: '번호',
-                sortable: false,
-                filterable: false,
                 renderCell: (row) => (
-                    <div>{(row.id).slice(-1)}</div>
+                    <div>{row.id.split('/').pop()}</div>
                 ),
-                width: 50
+                width: 30
             },
             {
                 field: 'type',
                 headerName: '구분',
-                width: 80,
+                width: 30,
                 renderCell: (row) => (
-                    <div>
+                    <div className={`typeCell ${row.value}`}>
                         {row.value === 'BUSINESS' ? '사업' :
                             row.value === 'EDU' ? '교육' : ''}
                     </div>
@@ -57,18 +157,28 @@ function EduList() {
             {
                 field: 'eduName',
                 headerName: '프로그램명',
-                width: 350,
+                width: 300,
                 renderCell: (row) => (
-                    <div onClick={() => handleTitleClick(row.id)} style={{ cursor: 'pointer' }}>
+                    <div onClick={() => handleTitleClick(row.id)} className="eduNameCell">
                         {row.value}
                     </div>
                 ),
             },
-            {field: 'recuMethod', headerName: '접수 방법', width: 100},
+            {
+                field: 'recuMethod',
+                headerName: '접수 방법',
+                width: 100,
+                renderCell: (row) => (
+                    <div>
+                        {row.value === 'ADMIN_APPROVAL' ? '관리자 승인' :
+                            row.value === 'FIRST_COME' ? '선착순 모집' : row.value}
+                    </div>
+                ),
+            },
             {
                 field: 'recuStdt~recuEddt',
                 headerName: '모집 기간',
-                width: 180,
+                width: 170,
                 valueGetter: (params) => {
                     return `${params.row.recuStdt}~${params.row.recuEddt}`;
                 },
@@ -84,34 +194,46 @@ function EduList() {
             {
                 field: 'status',
                 headerName: '상태',
-                width: 100,
-                valueGetter: (params) => {
+                width: 80,
+                renderCell: (params) => {
                     const currentDate = new Date();
                     const recuStdt = new Date(params.row.recuStdt);
                     const recuEddt = new Date(params.row.recuEddt);
-                    const recuStartDate = new Date(params.row.recuStartDate);
-                    const recuEndDate = new Date(params.row.recuEndDate);
                     const eduStdt = new Date(params.row.eduStdt);
                     const eduEddt = new Date(params.row.eduEddt);
-                    const recuPerson = new Date(params.row.recuPerson);
-                    const capacity = new Date(params.row.capacity);
+                    const recuPerson = params.row.recuPerson;
+                    const capacity = params.row.capacity;
+
+                    let statusText = "기타 상태";
+                    let statusClass = "statusCell";
 
                     if (currentDate < recuStdt) {
-                        return '접수 대기';
+                        statusText = '접수 대기';
+                        statusClass += ' WAITING';
                     } else if (currentDate >= recuStdt && currentDate <= recuEddt) {
                         if (recuPerson >= capacity) {
-                            return '접수 마감'; // 신청자가 정원보다 많거나 같으면 '접수 마감'
+                            statusText = '접수 마감';
+                            statusClass += ' REGISTRATION_CLOSED';
+                        } else {
+                            statusText = '접수 중';
+                            statusClass += ' REGISTRATION_OPEN';
                         }
-                        return '접수 중';
                     } else if (currentDate >= eduStdt && currentDate <= eduEddt) {
-                        return '교육 중';
+                            statusText = params.row.type === 'BUSINESS' ? '사업 중' : '교육 중';
+                            statusClass += ' PROCESSING';
                     } else if (currentDate > recuEddt && currentDate < eduEddt) {
-                        return '교육 대기';
+                        statusText = params.row.type === 'BUSINESS' ? '사업 대기' : '교육 대기';
+                        statusClass += ' WAITING';
                     } else if (currentDate >= eduEddt) {
-                        return '교육 종료';
-                    } else {
-                        return '기타 상태';
+                        statusText = params.row.type === 'BUSINESS' ? '사업 종료' : '교육 종료';
+                        statusClass += ' ENDED';  // 변경된 부분
                     }
+
+                    return (
+                        <div className={statusClass}>
+                            {statusText}
+                        </div>
+                    );
                 },
             },
         ];
@@ -121,23 +243,23 @@ function EduList() {
             baseColumns.push(
                 {
                     field: '_links.self.href.delete',
-                    headerName: '교육 삭제',
+                    headerName: '삭제',
                     sortable: false,
                     filterable: false,
                     renderCell: (row) => (
                         <button onClick={() => EduDelete(row.id)}>삭제</button>
                     ),
-                    width: 100,
+                    width: 60,
                 },
                 {
                     field: '_links.self.href.edit',
-                    headerName: '교육 수정',
+                    headerName: '수정',
                     sortable: false,
                     filterable: false,
                     renderCell: (row) => (
                         <button>수정</button>
                     ),
-                    width: 100,
+                    width: 60   ,
                 },
             );
         }
@@ -153,8 +275,16 @@ function EduList() {
     };
 
     return (
-        <div style={{ height: 500, width: '100%' }}>
-            <DataGrid columns={columns} rows={edus} />
+        <div style={{ textAlign: 'center' }}>
+            <div style={{ display: 'inline-block', alignItems: 'center', justifyContent: 'center', margin: '0 auto'}}>
+                <SearchComponent
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    searchOptions={searchOptions}
+                    setSelectedSearchOption={setSelectedSearchOption}
+                />
+                <StyledDataGrid  columns={columns} rows={filteredEdus}  /> {/* 필터링된 데이터 사용 */}
+            </div>
         </div>
     );
 }
