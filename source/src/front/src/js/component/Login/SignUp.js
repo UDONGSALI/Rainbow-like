@@ -114,6 +114,23 @@ function SignUp({ onSignUpClick }) {
     };
     const handleBlur = async (e) => {
         const {name, value} = e.target;
+        // SMS 인증 코드 확인
+        if (name === 'smsInput') {
+            try {
+                const response = await axios.post(`${SERVER_URL}sms/verify/${formData.tel}/${value}`);
+                if (response.status === 200) {
+                    setIsSmsVerified(true); // 인증 성공
+                    setSmsError(null); // 에러 메시지를 null로 설정
+                } else {
+                    setIsSmsVerified(false); // 인증 실패
+                    setSmsError('인증 번호가 일치하지 않습니다.'); // 에러 메시지 설정
+                }
+            } catch (error) {
+                setIsSmsVerified(false); // 인증 실패
+                setSmsError('인증 실패. 다시 시도해주세요.'); // 에러 메시지 설정
+            }
+            return; // 이 부분이 실행되면 아래의 코드는 실행되지 않습니다.
+        }
         const error = validate(name, value);
         setErrors(prevErrors => ({...prevErrors, [name]: error})); // Update errors state.
 
@@ -154,31 +171,17 @@ function SignUp({ onSignUpClick }) {
     };
 
     const handleSmsSend = async () => {
-        console.log("실행")
         try {
-            const response = await fetch(`${SERVER_URL}sms/tel-check/${formData.tel}`, {
-                method: 'POST',  // 여기서 POST로 메서드를 지정합니다.
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-            const receivedCode = await response.text();
-            setSmsCode(receivedCode);
-            setSmsInputActive(true);
+            const response = await axios.post(`${SERVER_URL}sms/tel-check/${formData.tel}`);
+            // 서버로부터 받은 response를 사용해서 클라이언트에 알림을 줄 수 있습니다.
+            setSmsInputActive(true);  // SMS 입력이 활성화됨
         } catch (error) {
             console.error("SMS 발송 에러:", error);
         }
     };
 
     const handleSmsInputChange = (e) => {
-        setUserSmsInput(e.target.value);
-        if (smsCode !== e.target.value) {
-            setSmsError('인증 번호가 일치하지 않습니다.');
-            setIsSmsVerified(false);
-        } else {
-            setIsSmsVerified(true);
-            setSmsError(null); // 인증 번호가 일치하면 에러 메시지를 null로 설정
-        }
+        setUserSmsInput(e.target.value); // 사용자가 입력한 값을 상태에 저장
     };
 
 
@@ -313,7 +316,7 @@ function SignUp({ onSignUpClick }) {
 
     return (
         <div className={styles.signFormContainer} onClick={onSignUpClick}>
-            <h2>회원가입</h2>
+            <h2><strong>회원가입</strong></h2>
             <form onSubmit={handleSubmit} className={styles.signForm}>
                 <div className={styles.inputGroup}>
                     <input
@@ -419,7 +422,7 @@ function SignUp({ onSignUpClick }) {
                         onClick={handleSmsSend}
                         disabled={!isSmsBtnActive || errors.tel || isSmsVerified} // SMS가 검증되거나 전화번호에 에러가 있을 때 비활성화
                     >
-                        SMS 발송
+                        인증번호 발송
                     </button>
                 </div>
 
@@ -429,6 +432,7 @@ function SignUp({ onSignUpClick }) {
                         name="smsInput"
                         value={userSmsInput}
                         onChange={handleSmsInputChange}
+                        onBlur={handleBlur}
                         placeholder="인증번호 입력"
                         required
                         disabled={!isSmsInputActive} // SMS 발송 전에는 비활성화
