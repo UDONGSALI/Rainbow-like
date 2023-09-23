@@ -1,5 +1,4 @@
 ul, ol, li {
-<<<<<<< HEAD
   list-style: none;
   padding: 0;
   margin: 0;
@@ -94,7 +93,6 @@ ul, ol, li {
 
 .hidden-menu ul ul li:hover {
   background-color: #f0f0f0;
-=======
     list-style: none;
     padding: 0;
     margin: 0;
@@ -189,12 +187,10 @@ ul, ol, li {
 
 .hidden-menu ul ul li:hover {
     background-color: #f0f0f0;
->>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
 }
 
 .search-box::before,
 .search-box::after {
-<<<<<<< HEAD
   display: none;
 }
 
@@ -264,8 +260,6 @@ ul, ol, li {
 .search-box.expanded .search-button img {
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
-}
-=======
     display: none;
 }
 
@@ -336,4 +330,3 @@ ul, ol, li {
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
 }
->>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
