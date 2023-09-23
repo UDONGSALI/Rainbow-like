@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import FileUpload from "../Common/FileUpload";
 import {SERVER_URL} from "../Common/constants";
 import {useNavigate} from 'react-router-dom';
+import styles from '../../../css/component/Club/ClubForm.module.css';
 
 
 function EduForm({ eduNum }) {
@@ -144,11 +145,11 @@ function EduForm({ eduNum }) {
     };
 
     return (
-        <div className="registration-form-container">
+        <div className={styles.registrationFormContainer}>
             <h2>교육 정보 등록 폼</h2>
-            <form onSubmit={handleSubmit} className="registration-form">
+            <form onSubmit={handleSubmit} className={styles.registrationForm}>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <select
                         name="type"
                         value={formData.type}

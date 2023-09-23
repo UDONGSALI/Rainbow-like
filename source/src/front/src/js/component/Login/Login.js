@@ -91,21 +91,44 @@ function Login() {
     };
 
     return (
-        <div style={{ width: '60%', margin: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', backgroundColor: '#f9f9f9', boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)', borderRadius:'5px' }}>
-            <Stack alignItems='flex-start' style={{ width: '50%', padding: '20px', backgroundColor: '#ffffff', boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)', borderRadius:'5px' }}>
-                <div style={{ display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderRadius: '4px' }}>
-                    <Stack spacing={2} style={{ flex: 1 }}>
+        <div style={{
+            width: '60%',
+            margin: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '20px',
+            backgroundColor: '#f9f9f9',
+            boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',
+            borderRadius: '5px'
+        }}>
+            <Stack alignItems='flex-start' style={{
+                width: '50%',
+                padding: '20px',
+                backgroundColor: '#ffffff',
+                boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',
+                borderRadius: '5px'
+            }}>
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    width: '100%',
+                    padding: '16px',
+                    borderRadius: '4px'
+                }}>
+                    <Stack spacing={2} style={{flex: 1}}>
                         <TextField
                             name="username"
                             label="아이디"
                             onChange={handleChange}
-                            style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}
+                            style={{boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}
                         />
                         <TextField
+                            type={"password"}
                             name="password"
                             label="비밀번호"
                             onChange={handleChange}
-                            style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}
+                            style={{boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}
                         />
                         {failedAttempts >= 5 && (
                             <TextField
@@ -113,7 +136,7 @@ function Login() {
                                 label={`${firstNum} * ${secondNum} = ?`}
                                 value={captchaAnswer}
                                 onChange={handleCaptchaAnswerChange}
-                                style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}
+                                style={{boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}
                             />
                         )}
                     </Stack>
@@ -142,7 +165,7 @@ function Login() {
                         Login
                     </Button>
                 </div>
-                <div style={{ padding: '16px', borderRadius: '4px', width: '100%' }}>
+                <div style={{padding: '16px', borderRadius: '4px', width: '100%'}}>
                     <Typography variant="body2">
                         <span role="img" aria-label="Question mark in circle">😳</span>
                         아이디나 비밀번호를 잊어버리셨나요?
@@ -153,11 +176,11 @@ function Login() {
                             <strong> 아이디/비밀번호 찾기</strong>
                         </Link>
                     </Typography>
-                    <br />
-                    <Typography variant="body2" style={{ fontSize: '16px' }}>
+                    <br/>
+                    <Typography variant="body2" style={{fontSize: '16px'}}>
                         <span role="img" aria-label="Exclamation mark in circle">😖</span>
                         아직 세종여성플라자의 회원이 아니신가요?
-                        <Link to="/signup" style={customLinkStyle}>     <strong>회원가입</strong></Link>
+                        <Link to="/signup" style={customLinkStyle}> <strong>회원가입</strong></Link>
                     </Typography>
                 </div>
             </Stack>
@@ -167,7 +190,7 @@ function Login() {
                 onClose={() => setOpen(false)}
                 message="로그인에 실패했습니다."
             />
-            <FindIdPasswordModal isOpen={isModalOpen} handleClose={handleCloseModal} />
+            <FindIdPasswordModal isOpen={isModalOpen} handleClose={handleCloseModal}/>
         </div>
     );
 }
