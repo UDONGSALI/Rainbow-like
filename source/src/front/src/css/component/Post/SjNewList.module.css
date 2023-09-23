@@ -1,27 +1,49 @@
+<<<<<<< HEAD
+=======
 
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
 /* 게시글 목록 컨테이너 스타일 */
 .sjNewsListContainer {
     display: flex;
     flex-wrap: wrap; /* 줄 바꿈을 허용 */
     justify-content: space-between;
+<<<<<<< HEAD
+    width: 60%; /* 전체 페이지의 60% 너비로 설정 */
+    margin: 0 auto; /* 페이지를 가운데로 정렬 */
+=======
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
 }
 
 /* 게시글 썸네일 스타일 */
 .postDetail {
+<<<<<<< HEAD
+    width: calc(33.33% - 5px); /* 한 줄에 세 개의 게시글을 나열하므로 너비를 조절 */
+    margin-bottom: 5px;
+    margin-top: 5px;
+=======
     width: calc(33.33% - 10px); /* 한 줄에 세 개의 게시글을 나열하므로 너비를 조절 */
     margin-bottom: 20px;
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
     border: 1px solid #ccc;
     padding: 10px;
     box-sizing: border-box;
     display: flex; /* 수정 및 삭제 버튼을 가로로 나란히 표시하기 위해 flex 사용 */
     flex-direction: column; /* 내부 요소들을 세로로 정렬 */
+<<<<<<< HEAD
+    border-radius: 5px;
+=======
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
 }
 
 .leftTop {
     position: relative;
     width: 100%;
     overflow: hidden;
+<<<<<<< HEAD
+    height: 350px;
+=======
     height: 200px;
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
 }
 
 .postImage {
@@ -31,33 +53,69 @@
 }
 
 .title {
+<<<<<<< HEAD
+    font-size: 14px;
+    margin: 20px 0;
+    font-weight: bold;
+
+=======
     font-size: 18px;
     margin: 10px 0;
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
 }
 
 .postData {
     font-size: 14px;
     color: #555;
+<<<<<<< HEAD
+    margin: 0 auto;
+=======
     margin-bottom: 10px;
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
 }
 
 .postButton {
     display: flex;
+<<<<<<< HEAD
+    justify-content: flex-end; /* 수정 및 삭제 버튼을 오른쪽으로 정렬 */
+    margin-top: auto; /* 수정 및 삭제 버튼을 아래로 밀어내기 위해 margin-top을 auto로 설정 */
+    gap: 10px; /* 수정 및 삭제 버튼 간격 설정 */
+=======
     justify-content: space-between;
     margin-top: auto; /* 수정 및 삭제 버튼을 아래로 밀어내기 위해 margin-top을 auto로 설정 */
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
 }
 
 .postEditButton,
 .postDeleteButton {
+<<<<<<< HEAD
+    width: 50px;
+    height: 35px;
+    background-color: #a38ced;
+    border: 1px solid #99959e;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 40px;
+}
+.postDeleteButton{
+    margin-right:253px;
+=======
     padding: 5px 10px;
     font-size: 14px;
     background-color: #007bff;
     color: #fff;
     border: none;
     cursor: pointer;
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
 }
 
 .postEditButton:hover,
 .postDeleteButton:hover {
+<<<<<<< HEAD
+    background-color: #53468b;
+}
+
+=======
     background-color: #0056b3;
 }
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
