@@ -17,6 +17,7 @@ function SjNewsPage() {
 
     return (
         <div>
+            <h2 style={{ textAlign: 'center',marginTop:'20px' ,marginBottom:'20px'}}>세종시 기관 및 단체 소식</h2>
             {/* SjNewsList 컴포넌트에 가져온 게시글 목록을 전달 */}
             <SjNewsList boardNum={BoardNum} posts={posts} />
         </div>
