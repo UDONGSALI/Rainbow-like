@@ -20,7 +20,7 @@ function Agreement({onAgreementChange}) {
 
     return (
         <div className={styles.signFormContainer}>
-            <h4>개인정보 수집 및 이용 동의(필수)</h4>
+            <h4>개인정보 수집 및 이용 동의(<strong>필수</strong>)</h4>
             <div className={styles.signAgreement}>
                 <p>
                     제 1 조 (목적)<br/>
@@ -41,7 +41,7 @@ function Agreement({onAgreementChange}) {
                 </div>
             </div>
             <br/>
-            <h4>개인정보 제3자 제공 동의(필수)</h4>
+            <h4>개인정보 제3자 제공 동의(<strong>필수</strong>)</h4>
             <div className={styles.signAgreement}>
                 <p>
                     1. 개인정보의 수집,이용 목적<br/>

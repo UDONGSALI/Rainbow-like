@@ -15,8 +15,9 @@ import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 import NoticeDetailPage from './js/pages/Post/NoticeDetailPage';
 import NoticePage from './js/pages/Post/NoticePage';
 import Main from "./js/component/screens/Main";
+import EduManagePage from '../src/js/pages/Member/MemManagePage';
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
-
+import PostList from "./js/component/Post/PostList";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -60,6 +61,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Main/>} />
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
+                <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
@@ -68,6 +70,16 @@ function App() {
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
+                <Route path="/notice/:postNum" element={<NoticeDetailPage/>}/>
+                <Route path="/notice" element={<NoticePage/>}/>
+                <Route path="/sj" element={<SjNewsPage/>}/>
+                <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
+                <Route path="/notice/:boardNum" element={<NoticePage/>}/>
+                <Route path="/rent" element={<RentPage/>}/>
+                <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
+                <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
+                <Route path="/posts" element={<PostList />}   />
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/notice/:postNum" element={<NoticeDetailPage/>}/>
                 <Route path="/notice" element={<NoticePage/>}/>
