@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+
+import '../../../css/font.css';
+import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
+import styles from '../../../css/layout/Footer/Footer.module.css';
+=======
+>>>>>>> e36907b47623abf4bceba347f46cdefafa050d63
 
 import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
 import '../../../css/font.css';
