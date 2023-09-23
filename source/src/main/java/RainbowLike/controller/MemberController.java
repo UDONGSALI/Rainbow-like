@@ -85,6 +85,7 @@ public class MemberController {
     //  유형별 사용자 생성
     @PostConstruct
     private void createDefaultMembers() {
+        System.out.println("멤버 생성");
         // 관리자
         boolean check1 = memberService.checkIdDuplicate("admin");
         if (check1) // 이미 admin 계정이 있는 경우 관리자계정 생성하지않음
