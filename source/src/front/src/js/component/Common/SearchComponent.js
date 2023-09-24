@@ -1,14 +1,36 @@
 import React from 'react';
 import styles from '../../../css/component/Common/SearchComponent.module.css';
+
+// 상수 정의
+const SEARCH_PLACEHOLDER = "검색어를 입력 하세요";
+
 function SearchComponent({
                              searchTerm,
                              setSearchTerm,
-                             searchOptions,
-                             setSelectedSearchOption,
                              totalCount,
                              currentPage,
-                             totalPages
+                             totalPages,
+                             onSearch,
+                             searchOptions
                          }) {
+    // 검색어 변경
+    const handleSearchTermChange = (e) => {
+        const inputTerm = e.target.value;
+        // 검색어 상태만 업데이트하고 실제 검색은 수행하지 않습니다.
+        setSearchTerm({ ...searchTerm, term: inputTerm });
+    };
+
+    const handleSearchOptionChange = (e) => {
+        // 검색 옵션 상태만 업데이트하고 실제 검색은 수행하지 않습니다.
+        setSearchTerm({ ...searchTerm, value: e.target.value });
+    };
+
+    const handleEnterKey = (event) => {
+        if (event.key === 'Enter') {
+            onSearch();
+        }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.left}>
@@ -17,7 +39,7 @@ function SearchComponent({
                 <span>현재 페이지 {currentPage}/{totalPages} </span>
             </div>
             <div className={styles.right}>
-                <select onChange={(e) => setSelectedSearchOption(e.target.value)}>
+                <select value={searchTerm.value} onChange={handleSearchOptionChange}>
                     {searchOptions.map((option, index) => (
                         <option key={index} value={option.value}>
                             {option.label}
@@ -26,13 +48,12 @@ function SearchComponent({
                 </select>
                 <input
                     type="text"
-                    placeholder="검색..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder={SEARCH_PLACEHOLDER}
+                    value={searchTerm.term}
+                    onChange={handleSearchTermChange}
+                    onKeyDown={handleEnterKey}
                 />
-                <button onClick={() => {
-                    // 검색 로직을 여기에 추가합니다.
-                }}>검색</button>
+                <button onClick={onSearch}>검색</button>
             </div>
         </div>
     );
