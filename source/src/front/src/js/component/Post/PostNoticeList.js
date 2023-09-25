@@ -3,8 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Snackbar from '@mui/material/Snackbar';
 import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from "../Common/constants";
-import File from '../../../img/component/file.png'
-
+import File from "../../../img/component/file.png";
 
 function PostNoticeList(props) {
     const { boardNum } = props;
@@ -14,38 +13,35 @@ function PostNoticeList(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(SERVER_URL + "files")
+        fetch(SERVER_URL + "post/1")
             .then(res => res.json())
-            .then(data => setFiles(data))
+            .then(data => {
+                setPosts(data);
+            })
             .catch(err => console.error(err));
     }, []);
 
     useEffect(() => {
-        fetchPosts();
-    }, [boardNum]);
-
-    const fetchPosts = () => {
-        fetch(SERVER_URL + "post/" + boardNum)
-            .then(response => response.json())
+        fetch(SERVER_URL + "files/post")
+            .then(res => res.json())
             .then(data => {
-                // 게시물 데이터와 첨부 파일 정보를 조합하여 저장합니다.
-                const postsWithFiles = data.map((post, index) => {
-                    const postFiles = files.filter(file => file.post && file.post.postNum === post.postNum);
-                    return {
-                        ...post,
-                        postNum: index + 1, // 게시글 번호를 1씩 증가시킴
-                        postsFiles: postFiles,
-                    };
-                });
-                setPosts(postsWithFiles);
+                setFiles(data);
             })
             .catch(err => console.error(err));
-    };
+    }, [posts]);
+
+    const postsWithFiles = posts.map((post) => {
+        const postFiles = files.filter((file) => file.post && file.post.postNum === post.postNum);
+        return {
+            ...post,
+            postFiles,
+        };
+    });
+
     const onDelClick = (url) => {
         fetch(url, { method: 'DELETE' })
             .then(response => {
                 setOpen(true);
-                fetchPosts(); // 게시글 삭제 후 목록 다시 불러오기
             })
             .catch(err => console.error(err));
     };
@@ -55,23 +51,23 @@ function PostNoticeList(props) {
         navigate(`/posts/edit/${rowId}`);
     };
 
-    const onRowClick = (params) => {
-        const rowId = params.row.postNum + 8;
-        navigate(`/notice/detail/${rowId}`);
-    };
-
     const getRowId = (row) => {
         return row.postNum.toString();
     };
 
+    const onRowClick = (params) => {
+        const rowId = params.row.postNum + 5;
+        navigate(`/post/detail/${rowId}`);
+    };
+
     const columns = [
         {
-            field: '_links.member.href',
+            field: 'postNum',
             headerName: '번호',
             sortable: false,
             filterable: false,
-            renderCell: (row) => (
-                <div>{row.id}</div>
+            renderCell: (params) => (
+                <div>{params.row.postNum - 5}</div>
             ),
             width: 100
         },
@@ -103,24 +99,26 @@ function PostNoticeList(props) {
             width: 100,
         },
         {
-            field: 'postsFiles',
+            field: 'postFiles',
             headerName: '파일',
             sortable: false,
             filterable: false,
-            renderCell: (row) => (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {row.value && row.value.length > 0 && (
-                        <div style={{ width: '24px', height: '24px', marginRight: '8px' }}>
-                            <img
-                                src={File}
-                                alt="File"
-                                style={{ maxWidth: '100%', maxHeight: '100%' }}
-                            />
-                        </div>
-                    )}
-                </div>
-            ),
-            width: 100, // 이미지를 표시하는 컬럼의 너비 조정
+            renderCell: (row) => {
+                return (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {row.value && row.value[0] && ( // 첫 번째 파일만 확인
+                            <div style={{ width: '24px', height: '24px', marginRight: '8px', cursor: 'pointer' }}>
+                                <img
+                                    src={File}
+                                    alt='file'
+                                    style={{ maxWidth: '100%', maxHeight: '100%' }}
+                                />
+                            </div>
+                        )}
+                    </div>
+                );
+            },
+            width: 100,
         },
         {
             field: 'editLink',
@@ -141,9 +139,9 @@ function PostNoticeList(props) {
             headerName: '삭제',
             sortable: false,
             filterable: false,
-            renderCell: (row) => (
+            renderCell: (params) => (
                 <button
-                    onClick={() => onDelClick(row.deleteLink)}
+                    onClick={() => onDelClick(params.row.deleteLink)}
                 >
                     삭제
                 </button>
@@ -155,7 +153,7 @@ function PostNoticeList(props) {
         <div style={{ height: 500, width: '100%' }}>
             <DataGrid
                 columns={columns}
-                rows={posts}
+                rows={postsWithFiles}
                 disableRowSelectionOnClick={true}
                 getRowId={getRowId}
             />
@@ -169,6 +167,5 @@ function PostNoticeList(props) {
         </div>
     );
 }
-
 
 export default PostNoticeList;

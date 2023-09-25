@@ -37,6 +37,10 @@ public class EduHistController {
     public EduHist getEduHist(@PathVariable Long id) {
         return eduHistRepository.findById(id).orElse(null);  // orElse(null)은 ID에 해당하는 EduHist가 없을 경우 null을 반환하도록 합니다.
     }
+    @GetMapping("/memid/{memId}")
+    public Iterable<EduHist> getEduHistByMemId(@PathVariable String memId) {
+        return eduHistRepository.findByMember(memberRepository.findByMemId(memId));
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEduHistStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {

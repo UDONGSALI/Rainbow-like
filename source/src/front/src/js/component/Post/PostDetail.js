@@ -71,13 +71,13 @@ function PostDetail(props) {
         // 이전 글의 제목 가져오기
         fetch(`${SERVER_URL}posts/${prevPostNum}`)
             .then(response => response.json())
-            .then(data => setPrevPostTitle(data.post.title))
+            .then(data => setPrevPostTitle(data.post))
             .catch(error => console.error(error));
 
         // 다음 글의 제목 가져오기
         fetch(`${SERVER_URL}posts/${nextPostNum}`)
             .then(response => response.json())
-            .then(data => setNextPostTitle(data.post.title))
+            .then(data => setNextPostTitle(data.post))
             .catch(error => console.error(error));
 
     }, [postNum, prevPostNum, nextPostNum]);
@@ -90,6 +90,9 @@ function PostDetail(props) {
     if (!post) {
         return <div>Loading...</div>;
     }
+//이전 글과 다음 글 게시판이 같다면 이동
+    const canGoToPrevPost = prevPostTitle && prevPostTitle.board.boardNum === post.board.boardNum;
+    const canGoToNextPost = nextPostTitle && nextPostTitle.board.boardNum === post.board.boardNum;
 
     return (
         <div className={styles.postDetail}> {/* CSS 모듈 적용 */}
@@ -136,28 +139,40 @@ function PostDetail(props) {
             <div className={styles.postButton}>
                 <button onClick={onEditClick} className={styles.postEditButton}>수정</button>
                 <button onClick={onDelClick} className={styles.postDeleteButton}>삭제</button>
-                <button onClick={() => navigate("/posts")} className={styles.postListButton}>목록으로</button>
+                <button onClick={() => {
+                    if (post.board.boardNum <= 2) {
+                        navigate(`/post/${post.boardNum}`);
+                    } else if (post.board.boardNum >= 3) {
+                        navigate(`/imgPost/${post.boardNum}`);
+                    }
+                }} className={styles.postListButton}>
+                    목록으로
+                </button>
             </div>
             <div className={styles.prevNextButtons}>
-                {prevPostNum >= 6 && (
+                {canGoToPrevPost && (
                     <div className={styles.prevButton}>
                         &nbsp;&nbsp;∧ 이전 글 -&nbsp;
                         <button
-                            onClick={() => navigate(`/notice/detail/${prevPostNum}`)}
+                            onClick={() => {
+                                navigate(`/post/detail/${prevPostNum}`);
+                            }}
                             className={styles.prevButtonStyle}
                         >
-                            {prevPostTitle}
+                            {prevPostTitle.title}
                         </button>
                     </div>
                 )}
-                {nextPostNum <= 10 && (
+                {canGoToNextPost && (
                     <div className={styles.nextButton}>
                         &nbsp;&nbsp;∨ 다음 글 -&nbsp;
                         <button
-                            onClick={() => navigate(`/notice/detail/${nextPostNum}`)}
+                            onClick={() => {
+                                navigate(`/post/detail/${nextPostNum}`);
+                            }}
                             className={styles.nextButtonStyle}
                         >
-                            {nextPostTitle}
+                            {nextPostTitle.title}
                         </button>
                     </div>
                 )}
