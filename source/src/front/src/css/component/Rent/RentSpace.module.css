@@ -1,13 +1,10 @@
- *{
-     margin: 0;
-     padding: 0;
-     font-family: Prompt;
-     font-size: 15px;
- }
+
 
  #title{
      padding-left: 15%;
      padding-right: 15%;
+     font-family: Prompt;
+     font-size: 15px;
  }
 
  #title > h2{
