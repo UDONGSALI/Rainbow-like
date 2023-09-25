@@ -3,12 +3,15 @@ import { DataGrid } from "@mui/x-data-grid";
 import { SERVER_URL } from "../Common/constants";
 import { useNavigate } from "react-router-dom";
 import styled from '@emotion/styled';
+import Pagination from "@mui/material/Pagination";
 
 function EduApplyList(props) {
     const [eduApply, setEduApply] = useState([]);
     const navigate = useNavigate();
     const {memId} = props;
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
+    const [activePage, setActivePage] = useState(1);
+    const itemsPerPage = 5;
 
     const handleTitleClick = (eduNum) => {
         navigate(`/edu/detail/${eduNum}`);
@@ -103,13 +106,19 @@ function EduApplyList(props) {
                 </div>
             ),
         },
-        { field: 'recuPerson', headerName: '모집 인원', width: 100, valueGetter: (params) => params.row.edu?.recuPerson },
-        { field: 'capacity', headerName: '정원', width: 40, valueGetter: (params) => params.row.edu?.capacity },
+        {
+            field: 'recuPerson+/+capacity',
+            headerName: '신청인/정원',
+            width: 100,
+            valueGetter: (params) => {
+                return `${params.row.edu?.recuPerson}/${params.row.edu?.capacity}`;
+            },
+        },
         {
             field: 'eduStatus',
             headerName: '교육 상태',
             width: 100,
-            valueGetter: (params) => {
+            renderCell: (params) => {
                 const currentDate = new Date();
                 const recuStdt = new Date(params.row.edu?.recuStdt); // 모집 시작일
                 const recuEddt = new Date(params.row.edu?.recuEddt); // 모집 종료일
@@ -118,22 +127,38 @@ function EduApplyList(props) {
                 const recuPerson = params.row.edu?.recuPerson;      // 신청자 수
                 const capacity = params.row.edu?.capacity;          // 정원
 
+                let eduStatusText;
+                let eduStatusClass = "eduStatusCell";
+
                 if (currentDate < recuStdt) {
-                    return '접수 대기';
+                    eduStatusText = '접수 대기';
+                    eduStatusClass += ' WAITING';
                 } else if (currentDate >= recuStdt && currentDate <= recuEddt) {
                     if (recuPerson >= capacity) {
-                        return '접수 마감'; // 신청자가 정원보다 많거나 같으면 '접수 마감'
+                        eduStatusText = '접수 마감';
+                        eduStatusClass += ' REGISTRATION_CLOSED';
+                    } else {
+                        eduStatusText = '접수 중';
+                        eduStatusClass += ' REGISTRATION_OPEN';
                     }
-                    return '접수 중';
                 } else if (currentDate >= eduStdt && currentDate <= eduEddt) {
-                    return '교육 중';
+                    eduStatusText = '교육 중';
+                    eduStatusClass += ' PROCESSING';
                 } else if (currentDate > recuEddt && currentDate < eduEddt) {
-                    return '교육 대기';
+                    eduStatusText = '교육 대기';
+                    eduStatusClass += ' WAITING';
                 } else if (currentDate >= eduEddt) {
-                    return '교육 종료';
+                    eduStatusText = '교육 종료';
+                    eduStatusClass += ' ENDED';
                 } else {
-                    return '기타 상태';
+                    eduStatusText = '기타 상태';
                 }
+
+                return (
+                    <div className={eduStatusClass}>
+                        {eduStatusText}
+                    </div>
+                );
             },
         },
         { field: 'memId', headerName: '신청자', width: 70, valueGetter: (params) => params.row.member?.memId },
@@ -150,20 +175,36 @@ function EduApplyList(props) {
             field: 'status',
             headerName: '승인 상태',
             width: 100,
-            renderCell: (params) => (
-                isAdmin ? (
-                    <select
-                        value={params.value}
-                        onChange={(e) => handleStatusChange(params.row.id, e.target.value)}
-                    >
-                        <option value="WAIT">미승인</option>
-                        <option value="APPROVE">승인</option>
-                        <option value="COMPLETE">완료</option>
-                    </select>
-                ) : (
-                    params.value  // 어드민이 아니면 단순 텍스트로 상태를 표시
-                )
-            ),
+            renderCell: (params) => {
+                let statusText;
+                if (params.value === 'WAIT') {
+                    statusText = '미승인';
+                } else if (params.value === 'APPROVE') {
+                    statusText = '승인';
+                } else if (params.value === 'COMPLETE') {
+                    statusText = '완료';
+                } else {
+                    statusText = params.value;
+                }
+
+                return (
+                    isAdmin ? (
+                        <select
+                            value={params.value}
+                            onChange={(e) => handleStatusChange(params.row.id, e.target.value)}
+                            className={`approvalStatus ${params.value}`}
+                        >
+                            <option value="WAIT">미승인</option>
+                            <option value="APPROVE">승인</option>
+                            <option value="COMPLETE">완료</option>
+                        </select>
+                    ) : (
+                        <div className={`approvalStatus ${params.value}`}>
+                            {statusText}
+                        </div>
+                    )
+                );
+            }
         },
         {
             field: 'cancel',
@@ -187,6 +228,12 @@ function EduApplyList(props) {
                     hideFooter={true}
                 />
             </div>
+            <Pagination
+                count={Math.ceil(eduApply.length / itemsPerPage)}
+                page={activePage}
+                onChange={(event, newPage) => setActivePage(newPage)}
+                color="primary"
+            />
         </Wrapper>
     );
 }
@@ -256,7 +303,7 @@ const StyledDataGrid = styled(DataGrid)`
     max-width: 280px; // 셀의 최대 너비. 필요에 따라 조절하세요.
   }
 
-  & .statusCell {
+  & .eduStatusCell {
     display: flex;
     align-items: center;
     justify-content: center;
