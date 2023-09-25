@@ -2,10 +2,10 @@ import * as React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import '../../../css/component/Rent/RentApplicationForm.module.css';
+import styles from '../../../css/component/Rent/RentApplicationForm.module.css';
 
 
-export default function RentApplicationForm() {
+export default function RentAgreeForm() {
     const [checked1, setChecked1] = React.useState([true, false]);
     const [checked2, setChecked2] = React.useState([true, false]);
     const [checked3, setChecked3] = React.useState([true, false]);
@@ -30,14 +30,14 @@ export default function RentApplicationForm() {
 
 
     return (
-        <div id="title">
-            <div className="main1">
+        <div id={styles.title}>
+            <div className={styles.main1}>
                 <h3>약관동의</h3>
-                <hr className="line"></hr>
-                <div className="personnalAgree">
+                <hr className={styles.line}></hr>
+                <div className={styles.personnalAgree}>
                     <p>개인정보 수집 및 이용 약관<span>(필수)</span></p>
-                    <div className="agreeBoxWrap">
-                        <div className="agreeBox"
+                    <div className={styles.agreeBoxWrap}>
+                        <div className={styles.agreeBox}
                              style={{
                                  overflowY: 'scroll',
                                  maxHeight: '250px',
@@ -81,7 +81,7 @@ export default function RentApplicationForm() {
                             </ul>
                         </div>
                     </div>
-                    <div className="check">
+                    <div className={styles.check}>
                         <FormGroup>
                             <FormControlLabel
                                 control={<Checkbox className="checkBox" defaultChecked={false}
@@ -103,10 +103,10 @@ export default function RentApplicationForm() {
                         </FormGroup>
                     </div>
                 </div>
-                <div className="useFeeStandard">
+                <div className={styles.useFeeStandard}>
                     <p>이용료 면제 기준 안내<span>(선택)</span></p>
-                    <div className="useFeeBoxWrap">
-                        <div className="useFeeBox">
+                    <div className={styles.useFeeBoxWrap}>
+                        <div className={styles.useFeeBox}>
                             <ul>
                                 <li> - 국가 또는 지방자치단체가 직접 이용하는 경우</li>
                                 <li> - 국가나 지방자치단체가 설치하거나 지정한 여성가족 관련 기관·시설이 이용하는 경우</li>
@@ -116,7 +116,7 @@ export default function RentApplicationForm() {
 
                         </div>
                     </div>
-                    <div className="check">
+                    <div className={styles.check}>
                         <FormGroup>
                             <FormControlLabel
                                 control={<Checkbox defaultChecked={false}

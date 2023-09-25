@@ -1,11 +1,11 @@
-import '../../../css/component/Rent/RentSpace.module.css';
+import styles from '../../../css/component/Rent/RentSpace.module.css';
 import React from "react";
 
 function RentSpace() {
     return (
-        <div id="title">
+        <div id={styles.title}>
             <h2>대관 신청</h2>
-            <div className="rentSpace">
+            <div className={styles.rentSpace}>
 
         </div>
         </div>

@@ -12,7 +12,7 @@ function SpaceList() {
 
     //신청하기 버튼//
     function redirectToURL() {
-        window.location.href = "http://localhost:3000/rent/rentApplication/{:spaceNum}";
+        window.location.href = "http://localhost:3000/rent/application/{:spaceNum}";
     };
 
     const columns = [
@@ -33,8 +33,8 @@ function SpaceList() {
                             style={{
                                 width: "80px",
                                 height: "40px",
-                                backgroundColor: "rgb(91,49,121)",
-                                color: "rgb(255,255,255)",
+                                backgroundColor: "#a38ced",
+                                color: "#ffffff",
                                 borderRadius: '5px',
                                 fontSize: "15px",
                                 fontWeight: "bold",
