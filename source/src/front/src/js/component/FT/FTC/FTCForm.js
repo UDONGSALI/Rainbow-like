@@ -4,8 +4,9 @@ import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 
 
-function FTCForm(){
+function FTCForm(props){
     const navigate = useNavigate();
+    const {memId} = props;
 
     const [formData, setFormData] = useState({
         memNum: 1,
