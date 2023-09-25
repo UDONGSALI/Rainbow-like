@@ -1,17 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { SERVER_URL } from "../Common/constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from '@emotion/styled';
 import Pagination from "@mui/material/Pagination";
+import SearchComponent from "../Common/SearchComponent";
 
 function EduApplyList(props) {
+    // 1. 초기 상태 및 Hooks 설정
     const [eduApply, setEduApply] = useState([]);
     const navigate = useNavigate();
-    const {memId} = props;
-    const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
+    const { memId } = props;
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const [activePage, setActivePage] = useState(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 10;
+    const [searchTerm, setSearchTerm] = useState({ term: '', value: 'eduName' });
+    const totalPageCount = Math.ceil(eduApply.length / itemsPerPage);
+    const location = useLocation();
+
+    useEffect(() => {
+        let apiUrl;
+        if (isAdmin) {
+            apiUrl = SERVER_URL + 'eduHist';
+        } else {
+            apiUrl = SERVER_URL + `eduHist/memid/${memId}`;
+        }
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const formattedData = data.map((item, index) => ({ id: index + 1, ...item }));
+                setEduApply(formattedData);
+            })
+            .catch(error => console.error("Error fetching eduApply:", error));
+    }, [memId, isAdmin]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const pageFromUrl = parseInt(params.get('page'), 10);
+
+        if (!isNaN(pageFromUrl)) {
+            setActivePage(pageFromUrl);
+        }
+    }, [location.search]);
 
     const handleTitleClick = (eduNum) => {
         navigate(`/edu/detail/${eduNum}`);
@@ -19,18 +50,18 @@ function EduApplyList(props) {
 
     const handleStatusChange = (rowId, newStatus) => {
         // 서버에 PUT 요청을 보내서 데이터 업데이트
-        fetch(SERVER_URL + 'eduHist/' + (rowId+1), {
+        fetch(SERVER_URL + 'eduHist/' + (rowId + 1), {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ status: newStatus }) // 여기서 전송하고 싶은 데이터를 설정하세요.
+            body: JSON.stringify({status: newStatus}) // 여기서 전송하고 싶은 데이터를 설정하세요.
         })
             .then(response => {
                 if (response.ok) {
                     // 프론트엔드 데이터 업데이트
                     const updatedRows = eduApply.map(row =>
-                        row.id === rowId ? { ...row, status: newStatus } : row
+                        row.id === rowId ? {...row, status: newStatus} : row
                     );
                     setEduApply(updatedRows);
                 } else {
@@ -45,7 +76,7 @@ function EduApplyList(props) {
 
     const handleDelete = (rowId) => {
         // 서버에 DELETE 요청을 보내서 해당 EduHist 삭제
-        fetch(SERVER_URL + 'eduHist/' + (rowId+1), {
+        fetch(SERVER_URL + 'eduHist/' + (rowId + 1), {
             method: 'DELETE'
         })
             .then(response => {
@@ -63,28 +94,40 @@ function EduApplyList(props) {
             });
     }
 
-    useEffect(() => {
-        // URL을 결정하는 로직
-        let apiUrl;
-        if (isAdmin) {
-            apiUrl = SERVER_URL + 'eduHist'; // 어드민인 경우 일반적인 엔드포인트 사용
-        } else {
-            apiUrl = SERVER_URL + `eduHist/memid/${memId}`; // 어드민이 아닌 경우 memId를 사용하여 엔드포인트 설정
-        }
+    const handleSearch = () => {
+        let apiUrl = `${SERVER_URL}eduHist/search/${searchTerm.value}/${searchTerm.term}/${memId}`;
 
-        // 데이터를 서버에서 가져옵니다.
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                // 데이터에 id 필드가 필요합니다.
                 const formattedData = data.map((item, index) => ({ id: index + 1, ...item }));
                 setEduApply(formattedData);
             })
-            .catch(error => console.error("Error fetching eduApply:", error));
-    }, [memId, isAdmin]);
+            .catch(error => console.error("Error fetching search results:", error));
+    };
+
+    const handlePageChange = (event, newPage) => {
+        navigate(`${location.pathname}?page=${newPage}`);
+        setActivePage(newPage);
+    }
+
+    const getCurrentPageData = () => {
+        const startIndex = (activePage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return eduApply.slice(startIndex, endIndex);
+    }
+
+    const baseSearchOptions = [
+        { value: 'eduName', label: '프로그램명' },
+        { value: 'status', label: '승인 상태' }
+    ];
+
+    const adminSearchOption = { value: 'memId', label: '신청자' };
+
+    const searchOptions = isAdmin ? [...baseSearchOptions, adminSearchOption] : baseSearchOptions;
 
     const columns = [
-        { field: 'id', headerName: '번호', width: 30 },
+        {field: 'id', headerName: '번호', width: 30},
         {
             field: 'type',
             headerName: '구분',
@@ -101,7 +144,8 @@ function EduApplyList(props) {
             headerName: '프로그램명',
             width: 300,
             renderCell: (params) => (
-                <div onClick={() => handleTitleClick(params.row.id)} style={{ cursor: 'pointer' }} className="eduNameCell">
+                <div onClick={() => handleTitleClick(params.row.id)} style={{cursor: 'pointer'}}
+                     className="eduNameCell">
                     {params.row.edu?.eduName}
                 </div>
             ),
@@ -161,7 +205,7 @@ function EduApplyList(props) {
                 );
             },
         },
-        { field: 'memId', headerName: '신청자', width: 70, valueGetter: (params) => params.row.member?.memId },
+        {field: 'memId', headerName: '신청자', width: 70, valueGetter: (params) => params.row.member?.memId},
         {
             field: 'applyDate',
             headerName: '신청 일시',
@@ -220,23 +264,35 @@ function EduApplyList(props) {
 
     return (
         <Wrapper style={{ textAlign: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                <SearchComponent
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    onSearch={handleSearch}
+                    searchOptions={searchOptions}
+                    totalCount={eduApply.length}  // 전체 게시글 수
+                    currentPage={activePage}     // 현재 페이지
+                    totalPages={totalPageCount}  // 전체 페이지 수
+                />
                 <StyledDataGrid
                     columns={columns}
-                    rows={eduApply}
+                    rows={getCurrentPageData()} // 현재 페이지 데이터만 표시
                     pageSize={5}
                     hideFooter={true}
                 />
+                <div className="paginationContainer" style={{marginTop: '10px'}}>
+                    <Pagination
+                        count={Math.ceil(eduApply.length / itemsPerPage)}
+                        page={activePage}
+                        onChange={handlePageChange} // 이 부분을 수정했습니다.
+                        color="primary"
+                    />
+                </div>
             </div>
-            <Pagination
-                count={Math.ceil(eduApply.length / itemsPerPage)}
-                page={activePage}
-                onChange={(event, newPage) => setActivePage(newPage)}
-                color="primary"
-            />
         </Wrapper>
     );
 }
+
 
 const Wrapper = styled.div`
   width: fit-content;
@@ -250,6 +306,10 @@ const StyledDataGrid = styled(DataGrid)`
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  & .MuiDataGrid-columnHeader {
+    background-color: #ececec; // 옅은 회색으로 설정
   }
 
   & .MuiDataGrid-columnHeaderTitle {
