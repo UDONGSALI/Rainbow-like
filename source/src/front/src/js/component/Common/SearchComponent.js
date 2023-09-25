@@ -25,6 +25,12 @@ function SearchComponent({
         setSearchTerm({ ...searchTerm, value: e.target.value });
     };
 
+    const handleStatusSelectChange = (e) => {
+        const selectedStatus = e.target.value;
+        // 선택된 상태를 업데이트합니다.
+        setSearchTerm({ ...searchTerm, term: selectedStatus });
+    };
+
     const handleEnterKey = (event) => {
         if (event.key === 'Enter') {
             onSearch();
@@ -38,6 +44,7 @@ function SearchComponent({
                 <span> | </span>
                 <span>현재 페이지 {currentPage}/{totalPages} </span>
             </div>
+
             <div className={styles.right}>
                 <select value={searchTerm.value} onChange={handleSearchOptionChange}>
                     {searchOptions.map((option, index) => (
@@ -46,13 +53,23 @@ function SearchComponent({
                         </option>
                     ))}
                 </select>
-                <input
-                    type="text"
-                    placeholder={SEARCH_PLACEHOLDER}
-                    value={searchTerm.term}
-                    onChange={handleSearchTermChange}
-                    onKeyDown={handleEnterKey}
-                />
+
+                {searchTerm.value === 'status' ? (
+                    <select value={searchTerm.term} onChange={handleStatusSelectChange}>
+                        <option value="WAIT">미승인</option>
+                        <option value="APPROVE">승인</option>
+                        <option value="COMPLETE">완료</option>
+                    </select>
+                ) : (
+                    <input
+                        type="text"
+                        placeholder={SEARCH_PLACEHOLDER}
+                        value={searchTerm.term}
+                        onChange={handleSearchTermChange}
+                        onKeyDown={handleEnterKey}
+                    />
+                )}
+
                 <button onClick={onSearch}>검색</button>
             </div>
         </div>

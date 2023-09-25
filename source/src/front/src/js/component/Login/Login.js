@@ -44,6 +44,12 @@ function Login() {
         setCaptchaAnswer(e.target.value);
     };
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            login();
+        }
+    };
+
     const login = () => {
         if (failedAttempts >= 5) {
             if (parseInt(captchaAnswer, 10) !== firstNum * secondNum) {
@@ -121,6 +127,7 @@ function Login() {
                             name="username"
                             label="아이디"
                             onChange={handleChange}
+                            onKeyDown={handleKeyDown}
                             style={{boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}
                         />
                         <TextField
@@ -128,6 +135,7 @@ function Login() {
                             name="password"
                             label="비밀번호"
                             onChange={handleChange}
+                            onKeyDown={handleKeyDown}
                             style={{boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}
                         />
                         {failedAttempts >= 5 && (
