@@ -237,7 +237,6 @@ function EduList() {
                 },
             );
         }
-
         return baseColumns;
     };
 

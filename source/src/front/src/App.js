@@ -21,6 +21,7 @@ import PostList from "./js/component/Post/PostList";
 import RentPage from "./js/pages/Rent/RentPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
 import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
+import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -73,6 +74,7 @@ function App() {
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
+                <Route path="/edu/applyck" element={<EduApplyCheckPage memId = {memId} />}/>
                 <Route path="/notice/:postNum" element={<NoticeDetailPage/>}/>
                 <Route path="/notice" element={<NoticePage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
