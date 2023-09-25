@@ -240,6 +240,24 @@ public class EduDto {
         Edu4.setTel("세종시직장맘지원센터 044) 866-0179");
         eduList.add(Edu4);
 
+
+        for (int i = 0; i < 100; i++) {
+            EduDto eduDto = new EduDto();
+            eduDto.setType(EduType.EDU);
+            eduDto.setEduName("페이징 테스트"+i);
+            eduDto.setContent("페이징 테스트" + i);
+            eduDto.setEduStdt(LocalDateTime.of(2023,9,15,11,30,00,000));
+            eduDto.setEduEddt(LocalDateTime.of(2023,9,15,13,30,00,000));
+            eduDto.setEduAddr("새롬종합복지센터 2층 강의실 1");
+            eduDto.setTarget("직장맘, 예비직장맘, 사업주 및 인사담당자");
+            eduDto.setRecuStdt(LocalDate.of(2023,8,10));
+            eduDto.setRecuEddt(LocalDate.of(2023,9,13));
+            eduDto.setCapacity(50);
+            eduDto.setRecuPerson(0);
+            eduDto.setRecuMethod(RecuMethod.FIRST_COME);
+            eduDto.setTel("세종시직장맘지원센터 044) 866-0179");
+            eduList.add(eduDto);
+        }
         return eduList;
     }
 }

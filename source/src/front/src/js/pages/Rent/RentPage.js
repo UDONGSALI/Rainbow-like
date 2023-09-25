@@ -10,6 +10,6 @@ function RentPage() {
             <Footer className="footer"/>
         </div>
     )
-};
+}
 
 export default RentPage;

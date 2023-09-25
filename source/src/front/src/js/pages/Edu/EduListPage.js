@@ -7,7 +7,7 @@ function EduListPage() {
 
 
     return (
-        <div>
+        <div >
             <EduList  />
             {isAdmin && <NavigationButton name="추가하기" url="/admin/edu/add" fontSize={"10px"} />}
         </div>

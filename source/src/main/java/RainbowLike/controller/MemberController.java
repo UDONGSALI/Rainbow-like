@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
-import java.io.Console;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,14 +29,25 @@ public class MemberController {
     private Iterable<Member> getMembers() {
         return memberRepository.findAll();
     }
+
     @GetMapping("/id/{memId}")
     private Member getMembersByMemId(@PathVariable String memId) {
         return memberRepository.findByMemId(memId);
     }
 
+    @GetMapping("/id-tel/{tel}")
+    private String getMemIdByTel(@PathVariable String tel) {
+        return memberRepository.findByTel(tel).getMemId();
+    }
+
+    @GetMapping("/tel-id/{id}")
+    private String getTelByMemId(@PathVariable String id) {
+        return memberRepository.findByMemId(id).getTel();
+    }
+
     @GetMapping("/check/{type}/{value}")
     private boolean checkDuplicate(@PathVariable String type, @PathVariable String value) {
-        switch(type) {
+        switch (type) {
             case "memId":
                 return memberRepository.findByMemId(value) != null;
             case "email":
@@ -50,22 +60,32 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<Member> saveMember(@RequestBody Member member) {
+    private ResponseEntity<Member> saveMember(@RequestBody Member member) {
 
         System.out.println("암호화 전 " + member.getPwd());
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(member.getPwd());
         member.setPwd(encodedPassword);
 
-        System.out.println("암호화 후 " +  encodedPassword);
+        System.out.println("암호화 후 " + encodedPassword);
         // 데이터베이스에 저장
         return ResponseEntity.ok(memberRepository.save(member));
     }
 
+    @PutMapping("/id/{id}/{pwd}")
+    private ResponseEntity<?> memberPwdChange(@PathVariable String id,@PathVariable String pwd) {
+        System.out.println("아이디" + id);
+        System.out.println("비밀번호"+ pwd);
+        Member member = memberRepository.findByMemId(id);
+        member.setPwd(pwd);
+        memberRepository.save(member);
+        return ResponseEntity.ok(member);
+    }
 
     //  유형별 사용자 생성
     @PostConstruct
     private void createDefaultMembers() {
+        System.out.println("멤버 생성");
         // 관리자
         boolean check1 = memberService.checkIdDuplicate("admin");
         if (check1) // 이미 admin 계정이 있는 경우 관리자계정 생성하지않음
@@ -98,5 +118,6 @@ public class MemberController {
         member = Member.createMember(memberFormDto4, passwordEncoder);
         memberService.saveMember(member);
     }
+
 
 }

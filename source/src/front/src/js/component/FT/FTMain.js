@@ -1,8 +1,14 @@
+import styles from '../../../css/pages/FT/FTMainPage.module.css';
+import {useNavigate} from "react-router-dom";
+
 function FTMain(){
+
+    const navigate = useNavigate();
+
     return(
-      <div>
+      <div className={styles.ftMain}>
           <h1>여성인재풀DB란?</h1>
-          <div>
+          <div className={styles.ftCont}>
               <p>
                   일을 하고 싶은 여성, 일을 부탁하고 싶은 여성!
                   <br/>세종여성플라자에서 서로를 만나보세요.
@@ -11,9 +17,9 @@ function FTMain(){
                   <br/>이하 여성인재풀DB 설명
               </p>
           </div>
-          <div>
-              <button>여성인재풀DB 등록신청</button>
-              <button>여성인재풀DB 매칭신청</button>
+          <div className={styles.btn}>
+              <button onClick={() => navigate('/ftw/new')}>여성인재풀DB 등록신청</button>
+              <button onClick={() => navigate('/ftc/new')}>여성인재풀DB 매칭신청</button>
           </div>
       </div>
     );

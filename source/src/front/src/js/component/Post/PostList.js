@@ -108,6 +108,7 @@ function PostList() {
             .catch(err => console.error(err));
     };
 
+
     const onDelClick = (post) => {
         console.log(post);
         const updatedPostData = {
@@ -139,13 +140,15 @@ function PostList() {
                 }
                 return response.json();
             })
-            .then(response => {
-                alert("게시글을 삭제했습니다.");
+            .then((data) => {
+                alert('게시글을 삭제했습니다.');
+                fetchPosts();
+                setOpen(true);
+
             })
             .catch((error) => {
                 console.error('게시글 삭제 중 오류 발생:', error);
             });
-
     };
 
     const onEditClick = (params) => {
@@ -165,9 +168,7 @@ function PostList() {
             <DataGrid columns={columns}
                       rows={posts}
                       disableRowSelectionOnClick={true}
-
-                      getRowId={row => SERVER_URL + "api/posts/" + row.postNum}
-
+                      getRowId={row => row.postNum}
             />
 
 
