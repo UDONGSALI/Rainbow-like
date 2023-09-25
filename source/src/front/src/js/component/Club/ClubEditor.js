@@ -3,9 +3,10 @@ import styles from  '../../../css/component/Club/ClubForm.module.css';
 import {useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../Common/constants";
 
-function ClubEditor({postNum}){
-    // const { id } = useParams();
-    const id = postNum;
+function ClubEditor(props){
+    const { id } = useParams();
+    const {memId} = props;
+    // const id = postNum;
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
