@@ -1,5 +1,5 @@
 import React from "react";
-import RentApplicationForm from "../../component/Rent/RentApplicationForm";
+import RentAgreeForm from "../../component/Rent/RentAgreeForm";
 import RentSpace from "../../component/Rent/RentSpace";
 import Footer from "../../layout/Footer/footer";
 
@@ -8,7 +8,7 @@ function RentApplicationPage() {
     return (
         <div>
             <RentSpace/>
-            <RentApplicationForm/>
+            <RentAgreeForm/>
             <Footer className="footer"/>
         </div>
     )
