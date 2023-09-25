@@ -1,5 +1,5 @@
 import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
-import styles from '../../../css/layout/Footer/footer.module.css';
+import styles from '../../../css/layout/Footer/Footer.module.css';
 import '../../../css/font.css';
 
 const Footer = () => {
@@ -14,10 +14,10 @@ const Footer = () => {
                 <div className={styles.information}>
                     <ul className={styles.otherList}>
                         <li className={styles.otherListItemFirst}>
-                            <a href='https://sj-equity.or.kr/sub0606'><span>개인정보처리방법</span></a>
+                            <a href='https://sj-equity.or.kr/sub0608'><span>개인정보처리방법</span></a>
                         </li>
                         <li className={styles.otherListItemSecond}>
-                            <a href='https://sj-equity.or.kr/sub0607'><span>이용약관</span></a>
+                            <a href='https://sj-equity.or.kr/sub0608'><span>이용약관</span></a>
                         </li>
                         <li className={styles.otherListItemLast}>
                             <a href='https://sj-equity.or.kr/sub0608'><span>이메일무단수집거부</span></a>
