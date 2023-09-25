@@ -107,7 +107,6 @@ function EduList() {
         setActivePage(1);
     };
 
-
     const getColumns = () => {
         const baseColumns = [
             {
@@ -237,7 +236,6 @@ function EduList() {
                 },
             );
         }
-
         return baseColumns;
     };
 

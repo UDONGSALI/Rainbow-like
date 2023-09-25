@@ -6,7 +6,6 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Holidays from 'date-holidays';
 import {SERVER_URL} from "../Common/constants";
 import styles from '../../../css/component/Edu/EduCalendar.module.css';
-import {Hidden} from "@mui/material";
 
 const localizer = momentLocalizer(moment);
 
@@ -94,6 +93,9 @@ function EduCalendar() {
     };
 
     const handleEventClick = event => {
+        // event.isHoliday 가 true면 이 함수의 나머지 부분은 실행되지 않습니다.
+        if (event.isHoliday) return;
+
         window.location.href = `http://localhost:3000/edu/detail/${event.eduNum}`;
     };
 
