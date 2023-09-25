@@ -1,11 +1,12 @@
 import ClubForm from "../../component/Club/ClubForm";
 
-function ClubFormPage(){
+function ClubFormPage(props){
+    const {memId} = props;
 
 
     return(
         <div>
-            <ClubForm />
+            <ClubForm memId = {memId} />
         </div>
 
 

@@ -4,10 +4,13 @@ import {SERVER_URL} from "../../Common/constants";
 import {useNavigate } from 'react-router-dom';
 import styles from '../../../../css/component/Club/ClubList.module.css';
 
-function FTWList(){
+function FTWList({ftcNum}){
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    const ftmMode = ftcNum != null;
+    const [checkedRows, setCheckedRows] = useState({}); // 개별 체크 상태를 저장하는 객체
+
 
     useEffect(() => {
         fetchPosts();
@@ -21,12 +24,16 @@ function FTWList(){
                 // 필터링: delYN이 'N'인 게시물만 남김
                 const filteredPosts = data.filter((post) => post.delYN === 'N');
                 setPosts(filteredPosts);
+                console.log(posts);
+
             })
             .catch(err => console.error(err));
     };
 
 
+
     const columns = [
+
         {
             field: 'ftWorkerNum',
             headerName: 'DB',
@@ -69,35 +76,62 @@ function FTWList(){
             headerName: '거부사유',
             width: 300,
         },
-        {
-            field: 'links.self.href',
-            headerName: '수정',
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
-                <button
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => onEditClick(params)}
-                >
-                    {params.value}
-                    수정
-                </button>
-            ),
-        },
-        {
-            field: '_links.self.href',
-            headerName: '삭제',
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
-                <button
-                    onClick={() => onDelClick(params.row)}
-                >
-                    삭제
-                </button>
-            ),
-        }
+
+
     ];
+
+    //조건부 컬럼 설정
+    if (ftmMode) {
+        columns.unshift({
+            field: 'checkbox',
+            headerName: '체크박스',
+            width: 120,
+            sortable: false,
+            filterable: false,
+            renderCell: (params) => (
+                <input
+                    type="checkbox"
+                    checked={!!checkedRows[params.row.ftWorkerNum]}
+                    onChange={() => handleRowCheckboxChange(params)}                />
+            ),
+        });
+    }
+
+    // ftmMode가 false일 때만 수정 버튼과 삭제 버튼 컬럼을 추가
+    if (!ftmMode) {
+        columns.push(
+            // 수정 버튼 컬럼 정의
+            {
+                field: 'links.self.href',
+                headerName: '수정',
+                sortable: false,
+                filterable: false,
+                renderCell: (params) => (
+                    <button
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => onEditClick(params)}
+                    >
+                        {params.value}
+                        수정
+                    </button>
+                ),
+            },
+            // 삭제 버튼 컬럼 정의
+            {
+                field: '_links.self.href',
+                headerName: '삭제',
+                sortable: false,
+                filterable: false,
+                renderCell: (params) => (
+                    <button
+                        onClick={() => onDelClick(params.row)}
+                    >
+                        삭제
+                    </button>
+                ),
+            }
+        );
+    }
 
     const onDelClick = (post) => {
         const updatedPostData = {
@@ -107,6 +141,7 @@ function FTWList(){
             licenseDtl: post.licenseDtl,
             ftDtl: post.ftDtl,
             ftStatus: post.ftStatus,
+            statusDtl: post.statusDtl,
             writeDate: post.writeDate,
             editDate: new Date(),
             delYN : 'Y'
@@ -139,6 +174,22 @@ function FTWList(){
             });
     };
 
+    const handleRowCheckboxChange = (params) => {
+        const { ftWorkerNum } = params.row;
+
+        // 개별 체크 상태를 복사한 후 해당 행의 체크 상태를 설정
+        const newCheckedRows = { ...checkedRows };
+        newCheckedRows[ftWorkerNum] = !newCheckedRows[ftWorkerNum]; // 상태를 토글
+
+        if (!newCheckedRows[ftWorkerNum]) {
+            // 체크 해제된 경우, 해당 행의 체크 상태를 삭제
+            delete newCheckedRows[ftWorkerNum];
+        }
+
+        setCheckedRows(newCheckedRows);
+        console.log(checkedRows);
+    };
+
     const onEditClick = (params) => {
 
         const rowId = params.row.ftWorkerNum;
@@ -147,22 +198,41 @@ function FTWList(){
 
 
     const onRowClick = (params) => {
-        console.log(params.row.ftWorkerNum);
         const rowId = params.row.ftWorkerNum;
-        navigate(`/ftw/${rowId}`);
+        if (ftmMode) {
+            const popupWindow = window.open(`/ftw/${rowId}`, '_blank', 'width=1000,height=600');
+        } else {
+            navigate(`/ftw/${rowId}`);
+        }
     };
 
     return(
         <div className={styles.List} style={{ height: 500, width: '100%' }}>
-            <button  onClick = {() => navigate('/ftmain')}>DB 메인</button>
-
+            { ftmMode?
+                null
+                :
+                <button  onClick = {() => navigate('/ftmain')}>DB 메인</button>
+            }
             <DataGrid columns={columns}
                       rows={posts}
                       disableRowSelectionOnClick={true}
                       getRowId={row => row.ftWorkerNum}
             />
-
-
+            {ftmMode ?
+                <div>
+                    <h2>선택된 Row 정보:</h2>
+                    <ul>
+                        {Object.keys(checkedRows).map(rowId => (
+                            <li key={rowId}>
+                                {/*{row.id}: {row.member.name}, {row.speField}*/}
+                                {rowId}: {posts.find(post => post.ftWorkerNum === parseInt(rowId))?.member.name}, {posts.find(post => post.ftWorkerNum === parseInt(rowId))?.speField}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                :
+                null
+            }
         </div>
     );
 }
