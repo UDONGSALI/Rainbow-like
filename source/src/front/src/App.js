@@ -12,8 +12,8 @@ import EduDetailPage from "./js/pages/Edu/EduDetailPage";
 import EduAddPage from "./js/pages/Edu/EduAddPage";
 import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
-import NoticeDetailPage from './js/pages/Post/NoticeDetailPage';
-import NoticePage from './js/pages/Post/NoticePage';
+import PostDetailPage from './js/pages/Post/PostDetailPage';
+import NoticeListPage from './js/pages/Post/NoticeListPage';
 import Main from "./js/component/screens/Main";
 import EduManagePage from '../src/js/pages/Member/MemManagePage';
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
@@ -21,6 +21,8 @@ import PostList from "./js/component/Post/PostList";
 import RentPage from "./js/pages/Rent/RentPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
 import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
+import SignUpPage from "./js/pages/Login/SignUpPage";
+import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -64,28 +66,25 @@ function App() {
             <Routes>
                 <Route path="/" element={<Main/>} />
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
-                <Route path="/admin/edu" element={isAdmin ? <EduListPage/> : null}/>
+                <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
-                <Route path="/singUp" element={<SingUp/>}/>
+                <Route path="/singUp" element={<SignUpPage/>}/>
+                <Route path="/edu/list" element={<EduList/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-                <Route path="/notice/:postNum" element={<NoticeDetailPage/>}/>
-                <Route path="/notice" element={<NoticePage/>}/>
-                <Route path="/sj" element={<SjNewsPage/>}/>
-                <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
-                <Route path="/notice/:boardNum" element={<NoticePage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
-                <Route path="/rent/status" element={<RentStatusPage/>}/>
-                <Route path="/rent/application/:spaceNum" element={<RentApplicationPage/>}/>
+                <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
+                <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
                 <Route path="/posts" element={<PostList />}   />
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-                <Route path="/notice/:postNum" element={<NoticeDetailPage/>}/>
-                <Route path="/notice" element={<NoticePage/>}/>
-                <Route path="/sj" element={<SjNewsPage/>}/>
+
+                <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
+                <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
+                <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
             </Routes>
         </div>
     )
