@@ -1,5 +1,5 @@
 import React from 'react';
-import "../../../css/component/Common/NavigationButton.module.css"
+import styles from  "../../../css/component/Common/NavigationButton.module.css"
 
 function ResizeAndDownloadButton() {
     const fileInputRef = React.createRef();
@@ -73,7 +73,7 @@ function ResizeAndDownloadButton() {
                 multiple
                 accept="image/*" // 여기서 이미지만 허용합니다.
             />
-            <button className={"NavButton"} onClick={handleClick}   style={{ fontSize: "5px", width: 45, height:45  }}>썸네일 생성</button>
+            <button className={styles.navButton} onClick={handleClick}   style={{ fontSize: "5px", width: 45, height:45  }}>썸네일 생성</button>
         </div>
     );
 }

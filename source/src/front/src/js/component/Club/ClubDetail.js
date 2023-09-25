@@ -89,7 +89,7 @@ function ClubDetail() {
     };
 
 
-
+    
     const onEditClick = () => {
 
         navigate("/clubs/edit/" + id);
@@ -102,7 +102,7 @@ function ClubDetail() {
     return (
 
 
-        <div className={styles.postDetailPage}>
+                <div className={styles.postDetailPage}>
             <h3>{post.post.title}</h3>
             <div className={styles.postMeta}>
                 <div className={styles.postMeta1}>

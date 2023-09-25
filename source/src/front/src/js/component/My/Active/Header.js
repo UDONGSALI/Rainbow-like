@@ -1,14 +1,19 @@
-
+import '../../../css/pages/mypage/container_common.module.css';
+import '../../../css/pages/mypage/common.module.css';
+import '../../../css/layout/Container/container_common.module.css';
+import '../../../css/layout/common.module.css';
+import '../../../css/font.css';
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import {Link} from 'react-router-dom';
 import * as React from "react";
 import {Typography} from "@mui/material";
-import mypage_bg from "../../../../img/component/mypage/mypage_bg.png";
+
+import mypage_bg from "../../../img/component/mypage/mypage_bg.png";
 
 
-export default function Header() {
+export default function Top() {
     const [value, setValue] = React.useState('one');
     const handleChange = (event, newValue) => {
         setValue(newValue);

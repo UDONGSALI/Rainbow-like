@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from '../../../css/component/Comment/Comment.module.css';
 import { useParams } from "react-router-dom";
 import { SERVER_URL } from "../Common/constants";
-import Snackbar from "@mui/material/Snackbar";
 
 function Comment() {
     const { id } = useParams();
@@ -349,7 +348,6 @@ function Comment() {
 
     return (
         <div className={styles.comment}>
-            <div className={styles.commList}>
                 <table>
 
                     <tbody>
@@ -360,9 +358,9 @@ function Comment() {
                         </tr>
                     ) : (
                         renderComments(comms)
-                    )}                    </tbody>
+                    )}
+                    </tbody>
                 </table>
-            </div>
             <form onSubmit={handleSubmit} className={styles.commentForm}>
                 <textarea
                     name="content"

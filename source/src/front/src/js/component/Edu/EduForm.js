@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import FileUpload from "../Common/FileUpload";
 import {SERVER_URL} from "../Common/constants";
 import {useNavigate} from 'react-router-dom';
+import styles from '../../../css/component/Club/ClubForm.module.css';
 
 
 function EduForm({ eduNum }) {
@@ -144,11 +145,11 @@ function EduForm({ eduNum }) {
     };
 
     return (
-        <div className="registration-form-container">
+        <div className={styles.registrationFormContainer}>
             <h2>교육 정보 등록 폼</h2>
-            <form onSubmit={handleSubmit} className="registration-form">
+            <form onSubmit={handleSubmit} className={styles.registrationForm}>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <select
                         name="type"
                         value={formData.type}
@@ -161,7 +162,7 @@ function EduForm({ eduNum }) {
                     </select>
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <select
                         id="recuMethod"
                         name="recuMethod"
@@ -175,7 +176,7 @@ function EduForm({ eduNum }) {
                     </select>
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <input
                         type="text"
                         name="eduName"
@@ -186,7 +187,7 @@ function EduForm({ eduNum }) {
                     />
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <textarea
                         name="content"
                         value={formData.content}
@@ -196,7 +197,7 @@ function EduForm({ eduNum }) {
                     />
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <label htmlFor="eduStdt">교육 시작일시:</label>
                     <input
                         type="datetime-local"
@@ -208,7 +209,7 @@ function EduForm({ eduNum }) {
                     />
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <label htmlFor="eduEddt">교육 종료일시:</label>
                     <input
                         type="datetime-local"
@@ -220,7 +221,7 @@ function EduForm({ eduNum }) {
                     />
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <label htmlFor="eduAddr">주소:</label>
                     <input
                         type="text"
@@ -233,7 +234,7 @@ function EduForm({ eduNum }) {
                     />
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <label htmlFor="target">대상:</label>
                     <input
                         type="text"
@@ -246,7 +247,7 @@ function EduForm({ eduNum }) {
                     />
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <label htmlFor="recuStdt">모집 시작일:</label>
                     <input
                         type="date"
@@ -258,7 +259,7 @@ function EduForm({ eduNum }) {
                     />
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <label htmlFor="recuEddt">모집 종료일:</label>
                     <input
                         type="date"
@@ -270,7 +271,7 @@ function EduForm({ eduNum }) {
                     />
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <label htmlFor="capacity">정원:</label>
                     <input
                         type="number"
@@ -283,7 +284,7 @@ function EduForm({ eduNum }) {
                     />
                 </div>
 
-                <div className="input-group">
+                <div className={styles.inputGroup}>
                     <label htmlFor="tel">연락처:</label>
                     <input
                         type="text"
@@ -295,7 +296,7 @@ function EduForm({ eduNum }) {
                         required
                     />
                 </div>
-                <div>
+                <div className={styles.inputGroup}>
                     <label>첫번째 사진은 썸네일을 업로드 해 주세요!</label>
                     <FileUpload onFileChange={handleFileChange} maxSize={1} maxCount={2} acceptedFormats={['image/*']}/>
                 </div>
