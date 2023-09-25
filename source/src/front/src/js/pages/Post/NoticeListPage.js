@@ -6,7 +6,7 @@ import PostNoticeList from "../../component/Post/PostNoticeList";
 
 
 const BoardNum = 1;
-function NoticePage() {
+function NoticeListPage() {
 
     return (
         <div>
@@ -15,4 +15,4 @@ function NoticePage() {
     );
 }
 
-export default NoticePage;
+export default NoticeListPage;
