@@ -4,7 +4,6 @@ import LoginPage from "./js/pages/Login/LoginPage";
 import React, {useEffect} from "react";
 import MemManagePage from "./js/pages/Member/MemManagePage";
 import NavBar from './js/layout/Navbar/NavBar';
-import SingUp from "./js/component/Login/SignUp";
 import EduList from "./js/component/Edu/EduList";
 import EduCalendarPage from "./js/pages/Edu/EduCalendarPage";
 import EduListPage from "./js/pages/Edu/EduListPage";
@@ -13,7 +12,6 @@ import EduAddPage from "./js/pages/Edu/EduAddPage";
 import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 import PostDetailPage from './js/pages/Post/PostDetailPage';
-import NoticeListPage from './js/pages/Post/NoticeListPage';
 import Main from "./js/component/screens/Main";
 import EduManagePage from '../src/js/pages/Member/MemManagePage';
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
@@ -21,12 +19,13 @@ import PostList from "./js/component/Post/PostList";
 import RentPage from "./js/pages/Rent/RentPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
 import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
+import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 import SignUpPage from "./js/pages/Login/SignUpPage";
-import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
-
+import NoticeListPage from "./js/pages/Post/NoticeListPage";
+import footer from "./js/layout/Footer/footer";
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
-    const memId =  sessionStorage.getItem("memId");
+    const memId = sessionStorage.getItem("memId");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -64,7 +63,7 @@ function App() {
         <div className="App">
             <NavBar/>
             <Routes>
-                <Route path="/" element={<Main/>} />
+                <Route path="/" element={<Main/>}/>
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
@@ -76,16 +75,20 @@ function App() {
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
+                <Route path="/edu/applyck" element={<EduApplyCheckPage memId={memId}/>}/>
+                <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
                 <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
                 <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
-                <Route path="/posts" element={<PostList />}   />
+                <Route path="/posts" element={<PostList/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-
+                <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
+                <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
             </Routes>
+            <footer />
         </div>
     )
 }
