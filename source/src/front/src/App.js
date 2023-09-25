@@ -79,8 +79,8 @@ function App() {
                 <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
                 <Route path="/notice/:boardNum" element={<NoticePage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
-                <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
-                <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
+                <Route path="/rent/status" element={<RentStatusPage/>}/>
+                <Route path="/rent/application/:spaceNum" element={<RentApplicationPage/>}/>
                 <Route path="/posts" element={<PostList />}   />
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/notice/:postNum" element={<NoticeDetailPage/>}/>
