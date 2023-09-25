@@ -1,9 +1,11 @@
 import FTWForm from "../../../component/FT/FTW/FTWForm";
 
-function FTWFormPage(){
+function FTWFormPage(props){
+    const {memId} = props;
+
     return(
         <div>
-            <FTWForm />
+            <FTWForm memId={memId}/>
         </div>
     );
 }

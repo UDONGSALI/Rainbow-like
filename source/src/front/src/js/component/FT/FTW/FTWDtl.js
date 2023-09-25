@@ -4,8 +4,10 @@ import {SERVER_URL} from "../../Common/constants";
 import styles from '../../../../css/component/Club/ClubDetail.module.css';
 
 
-function FTWDtl(){
+function FTWDtl(props){
     const { id } = useParams();
+    const {memId} = props;
+
     const [post, setPost] = useState(null);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();

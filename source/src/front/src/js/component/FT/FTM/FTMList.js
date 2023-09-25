@@ -4,7 +4,7 @@ import {SERVER_URL} from "../../Common/constants";
 import {useNavigate } from 'react-router-dom';
 import styles from '../../../../css/component/Club/ClubList.module.css';
 
-function FTCList(){
+function FTMList(){
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ function FTCList(){
     }, []);
 
     const fetchPosts = () =>{
-        fetch(SERVER_URL + "ftc")
+        fetch(SERVER_URL + "ftm")
             .then(response =>
                 response.json())
             .then((data) => {
@@ -26,65 +26,52 @@ function FTCList(){
 
     const columns = [
         {
-            field: 'ftConsumerNum',
-            headerName: 'DB',
-            width: 50,
-        },
-        {
-            field: 'member',
-            headerName: '신청자',
-            width: 100,
+            field: 'ftmNum',
+            headerName: '매칭번호',
+            width: 200,
+        },{
+            field: 'ftConsumer',
+            headerName: '신청번호',
+            width: 200,
             valueGetter: (params) => {
-                const members = Array.isArray(params.row.member) ? params.row.member : [params.row.member];
-                return members.map((m) => m.name).join(', ');
+                const consumers = Array.isArray(params.row.ftConsumer) ? params.row.ftConsumer : [params.row.ftConsumer];
+                return consumers.map((c) => c.ftConsumerNum).join(', ');
             }
         },
         {
-            field: 'speField',
-            headerName: '분류',
+            field: 'ftWorker',
+            headerName: '매칭된 인재번호',
             width: 200,
-            renderCell: (params) => (
-                <div
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => onRowClick(params)}
-                >
-                    {params.value}
-                </div>
-            ),
+            valueGetter: (params) => {
+                const workers = Array.isArray(params.row.ftWorker) ? params.row.ftWorker : [params.row.ftWorker];
+                return workers.map((c) => c.ftWorkerNum).join(', ');
+            }
+
         },
 
-        {
-            field: 'ftmYN',
-            headerName: '매칭여부',
-            width: 100,
-        },
-        {
-            field: 'statusDtl',
-            headerName: '거부사유',
-            width: 400,
-        },
 
         {
             field: 'links.self.href',
-            headerName: '수정',
+            headerName: '확인',
             sortable: false,
             filterable: false,
             renderCell: (params) => (
                 <button
                     style={{ cursor: 'pointer' }}
-                    onClick={() => onEditClick(params)}
+                    onClick={() => onDtlClick(params)}
                 >
                     {params.value}
-                    수정
+                    매칭확인
                 </button>
             ),
         },
+
     ];
 
-    const onEditClick = (params) => {
-
-        const rowId = params.row.ftConsumerNum;
-        navigate(`/ftc/edit/${rowId}`);
+    const onDtlClick = (params) => {
+        const consumers = Array.isArray(params.row.ftConsumer) ? params.row.ftConsumer : [params.row.ftConsumer];
+        const rowId = consumers.map((c) => c.ftConsumerNum).join(', ');
+        navigate(`/ftc/${rowId}`);
     };
 
 
@@ -95,13 +82,13 @@ function FTCList(){
     };
 
     return(
-        <div className={styles.List} style={{ height: 500, width: '100%' }}>
+        <div className={styles.List}>
             <button  onClick = {() => navigate('/ftmain')}>DB 메인</button>
 
             <DataGrid columns={columns}
                       rows={posts}
                       disableRowSelectionOnClick={true}
-                      getRowId={row => row.ftConsumerNum}
+                      getRowId={row => row.ftmNum}
             />
 
 
@@ -109,4 +96,4 @@ function FTCList(){
     );
 }
 
-export default FTCList;
+export default FTMList;
