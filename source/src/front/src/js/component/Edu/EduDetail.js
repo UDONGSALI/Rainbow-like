@@ -1,65 +1,96 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import styles from '../../../css/component/Edu/EduDetail.module.css';
 import { SERVER_URL } from '../Common/constants';
-import { useParams } from "react-router-dom";
 
-function EduDetail({ onBackClick }) {
+function EduDetail() {
     const [eduData, setEduData] = useState(null);
     const [files, setFiles] = useState([]);
     const { eduNum } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch(SERVER_URL + `files`)
             .then((response) => response.json())
-            .then((data) => {
-                setFiles(data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+            .then((data) => setFiles(data))
+            .catch((error) => console.error(error));
     }, []);
-
-    const filteredFiles = useMemo(
-        () => files.filter(file => file.edu && file.edu.eduNum == eduNum.slice(-1)),
-        [files, eduNum]
-    );
 
     useEffect(() => {
         fetch(SERVER_URL + `api/edus/` + eduNum)
             .then((response) => response.json())
-            .then((data) => {
-                setEduData(data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+            .then((data) => setEduData(data))
+            .catch((error) => console.error(error));
     }, [eduNum]);
 
-    function formatDateAndTime(inputDate) {
+    const formatDateAndTime = (inputDate) => {
         const dateObj = new Date(inputDate);
         const year = dateObj.getFullYear();
         const month = String(dateObj.getMonth() + 1).padStart(2, '0');
         const day = String(dateObj.getDate()).padStart(2, '0');
         const hours = String(dateObj.getHours()).padStart(2, '0');
         const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-
         return {
             date: `${year}-${month}-${day}`,
             time: `${hours}:${minutes}`
         };
-    }
+    };
 
-    function renderDateRange(startDate, endDate) {
+    const renderDateRange = (startDate, endDate) => {
         const start = formatDateAndTime(startDate);
         const end = formatDateAndTime(endDate);
 
-        // 시작 날짜와 종료 날짜가 동일한 경우, 날짜는 한 번만 표시하고 시간 범위만 표시합니다.
         if (start.date === end.date) {
             return `${start.date} ${start.time} ~ ${end.time}`;
         } else {
             return `${start.date} ${start.time} ~ ${end.date} ${end.time}`;
         }
-    }
+    };
+
+    const getRecuMethodDescription = (method) => {
+        switch (method) {
+            case "FIRST_COME":
+                return "선착순";
+            case "ADMIN_APPROVAL":
+                return "관리자 승인";
+            default:
+                return method;
+        }
+    };
+
+    const getTypeTitleAndStyle = (type) => {
+        switch (type) {
+            case "EDU":
+                return { title: "교육", className: styles.typeEDU };
+            case "BUSINESS":
+                return { title: "사업", className: styles.typeBUSINESS };
+            default:
+                return { title: type, className: "" };
+        }
+    };
+
+    const isWithinApplicationPeriod = (startDateString, endDateString) => {
+        const now = new Date();
+        const start = new Date(startDateString);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(endDateString);
+        end.setHours(23, 59, 59, 999);
+        return now >= start && now <= end;
+    };
+
+    const isBelowMaxApplicants = (recuPerson, capacity) => {
+        return recuPerson < capacity;
+    };
+
+    const handleApplyButtonClick = () => {
+        navigate(`/edu/apply/${eduNum}`);
+    };
+
+    // Define filteredFiles here
+    const filteredFiles = useMemo(
+        () => files.filter(file => file.edu && file.edu.eduNum == eduNum),
+        [files, eduNum]
+    );
 
     return (
         <div className={styles.container}>
@@ -70,22 +101,28 @@ function EduDetail({ onBackClick }) {
                             {filteredFiles[0] && <img src={filteredFiles[0].fileUri} alt="First Image" />}
                         </div>
                         <div className={styles.rightTop}>
-                            <h1 className={styles.header}>{eduData.eduname}</h1>
+                            <h1 className={styles.header}>
+                                <span className={getTypeTitleAndStyle(eduData.type).className}>
+                                    <strong>{getTypeTitleAndStyle(eduData.type).title}</strong>
+                                </span>&nbsp;&nbsp;&nbsp;{eduData.eduName}
+                            </h1>
                             <p className={styles.detail}><strong>교육 일시:</strong> {renderDateRange(eduData.eduStdt, eduData.eduEddt)}</p>
                             <p className={styles.detail}><strong>장소:</strong> {eduData.eduAddr}</p>
                             <p className={styles.detail}><strong>대상:</strong> {eduData.target}</p>
                             <p className={styles.detail}><strong>신청 기간:</strong> {eduData.recuStdt} ~ {eduData.recuEddt}</p>
-                            <p className={styles.detail}><strong>신청 방법:</strong> {eduData.recuMethod}</p>
+                            <p className={styles.detail}><strong>신청 방법:</strong> {getRecuMethodDescription(eduData.recuMethod)}</p>
                             <p className={styles.detail}><strong>문의 전화번호:</strong> {eduData.tel}</p>
+                            {isWithinApplicationPeriod(eduData.recuStdt, eduData.recuEddt) && isBelowMaxApplicants(eduData.recuPerson, eduData.capacity) && (
+                                <button className={styles.applyButton} onClick={handleApplyButtonClick}>신청하기</button>
+                            )}
                         </div>
                     </div>
-                    <br/>
-                    <br/>
+                    <br />
                     <hr />
-                    <br/>
+                    <br />
                     <div className={styles.mainContent}>
                         {filteredFiles[1] && <img src={filteredFiles[1].fileUri} alt="Second Image" />}
-                        <br/>
+                        <br />
                         <p className={styles.detailContent}>{eduData.content}</p>
                     </div>
                 </div>

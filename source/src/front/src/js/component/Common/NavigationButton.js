@@ -15,7 +15,7 @@ function NavigationButton({ name, url, fontSize = "calc(1vw + 1vh)" }) {
             onClick={handleButtonClick}
             style={{ fontSize: fontSize }}
         >
-            {name}
+            <span>{name}</span>
         </button>
     );
 }
