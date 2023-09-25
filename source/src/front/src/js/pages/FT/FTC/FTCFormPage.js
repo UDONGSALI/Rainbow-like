@@ -1,9 +1,11 @@
 import FTCForm from "../../../component/FT/FTC/FTCForm";
 
-function FTCFormPage(){
+function FTCFormPage(props){
+    const {memId} = props;
+
     return(
         <div>
-            <FTCForm />
+            <FTCForm memId={memId}/>
         </div>
     );
 }

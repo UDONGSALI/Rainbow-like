@@ -1,11 +1,12 @@
 import FTWDtl from "../../../component/FT/FTW/FTWDtl";
 import styles from '../../../../css/pages/Club/ClubDtlPage.module.css';
 
-function FTWDtlPage(){
+function FTWDtlPage(props){
+    const {memId} = props;
 
     return(
         <div className={styles.postDetailPage}>
-            <FTWDtl />
+            <FTWDtl memId={memId} />
         </div>
     );
 }
