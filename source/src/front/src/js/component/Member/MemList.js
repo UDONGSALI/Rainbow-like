@@ -9,19 +9,20 @@ function MemList() {
     const [files, setFiles] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
+
+
     const membersWithFiles = members.map((member) => {
 
         // 각 멤버에 대한 파일 정보를 찾는 로직 작성
         const memberFiles = files.filter((file) => {
             if (!file.member) return false;
-            return file.member.memNum == member._links.member.href.slice(-1);
+            return file.member.memNum == member._links.member.href.split('/').pop();
         });
         return {
             ...member,
             memberFiles, // 각 멤버의 파일 정보를 추가합니다.
         };
     });
-    console.log(members)
 
     // 컴포넌트가 마운트될 때 멤버 목록을 불러오는 효과를 정의합니다.
     useEffect(() => {
@@ -51,7 +52,7 @@ function MemList() {
             sortable: false,
             filterable: false,
             renderCell: (row) => (
-                <div>{(row.id).slice(-1)}</div>
+                <div>{(row.id).split('/').pop()}</div>
             ),
             width: 50
 
