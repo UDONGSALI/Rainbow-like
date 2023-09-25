@@ -4,8 +4,11 @@ import {SERVER_URL} from "../Common/constants";
 import styles from '../../../css/component/Club/ClubDetail.module.css';
 
 
-function ClubDetail() {
+function ClubDetail(props) {
     const { id } = useParams();
+    const {memId} = props;
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    console.log(props);
     const [post, setPost] = useState(null);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
@@ -116,11 +119,17 @@ function ClubDetail() {
             </div>
 
             <div className={styles.content}>{post.post.content}</div>
-            <div className={styles.postButton}>
-                <button onClick={() => onEditClick()}>수정</button>
-                <button onClick={() => onDelClick(post.post)}>삭제</button>
-                <button onClick={() => navigate("/clubs")}>리스트로</button>
-            </div>
+                    <div className={styles.postButton}>
+                        {post.member.memNum === memId || isAdmin ? (
+                            <>
+                                <button onClick={() => onEditClick()}>수정</button>
+                                <button onClick={() => onDelClick(post.post)}>삭제</button>
+                            </>
+                        ) : (
+                            <></>
+                        )}
+                        <button onClick={() => navigate("/clubs")}>리스트로</button>
+                    </div>
 
         </div>
     );
