@@ -15,6 +15,7 @@ public interface EduHistRepository extends JpaRepository <EduHist, Long> {
 
     EduHist findByEduHistNum(Long eduHist);
     List<EduHist> findByMember(Member member);
+    List<EduHist> findByMemberAndEdu(Member member,Edu edu);
     List<EduHist> findByMemberIn(List<Member> members);
     List<EduHist> findByEdu(Edu edu);
     List<EduHist> findByEduIn(List<Edu> edus);

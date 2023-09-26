@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { SERVER_URL } from '../Common/constants';
+import React, {useEffect, useState} from 'react';
+import {SERVER_URL} from '../Common/constants';
 import styles from '../../../css/component/Edu/EduApply.module.css';
 import Checkbox from '@mui/material/Checkbox';
 import Stack from '@mui/material/Stack';
-import { TextField } from '@mui/material';
+import {TextField} from '@mui/material';
 import FileUpload from '../Common/FileUpload';
 
 function EduApply(props) {
-    const { eduNum, memId } = props;
+    const {eduNum, memId} = props;
 
     const [eduData, setEduData] = useState(null);
     const [member, setMember] = useState(null);
@@ -56,7 +56,7 @@ function EduApply(props) {
     }, [member]);
 
     function handleChange(event) {
-        const { name, value } = event.target;
+        const {name, value} = event.target;
         setFormData(prevState => ({
             ...prevState,
             [name]: value,
@@ -78,53 +78,6 @@ function EduApply(props) {
             ? `${formattedStartDate} ~ ${endDate.getHours()}:${String(endDate.getMinutes()).padStart(2, '0')}`
             : `${formattedStartDate} ~ ${formattedEndDate}`;
     }
-
-    // function handleSubmit(event) {
-    //     event.preventDefault();
-    //
-    //     if (!isFirstCheckboxChecked) {
-    //         alert('필수 약관에 동의하지 않으면 교육 신청이 불가능합니다.');
-    //         return;
-    //     }
-    //
-    //     if (!eduData || !memId) {
-    //         alert('필요한 정보가 누락되었습니다.');
-    //         return;
-    //     }
-    //
-    //     let applyStatus;
-    //
-    //     if (eduData.recuMethod === 'FIRST_COME') {
-    //         applyStatus = 'APPROVE';
-    //     } else if (eduData.recuMethod === 'ADMIN_APPROVAL') {
-    //         applyStatus = 'WAIT';
-    //     }
-    //
-    //     const requestData = {
-    //         eduNum: parseInt(eduNum),
-    //         memNum: member.memNum,
-    //         applyDate: new Date().toISOString(),
-    //         portraitRights: isSecondCheckboxChecked,
-    //         status: applyStatus,
-    //     };
-    //
-    //     fetch(SERVER_URL + 'eduHist', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(requestData),
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             alert('신청이 완료되었습니다.');
-    //             window.location.href = `/edu/detail/${eduNum}`;
-    //         })
-    //         .catch(error => {
-    //             console.error('Error:', error);
-    //             alert('신청 중 오류가 발생했습니다.');
-    //         });
-    // }
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -152,41 +105,63 @@ function EduApply(props) {
             return;
         }
 
-        const requestData = {
-            eduNum: parseInt(eduNum),
-            memNum: member.memNum,
-            applyDate: new Date().toISOString(),
-            portraitRights: isSecondCheckboxChecked,
-            status: applyStatus,
-        };
-
-        // FormData 생성 및 데이터 추가
-        const formData = new FormData();
-        formData.append("eduHistData", JSON.stringify(requestData));
-        console.log(formData)
-        // 파일 추가
-        for (const file of selectedFiles) {
-            formData.append('file', file);
-        }
-        formData.append('tableName', "eduHist");
-        formData.append('number', 0);
-
-        console.log(formData)
-
-        fetch(SERVER_URL + 'eduHist/andfile', {
-            method: 'POST',
-            body: formData,
-        })
+        // 이미 신청했는지 확인
+        fetch(SERVER_URL + 'eduHist/check/' + member.memNum + '/' + eduNum)
             .then(response => response.json())
             .then(data => {
-                alert('신청이 완료되었습니다.');
+                if (data) { // true인 경우 이미 신청한 상태
+                    alert('이미 이 교육을 신청하셨습니다.');
+                    throw new Error('Already applied'); // 오류를 발생시켜서 이후의 작업을 중지
+                }
+            })
+            .then(() => {
+                // 신청을 하지 않은 상태이므로 신청 처리 로직을 계속 진행
+                const requestData = {
+                    eduNum: parseInt(eduNum),
+                    memNum: member.memNum,
+                    applyDate: new Date().toISOString(),
+                    portraitRights: isSecondCheckboxChecked,
+                    status: applyStatus,
+                };
+
+                // FormData 생성 및 데이터 추가
+                const formData = new FormData();
+                formData.append("eduHistData", JSON.stringify(requestData));
+
+                // 파일 추가
+                if (selectedFiles && selectedFiles.length > 0) {
+                    for (const file of selectedFiles) {
+                        formData.append('file', file);
+                    }
+                    formData.append('tableName', "eduHist");
+                    formData.append('number', 0);
+                }
+
+                // 서버에 신청 데이터 전송
+                return fetch(SERVER_URL + 'eduHist/andfile', {
+                    method: 'POST',
+                    body: formData,
+                });
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error applying for the education');
+                }
+                return response.text();
+            })
+            .then(data => {
+                alert(data);  // 성공 메시지 출력
                 window.location.href = `/edu/detail/${eduNum}`;
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('신청 중 오류가 발생했습니다.');
+                // 이미 신청했거나, 다른 오류 발생 시 이곳에서 처리
+                if (error.message !== 'Already applied') {
+                    console.error('Error:', error);
+                    alert('신청 중 오류가 발생했습니다.');
+                }
             });
     }
+
 
     function renderAgreementCheckbox(label, isChecked, onChange) {
         return (
@@ -194,7 +169,7 @@ function EduApply(props) {
                 <h5>
                     <strong>
                         {label}
-                        <span style={{ color: isChecked ? '#53468b' : '#808080', fontSize: '15pt' }}>
+                        <span style={{color: isChecked ? '#53468b' : '#808080', fontSize: '15pt'}}>
               {isChecked ? ' (필수)' : ' (선택)'}
             </span>
                     </strong>
@@ -205,7 +180,7 @@ function EduApply(props) {
                     </p>
                 </div>
                 <div>
-                    <Checkbox checked={isChecked} onChange={onChange} />
+                    <Checkbox checked={isChecked} onChange={onChange}/>
                     <span>{label}에 동의합니다.</span>
                 </div>
             </div>
@@ -253,20 +228,22 @@ function EduApply(props) {
                                             - 개인정보의 항목: 성명,생년월일,연락처(휴대폰),이메일주소<br/><br/>
 
                                             <strong>3. 개인정보의 보유 및 이용기간: 회원 탈퇴 시까지<br/></strong>
-                                            - 세종여성플라자에서 처리하는 개인정보는 수집,이용 목적으로 명시한 범위 내에서 처리하며, 개인정보보호법 등 관련 법령에서 정한 보유기관을
+                                            - 세종여성플라자에서 처리하는 개인정보는 수집,이용 목적으로 명시한 범위 내에서 처리하며, 개인정보보호법 등 관련 법령에서 정한
+                                            보유기관을
                                             준용하고
                                             있습니다.<br/>
                                             - 세종여성플라자는 원칙적으로 보유기간이 경과하였거나 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체없이
                                             파기합니다.<br/><br/>
 
-                                            <strong>4. 정보 주체는 이용자로서 개인정보 수집, 이용을 동의하지 않을 수 있습니다. 단 동의를 거부할 경우 교육, 공간대관 신청이
+                                            <strong>4. 정보 주체는 이용자로서 개인정보 수집, 이용을 동의하지 않을 수 있습니다. 단 동의를 거부할 경우 교육, 공간대관
+                                                신청이
                                                 제한됩니다.<br/><br/></strong>
 
                                             <strong>5. 기타 개인정보와 관련된 사항은 홈페이지에 공개된 개인정보처리방침을 준수합니다.</strong>
                                         </p>
                                     </div>
                                     <div className={styles.checkboxContainer}>
-                                    <input
+                                        <input
                                             type="checkbox"
                                             checked={isFirstCheckboxChecked}
                                             onChange={(e) => setIsFirstCheckboxChecked(e.target.checked)}
@@ -282,7 +259,7 @@ function EduApply(props) {
                                         </strong>
                                     </h5>
                                     <div className={styles.checkboxContainer}>
-                                    <input
+                                        <input
                                             type="checkbox"
                                             checked={isSecondCheckboxChecked}
                                             onChange={(e) => setIsSecondCheckboxChecked(e.target.checked)}
@@ -316,10 +293,12 @@ function EduApply(props) {
                                             value={formData.tel}
                                             readOnly
                                         />
-                                        <FileUpload onFileChange={handleFileChange}  noFileMessage="신청서 파일이 있는 경우 다운로드 받아 신청내역을 작성 후 업로드 해주세요." maxSize={3} maxCount={10}  />
+                                        <FileUpload onFileChange={handleFileChange}
+                                                    noFileMessage="신청서 파일이 있는 경우 다운로드 받아 신청내역을 작성 후 업로드 해주세요."
+                                                    maxSize={3} maxCount={10}/>
                                     </Stack>
                                 </div>
-                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                                <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
                                     <button type="submit" onClick={handleSubmit}>교육 신청</button>
                                 </div>
                             </div>
