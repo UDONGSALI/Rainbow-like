@@ -57,7 +57,7 @@ function EduList() {
                     id: edu._links.edu.href,
                     ...edu,
                 }));
-                setEdus(formattedEdus);
+                setEdus(formattedEdus.reverse());  // .reverse()를 사용하여 배열을 역순으로 만듭니다.
 
                 // 여기서 totalCount와 totalPages 상태를 업데이트합니다.
                 setTotalCount(formattedEdus.length);
@@ -65,6 +65,7 @@ function EduList() {
             })
             .catch((err) => console.error(err));
     };
+
 
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
@@ -104,12 +105,11 @@ function EduList() {
             // 검색 대상 필드 값
             const targetValue = edu[searchTerm.value];
 
-            // 'type' 또는 'recuMethod'으로 검색하는 경우, 라벨로 검색
+            // 'type' 또는 'recuMethod'으로 검색하는 경우, 셀렉트로 검색
             if (searchTerm.value === "type" || searchTerm.value === "recuMethod") {
                 const targetLabel = VALUE_TO_LABEL_MAPPING[targetValue];
-                return targetLabel ? targetLabel.toLowerCase().includes(searchTerm.term.toLowerCase()) : false;
+                return targetValue?.toLowerCase().includes(searchTerm.term.toLowerCase());
             }
-
             // 기본적인 텍스트 포함 검색
             return targetValue?.toLowerCase().includes(searchTerm.term.toLowerCase());
         });
@@ -255,13 +255,11 @@ function EduList() {
     const columns = getColumns();
 
     const SEARCH_OPTIONS = [
-        { label: "프로그램명", value: "eduName" },
-        { label: "구분", value: "type" },
-        { label: "내용", value: "content" },
-        { label: "접수 방법", value: "recuMethod" } // 추가된 부분
+        { label: "프로그램명", value: "eduName", type: "text" },
+        { label: "구분", value: "type", type: "select" },
+        { label: "내용", value: "content", type: "text" },
+        { label: "접수 방법", value: "recuMethod", type: "select" }
     ];
-
-
 
     return (
         <Wrapper style={{ textAlign: 'center' }}>
