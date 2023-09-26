@@ -39,7 +39,6 @@
     font-size: 16px;
     margin: 10px 0;
     font-weight: bold;
-
 }
 
 .postData {
@@ -48,31 +47,19 @@
     margin: 0 auto;
 }
 
-.postButton {
-    display: flex;
-    margin-top: auto; /* 수정 및 삭제 버튼을 아래로 밀어내기 위해 margin-top을 auto로 설정 */
-    justify-content: flex-end;
-}
-
-.postEditButton,
-.postDeleteButton {
-    width: 60px;
+.newPost {
+    margin-left: 48%;
+    width: 80px;
     height: 35px;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-    margin-left: 10px; /* 수정 및 삭제 버튼 사이의 간격 조절 */
-    margin-bottom: 40px;
     background-color: #a38ced;
     border: 1px solid #99959e;
     border-radius: 5px;
     color: white;
+    display: block;
+    margin-top: 40px;
+    font-size: 14px;
+}
 
-}
-.postDeleteButton{
-    margin-right: 20%;  /*수정 삭제 버튼 위치 조정*/
-}
-.postEditButton:hover,
-.postDeleteButton:hover {
+.newPost:hover {
     background-color: #53468b;
 }
