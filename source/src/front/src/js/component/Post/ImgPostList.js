@@ -3,6 +3,7 @@ import { useNavigate,Link } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
 import styles from '../../../css/component/Post/imgPostList.module.css';
 import Pagination from "../Common/Pagination";
+import {colors} from "@mui/material";
 
 function ImgPostList(props) {
     const { boardNum } = props;
@@ -13,7 +14,7 @@ function ImgPostList(props) {
     const postsPerPage = 6;
 
     useEffect(() => {
-        fetch(`${SERVER_URL}posts?boardNum=${boardNum}`)
+        fetch(`${SERVER_URL}post/${boardNum}`)
             .then(response => response.json())
             .then(data => {
                 const filteredPosts = data.filter(post => post.board.boardNum === 3);
@@ -36,10 +37,6 @@ function ImgPostList(props) {
                     .catch(error => console.error(error));
             })
             .catch(err => console.error(err));
-    };
-
-    const onEditClick = (postNum) => {
-        navigate(`/posts/edit/${postNum}`);
     };
 
     const getPostImage = (postNum) => {
@@ -77,6 +74,7 @@ function ImgPostList(props) {
                     </Link>
                 ))}
             </div>
+            <button className={styles.newPost}>등록</button>
             <Pagination
                 activePage={currentPage}
                 itemsCountPerPage={postsPerPage}
@@ -86,17 +84,6 @@ function ImgPostList(props) {
                 prevPageText="<"
                 nextPageText=">"
             />
-            {posts[0] && (
-                <div className={styles.postButton}>
-                    <button to={`/posts/edit/${posts[0].postNum}`} className={styles.postEditButton}>
-                        수정
-                    </button>
-                    <button onClick={() => onDelClick(posts[0].postNum)}
-                            className={styles.postDeleteButton}>
-                        삭제
-                    </button>
-                </div>
-            )}
         </div>
     );
 }
