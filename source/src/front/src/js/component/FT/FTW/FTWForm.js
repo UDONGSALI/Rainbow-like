@@ -39,10 +39,10 @@ function FTWForm(props){
         })
             .then((response) => response.json())
             .then((data) => {
-                alert('게시글을 작성했습니다.');
+                alert('등록이 신청되었습니다.');
                 console.log(data);
-                const newPostId = data.ftWorkerNum; // 예: 응답 데이터에서 게시글의 ID 필드를 추출합니다.
-                navigate(`/ftw/${newPostId}`); // 추출한 ID를 사용하여 리디렉션합니다.
+                const newPostId = data.ftWorkerNum;
+                navigate(`/ftw/${newPostId}`);
 
             })
             .catch((error) => {
@@ -76,14 +76,14 @@ function FTWForm(props){
                 >
                     <option value="">분야 선택</option>
                     <option value="IT">IT 전반</option>
-                    <option value="IT / front">IT / front</option>
-                    <option value="IT / back">IT / back</option>
-                    <option value="IT / ect">IT / 기타</option>
+                    <option value="IT_front">IT / front</option>
+                    <option value="IT_Back">IT / back</option>
+                    <option value="IT_ect">IT / 기타</option>
                     <option value="디자인">디자인 / 전반</option>
-                    <option value="디자인 / 그림">디자인 / 그림</option>
-                    <option value="디자인 / 영상">디자인 / 영상</option>
-                    <option value="디자인 / 수공예">디자인 / 수공예</option>
-                    <option value="디자인 / 기타">디자인 / 기타</option>
+                    <option value="디자인_그림">디자인 / 그림</option>
+                    <option value="디자인_영상">디자인 / 영상</option>
+                    <option value="디자인_수공예">디자인 / 수공예</option>
+                    <option value="디자인_기타">디자인 / 기타</option>
                     <option value="기타">기타</option>
                 </select>
                 </div>
@@ -120,7 +120,7 @@ function FTWForm(props){
                         value={formData.licenseDtl}
                         onChange={handleChange}
                         placeholder="보유 자격증을 적어주세요."
-                        required
+
                     />
                 </div>
 
