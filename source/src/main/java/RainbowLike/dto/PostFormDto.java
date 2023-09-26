@@ -59,11 +59,13 @@ public class PostFormDto {
         Board board2 = new Board();
         Board board3 = new Board();
         Board board4 = new Board();
+        Board board5 = new Board();
 
         board1.setBoardNum(9L);
         board2.setBoardNum(8L);
         board3.setBoardNum(1L);
         board4.setBoardNum(3L);
+        board5.setBoardNum(7L);
 
 
         Member member1 = new Member();
@@ -252,6 +254,26 @@ public class PostFormDto {
         post17.setPageView(0);
 
         postList.add(post17);
+
+        PostFormDto post18 = new PostFormDto();
+        post18.setBoard(board5);
+        post18.setMember(member2);
+        post18.setTitle("노무사 게시판 유저 글1 입니다.");
+        post18.setContent("노무사 게시판 내용 입니다.");
+        post18.setWriteDate(LocalDateTime.now());
+        post18.setPageView(0);
+
+        postList.add(post18);
+
+        PostFormDto post19 = new PostFormDto();
+        post19.setBoard(board5);
+        post19.setMember(member2);
+        post19.setTitle("노무사 게시판 유저 글2 입니다.");
+        post19.setContent("노무사 게시판 내용2 입니다.");
+        post19.setWriteDate(LocalDateTime.now());
+        post19.setPageView(0);
+
+        postList.add(post19);
 
 
         return postList;
