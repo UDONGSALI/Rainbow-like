@@ -12,8 +12,6 @@ import EduDetailPage from "./js/pages/Edu/EduDetailPage";
 import EduAddPage from "./js/pages/Edu/EduAddPage";
 import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
-import NoticeDetailPage from './js/pages/Post/NoticeDetailPage';
-import NoticePage from './js/pages/Post/NoticePage';
 import Main from "./js/component/screens/Main";
 import EduManagePage from '../src/js/pages/Member/MemManagePage';
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
@@ -36,6 +34,8 @@ import ClubPage from "./js/pages/Club/ClubPage";
 import ClubFormPage from "./js/pages/Club/ClubFormPage";
 import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
 import ClubEditorPage from "./js/pages/Club/ClubEditorPage";
+import MyActivePage from "./js/pages/My/MyActivePage";
+import PostDetailPage from "./js/pages/Post/PostDetailPage";
 
 
 function App() {
@@ -89,18 +89,13 @@ function App() {
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-                <Route path="/notice/:postNum" element={<NoticeDetailPage/>}/>
-                <Route path="/notice" element={<NoticePage/>}/>
-                <Route path="/sj" element={<SjNewsPage/>}/>
-                <Route path="/notice/detail/:postNum" element={<NoticeDetailPage/>}/>
-                <Route path="/notice/:boardNum" element={<NoticePage/>}/>
+                <Route path="/imgPost" element={<SjNewsPage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
-                <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
-                <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
+                <Route path="/rent/status" element={<RentStatusPage/>}/>
+                <Route path="/rent/application/:spaceNum" element={<RentApplicationPage/>}/>
                 <Route path="/posts" element={<PostList />}   />
+                <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-                <Route path="/notice/:postNum" element={<NoticeDetailPage/>}/>
-                <Route path="/notice" element={<NoticePage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/clubs" element={<ClubPage />}/>
                 <Route path="/clubs/new" element={<ClubFormPage />}/>
@@ -117,6 +112,8 @@ function App() {
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
                 <Route path="/ftm" element={<FTMListPage/>}/>
                 <Route path="/ftmpop/:speField/:ftcNum" element={<MatchingPopup />}/>
+                <Route path="/mypage/active/:memNum" element={<MyActivePage />}/>
+
             </Routes>
         </div>
     )
