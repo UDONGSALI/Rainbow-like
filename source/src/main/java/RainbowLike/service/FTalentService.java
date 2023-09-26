@@ -3,12 +3,12 @@ package RainbowLike.service;
 import RainbowLike.dto.FtcDto;
 import RainbowLike.dto.FtmDto;
 import RainbowLike.dto.FtwDto;
-import RainbowLike.dto.PostFormDto;
 import RainbowLike.entity.FemaleTalentMatching;
 import RainbowLike.entity.FtConsumer;
 import RainbowLike.entity.FtWorker;
-import RainbowLike.entity.Post;
-import RainbowLike.repository.*;
+import RainbowLike.repository.FemaleTalentMatchingRepository;
+import RainbowLike.repository.FtConsumerRepository;
+import RainbowLike.repository.FtWorkerRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -57,4 +57,6 @@ public class FTalentService {
             ftmRepository.save(ftm);
         }
     }
+
+
 }

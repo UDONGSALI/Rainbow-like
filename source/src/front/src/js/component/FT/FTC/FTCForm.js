@@ -71,14 +71,14 @@ function FTCForm(props){
                 >
                     <option value="">분야 선택</option>
                     <option value="IT">IT 전반</option>
-                    <option value="IT / front">IT / front</option>
-                    <option value="IT / back">IT / back</option>
-                    <option value="IT / ect">IT / 기타</option>
+                    <option value="IT_front">IT / front</option>
+                    <option value="IT_back">IT / back</option>
+                    <option value="IT_ect">IT / 기타</option>
                     <option value="디자인">디자인 / 전반</option>
-                    <option value="디자인 / 그림">디자인 / 그림</option>
-                    <option value="디자인 / 영상">디자인 / 영상</option>
-                    <option value="디자인 / 수공예">디자인 / 수공예</option>
-                    <option value="디자인 / 기타">디자인 / 기타</option>
+                    <option value="디자인_그림">디자인 / 그림</option>
+                    <option value="디자인_영상">디자인 / 영상</option>
+                    <option value="디자인_수공예">디자인 / 수공예</option>
+                    <option value="디자인_기타">디자인 / 기타</option>
                     <option value="기타">기타</option>
                 </select>
                 </div>
