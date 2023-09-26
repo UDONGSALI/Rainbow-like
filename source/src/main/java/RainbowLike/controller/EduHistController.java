@@ -9,10 +9,13 @@ import RainbowLike.repository.EduHistRepository;
 import RainbowLike.repository.EduRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.EduService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,20 +32,24 @@ public class EduHistController {
     private final MemberRepository memberRepository;
     private final EduRepository eduRepository;
     private final EduService eduService;
+    private final FileController fileController;
 
 
     @GetMapping
     private Iterable<EduHist> getEduHists() {
         return eduHistRepository.findAll();
     }
+
     @GetMapping("/{id}")
     public EduHist getEduHist(@PathVariable Long id) {
         return eduHistRepository.findById(id).orElse(null);  // orElse(null)은 ID에 해당하는 EduHist가 없을 경우 null을 반환하도록 합니다.
     }
+
     @GetMapping("/memid/{memId}")
     public Iterable<EduHist> getEduHistByMemId(@PathVariable String memId) {
         return eduHistRepository.findByMember(memberRepository.findByMemId(memId));
     }
+
     @GetMapping("/search/{option}/{value}/{memId}")
     public Iterable<EduHist> searchEduHist(@PathVariable String option, @PathVariable String value, @PathVariable String memId) {
         Iterable<EduHist> result;
@@ -74,13 +81,14 @@ public class EduHistController {
     }
 
     private boolean isAdmin(String memId) {
-        if (memberRepository.findByMemId(memId).getType() == Type.ADMIN){
+        if (memberRepository.findByMemId(memId).getType() == Type.ADMIN) {
             return true;
-        }else {
+        } else {
             return false;
         }
 
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEduHistStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
         Optional<EduHist> optionalEduHist = eduHistRepository.findById(id);
@@ -126,6 +134,26 @@ public class EduHistController {
         eduService.updateRecuPerson(eduHistDto.getEduNum());
 
         return ResponseEntity.ok(savedEduHist);
+    }
+
+    @PostMapping("/andfile")
+    private ResponseEntity<EduHist> saveEduHistAndFile(
+            @RequestParam("eduHistData") String eduHistDataJson, // JSON 문자열 받기
+            @RequestParam("file") List<MultipartFile> files, @RequestParam("tableName") String tableName, @RequestParam("number") Long number) {
+
+        EduHistDto eduHistDto;
+        try {
+            eduHistDto = new ObjectMapper().readValue(eduHistDataJson, EduHistDto.class); // JSON 문자열을 DTO 객체로 변환
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(null); // 적절한 오류 응답 반환
+        }
+
+        saveEduHist(eduHistDto);
+
+        fileController.uploadFiles(files, tableName, number);
+
+        return ResponseEntity.ok(null);
     }
 
     public void createDefaultEduHists() {

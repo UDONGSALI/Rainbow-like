@@ -26,6 +26,7 @@ public class FileController {
     private final MemberRepository memberRepository;
     private final SpaceRepository spaceRepository;
     private final EduRepository eduRepository;
+    private final EduHistRepository eduHistRepository;
     private final PostRepository postRepository;
     private final FileRepository fileRepository;
     private final RestTemplate restTemplate;
@@ -71,6 +72,7 @@ public class FileController {
         Member member = null;
         Space space = null;
         Edu edu = null;
+        EduHist eduHist = null;
         Post post = null;
 
         String midPath = "";
@@ -89,6 +91,10 @@ public class FileController {
                 case "edu":
                     edu = eduRepository.findTopByOrderByEduNumDesc();
                     midPath = tableName + "/" + edu.getEduNum() + "/";
+                    break;
+                case "eduHist":
+                    eduHist = eduHistRepository.findTopByOrderByEduHistNumDesc();
+                    midPath = tableName + "/" + eduHist.getEduHistNum() + "/";
                     break;
                 case "post":
                     post = postRepository.findTopByOrderByPostNumDesc();
@@ -117,6 +123,12 @@ public class FileController {
                     edu = eduRepository.findByEduNum(number);
                     if (edu != null) {
                         midPath = tableName + "/" + edu.getEduNum() + "/";
+                    }
+                    break;
+                case "eduHist":
+                    eduHist = eduHistRepository.findByEduHistNum(number);
+                    if (eduHist != null) {
+                        midPath = tableName + "/" + eduHist.getEduHistNum() + "/";
                     }
                     break;
                 case "post":

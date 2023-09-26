@@ -20,7 +20,10 @@ function EduDetail() {
         fetch(SERVER_URL + `api/edus/` + eduNum)
             .then((response) => response.json())
             .then((data) => setEduData(data))
-            .catch((error) => console.error(error));
+            .catch(error => {
+                alert("존재하지 않는 교육입니다!"); // 알림 메시지 표시
+                window.location.href = "/edu/list";
+            });
     }, [eduNum]);
 
     const formatDateAndTime = (inputDate) => {
