@@ -5,8 +5,10 @@ import RainbowLike.entity.Edu;
 import RainbowLike.repository.EduRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -24,7 +26,17 @@ public class EduController {
     private Iterable<Edu> getEdus() {
         return eduRepository.findAll();
     }
-
+    @GetMapping("/{type}/{eduname}")
+    private Iterable<Edu> getByEduNameEdus(@PathVariable String type, @PathVariable String eduname) {
+        if ("title".equals(type)) {
+            return eduRepository.findByEduNameContaining(eduname);
+        } else if ("content".equals(type)) {
+            return eduRepository.findByContentContaining(eduname);
+        } else {
+            // 타입이 잘못 지정되거나 지원하지 않는 경우 오류 메시지 반환
+            throw new IllegalArgumentException("Unsupported search type: " + type);
+        }
+    }
     @PostMapping
     private ResponseEntity<Edu> saveEdu(@RequestBody Edu edu) {
         return ResponseEntity.ok((eduRepository.save(edu)));

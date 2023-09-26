@@ -1,7 +1,7 @@
-import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
-import styles from '../../../css/layout/Footer/footer.module.css';
-import '../../../css/font.css';
 
+import footer_bottom_logo from '../../../img/layout/footer_bottom_logo.png';
+import '../../../css/font.css';
+import styles from '../../../css/layout/Footer/Footer.module.css';
 const Footer = () => {
     return (
         <footer className={styles.footer}>

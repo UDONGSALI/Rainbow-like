@@ -129,6 +129,71 @@ public class DefaultFileController {
 
         fileList.add(post11File1);
 
+        File post12File1 = new File();
+        post12File1.setPost(postRepository.findByPostNum(12L));
+        post12File1.setFileName("post/12/notice1.png");
+        post12File1.setFileOriName("notice1.png");
+        post12File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/12/notice1.jpg");
+
+        fileList.add(post12File1);
+
+        File post13File1 = new File();
+        post13File1.setPost(postRepository.findByPostNum(13L));
+        post13File1.setFileName("post/13/sj2.png");
+        post13File1.setFileOriName("sj2.png");
+        post13File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/13/sj2.png");
+
+        fileList.add(post13File1);
+
+        File post14File1 = new File();
+        post14File1.setPost(postRepository.findByPostNum(14L));
+        post14File1.setFileName("post/14/sj3.jpg");
+        post14File1.setFileOriName("sj3.jpg");
+        post14File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/14/sj3.jpg");
+
+        fileList.add(post14File1);
+
+        File post15File1 = new File();
+        post15File1.setPost(postRepository.findByPostNum(15L));
+        post15File1.setFileName("post/15/sj4.jpg");
+        post15File1.setFileOriName("sj4.jpg");
+        post15File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/15/sj4.jpg");
+
+        fileList.add(post15File1);
+
+        File post16File1 = new File();
+        post16File1.setPost(postRepository.findByPostNum(16L));
+        post16File1.setFileName("post/16/sj5_1.jpg");
+        post16File1.setFileOriName("sj5_1.jpg");
+        post16File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/16/sj5_1.jpg");
+        fileList.add(post16File1);
+
+
+        File post16File2 = new File();
+        post16File2.setPost(postRepository.findByPostNum(16L));
+        post16File2.setFileName("post/16/sj5_2.jpg");
+        post16File2.setFileOriName("sj5_2.jpg");
+        post16File2.setFileUri("https://storage.googleapis.com/rainbow_like/post/16/sj5_2.jpg");
+
+        fileList.add(post16File2);
+
+
+        File post16File3 = new File();
+        post16File3.setPost(postRepository.findByPostNum(16L));
+        post16File3.setFileName("post/16/sj5_3.jpg");
+        post16File3.setFileOriName("sj5_3.jpg");
+        post16File3.setFileUri("https://storage.googleapis.com/rainbow_like/post/16/sj5_3.jpg");
+
+        fileList.add(post16File3);
+
+        File post17File1 = new File();
+        post17File1.setPost(postRepository.findByPostNum(17L));
+        post17File1.setFileName("post/17/sj6.jpg");
+        post17File1.setFileOriName("sj6.jpg");
+        post17File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/17/sj6.jpg");
+
+        fileList.add(post17File1);
+
         for (File file : fileList) {
             fileRepository.save(file);
         }

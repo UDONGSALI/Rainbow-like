@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import styles from '../../../css/component/Comment/Comment.module.css';
 import { useParams } from "react-router-dom";
 import { SERVER_URL } from "../Common/constants";
-import Snackbar from "@mui/material/Snackbar";
 
-function Comment() {
+function Comment(props) {
     const { id } = useParams();
+    const {memId} = props;
     const [comms, setComms] = useState([]);
     const [open, setOpen] = useState(false);
     const [replyFormData, setReplyFormData] = useState({
@@ -293,6 +293,7 @@ function Comment() {
                                 <button onClick={() => onReplyClick(comment)}>답글</button>
                             )}
                         </td>
+
                         <td>
                             {comment.delYN === 'N' && (
                                 <button onClick={() => onEditClick(comment)}>수정</button>
@@ -302,8 +303,29 @@ function Comment() {
                             {comment.delYN === 'N' && (
                                 <button onClick={() => onDelClick(comment)}>삭제</button>
                             )}
-                        </td>
+                    </td>
+
+
+                        {/*{*/}
+                        {/*    comment.member.memNum === memId?*/}
+                        {/*        <>*/}
+                        {/*            <td>*/}
+                        {/*                {comment.delYN === 'N' && (*/}
+                        {/*                    <button onClick={() => onEditClick(comment)}>수정</button>*/}
+                        {/*                )}*/}
+                        {/*            </td>*/}
+                        {/*            <td>*/}
+                        {/*                {comment.delYN === 'N' && (*/}
+                        {/*                    <button onClick={() => onDelClick(comment)}>삭제</button>*/}
+                        {/*                )}*/}
+                        {/*            </td>*/}
+                        {/*        </>*/}
+                        {/*        :*/}
+                        {/*        <></>*/}
+                        {/*}*/}
+
                     </tr>
+
                 )}
                 {showReply[comment.commNum] && (
                     <tr>
@@ -349,7 +371,6 @@ function Comment() {
 
     return (
         <div className={styles.comment}>
-            <div className={styles.commList}>
                 <table>
 
                     <tbody>
@@ -360,9 +381,9 @@ function Comment() {
                         </tr>
                     ) : (
                         renderComments(comms)
-                    )}                    </tbody>
+                    )}
+                    </tbody>
                 </table>
-            </div>
             <form onSubmit={handleSubmit} className={styles.commentForm}>
                 <textarea
                     name="content"

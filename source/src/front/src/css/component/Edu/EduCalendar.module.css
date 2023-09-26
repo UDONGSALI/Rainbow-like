@@ -3,10 +3,16 @@
     width: 60%;
     margin: 0 auto 50px auto;
     padding-top: 40%;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    overflow: hidden;
 }
+
+
+.calendarContainer div{
+    white-space: normal!important;
+    border-radius: 0!important;
+}
+
 
 .calendarContent {
     position: absolute;
@@ -14,17 +20,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-}
-
-.rbcEvent {
-    background-color: #4C9AFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 4px 8px;
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
+    font-size: 13px;
 }
 
 .rbcToolbar {
@@ -33,18 +29,24 @@
     align-items: center;
 }
 
-.rbcToolbarButton {
+.rbcToolbar button {
     font-size: 30px;
     background: none;
     border: none;
     cursor: pointer;
     margin: 0 20px;
+    position: relative;
 }
 
-.rbcToolbarSpan {
+.rbcToolbar span {
     font-size: 30px;
     font-weight: bold;
     cursor: pointer;
     position: relative;
-    bottom: -5px;
+    bottom: -2px;
 }
+
+
+
+
+

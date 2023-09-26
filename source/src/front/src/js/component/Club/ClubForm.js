@@ -2,9 +2,10 @@ import React, {useState} from "react";
 import styles from '../../../css/component/Club/ClubForm.module.css';
 import {useNavigate} from "react-router-dom";
 
-function ClubForm(){
+function ClubForm(props){
     // 사용자가 선택한 멤버와 게시판의 ID를 저장하기 위한 상태 변수
     const navigate = useNavigate();
+    const {memId} = props;
 
     const [formData, setFormData] = useState({
         memNum: 1,
@@ -54,36 +55,36 @@ function ClubForm(){
         <div className={styles.registrationFormContainer}>
             <h2>소모임 신청 폼</h2>
             <form onSubmit={handleSubmit} className={styles.registrationForm}>
-                <div className={styles.inputGroup}>
-                    <input
-                        type="number"
-                        name="memNum"
-                        value={formData.memNum}
-                        onChange={handleChange}
-                        placeholder="멤버"
-                        required
-                    />
-                </div>
-            {/*    <div className={styles.inputGroup}>*/}
-            {/*        <select*/}
-            {/*            name="boardNum"*/}
-            {/*            value={formData.boardNum}*/}
-            {/*            onChange={handleChange}*/}
-            {/*            required*/}
-            {/*        >*/}
-            {/*            <option value="">게시판 선택</option>*/}
-            {/*            <option value="1">공지사항</option>*/}
-            {/*            <option value="2">언론보도</option>*/}
-            {/*            <option value="3">세종시 기관 및 단체소식</option>*/}
-            {/*            <option value="4">여플 소식</option>*/}
-            {/*            <option value="5">뉴스레터</option>*/}
-            {/*            <option value="6">대관 이용 후기</option>*/}
-            {/*            <option value="7">노무 상담 게시판</option>*/}
-            {/*            <option value="8">온라인 상담</option>*/}
-            {/*            <option value="9">모임 페이지</option>*/}
-            {/*            <option value="10">club_test</option>*/}
-            {/*        </select>*/}
-            {/*</div>*/}
+                {/*<div className={styles.inputGroup}>*/}
+                {/*    <input*/}
+                {/*        type="number"*/}
+                {/*        name="memNum"*/}
+                {/*        value={formData.memNum}*/}
+                {/*        onChange={handleChange}*/}
+                {/*        placeholder="멤버"*/}
+                {/*        required*/}
+                {/*    />*/}
+                {/*</div>*/}
+                {/*<div className="input-group">*/}
+                    {/*<select*/}
+                    {/*    name="boardNum"*/}
+                    {/*    value={formData.boardNum}*/}
+                    {/*    onChange={handleChange}*/}
+                    {/*    required*/}
+                    {/*>*/}
+                    {/*    <option value="">게시판 선택</option>*/}
+                    {/*    <option value="1">공지사항</option>*/}
+                    {/*    <option value="2">언론보도</option>*/}
+                    {/*    <option value="3">세종시 기관 및 단체소식</option>*/}
+                    {/*    <option value="4">여플 소식</option>*/}
+                    {/*    <option value="5">뉴스레터</option>*/}
+                    {/*    <option value="6">대관 이용 후기</option>*/}
+                    {/*    <option value="7">노무 상담 게시판</option>*/}
+                    {/*    <option value="8">온라인 상담</option>*/}
+                    {/*    <option value="9">모임 페이지</option>*/}
+                    {/*    <option value="10">club_test</option>*/}
+                    {/*</select>*/}
+                {/*</div>*/}
                 <div className={styles.inputGroup}>
                     <input
                         type="text"
@@ -92,7 +93,7 @@ function ClubForm(){
                         onChange={handleChange}
                         placeholder="소모임 제목"
                         required
-                        />
+                    />
                 </div>
 
                 <div className={styles.inputGroup}>

@@ -93,7 +93,9 @@ public class FtalentController {
         newFtw.setLicenseDtl(ftwDto.getLicenseDtl());
         newFtw.setFtDtl(ftwDto.getFtDtl());
         newFtw.setFtStatus(ftwDto.getFtStatus());
+        newFtw.setStatusDtl(ftwDto.getStatusDtl());
         newFtw.setDelYN(ftwDto.getDelYN());
+//        newFtw.setEditDate(ftwDto.getEditDate());
 
         FtWorker savedFtw = ftwRepository.save(newFtw);
 
@@ -152,6 +154,7 @@ public class FtalentController {
         editFtw.setLicenseDtl(ftwDto.getLicenseDtl());
         editFtw.setFtDtl(ftwDto.getFtDtl());
         editFtw.setFtStatus(ftwDto.getFtStatus());
+        editFtw.setStatusDtl(ftwDto.getStatusDtl());
         editFtw.setDelYN(ftwDto.getDelYN());
 
         FtWorker savedFtw = ftwRepository.save(editFtw);

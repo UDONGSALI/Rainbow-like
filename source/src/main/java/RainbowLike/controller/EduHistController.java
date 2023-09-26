@@ -2,6 +2,7 @@ package RainbowLike.controller;
 
 
 import RainbowLike.constant.Status;
+import RainbowLike.constant.Type;
 import RainbowLike.dto.EduHistDto;
 import RainbowLike.entity.EduHist;
 import RainbowLike.repository.EduHistRepository;
@@ -13,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,7 +39,48 @@ public class EduHistController {
     public EduHist getEduHist(@PathVariable Long id) {
         return eduHistRepository.findById(id).orElse(null);  // orElse(null)은 ID에 해당하는 EduHist가 없을 경우 null을 반환하도록 합니다.
     }
+    @GetMapping("/memid/{memId}")
+    public Iterable<EduHist> getEduHistByMemId(@PathVariable String memId) {
+        return eduHistRepository.findByMember(memberRepository.findByMemId(memId));
+    }
+    @GetMapping("/search/{option}/{value}/{memId}")
+    public Iterable<EduHist> searchEduHist(@PathVariable String option, @PathVariable String value, @PathVariable String memId) {
+        Iterable<EduHist> result;
+        switch (option) {
+            case "eduName":
+                result = eduHistRepository.findByEduIn(eduRepository.findByEduNameContaining(value));
+                break;
+            case "memId":
+                result = eduHistRepository.findByMemberIn(memberRepository.findByMemIdContaining(value));
+                break;
+            case "status":
+                Status status = Status.valueOf(value);
+                result = eduHistRepository.findByStatus(status);
+                break;
+            default:
+                result = new ArrayList<>();
+        }
+        // 어드민이 아니면 결과에서 memId로 필터링
+        if (!isAdmin(memId)) {
+            List<EduHist> filteredList = new ArrayList<>();
+            for (EduHist eduHist : result) {
+                if (eduHist.getMember().getMemId().equals(memId)) {
+                    filteredList.add(eduHist);
+                }
+            }
+            result = filteredList;
+        }
+        return result;
+    }
 
+    private boolean isAdmin(String memId) {
+        if (memberRepository.findByMemId(memId).getType() == Type.ADMIN){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEduHistStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
         Optional<EduHist> optionalEduHist = eduHistRepository.findById(id);

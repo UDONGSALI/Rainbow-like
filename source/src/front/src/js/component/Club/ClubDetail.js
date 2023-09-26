@@ -4,8 +4,11 @@ import {SERVER_URL} from "../Common/constants";
 import styles from '../../../css/component/Club/ClubDetail.module.css';
 
 
-function ClubDetail() {
+function ClubDetail(props) {
     const { id } = useParams();
+    const {memId} = props;
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    console.log(props);
     const [post, setPost] = useState(null);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
@@ -75,6 +78,8 @@ function ClubDetail() {
                 }
                 return response.json();
             })
+            .catch(err => console.error(err))
+
             .then((data) => {
                 alert('게시글을 삭제했습니다.');
                 setOpen(true);
@@ -93,22 +98,14 @@ function ClubDetail() {
         navigate("/clubs/edit/" + id);
     };
 
-
-
-    // const PVcnt = (url) => {
-    //     fetch(url, {method: 'put'})
-    //         .then(response => {
-    //             fetchPost();
-    //             setOpen(true);
-    //         })
-    // };
-
     if (!post) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div className={styles.postDetailPage}>
+
+
+                <div className={styles.postDetailPage}>
             <h3>{post.post.title}</h3>
             <div className={styles.postMeta}>
                 <div className={styles.postMeta1}>
@@ -122,11 +119,17 @@ function ClubDetail() {
             </div>
 
             <div className={styles.content}>{post.post.content}</div>
-            <div className={styles.postButton}>
-                <button onClick={() => onEditClick()}>수정</button>
-                <button onClick={() => onDelClick(post.post)}>삭제</button>
-                <button onClick={() => navigate("/clubs")}>리스트로</button>
-            </div>
+                    <div className={styles.postButton}>
+                        {post.member.memNum === memId || isAdmin ? (
+                            <>
+                                <button onClick={() => onEditClick()}>수정</button>
+                                <button onClick={() => onDelClick(post.post)}>삭제</button>
+                            </>
+                        ) : (
+                            <></>
+                        )}
+                        <button onClick={() => navigate("/clubs")}>리스트로</button>
+                    </div>
 
         </div>
     );

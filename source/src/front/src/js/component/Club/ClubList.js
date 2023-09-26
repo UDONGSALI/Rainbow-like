@@ -6,10 +6,11 @@ import {useNavigate } from 'react-router-dom';
 import styles from '../../../css/component/Club/ClubList.module.css';
 
 
-function ClubList() {
+function ClubList(props) {
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    const {memId} = props;
 
 
     const columns = [
@@ -170,8 +171,6 @@ function ClubList() {
             />
 
         </div>
-
-
     );
 }
 

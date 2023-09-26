@@ -25,7 +25,9 @@ LocalDateTime writeDate;
 private LocalDateTime editDate;
 
 public BaseEntity(){
+
     this.writeDate = LocalDateTime.now();
+    this.editDate = LocalDateTime.now();
 }
 
 }

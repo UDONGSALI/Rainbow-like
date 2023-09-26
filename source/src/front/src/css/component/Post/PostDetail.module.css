@@ -101,6 +101,7 @@
 .postFileLabel {
     margin-left: 25px;
     margin-right: 50px;
+    margin-top: 10px;
 }
 
 /* .fileDivider 클래스 스타일 */
@@ -123,6 +124,7 @@
     margin: 10px 0;
     display: block;
     color: black;
+    text-decoration: none;
 }
 
 /* .fileName:hover 클래스 스타일 */
@@ -136,6 +138,7 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 /* .postEditButton, .postDeleteButton, .postListButton 클래스 스타일 */
@@ -143,12 +146,12 @@
 .postDeleteButton,
 .postListButton {
     padding: 10px 20px;
+    background-color: #a38ced;
     font-size: 16px;
-    cursor: pointer;
-    border: 1px solid #99959E;
+    border: 1px solid #99959e;
     border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
     margin-right: 10px;
+    color: white;
 }
 
 /* .postDeleteButton 클래스 스타일 */
@@ -165,7 +168,7 @@
 .postEditButton:hover,
 .postDeleteButton:hover,
 .postListButton:hover {
-    background-color: #9c6ed9;
+    background-color: #53468b;
     color: #fff;
 }
 
@@ -178,16 +181,16 @@
 
 /* .prevButton 클래스 스타일 */
 .prevButton {
-    margin-top: 20px;
     border: none;
     border-top: 1px solid black ;
-    border-bottom: 1px solid #99959E;
+    border-bottom: 1px solid black;
     padding-top: 10px;
     padding-bottom: 8px;
 }
 
 /* .nextButton 클래스 스타일 */
 .nextButton {
+    border-top: 1px solid black ;
     border-bottom: 1px solid black;
     padding-top: 10px;
     padding-bottom: 8px;
