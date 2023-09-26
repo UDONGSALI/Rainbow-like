@@ -21,6 +21,7 @@ import PostList from "./js/component/Post/PostList";
 import RentPage from "./js/pages/Rent/RentPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
 import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
+import MyActivePage from "./js/pages/My/MyActivePage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -86,6 +87,7 @@ function App() {
                 <Route path="/notice/:postNum" element={<NoticeDetailPage/>}/>
                 <Route path="/notice" element={<NoticePage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
+                <Route path="mypage/active" element={<MyActivePage/>}/>
             </Routes>
         </div>
     )
