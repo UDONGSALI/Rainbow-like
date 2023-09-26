@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SERVER_URL } from '../Common/constants';
 import { DataGrid } from "@mui/x-data-grid";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation   } from 'react-router-dom';
 import styled from '@emotion/styled';
 import {Pagination} from "@mui/material";
 import SearchComponent from "../Common/SearchComponent";
@@ -17,6 +17,9 @@ function EduList() {
     const [totalCount, setTotalCount] = useState(0);
     const [searchTerm, setSearchTerm] = useState({ term: '', value: 'eduName' });
     const [filteredEdus, setFilteredEdus] = useState([]);
+    const location = useLocation();
+
+
 
     const VALUE_TO_LABEL_MAPPING = {
         "EDU": "교육",
@@ -35,6 +38,15 @@ function EduList() {
     useEffect(() => {
         fetchEdus();
     }, [activePage]);
+
+    useEffect(() => {
+        // useSearchParams 대신 useLocation 사용
+        const urlSearchParams = new URLSearchParams(location.search);
+        const currentActivePage = urlSearchParams.get("page");
+        if (currentActivePage) {
+            setActivePage(parseInt(currentActivePage));
+        }
+    }, [location.search]);
 
     // 3. Helper 함수 및 Event Handlers
     const fetchEdus = () => {
@@ -57,7 +69,8 @@ function EduList() {
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
         fetchEdus(pageNumber);
-    }
+        navigate({ pathname: location.pathname, search: `page=${pageNumber}` });
+    };
 
     const handleTitleClick = (eduNum) => {
         navigate('/edu/detail/' + eduNum.split('/').pop());
@@ -106,7 +119,6 @@ function EduList() {
         setTotalCount(filtered.length);
         setActivePage(1);
     };
-
 
     const getColumns = () => {
         const baseColumns = [
@@ -237,7 +249,6 @@ function EduList() {
                 },
             );
         }
-
         return baseColumns;
     };
 
@@ -249,6 +260,8 @@ function EduList() {
         { label: "내용", value: "content" },
         { label: "접수 방법", value: "recuMethod" } // 추가된 부분
     ];
+
+
 
     return (
         <Wrapper style={{ textAlign: 'center' }}>
@@ -297,6 +310,10 @@ const StyledDataGrid = styled(DataGrid)`
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  & .MuiDataGrid-columnHeader {
+    background-color: #ececec; // 옅은 회색으로 설정
   }
 
   & .MuiDataGrid-columnHeaderTitle {

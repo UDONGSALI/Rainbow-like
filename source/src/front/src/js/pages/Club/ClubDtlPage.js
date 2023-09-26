@@ -3,15 +3,16 @@ import Comment from "../../component/Comment/Comment";
 import styles from '../../../css/pages/Club/ClubDtlPage.module.css';
 
 
-function ClubDtlPage(){
+function ClubDtlPage(props){
+    const {memId} = props;
 
 
     return(
         <div className={styles.postDetailPage}>
 
-            <ClubDetail />
+            <ClubDetail memId = {memId} />
             <div className="comment">
-                <Comment   />
+                <Comment memId = {memId}  />
             </div>
         </div>
 

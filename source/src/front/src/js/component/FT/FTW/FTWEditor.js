@@ -3,8 +3,10 @@ import styles from  '../../../../css/component/Club/ClubForm.module.css';
 import { useNavigate, useParams } from "react-router-dom";
 import { SERVER_URL } from "../../Common/constants";
 
-function FTWEditor() {
+function FTWEditor(props) {
     const { id } = useParams();
+    const {memId} = props;
+
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({

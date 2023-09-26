@@ -1,13 +1,13 @@
 import ClubEditor from "../../component/Club/ClubEditor";
 import {useParams} from "react-router-dom";
 
-function ClubEditorPage(){
-    const { postNum } = useParams();
+function ClubEditorPage(props){
+    const {memId} = props;
 
 
     return(
         <div>
-            <ClubEditor postNum = {postNum} />
+            <ClubEditor memId = {memId} />
         </div>
 
 

@@ -2,9 +2,10 @@ import React, {useState} from "react";
 import styles from '../../../css/component/Club/ClubForm.module.css';
 import {useNavigate} from "react-router-dom";
 
-function ClubForm(){
+function ClubForm(props){
     // 사용자가 선택한 멤버와 게시판의 ID를 저장하기 위한 상태 변수
     const navigate = useNavigate();
+    const {memId} = props;
 
     const [formData, setFormData] = useState({
         memNum: 1,

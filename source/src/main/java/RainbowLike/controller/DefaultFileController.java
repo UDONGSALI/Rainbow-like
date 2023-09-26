@@ -181,7 +181,7 @@ public class DefaultFileController {
         File post16File3 = new File();
         post16File3.setPost(postRepository.findByPostNum(16L));
         post16File3.setFileName("post/16/sj5_3.jpg");
-        post16File3.setFileOriName("sj5_3");
+        post16File3.setFileOriName("sj5_3.jpg");
         post16File3.setFileUri("https://storage.googleapis.com/rainbow_like/post/16/sj5_3.jpg");
 
         fileList.add(post16File3);

@@ -154,6 +154,7 @@ public class FtalentController {
         editFtw.setLicenseDtl(ftwDto.getLicenseDtl());
         editFtw.setFtDtl(ftwDto.getFtDtl());
         editFtw.setFtStatus(ftwDto.getFtStatus());
+        editFtw.setStatusDtl(ftwDto.getStatusDtl());
         editFtw.setDelYN(ftwDto.getDelYN());
 
         FtWorker savedFtw = ftwRepository.save(editFtw);
