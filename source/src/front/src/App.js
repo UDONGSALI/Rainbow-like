@@ -11,11 +11,8 @@ import EduDetailPage from "./js/pages/Edu/EduDetailPage";
 import EduAddPage from "./js/pages/Edu/EduAddPage";
 import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
-<<<<<<< HEAD
-=======
 import PostDetailPage from './js/pages/Post/PostDetailPage';
 import NoticeListPage from './js/pages/Post/NoticeListPage';
->>>>>>> 5c0571d5264bdf02f3e5edb6e5e2177c42780047
 import Main from "./js/component/screens/Main";
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import PostList from "./js/component/Post/PostList";
@@ -24,6 +21,7 @@ import RentStatusPage from "./js/pages/Rent/RentStatusPage";
 import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
 import SignUpPage from "./js/pages/Login/SignUpPage";
 import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
+import MyActivePage from "./js/pages/My/MyActivePage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -65,38 +63,22 @@ function App() {
         <div className="App">
             <NavBar/>
             <Routes>
-<<<<<<< HEAD
-                <Route path="/" element={<Main/>}/>
-                <Route path="/login" element={<LoginPage/>}/>
-<<<<<<< HEAD
-                <Route path="/sin gUp" element={<SingUp/>}/>
-=======
-                <Route path="/signUp" element={<SignUpPage/>}/>
->>>>>>> 1ea2e7d14f2047fef0d54e659ab7206c4c73d6a7
-=======
-                <Route path="/" element={<Main/>} />
->>>>>>> 2c92561d9e15d71d1344e47cbff8db4ac329b45e
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/admin/edu" element={isAdmin ? <EduManagePage/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
-                <Route path="/singUp" element={<SignUpPage/>}/>
+                <Route path="/signUp" element={<SignUpPage/>}/>
                 <Route path="/edu/list" element={<EduList/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-<<<<<<< HEAD
-                <Route path="/sj" element={<SjNewsPage/>}/>
-=======
->>>>>>> 5c0571d5264bdf02f3e5edb6e5e2177c42780047
                 <Route path="/rent" element={<RentPage/>}/>
                 <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
                 <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
                 <Route path="/posts" element={<PostList />}   />
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-<<<<<<< HEAD
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/clubs" element={<ClubPage />}/>
                 <Route path="/clubs/new" element={<ClubFormPage />}/>
@@ -113,12 +95,10 @@ function App() {
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
                 <Route path="/ftm" element={<FTMListPage/>}/>
                 <Route path="/ftmpop/:speField/:ftcNum" element={<MatchingPopup />}/>
-=======
-
                 <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
->>>>>>> 5c0571d5264bdf02f3e5edb6e5e2177c42780047
+                <Route path="/mypage/active/" element={<MyActivePage/>}/>
             </Routes>
         </div>
     )
