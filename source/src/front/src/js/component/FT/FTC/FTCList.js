@@ -43,14 +43,6 @@ function FTCList(){
             field: 'speField',
             headerName: '분류',
             width: 200,
-            renderCell: (params) => (
-                <div
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => onRowClick(params)}
-                >
-                    {params.value}
-                </div>
-            ),
         },
 
         {
@@ -61,23 +53,7 @@ function FTCList(){
         {
             field: 'statusDtl',
             headerName: '거부사유',
-            width: 400,
-        },
-
-        {
-            field: 'links.self.href',
-            headerName: '수정',
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
-                <button
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => onEditClick(params)}
-                >
-                    {params.value}
-                    수정
-                </button>
-            ),
+            width: 500,
         },
     ];
 
@@ -102,6 +78,7 @@ function FTCList(){
                       rows={posts}
                       disableRowSelectionOnClick={true}
                       getRowId={row => row.ftConsumerNum}
+                      onRowClick={onRowClick}
             />
 
 

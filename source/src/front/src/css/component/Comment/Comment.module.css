@@ -18,6 +18,10 @@
 margin-top: 2%;
 }
 
+.commentForm textarea{
+    margin-bottom: -10px;
+}
+
 .comment button {
     width: 100%;
     /*margin-top: 15px;*/
@@ -39,4 +43,3 @@ margin-top: 2%;
 .comment button:hover {
         background-color: #53468b;
 }
-
