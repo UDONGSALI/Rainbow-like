@@ -17,10 +17,10 @@ function SpaceList() {
 
     const columns = [
         {field: 'spaceName', headerName: '이름', width: 200},
-        {field: 'maxPerson', headerName: '최대인원', width: 200},
+        {field: 'maxPerson', headerName: '최대인원', width: 100},
         {field: 'spaceUsage', headerName: '공간용도', width: 200},
-        {field: 'rentTime', headerName: '대관시간', width: 200},
-        {field: 'rentFee', headerName: '이용료', width: 200},
+        {field: 'rentTime', headerName: '대관시간', width: 100},
+        {field: 'rentFee', headerName: '이용료', width: 100},
         {field: 'facilities', headerName: '구비시설', width: 200},
         {field: 'date', headerName: '날짜', width: 200},
         {field: 'time', headerName: '시간', width: 200},
@@ -61,14 +61,21 @@ function SpaceList() {
 
     return (
 
-        <div style={{height: 500, width: '100%'}}>
+        <div>
 
             {loading ? (
                 <p>Loading....</p>
             ) : (
-                <DataGrid columns={columns}
+                <DataGrid className="spaceList"
+                          columns={columns}
                           rows={spaces}
                           getRowId={(row) => row._links.self.href}
+                          style={{
+                              position:"relative",
+                              width :"100%",
+                              paddingLeft:"15%",
+                              paddingRight:"15%",
+                          }}
                 />
             )}
         </div>
