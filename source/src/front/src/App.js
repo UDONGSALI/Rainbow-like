@@ -23,6 +23,7 @@ import RentStatusPage from "./js/pages/Rent/RentStatusPage";
 import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
 import SignUpPage from "./js/pages/Login/SignUpPage";
 import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
+import MyActivePage from "./js/pages/My/MyActivePage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -81,10 +82,10 @@ function App() {
                 <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
                 <Route path="/posts" element={<PostList />}   />
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-
                 <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
+                <Route path="/mypage/active/" element={<MyActivePage/>}/>
             </Routes>
         </div>
     )
