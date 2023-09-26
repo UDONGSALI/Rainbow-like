@@ -10,6 +10,8 @@ import EduDetailPage from "./js/pages/Edu/EduDetailPage";
 import EduAddPage from "./js/pages/Edu/EduAddPage";
 import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
+import PostDetailPage from './js/pages/Post/PostDetailPage';
+import NoticeListPage from './js/pages/Post/NoticeListPage';
 import Main from "./js/component/screens/Main";
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import PostList from "./js/component/Post/PostList";
@@ -29,6 +31,7 @@ import FTMListPage from "./js/pages/FT/FTM/FTMListPage";
 import MatchingPopup from "./js/component/FT/FTM/MatchingPopup";
 import ClubPage from "./js/pages/Club/ClubPage";
 import ClubFormPage from "./js/pages/Club/ClubFormPage";
+import SignUpPage from "./js/pages/Login/SignUpPage";
 import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
 import ClubEditorPage from "./js/pages/Club/ClubEditorPage";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
@@ -109,6 +112,9 @@ function App() {
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
                 <Route path="/ftm" element={<FTMListPage/>}/>
                 <Route path="/ftmpop/:speField/:ftcNum" element={<MatchingPopup/>}/>
+                <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
+                <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
+                <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
             </Routes>
         </div>
     )
