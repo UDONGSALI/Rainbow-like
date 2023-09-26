@@ -182,6 +182,7 @@ public class FileController {
                 createfile.setSpace(space);
                 createfile.setEdu(edu);
                 createfile.setPost(post);
+                createfile.setEduHist(eduHist);
 
                 fileRepository.save(createfile);
             }
