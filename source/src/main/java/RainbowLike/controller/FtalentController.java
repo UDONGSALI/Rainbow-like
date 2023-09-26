@@ -1,7 +1,13 @@
 package RainbowLike.controller;
 
-import RainbowLike.dto.*;
-import RainbowLike.entity.*;
+import RainbowLike.dto.FTInfo;
+import RainbowLike.dto.FtcDto;
+import RainbowLike.dto.FtmDto;
+import RainbowLike.dto.FtwDto;
+import RainbowLike.entity.FemaleTalentMatching;
+import RainbowLike.entity.FtConsumer;
+import RainbowLike.entity.FtWorker;
+import RainbowLike.entity.Member;
 import RainbowLike.repository.FemaleTalentMatchingRepository;
 import RainbowLike.repository.FtConsumerRepository;
 import RainbowLike.repository.FtWorkerRepository;
@@ -27,6 +33,7 @@ public class FtalentController {
 
     @RequestMapping("/ftw")
     public Iterable<FtWorker> getWorkers() {
+
         return ftwRepository.findAll();
     }
 
@@ -37,7 +44,15 @@ public class FtalentController {
 
     @RequestMapping("/ftm")
     public Iterable<FemaleTalentMatching> getFTMs() {
+
         return ftmRepository.findAll();
+    }
+
+    @RequestMapping("/ftm/find/{ftcNum}")
+    public Iterable<FemaleTalentMatching> getFTMResult(@PathVariable Long ftcNum) {
+        FtConsumer ftc = new FtConsumer();
+        ftc.setFtConsumerNum(ftcNum);
+        return ftmRepository.findByFtConsumer(ftc);
     }
 
     @GetMapping("/ftw/{id}")
@@ -202,6 +217,8 @@ public class FtalentController {
         // 저장한 게시글을 반환
         return ResponseEntity.ok(savedFtm);
     }
+
+
 
     public void createTestFtw(){
         ArrayList<FtwDto> ftwDtoList = FtwDto.createTestFtw();

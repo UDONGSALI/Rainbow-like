@@ -4,9 +4,17 @@ import {SERVER_URL} from "../../Common/constants";
 import styles from '../../../../css/component/Club/ClubDetail.module.css';
 
 
-function FTWDtl(props){
-    const { id } = useParams();
-    const {memId} = props;
+function FTWDtl({ftwNum}){
+
+    const params = useParams();
+    let id;
+
+    if (ftwNum != undefined) {
+        id = ftwNum;
+    }else{
+    id = params.id;
+    }
+
 
     const [post, setPost] = useState(null);
     const [open, setOpen] = useState(false);
@@ -107,12 +115,15 @@ function FTWDtl(props){
            </div>
 
             {/*<div className={styles.content}>{post.post.content}</div>*/}
-            <div className={styles.postButton}>
-                <button onClick={() => onEditClick()}>수정</button>
-                <button onClick={() => onDelClick(post.ftw)}>삭제</button>
-                <button onClick={() => navigate("/ftw")}>리스트로</button>
-            </div>
-
+            {ftwNum !== undefined ?
+                <div className={styles.postButton}>
+                    <button onClick={() => onEditClick()}>수정</button>
+                    <button onClick={() => onDelClick(post.ftw)}>삭제</button>
+                    <button onClick={() => navigate("/ftw")}>리스트로</button>
+                </div>
+                :
+                null
+            }
         </div>
     );
 }
