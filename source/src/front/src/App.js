@@ -37,6 +37,7 @@ import ClubEditorPage from "./js/pages/Club/ClubEditorPage";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 import Footer from "./js/layout/Footer/footer";
 
+import MyActivePage from "./js/pages/My/MyActivePage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -115,6 +116,7 @@ function App() {
                 <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
+                <Route path="/mypage/active/" element={<MyActivePage/>}/>
             </Routes>
             <Footer/>
         </div>
