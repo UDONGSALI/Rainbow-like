@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { SERVER_URL } from '../../component/Common/constants';
 import ImgPostList from "../../component/Post/ImgPostList";
+import Footer from "../../layout/Footer/footer";
+import {useParams} from "react-router-dom";
 
-const BoardNum = 3;
 
 function SjNewsPage() {
+    const { boardNum } = useParams();
     const [posts, setPosts] = useState([]); // 게시글 목록을 저장할 상태
 
-    useEffect(() => {
-        // boardNum이 3인 게시글 목록을 가져오는 API 호출
-        fetch(`${SERVER_URL}posts?boardNum=${BoardNum}`)
-            .then(response => response.json())
-            .then(data => setPosts(data))
-            .catch(error => console.error(error));
-    }, []);
+    let pageTitle;
+    switch (boardNum) {
+        case '3':
+            pageTitle = '세종시 기관 및 단체 소식';
+            break;
+        case '4':
+            pageTitle = '여플소식';
+            break;
+        case '5':
+            pageTitle = '뉴스레터';
+            break;
+    }
 
     return (
         <div>
-            <h2 style={{ textAlign: 'center',marginTop:'20px' ,marginBottom:'20px'}}>세종시 기관 및 단체 소식</h2>
+            <h2 style={{ textAlign: 'center',marginTop:'20px' ,marginBottom:'20px'}}>{pageTitle}</h2>
             {/* SjNewsList 컴포넌트에 가져온 게시글 목록을 전달 */}
-            <ImgPostList boardNum={BoardNum} posts={posts} />
+            <ImgPostList boardNum={boardNum} posts={posts} />
+        <Footer />
         </div>
     );
 }
