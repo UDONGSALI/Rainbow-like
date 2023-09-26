@@ -37,6 +37,7 @@ import ClubEditorPage from "./js/pages/Club/ClubEditorPage";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 import Footer from "./js/layout/Footer/footer";
 
+import LaborListPage from "./js/pages/Post/LaborListPage";
 import MyActivePage from "./js/pages/My/MyActivePage";
 
 function App() {
@@ -113,6 +114,10 @@ function App() {
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
                 <Route path="/ftm" element={<FTMListPage/>}/>
                 <Route path="/ftmpop/:speField/:ftcNum" element={<MatchingPopup/>}/>
+                <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
+                <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
+                <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
+                <Route path="/labor" element={<LaborListPage/>}/>
                 <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>

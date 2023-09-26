@@ -306,24 +306,6 @@ function Comment(props) {
                     </td>
 
 
-                        {/*{*/}
-                        {/*    comment.member.memNum === memId?*/}
-                        {/*        <>*/}
-                        {/*            <td>*/}
-                        {/*                {comment.delYN === 'N' && (*/}
-                        {/*                    <button onClick={() => onEditClick(comment)}>수정</button>*/}
-                        {/*                )}*/}
-                        {/*            </td>*/}
-                        {/*            <td>*/}
-                        {/*                {comment.delYN === 'N' && (*/}
-                        {/*                    <button onClick={() => onDelClick(comment)}>삭제</button>*/}
-                        {/*                )}*/}
-                        {/*            </td>*/}
-                        {/*        </>*/}
-                        {/*        :*/}
-                        {/*        <></>*/}
-                        {/*}*/}
-
                     </tr>
 
                 )}
