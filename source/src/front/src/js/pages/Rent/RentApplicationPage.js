@@ -7,9 +7,8 @@ import Footer from "../../layout/Footer/footer";
 function RentApplicationPage() {
     return (
         <div>
-            {/*<RentSpace/>*/}
+            <RentSpace/>
             <RentAgreeForm/>
-           
             <Footer className="footer"/>
         </div>
     )
