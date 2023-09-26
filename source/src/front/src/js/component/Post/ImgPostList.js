@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
-import styles from '../../../css/component/Post/SjNewList.module.css';
+import styles from '../../../css/component/Post/imgPostList.module.css';
 import Pagination from "../Common/Pagination";
 
-function SjNewsList(props) {
+function ImgPostList(props) {
     const { boardNum } = props;
     const [posts, setPosts] = useState([]);
     const [files, setFiles] = useState([]);
@@ -25,7 +25,6 @@ function SjNewsList(props) {
             .then(response => response.json())
             .then(data => setFiles(data))
             .catch(error => console.error(error));
-
     }, [boardNum]);
 
     const onDelClick = (postNum) => {
@@ -58,21 +57,24 @@ function SjNewsList(props) {
         <div>
             <div className={styles.sjNewsListContainer}>
                 {currentPosts.map((post, index) => (
-                    <div className={styles.postDetail} key={post.postNum}>
-                        <div className={styles.leftTop}>
-                            <img
-                                src={getPostImage(post.postNum)}
-                                alt={`Image ${index + 1}`}
-                                className={styles.postImage}
-                            />
+                    // Link 컴포넌트로 게시글을 감싸고, 스타일을 직접 지정
+                    <Link to={`/post/detail/${post.postNum}`} key={post.postNum} className={styles.customLink}>
+                        <div className={styles.postDetail}>
+                            <div className={styles.leftTop}>
+                                <img
+                                    src={getPostImage(post.postNum)}
+                                    alt={`Image ${index + 1}`}
+                                    className={styles.postImage}
+                                />
+                            </div>
+                            <div className={styles.postInfo}>
+                                <h2 className={styles.title}>{post.title}</h2>
+                                <p className={styles.postData}>
+                                    작성일: {post.writeDate.slice(0, 10)} 조회수: {post.pageView}
+                                </p>
+                            </div>
                         </div>
-                        <div className={styles.postInfo}>
-                            <h2 className={styles.title}>{post.title}</h2>
-                            <p className={styles.postData}>
-                                작성일: {post.writeDate.slice(0, 10)} 조회수: {post.pageView}
-                            </p>
-                        </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
             <Pagination
@@ -86,7 +88,7 @@ function SjNewsList(props) {
             />
             {posts[0] && (
                 <div className={styles.postButton}>
-                    <button onClick={() => onEditClick(posts[0].postNum)} className={styles.postEditButton}>
+                    <button to={`/posts/edit/${posts[0].postNum}`} className={styles.postEditButton}>
                         수정
                     </button>
                     <button onClick={() => onDelClick(posts[0].postNum)}
@@ -95,15 +97,8 @@ function SjNewsList(props) {
                     </button>
                 </div>
             )}
-            <div className={styles.pagination}>
-                {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, index) => (
-                    <button key={index} onClick={() => paginate(index + 1)}>
-                        {index + 1}
-                    </button>
-                ))}
-            </div>
         </div>
     );
 }
 
-export default SjNewsList;
+export default ImgPostList;

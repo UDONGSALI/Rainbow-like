@@ -3,9 +3,9 @@ import BackButton from "../../component/Common/BackButton";
 import {useParams} from "react-router-dom";
 import EduApply from "../../component/Edu/EduApply";
 
-function EduApplyPage(props) {
+function EduApplyPage() {
     const {eduNum} = useParams();
-    const {memId} = props;
+    const memId = sessionStorage.getItem("memId");
 
     return (
         <div>

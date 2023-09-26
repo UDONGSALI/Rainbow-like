@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PostDetail from "../../component/Post/PostDetail";
 import { useParams } from 'react-router-dom'; // useParams를 import 합니다.
 
-function NoticeDetailPage() {
+function PostDetailPage() {
     const { postNum } = useParams(); // URL에서 필요한 값을 받아옵니다.
 
     return (
@@ -13,4 +13,4 @@ function NoticeDetailPage() {
     );
 }
 
-export default NoticeDetailPage;
+export default PostDetailPage;
