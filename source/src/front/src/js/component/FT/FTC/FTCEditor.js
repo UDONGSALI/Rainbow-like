@@ -7,6 +7,7 @@ function FTCEditor(props){
     const { id } = useParams();
     const {memId} = props;
     const navigate = useNavigate();
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
 
     const [formData, setFormData] = useState({
         memNum: 1,
@@ -104,29 +105,18 @@ function FTCEditor(props){
                     >
                         <option value="">분야 선택</option>
                         <option value="IT">IT 전반</option>
-                        <option value="IT / front">IT / front</option>
-                        <option value="IT / back">IT / back</option>
-                        <option value="IT / ect">IT / 기타</option>
+                        <option value="IT_front">IT / front</option>
+                        <option value="IT_back">IT / back</option>
+                        <option value="IT_ect">IT / 기타</option>
                         <option value="디자인">디자인 / 전반</option>
-                        <option value="디자인 / 그림">디자인 / 그림</option>
-                        <option value="디자인 / 영상">디자인 / 영상</option>
-                        <option value="디자인 / 수공예">디자인 / 수공예</option>
-                        <option value="디자인 / 기타">디자인 / 기타</option>
+                        <option value="디자인_그림">디자인 / 그림</option>
+                        <option value="디자인_영상">디자인 / 영상</option>
+                        <option value="디자인_수공예">디자인 / 수공예</option>
+                        <option value="디자인_기타">디자인 / 기타</option>
                         <option value="기타">기타</option>
                     </select>
                 </div>
-                <div className={styles.inputGroup}>
-                    <select
-                        name="ftmYN"
-                        value={formData.ftmYN}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">매칭현황</option>
-                        <option value="Y">매칭완료</option>
-                        <option value="N">매칭대기</option>
-                     </select>
-                </div>
+                {isAdmin?
                 <div className={styles.inputGroup}>
                     <input
                         type="text"
@@ -136,7 +126,9 @@ function FTCEditor(props){
                         onChange={handleChange}
                     />
                 </div>
-
+                    :
+                    null
+                }
                 <div className={styles.inputGroup}>
                     <textarea
                         name="applyContent"

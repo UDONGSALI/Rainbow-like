@@ -15,7 +15,6 @@ import java.util.ArrayList;
 @Setter
 public class EduDto {
 
-
     @NotBlank
     private EduType type;
 
@@ -239,6 +238,47 @@ public class EduDto {
         Edu4.setRecuMethod(RecuMethod.FIRST_COME);
         Edu4.setTel("세종시직장맘지원센터 044) 866-0179");
         eduList.add(Edu4);
+
+        EduDto Edu5 = new EduDto();
+        Edu5.setType(EduType.EDU);
+        Edu5.setEduName("여성, 창업을 묻다 \"엄마들의 나다움 창업 특강\"");
+        Edu5.setContent(" ※ 많은 성원에 힘입어 모집인원을 '30명'으로 증원했습니다.\n" +
+                " \n" +
+                "여성 창업을 묻다 \"엄마들의 나다움 창업 특강\"\n" +
+                "참여자 모집\n" +
+                " \n" +
+                " \n" +
+                "□ 교육일정:  10. 18.(수) 10:00~12:00\n" +
+                "□ 모집기간:  9. 25.(월) ~ 10.11.(수)\n" +
+                "□ 모집대상: 세종 지역에 창업을 희망하는 여성 20명(선착순, 무료)\n" +
+                "□ 신청방법: 세종여성플라자 홈페이지 로그인 후 신청\n" +
+                "□ 교육장소: 세종여성플라자 혜윰(새롬로 14, 새롬종합복지센터 4층)\n" +
+                "□ 교육내용\n" +
+                "   - 강사: 문서연 대표(엄마들의 일과 생활 연구소)\n" +
+                "시간\n" +
+                "\n" +
+                "내용\n" +
+                "\n" +
+                "10:00~11:00\n" +
+                "\n" +
+                "창업자로서의 마인드 셋업\n" +
+                "\n" +
+                "11:00~12:00\n" +
+                "\n" +
+                "엄마들의 다양한 창업 사례 소개\n" +
+                "★ 브런치 제공\n" +
+                "□ 문의 : 세종여성플라자 기획운영팀 ☎044-850-8179");
+        Edu5.setEduStdt(LocalDateTime.of(2023,10,18,10,00,00,000));
+        Edu5.setEduEddt(LocalDateTime.of(2023,10,18,12,00,00,000));
+        Edu5.setEduAddr("세종여성플라자 혜윰");
+        Edu5.setTarget("세종 지역에 창업을 희망하는 여성 20명");
+        Edu5.setRecuStdt(LocalDate.of(2023,9,25));
+        Edu5.setRecuEddt(LocalDate.of(2023,10,11));
+        Edu5.setCapacity(30);
+        Edu5.setRecuPerson(0);
+        Edu5.setRecuMethod(RecuMethod.FIRST_COME);
+        Edu5.setTel("세종여성플라자 기획운영팀 ☎044-850-8179");
+        eduList.add(Edu5);
 
 
         for (int i = 0; i < 100; i++) {

@@ -7,29 +7,29 @@ import File from "../../../img/component/file.png";
 import styled from '@emotion/styled';
 import Pagination from "../Common/Pagination";
 
-function PostNoticeList(props) {
+function CounselingList(props) {
     const {boardNum} = props;
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const [activePage, setActivePage] = useState(1);
-    const itemsCountPerPage = 10;
+    const itemsCountPerPage = 10;  // 원하는 페이지당 항목 수를 설정하세요.
     const totalItemsCount = posts.length;
-    const pageRangeDisplayed = 5;
+    const pageRangeDisplayed = 5;  // 원하는 범위대로 설정하세요.
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
+        // 필요하면 추가적인 로직 구현
     };
-
-    useEffect(() => {
-        fetch(SERVER_URL + `post/${boardNum}`)
+useEffect(() => {
+        fetch(SERVER_URL + "post/7")
             .then(res => res.json())
             .then(data => {
                 const reversedData = [...data].reverse();
                 setPosts(reversedData);
             })
             .catch(err => console.error(err));
-    }, [boardNum]);
+    }, []);
 
     useEffect(() => {
         fetch(SERVER_URL + "files/post")
@@ -77,11 +77,11 @@ function PostNoticeList(props) {
             sortable: false,
             filterable: false,
             renderCell: (params) => (
-                    <CenteredData>
-                        <StyledCell>
+                <CenteredData>
+                    <StyledCell>
                         {params.row.postNum - 5}
-                        </StyledCell>
-                    </CenteredData>
+                    </StyledCell>
+                </CenteredData>
             ),
             width: 50
         },
@@ -109,11 +109,11 @@ function PostNoticeList(props) {
                 return members.map((m) => m.name).join(', ');
             },
             renderCell: (params) => (
-                    <CenteredData>
-                        <StyledCell>
+                <CenteredData>
+                    <StyledCell>
                         {params.value}
-                        </StyledCell>
-                    </CenteredData>
+                    </StyledCell>
+                </CenteredData>
             ),
         },
         {
@@ -122,11 +122,11 @@ function PostNoticeList(props) {
             headerAlign: 'center',
             width: 80,
             renderCell: (params) => (
-                    <CenteredData>
-                        <StyledCell>
+                <CenteredData>
+                    <StyledCell>
                         {params.value}
-                        </StyledCell>
-                    </CenteredData>
+                    </StyledCell>
+                </CenteredData>
             )
         },
         {
@@ -137,7 +137,7 @@ function PostNoticeList(props) {
             filterable: false,
             renderCell: (row) => {
                 return (
-                       <div>
+                    <div>
                         {row.value && row.value[0] && ( // 첫 번째 파일만 확인
                             <div style={{width: '24px', height: '24px', marginRight: '8px'}}>
                                 <img
@@ -147,7 +147,7 @@ function PostNoticeList(props) {
                                 />
                             </div>
                         )}
-                       </div>
+                    </div>
                 );
             },
             width: 50,
@@ -160,8 +160,8 @@ function PostNoticeList(props) {
             renderCell: (params) => (
                 <CenteredData>
                     <StyledCell>
-                    {params.value.slice(0, 10)}
-                </StyledCell>
+                        {params.value.slice(0, 10)}
+                    </StyledCell>
                 </CenteredData>
 
             )
@@ -285,4 +285,4 @@ const StyledCell = styled.span`
   font-size: 12px;
 `;
 
-export default PostNoticeList;
+export default CounselingList;
