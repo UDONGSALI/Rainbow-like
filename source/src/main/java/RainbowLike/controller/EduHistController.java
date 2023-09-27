@@ -12,13 +12,13 @@ import RainbowLike.service.EduService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,26 +29,20 @@ import java.util.Optional;
 @RequestMapping("/eduHist")
 public class EduHistController {
 
-    private final ModelMapper mapper;
     private final EduHistRepository eduHistRepository;
+    private final ModelMapper mapper;
     private final MemberRepository memberRepository;
     private final EduRepository eduRepository;
     private final EduService eduService;
     private final FileController fileController;
 
-
     @GetMapping
-    private Iterable<EduHist> getEduHists() {
+    public Iterable<EduHist> getEduHists() {
         return eduHistRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    private EduHist getEduHist(@PathVariable Long id) {
-        return eduHistRepository.findById(id).orElse(null);  // orElse(null)은 ID에 해당하는 EduHist가 없을 경우 null을 반환하도록 합니다.
-    }
-
     @GetMapping("/memid/{memId}")
-    private Iterable<EduHist> getEduHistByMemId(@PathVariable String memId) {
+    public Iterable<EduHist> getEduHistByMemId(@PathVariable String memId) {
         return eduHistRepository.findByMember(memberRepository.findByMemId(memId));
     }
 
@@ -92,11 +86,11 @@ public class EduHistController {
     }
 
     @GetMapping("/check/{memNum}/{eduNum}")
-    public boolean eduHistCheck(@PathVariable Long memNum, @PathVariable Long eduNum){
+    public boolean eduHistCheck(@PathVariable Long memNum, @PathVariable Long eduNum) {
         List<EduHist> eduHists = eduHistRepository.findByMemberAndEdu(memberRepository.findByMemNum(memNum), eduRepository.findByEduNum(eduNum));
-        if (eduHists.size() >= 1 ){
+        if (eduHists.size() >= 1) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -153,7 +147,7 @@ public class EduHistController {
     @Transactional
     public ResponseEntity<String> saveEduHistAndFile(
             @RequestParam("eduHistData") String eduHistDataJson, // JSON 문자열 받기
-            @RequestParam(name = "file", required = false) List<MultipartFile> files, @RequestParam(name="tableName", required = false) String tableName, @RequestParam(name="number", required = false) Long number) {
+            @RequestParam(name = "file", required = false) List<MultipartFile> files, @RequestParam(name = "tableName", required = false) String tableName, @RequestParam(name = "number", required = false) Long number) {
 
         EduHistDto eduHistDto;
         try {
