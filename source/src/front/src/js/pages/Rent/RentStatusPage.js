@@ -1,16 +1,16 @@
 import React from "react";
-import SpaceList from "../../component/Rent/SpaceList";
+import SpaceApplyForm from "../../component/Rent/SpaceApplyForm";
 import RentStatus from "../../component/Rent/RentStatus";
-import Footer from "../../layout/Footer/footer";
+import RentCalender from "../../component/Rent/RentCalender";
 
 function RentStatusPage() {
 
     return (
         <div>
             <RentStatus/>
-            {/*캘린더자리*/}
-            <SpaceList/>
-            <Footer/>
+            <RentCalender/>
+            <SpaceApplyForm/>
+
         </div>
     );
 }

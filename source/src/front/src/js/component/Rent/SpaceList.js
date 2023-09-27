@@ -10,10 +10,6 @@ function SpaceList() {
     const [spaces, setSpaces] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    //신청하기 버튼//
-    function redirectToURL() {
-        window.location.href = "http://localhost:3000/rent/application/{:spaceNum}";
-    };
 
     const columns = [
         {field: 'spaceName', headerName: '이름', width: 200},
@@ -24,24 +20,6 @@ function SpaceList() {
         {field: 'facilities', headerName: '구비시설', width: 200},
         {field: 'date', headerName: '날짜', width: 200},
         {field: 'time', headerName: '시간', width: 200},
-        {
-            field: 'application', headerName: '예약신청', width: 200,
-            renderCell: (params) => (
-                <Stack className="buttonWrap" spacing={2} direction="row">
-                    <Button className="button"
-                            onClick={redirectToURL}
-                            style={{
-                                width: "80px",
-                                height: "40px",
-                                backgroundColor: "#a38ced",
-                                color: "#ffffff",
-                                borderRadius: '5px',
-                                fontSize: "15px",
-                                fontWeight: "bold",
-                            }}>신청하기</Button>
-                </Stack>
-            )
-        },
 
     ];
 

@@ -1,13 +1,17 @@
 package RainbowLike.controller;
 
 
+import RainbowLike.component.CommentNotFoundException;
+import RainbowLike.component.MemberNotFoundException;
 import RainbowLike.entity.Comment;
 import RainbowLike.entity.Member;
 import RainbowLike.repository.CommentRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.CommentByMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,32 +23,22 @@ import java.util.Optional;
 
 @RestController
 public class CommentByMemberController {
-
-    private final CommentByMemberService commentByMemberService;
-    private final CommentRepository commentRepository;
-    private MemberRepository memberRepository;
-
+    @Autowired
+    private CommentByMemberService commentByMemberService;
 
     @Autowired
-    public CommentByMemberController(CommentByMemberService commentByMemberService, CommentRepository commentRepository, MemberRepository memberRepository) {
-        this.commentByMemberService = commentByMemberService;
-        this.commentRepository=commentRepository;
-        this.memberRepository=memberRepository;
-
-    }
-
+    private CommentRepository commentRepository;
 
 
     @GetMapping("/comments/member/{memNum}")
-    public ResponseEntity<List<Comment>> getCommentByMember(@PathVariable Long memNum) {
-        Optional<Member> memberOptional = memberRepository.findById(memNum);
-
-        if (memberOptional.isPresent()) {
-            Member member = memberOptional.get();
-            Iterable<Comment> comments = commentByMemberService.getCommentByMember(member);
-            return ResponseEntity.ok((List<Comment>) comments);
+    public Iterable<Comment> getCommentsByMember(@PathVariable Long memNum) {
+       Member member = commentByMemberService.getMemberByMemNum(memNum);
+        if (member != null) {
+            // 댓글을 작성한 회원(Member)을 가져오는 로직을 작성
+            return commentRepository.findByMember(member);
         } else {
-            return ResponseEntity.notFound().build();
+            throw new CommentNotFoundException("Comment not found with CommentNum: " + memNum);
         }
     }
+
 }
