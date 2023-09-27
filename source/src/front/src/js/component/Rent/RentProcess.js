@@ -219,12 +219,15 @@ export default function RentProcess() {
                 <div className={styles.table}>
                     <table className={styles.rentTime}
                     style={{
-                        border:'1px solid #ccc',
                         width:'100%',
                         textAlign: 'center',
                         padding: '10px',
                         position: 'relative',
                     }}>
+                        <colgroup>
+                            <col className={styles.colStyle} />
+                            <col className={styles.colStyle}/>
+                        </colgroup>
                         <thead className={styles.tableHeader}>
                         <tr className={styles.col1}>
                             <td><b style={{fontWeight : 'bold'}}>대관일</b></td>

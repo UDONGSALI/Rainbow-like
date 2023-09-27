@@ -23,7 +23,7 @@ public interface PostRepository extends JpaRepository <Post,Long> {
 
 
     @Modifying
-    @Query("update Post p set p.pageView = p.pageView + 1 where p.id = :id")
+    @Query("update Post p set p.pageView = p.pageView + 1 where p.postNum = :id")
     int updateView(Long id);
 
 

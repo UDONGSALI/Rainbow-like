@@ -5,9 +5,9 @@ import {SERVER_URL} from "../Common/constants";
 
 function ClubEditor(props){
     const { id } = useParams();
-    const {memId} = props;
-    // const id = postNum;
+    const memId = sessionStorage.getItem("memId");
     const navigate = useNavigate();
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
 
     const [formData, setFormData] = useState({
         memNum: '',
@@ -95,7 +95,9 @@ function ClubEditor(props){
             <h2>게시글 수정 폼</h2>
             <form onSubmit={handleSubmit} className={styles.registrationForm}>
 
-                <div className={styles.inputGroup}>
+                {
+                    isAdmin?
+                    <div className={styles.inputGroup}>
                     <select
                         name="clubAllowStatus"
                         value={formData.clubAllowStatus}
@@ -108,6 +110,9 @@ function ClubEditor(props){
 
                     </select>
                 </div>
+                :
+                    null
+                }
                 <div className={styles.inputGroup}>
                     <select
                         name="clubRecuStatus"
@@ -119,7 +124,6 @@ function ClubEditor(props){
                         <option value="진행중">진행중</option>
                         <option value="모집중">모집중</option>
                         <option value="모집마감">모집마감</option>
-                        <option value="거부">거부</option>
 
 
                     </select>
