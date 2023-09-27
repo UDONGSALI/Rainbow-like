@@ -10,7 +10,8 @@ function ClubList(props) {
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-    const {memId} = props;
+    const memId = sessionStorage.getItem("memId");
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
 
 
     const columns = [
@@ -52,35 +53,41 @@ function ClubList(props) {
             headerName: '조회수',
             width: 100,
         },
-        {
-            field: 'links.self.href',
-            headerName: '수정',
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
-                <button
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => onEditClick(params)}
-                >
-                    {params.value}
-                    수정
-                </button>
-            ),
-        },
-        {
-            field: '_links.self.href',
-            headerName: '삭제',
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
-                <button
-                    onClick={() => onDelClick(params.row)}
-                >
-                    삭제
-                </button>
-            ),
-        }
+
     ];
+
+    if (isAdmin) {
+        columns.push(
+            {
+                field: 'links.self.href',
+                headerName: '수정',
+                sortable: false,
+                filterable: false,
+                renderCell: (params) => (
+                    <button
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => onEditClick(params)}
+                    >
+                        {params.value}
+                        수정
+                    </button>
+                ),
+            },
+            {
+                field: '_links.self.href',
+                headerName: '삭제',
+                sortable: false,
+                filterable: false,
+                renderCell: (params) => (
+                    <button
+                        onClick={() => onDelClick(params.row)}
+                    >
+                        삭제
+                    </button>
+                ),
+            }
+        );
+    }
 
     useEffect(() => {
         fetchPosts();

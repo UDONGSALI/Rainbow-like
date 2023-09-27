@@ -7,6 +7,10 @@ import styles from '../../../../css/component/Club/ClubDetail.module.css';
 function FTWDtl({ftwNum}){
 
     const params = useParams();
+    const memId = sessionStorage.getItem("memId");
+    const memNum = sessionStorage.getItem("memNum");
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+
     let id;
 
     if (ftwNum != undefined) {
@@ -114,12 +118,15 @@ function FTWDtl({ftwNum}){
                 </div>
            </div>
 
-            {/*<div className={styles.content}>{post.post.content}</div>*/}
-            {ftwNum !== undefined ?
+            {ftwNum === undefined ?
                 <div className={styles.postButton}>
                     <button onClick={() => onEditClick()}>수정</button>
                     <button onClick={() => onDelClick(post.ftw)}>삭제</button>
+                    {isAdmin?
                     <button onClick={() => navigate("/ftw")}>리스트로</button>
+                        :
+                        null
+                    }
                 </div>
                 :
                 null

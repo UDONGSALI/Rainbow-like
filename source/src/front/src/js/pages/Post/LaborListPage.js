@@ -4,13 +4,26 @@ import CounselingList from "../../component/Post/CounselingList";
 import LaborImg from "../../../img/pages/laborBorad1.png";
 import styles from '../../../css/pages/Labor/LaborListPage.module.css';
 import '../../../css/font.css';
+import {useParams} from "react-router-dom";
 
-const BoardNum = 7;
+;
 function LaborListPage() {
+    const { boardNum } = useParams();
+    const  memNum = sessionStorage.getItem("memNum")
+
+    let pageTitle;
+    switch (boardNum) {
+        case '7':
+            pageTitle = '노무상담게시판';
+            break;
+        case '8':
+            pageTitle = '온라인상담';
+            break;
+    }
 
     return (
         <div>
-            <h2 style={{ textAlign: 'center',marginTop:'20px' ,marginBottom:'20px'}}>노무상담게시판</h2>
+            <h2 style={{ textAlign: 'center',marginTop:'20px' ,marginBottom:'20px'}}>{pageTitle}</h2>
             <div className={styles.laborTop}>
                 <div className={styles.laborImg}  >
                 <img src={LaborImg}  alt={"imgFalse"}/>
@@ -68,7 +81,7 @@ function LaborListPage() {
                     상담을 원하는 내용을 상세히 작성해 주시면 노무사가 검토 후 답변해 드립니다.
                     <br/>＊상담 내용 검토 등으로 인해 답변에 시간이 걸릴 수 있습니다.</p>
             </div>
-            <CounselingList boardNum={BoardNum} />
+            <CounselingList boardNum={boardNum} memNum={memNum}/>
             <Footer />
         </div>
     );
