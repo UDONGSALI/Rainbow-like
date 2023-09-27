@@ -1,7 +1,9 @@
-.List button {
+.FTList button {
     width: 100%;
-    margin-top: 15px;
+    margin-top: 50px;
+    float: right;
     /*margin-left: 15px;*/
+    margin-bottom: 10px;
     padding: 10px;
     font-size: 16px;
     border-radius: 3px;
@@ -16,14 +18,10 @@
     cursor: pointer;
 }
 
-.List button:hover {
+.FTList button:hover {
     background-color: #53468b;
 }
 
-.List{
-    margin-bottom: 5%;
-}
-
-.ftmPage{
-    padding: 20px;
+.FTList {
+    margin-bottom: 10%;
 }
