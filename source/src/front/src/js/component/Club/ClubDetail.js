@@ -6,12 +6,12 @@ import styles from '../../../css/component/Club/ClubDetail.module.css';
 
 function ClubDetail(props) {
     const { id } = useParams();
-    const {memId} = props;
+    const memId = sessionStorage.getItem("memId");
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    console.log(props);
     const [post, setPost] = useState(null);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+console.log(memId);
 
     useEffect(() => {
         // 조회수 증가 API 호출
@@ -120,7 +120,7 @@ function ClubDetail(props) {
 
             <div className={styles.content}>{post.post.content}</div>
                     <div className={styles.postButton}>
-                        {post.member.memNum === memId || isAdmin ? (
+                        {post.member.memId === memId || isAdmin ? (
                             <>
                                 <button onClick={() => onEditClick()}>수정</button>
                                 <button onClick={() => onDelClick(post.post)}>삭제</button>

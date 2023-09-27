@@ -6,10 +6,11 @@ import {SERVER_URL} from "../../Common/constants";
 
 function FTCForm(props){
     const navigate = useNavigate();
-    const {memId} = props;
+    const memId = sessionStorage.getItem("memId");
+    const memNum = sessionStorage.getItem("memNum");
 
     const [formData, setFormData] = useState({
-        memNum: 1,
+        memNum: memNum,
         speField: '',
         applyContent: '',
         statusDtl: '',
@@ -52,17 +53,6 @@ function FTCForm(props){
             <form onSubmit={handleSubmit} className={styles.registrationForm}>
 
                 <div className={styles.inputGroup}>
-                    <input
-                        type="number"
-                        name="memNum"
-                        value={formData.memNum}
-                        onChange={handleChange}
-                        placeholder="신청자"
-                        required
-                    />
-                </div>
-
-                <div className={styles.inputGroup}>
                 <select
                     name="speField"
                     value={formData.speField}
@@ -89,8 +79,8 @@ function FTCForm(props){
                         name="applyContent"
                         value={formData.applyContent}
                         onChange={handleChange}
-                        placeholder="연락처, 포트폴리오 주소, 자기소개 등을 적어주세요.
-"
+                        placeholder="필요한 요구사항을 적어주세요."
+
                         required
                     >
                     </textarea>

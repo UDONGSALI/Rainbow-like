@@ -6,10 +6,11 @@ import {SERVER_URL} from "../../Common/constants";
 
 function FTWForm(props){
     const navigate = useNavigate();
-    const {memId} = props;
+    const memId = sessionStorage.getItem("memId");
+    const memNum = sessionStorage.getItem("memNum");
 
     const [formData, setFormData] = useState({
-        memNum: 1,
+        memNum: memNum,
         speField: '',
         licenseYN: 'N',
         licenseDtl: '',
@@ -57,17 +58,6 @@ function FTWForm(props){
             <form onSubmit={handleSubmit} className={styles.registrationForm}>
 
                 <div className={styles.inputGroup}>
-                    <input
-                        type="number"
-                        name="memNum"
-                        value={formData.memNum}
-                        onChange={handleChange}
-                        placeholder="신청자"
-                        required
-                    />
-                </div>
-
-                <div className={styles.inputGroup}>
                 <select
                     name="speField"
                     value={formData.speField}
@@ -77,7 +67,7 @@ function FTWForm(props){
                     <option value="">분야 선택</option>
                     <option value="IT">IT 전반</option>
                     <option value="IT_front">IT / front</option>
-                    <option value="IT_Back">IT / back</option>
+                    <option value="IT_back">IT / back</option>
                     <option value="IT_ect">IT / 기타</option>
                     <option value="디자인">디자인 / 전반</option>
                     <option value="디자인_그림">디자인 / 그림</option>
