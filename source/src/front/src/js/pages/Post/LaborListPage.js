@@ -9,6 +9,7 @@ import {useParams} from "react-router-dom";
 ;
 function LaborListPage() {
     const { boardNum } = useParams();
+    const  memNum = sessionStorage.getItem("memNum")
 
     let pageTitle;
     switch (boardNum) {
@@ -80,7 +81,7 @@ function LaborListPage() {
                     상담을 원하는 내용을 상세히 작성해 주시면 노무사가 검토 후 답변해 드립니다.
                     <br/>＊상담 내용 검토 등으로 인해 답변에 시간이 걸릴 수 있습니다.</p>
             </div>
-            <CounselingList boardNum={boardNum} />
+            <CounselingList boardNum={boardNum} memNum={memNum}/>
             <Footer />
         </div>
     );

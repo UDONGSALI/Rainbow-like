@@ -22,7 +22,7 @@ function ImgPostList(props) {
             })
             .catch(error => console.error(error));
 
-        fetch(SERVER_URL + `files`)
+        fetch(SERVER_URL + `files/table/post`)
             .then(response => response.json())
             .then(data => setFiles(data))
             .catch(error => console.error(error));
