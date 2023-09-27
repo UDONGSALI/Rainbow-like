@@ -37,6 +37,7 @@ import ClubEditorPage from "./js/pages/Club/ClubEditorPage";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 import LaborListPage from "./js/pages/Post/LaborListPage";
 import Footer from "./js/layout/Footer/footer";
+import MyActivePage from "./js/pages/My/MyActivePage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -99,8 +100,8 @@ function App() {
                 <Route path="/edu/applyck" element={memId? <EduApplyCheckPage memId={memId}/>:<LoginPage />}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
-                <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
-                <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
+                <Route path="/rent/status" element={<RentStatusPage/>}/>
+                <Route path="/rent/application/:spaceNum" element={<RentApplicationPage/>}/>
                 <Route path="/posts" element={<PostList/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
@@ -123,6 +124,7 @@ function App() {
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
+                <Route path="/mypage/active" element={<MyActivePage/>}/>
             </Routes>
             <Footer/>
         </div>
