@@ -33,6 +33,11 @@ public class File {
 
     @ManyToOne
     @JsonManagedReference
+    @JoinColumn(name = "eduHist_num")
+    private EduHist eduHist;
+
+    @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "space_num")
     private Space space;
 

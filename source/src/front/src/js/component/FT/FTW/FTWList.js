@@ -4,12 +4,12 @@ import {SERVER_URL} from "../../Common/constants";
 import {useNavigate } from 'react-router-dom';
 import styles from '../../../../css/component/Club/ClubList.module.css';
 
-function FTWList({ftcNum}){
+function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const ftmMode = ftcNum != null;
-    const [checkedRows, setCheckedRows] = useState({}); // 개별 체크 상태를 저장하는 객체
+    // const [checkedRows, setCheckedRows] = useState({}); // 개별 체크 상태를 저장하는 객체
 
 
     useEffect(() => {
@@ -24,7 +24,6 @@ function FTWList({ftcNum}){
                 // 필터링: delYN이 'N'인 게시물만 남김
                 const filteredPosts = data.filter((post) => post.delYN === 'N');
                 setPosts(filteredPosts);
-                console.log(posts);
 
             })
             .catch(err => console.error(err));
@@ -81,20 +80,27 @@ function FTWList({ftcNum}){
     ];
 
     //조건부 컬럼 설정
-    if (ftmMode) {
-        columns.unshift({
-            field: 'checkbox',
-            headerName: '체크박스',
-            width: 120,
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
+    const checkboxColumn = {
+        field: 'checkbox',
+        headerName: '체크박스',
+        width: 120,
+        sortable: false,
+        filterable: false,
+        renderCell: (params) => (
+            // ftStatus가 '승인'인 경우에만 체크박스를 출력
+            params.row.ftStatus === '승인' && (
                 <input
                     type="checkbox"
                     checked={!!checkedRows[params.row.ftWorkerNum]}
-                    onChange={() => handleRowCheckboxChange(params)}                />
-            ),
-        });
+                    onChange={() => handleRowCheckboxChange(params)}
+                />
+            )
+        ),
+    };
+
+// 조건부로 체크박스 컬럼을 추가
+    if (ftmMode) {
+        columns.unshift(checkboxColumn);
     }
 
     // ftmMode가 false일 때만 수정 버튼과 삭제 버튼 컬럼을 추가
@@ -146,8 +152,6 @@ function FTWList({ftcNum}){
             editDate: new Date(),
             delYN : 'Y'
         };
-        console.log(updatedPostData);
-
 
         // PUT 요청 보내기
         fetch(SERVER_URL + "ftw/edit/" + post.ftWorkerNum, {
@@ -187,7 +191,6 @@ function FTWList({ftcNum}){
         }
 
         setCheckedRows(newCheckedRows);
-        console.log(checkedRows);
     };
 
     const onEditClick = (params) => {
@@ -209,7 +212,18 @@ function FTWList({ftcNum}){
     return(
         <div className={styles.List} style={{ height: 500, width: '100%' }}>
             { ftmMode?
-                null
+                <div className={styles.ftmPage}>
+                    <h3>선택된 인재</h3>
+                    <ul>
+                        {Object.keys(checkedRows).map(rowId => (
+                            <li key={rowId}>
+                                {rowId}: {posts.find(post => post.ftWorkerNum === parseInt(rowId))?.member.name},　
+                                {posts.find(post => post.ftWorkerNum === parseInt(rowId))?.speField},　
+                                {posts.find(post => post.ftWorkerNum === parseInt(rowId))?.member.email}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
                 :
                 <button  onClick = {() => navigate('/ftmain')}>DB 메인</button>
             }
@@ -218,21 +232,7 @@ function FTWList({ftcNum}){
                       disableRowSelectionOnClick={true}
                       getRowId={row => row.ftWorkerNum}
             />
-            {ftmMode ?
-                <div>
-                    <h2>선택된 Row 정보:</h2>
-                    <ul>
-                        {Object.keys(checkedRows).map(rowId => (
-                            <li key={rowId}>
-                                {/*{row.id}: {row.member.name}, {row.speField}*/}
-                                {rowId}: {posts.find(post => post.ftWorkerNum === parseInt(rowId))?.member.name}, {posts.find(post => post.ftWorkerNum === parseInt(rowId))?.speField}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                :
-                null
-            }
+
         </div>
     );
 }

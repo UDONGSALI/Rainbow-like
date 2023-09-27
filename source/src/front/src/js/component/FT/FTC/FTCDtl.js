@@ -4,6 +4,7 @@ import { SERVER_URL } from "../../Common/constants";
 import styles from '../../../../css/component/Club/ClubDetail.module.css';
 import ReactDOM from "react-dom"; // 수정된 import 문
 import MatchingPopup from "../FTM/MatchingPopup";
+import FTMModal from "../FTM/FTMModal";
 
 function FTCDtl(props) {
     const { id } = useParams();
@@ -12,6 +13,10 @@ function FTCDtl(props) {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+
 
     useEffect(() => {
         fetchPost();
@@ -33,8 +38,19 @@ function FTCDtl(props) {
 
     const onMatchClick = () => {
         // 새로운 창을 열 때 URL에 데이터를 전달합니다.
-        const popupWindow = window.open(`/ftmpop/${post.ftc.speField}/${post.ftc.ftConsumerNum}`, '_blank', 'width=1000,height=600');
+        const popupWindow = window.open(`/ftmpop/${post.ftc.ftConsumerNum}`, '_blank', 'width=1000,height=600');
     };
+
+    const onModalClick = () => {
+        // 매칭 확인 모달 열기
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        // 모달 닫기
+        setIsModalOpen(false);
+    };
+
 
 
 
@@ -62,10 +78,17 @@ function FTCDtl(props) {
             </div>
             <div className={styles.postButton}>
                 <button onClick={() => onEditClick()}>수정</button>
-                <button>매칭확인</button>
+                {post.ftc.ftmYN ==='Y'? <> <button onClick={onModalClick}>매칭확인</button> </> : null}
                 {isAdmin ? <button onClick={onMatchClick}>매칭하기</button> : null}
                 <button onClick={() => navigate("/ftc")}>리스트로</button>
+
+
+                {isModalOpen && (
+                    <FTMModal onClose={closeModal} ftcNum = {id} />
+                )}
             </div>
+
+
         </div>
     );
 }

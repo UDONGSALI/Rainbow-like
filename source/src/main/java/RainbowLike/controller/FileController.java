@@ -26,6 +26,7 @@ public class FileController {
     private final MemberRepository memberRepository;
     private final SpaceRepository spaceRepository;
     private final EduRepository eduRepository;
+    private final EduHistRepository eduHistRepository;
     private final PostRepository postRepository;
     private final FileRepository fileRepository;
     private final RestTemplate restTemplate;
@@ -55,6 +56,22 @@ public class FileController {
         return fileRepository.findByPostIsNotNull();
     }
 
+    @GetMapping("/table/{name}")
+    private Iterable<File> getFindByTableName(@PathVariable String name){
+        switch (name) {
+            case "post":
+                return fileRepository.findByPostIsNotNull();
+            case "edu":
+                return fileRepository.findByEduIsNotNull();
+            case "eduHist":
+                return fileRepository.findByEduHistIsNotNull();
+            case "member":
+                return fileRepository.findByMemberIsNotNull();
+            default:
+                throw new IllegalArgumentException("Invalid table name: " + name);
+        }
+    }
+
     @DeleteMapping("/eduNum/{eduNum}")
     private void deleteFilesByEduNum(@PathVariable Long eduNum) {
         Iterable<File> files = getFilesByEduNum(eduNum);
@@ -71,6 +88,7 @@ public class FileController {
         Member member = null;
         Space space = null;
         Edu edu = null;
+        EduHist eduHist = null;
         Post post = null;
 
         String midPath = "";
@@ -89,6 +107,10 @@ public class FileController {
                 case "edu":
                     edu = eduRepository.findTopByOrderByEduNumDesc();
                     midPath = tableName + "/" + edu.getEduNum() + "/";
+                    break;
+                case "eduHist":
+                    eduHist = eduHistRepository.findTopByOrderByEduHistNumDesc();
+                    midPath = tableName + "/" + eduHist.getEduHistNum() + "/";
                     break;
                 case "post":
                     post = postRepository.findTopByOrderByPostNumDesc();
@@ -117,6 +139,12 @@ public class FileController {
                     edu = eduRepository.findByEduNum(number);
                     if (edu != null) {
                         midPath = tableName + "/" + edu.getEduNum() + "/";
+                    }
+                    break;
+                case "eduHist":
+                    eduHist = eduHistRepository.findByEduHistNum(number);
+                    if (eduHist != null) {
+                        midPath = tableName + "/" + eduHist.getEduHistNum() + "/";
                     }
                     break;
                 case "post":
@@ -170,6 +198,7 @@ public class FileController {
                 createfile.setSpace(space);
                 createfile.setEdu(edu);
                 createfile.setPost(post);
+                createfile.setEduHist(eduHist);
 
                 fileRepository.save(createfile);
             }

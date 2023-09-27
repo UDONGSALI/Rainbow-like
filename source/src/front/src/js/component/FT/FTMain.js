@@ -2,7 +2,7 @@ import styles from '../../../css/pages/FT/FTMainPage.module.css';
 import {useNavigate} from "react-router-dom";
 
 function FTMain(){
-
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const navigate = useNavigate();
 
     return(
@@ -20,6 +20,16 @@ function FTMain(){
           <div className={styles.btn}>
               <button onClick={() => navigate('/ftw/new')}>여성인재풀DB 등록신청</button>
               <button onClick={() => navigate('/ftc/new')}>여성인재풀DB 매칭신청</button>
+              {
+                  isAdmin?
+                      <>
+                          <br />
+                      <button onClick={() => navigate('/ftw')}>여성인재 리스트</button>
+                      <button onClick={() => navigate('/ftc')}>매칭 리스트</button>
+                      </>
+                  :
+                      <></>
+              }
           </div>
       </div>
     );

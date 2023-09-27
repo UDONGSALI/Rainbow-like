@@ -483,7 +483,7 @@ function SignUp({ onSignUpClick }) {
                     />
                     <label>우편번호</label>
                 </div>
-                <FileUpload onFileChange={handleFileChange}/>
+                <FileUpload onFileChange={handleFileChange} noFileMessage="상담사, 노무사 회원은 자격증 사본을 첨부 해주세요." maxSize={3} maxCount={5}  />
                 <div className={styles.inputGroup}>
                     <button type="submit">회원가입</button>
                 </div>
