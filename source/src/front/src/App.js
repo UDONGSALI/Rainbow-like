@@ -86,6 +86,7 @@ function App() {
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/mypage/active/" element={<MyActivePage/>}/>
+                <Route path="/clubs/:id" element={<ClubDtlPage />}/>
             </Routes>
         </div>
     )
