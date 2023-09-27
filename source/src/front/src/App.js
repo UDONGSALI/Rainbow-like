@@ -12,6 +12,7 @@ import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import PostDetailPage from './js/pages/Post/PostDetailPage';
 import NoticeListPage from './js/pages/Post/NoticeListPage';
@@ -20,6 +21,10 @@ import NoticeListPage from './js/pages/Post/NoticeListPage';
 import PostDetailPage from './js/pages/Post/PostDetailPage';
 import NoticeListPage from './js/pages/Post/NoticeListPage';
 >>>>>>> c57f89effb1c23f8449e25f6c0e6824d96277426
+=======
+import PostDetailPage from './js/pages/Post/PostDetailPage';
+import NoticeListPage from './js/pages/Post/NoticeListPage';
+>>>>>>> 20f91db387410ee047acc55e170337160548557f
 import Main from "./js/component/screens/Main";
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import PostList from "./js/component/Post/PostList";
@@ -90,6 +95,7 @@ function App() {
             <Routes>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <Route path="/" element={<Main/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
 <<<<<<< HEAD
@@ -103,17 +109,24 @@ function App() {
 =======
                 <Route path="/" element={<Main/>}/>
 >>>>>>> c57f89effb1c23f8449e25f6c0e6824d96277426
+=======
+>>>>>>> 20f91db387410ee047acc55e170337160548557f
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/admin/edu" element={isAdmin ? <EduListPage/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
+<<<<<<< HEAD
+=======
+                <Route path="/edu/list" element={<EduList/>}/>
+>>>>>>> 20f91db387410ee047acc55e170337160548557f
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
 <<<<<<< HEAD
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
+<<<<<<< HEAD
 <<<<<<< HEAD
                 <Route path="/sj" element={<SjNewsPage/>}/>
 =======
@@ -123,6 +136,8 @@ function App() {
                 <Route path="/edu/applyck" element={memId? <EduApplyCheckPage memId={memId}/>:<LoginPage />}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
 >>>>>>> c57f89effb1c23f8449e25f6c0e6824d96277426
+=======
+>>>>>>> 20f91db387410ee047acc55e170337160548557f
                 <Route path="/rent" element={<RentPage/>}/>
                 <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
                 <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
@@ -130,8 +145,11 @@ function App() {
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> c57f89effb1c23f8449e25f6c0e6824d96277426
+=======
+>>>>>>> 20f91db387410ee047acc55e170337160548557f
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/clubs" element={<ClubPage/>}/>
                 <Route path="/clubs/new" element={<ClubFormPage/>}/>
@@ -149,6 +167,7 @@ function App() {
                 <Route path="/ftm" element={<FTMListPage/>}/>
 <<<<<<< HEAD
                 <Route path="/ftmpop/:speField/:ftcNum" element={<MatchingPopup />}/>
+<<<<<<< HEAD
 =======
 
                 <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
@@ -161,11 +180,16 @@ function App() {
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/labor" element={<LaborListPage/>}/>
+=======
+>>>>>>> 20f91db387410ee047acc55e170337160548557f
                 <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/mypage/active/" element={<MyActivePage/>}/>
+<<<<<<< HEAD
 >>>>>>> c57f89effb1c23f8449e25f6c0e6824d96277426
+=======
+>>>>>>> 20f91db387410ee047acc55e170337160548557f
             </Routes>
             <Footer/>
         </div>
