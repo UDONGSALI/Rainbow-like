@@ -32,7 +32,7 @@ function PostNoticeList(props) {
     }, [boardNum]);
 
     useEffect(() => {
-        fetch(SERVER_URL + "files/post")
+        fetch(SERVER_URL + "files/table/post")
             .then(res => res.json())
             .then(data => {
                 setFiles(data);
