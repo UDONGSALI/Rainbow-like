@@ -5,8 +5,8 @@ import { SERVER_URL } from "../../Common/constants";
 
 function FTWEditor(props) {
     const { id } = useParams();
-    const {memId} = props;
-
+    const memId = sessionStorage.getItem("memId");
+    const memNum = sessionStorage.getItem("memNum");
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -91,17 +91,6 @@ function FTWEditor(props) {
         <div className={styles.registrationFormContainer}>
             <h2>여성인재풀DB 수정</h2>
             <form onSubmit={handleSubmit} className={styles.registrationForm}>
-
-                <div className={styles.inputGroup}>
-                    <input
-                        type="number"
-                        name="memNum"
-                        value={formData.memNum}
-                        onChange={handleChange}
-                        placeholder="신청자"
-                        required
-                    />
-                </div>
 
                 <div className={styles.inputGroup}>
                     <select

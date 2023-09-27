@@ -38,7 +38,7 @@ function FTCDtl(props) {
 
     const onMatchClick = () => {
         // 새로운 창을 열 때 URL에 데이터를 전달합니다.
-        const popupWindow = window.open(`/ftmpop/${post.ftc.ftConsumerNum}`, '_blank', 'width=1000,height=600');
+        const popupWindow = window.open(`/ftmpop/${post.ftc.ftConsumerNum}`, '_blank', 'width=1100,height=900');
     };
 
     const onModalClick = () => {
@@ -79,8 +79,13 @@ function FTCDtl(props) {
             <div className={styles.postButton}>
                 <button onClick={() => onEditClick()}>수정</button>
                 {post.ftc.ftmYN ==='Y'? <> <button onClick={onModalClick}>매칭확인</button> </> : null}
-                {isAdmin ? <button onClick={onMatchClick}>매칭하기</button> : null}
-                <button onClick={() => navigate("/ftc")}>리스트로</button>
+                {isAdmin ?
+                    <>
+                    <button onClick={onMatchClick}>매칭하기</button>
+                    <button onClick={() => navigate("/ftc")}>리스트로</button>
+                    </>
+                    : null}
+
 
 
                 {isModalOpen && (
