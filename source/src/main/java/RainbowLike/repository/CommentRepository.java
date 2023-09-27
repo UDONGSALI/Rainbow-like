@@ -19,5 +19,6 @@ public interface CommentRepository extends JpaRepository <Comment, Long> {
      Iterable<Comment> findByMember(Member MemberNum);
 
 
-
 }
+
+
