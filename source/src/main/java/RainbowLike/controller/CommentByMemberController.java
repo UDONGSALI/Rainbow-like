@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import java.util.List;
+import java.util.Optional;
 
 
 
@@ -24,42 +25,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentByMemberController {
     @Autowired
     private CommentByMemberService commentByMemberService;
+
     @Autowired
     private CommentRepository commentRepository;
-    private MemberRepository memberRepository;
 
-    @GetMapping("/comments/member/{commNum}") // URL 경로의 {CommentNum}을 수정
-    public Iterable<Comment> getCommentsByMember(@PathVariable Long memNum) { // 파라미터명을 CommentNum으로 수정
-        Comment comment = commentByMemberService.getCommentByCommentNum(memNum); // CommentNum을 사용하여 댓글 조회
-        if (comment != null) {
+
+    @GetMapping("/comments/member/{memNum}")
+    public Iterable<Comment> getCommentsByMember(@PathVariable Long memNum) {
+       Member member = commentByMemberService.getMemberByMemNum(memNum);
+        if (member != null) {
             // 댓글을 작성한 회원(Member)을 가져오는 로직을 작성
-            Member member = commentByMemberService.getMemberByMemNum(memNum); // memNum을 사용하여 회원 조회
-            if (member != null) {
-                return commentRepository.findByMember(member);
-            } else {
-                throw new MemberNotFoundException("Member not found with memNum: " + memNum);
-            }
+            return commentRepository.findByMember(member);
+        } else {
+            throw new CommentNotFoundException("Comment not found with CommentNum: " + memNum);
         }
-//            Member member = comment.getMember();
-//            if (member != null) {
-//                return commentRepository.findByMember(member);
-//            } else {
-//                throw new MemberNotFoundException("Member not found for CommentNum: " + CommNum);
-//            }
-//        } else {
-//            throw new CommentNotFoundException("Comment not found with CommentNum: " + CommNum);
-//        }
-//    }
-    // MemberNotFoundException을 처리하는 핸들러 추가
-    @ExceptionHandler(MemberNotFoundException.class)
-    public ResponseEntity<String> handleMemberNotFoundException(MemberNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    // CommentNotFoundException을 처리하는 핸들러 추가
-    @ExceptionHandler(CommentNotFoundException.class)
-    public ResponseEntity<String> handleCommentNotFoundException(CommentNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
 }
-

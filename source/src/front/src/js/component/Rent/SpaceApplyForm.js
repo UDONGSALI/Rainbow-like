@@ -9,43 +9,32 @@ import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from 'dayjs';
 
-function SpaceList() {
+function SpaceApplyForm() {
     const [spaces, setSpaces] = useState([]);
     const [loading, setLoading] = useState(true);
     const [value, setValue] = React.useState(dayjs('2022-01-01 T09:00'));
     const [selectedTime, setSelectedTime] = useState(null);
 
+    //시간 관련
     // 허용할 최소 및 최대 시간 설정
     const minTime = dayjs().hour(9).minute(0); // 오전 9:00
     const maxTime = dayjs().hour(17).minute(30); // 오후 5:30
 
     // 비활성화할 시간대 설정 (9:00 이전과 17:30 이후)
-    const disabledHours = () => {
-        const hours = [];
-        for (let i = 0; i < 24; i++) {
-            if (i < minTime.hour() || i > maxTime.hour()) {
-                hours.push(i);
-            }
+    const disabledHours = (hour) => {
+        if (hour >= minTime.hour()) {
+            return true;
         }
-        return hours;
+        return false;
     };
 
-    const disabledMinutes = (hour) => {
-        const minutes = [];
-        if (hour === minTime.hour()) {
-            // 허용하는 시간대의 시작 시간인 경우
-            for (let i = 0; i < minTime.minute(); i++) {
-                minutes.push(i);
-            }
+    const disabledMinutes = (hour, minute) => {
+        if (hour === minTime.hour() && minute >= minTime.minute()) {
+            return true;
         }
-        if (hour === maxTime.hour()) {
-            // 허용하는 시간대의 종료 시간인 경우
-            for (let i = maxTime.minute() + 1; i < 60; i++) {
-                minutes.push(i);
-            }
-        }
-        return minutes;
+        return false;
     };
+
 
 
     //신청하기 버튼//
@@ -53,6 +42,7 @@ function SpaceList() {
         window.location.href = "http://localhost:3000/rent/application/{:spaceNum}";
     };
 
+    //이미지 목록
     const rows = [
         {
             id: 1,
@@ -102,7 +92,7 @@ function SpaceList() {
 
     ];
 
-
+    //칼럼
     const columns = [
             {field: 'spaceName', headerName: '공간명', width: 400,
                 renderCell: (params) => (
@@ -215,4 +205,4 @@ function SpaceList() {
     );
 }
 
-export default SpaceList;
+export default SpaceApplyForm;

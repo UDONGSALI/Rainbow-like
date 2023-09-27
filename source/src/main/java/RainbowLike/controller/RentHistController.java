@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/rent")
+@RequestMapping("/api/rent")
 
 public class RentHistController {
 
