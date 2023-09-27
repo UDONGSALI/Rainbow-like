@@ -5,12 +5,15 @@ import { SERVER_URL } from "../Common/constants";
 
 function Comment(props) {
     const { id } = useParams();
-    const {memId} = props;
+    const memId = sessionStorage.getItem("memId");
     const [comms, setComms] = useState([]);
     const [open, setOpen] = useState(false);
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+
+
     const [replyFormData, setReplyFormData] = useState({
         postNum: id,
-        memNum: 1,
+        memNum: memId,
         content: '',
         parentNum: '0',
         delYN: 'N',
@@ -19,7 +22,7 @@ function Comment(props) {
 
     const [editFormData, setEditFormData] = useState({
         postNum: id,
-        memNum: 1,
+        memNum: memId,
         content: '',
         parentNum: '0',
         delYN: 'N',
@@ -111,7 +114,7 @@ function Comment(props) {
 // 댓글 작성
     const [formData, setFormData] = useState({
         postNum: id,
-        memNum: 1,
+        memNum: memId,
         content: '',
         parentNum: '0',
         delYN : 'N'
@@ -181,7 +184,7 @@ function Comment(props) {
             .then((data) => {
                 setReplyFormData({
                     postNum: id,
-                    memNum: 1,
+                    memNum: memId,
                     content: '',
                     parentNum: '0',
                     delYN : 'N'
@@ -233,7 +236,6 @@ function Comment(props) {
             postNum : comment.post.postNum
 
         };
-        console.log(updatedCommentData);
 
 
         fetch(SERVER_URL + "comm/" + comment.commNum, {
@@ -247,7 +249,7 @@ function Comment(props) {
             .then((data) => {
                 setEditFormData({
                     postNum: id,
-                    memNum: 1,
+                    memNum: memId,
                     content: '',
                     parentNum: '0',
                     delYN : 'N'
@@ -294,16 +296,23 @@ function Comment(props) {
                             )}
                         </td>
 
-                        <td>
+                        {
+                            comment.member.memNum === memId || isAdmin?
+                                <>
+                            <td>
                             {comment.delYN === 'N' && (
                                 <button onClick={() => onEditClick(comment)}>수정</button>
                             )}
                         </td>
-                        <td>
-                            {comment.delYN === 'N' && (
-                                <button onClick={() => onDelClick(comment)}>삭제</button>
-                            )}
-                    </td>
+                            <td>
+                        {comment.delYN === 'N' && (
+                            <button onClick={() => onDelClick(comment)}>삭제</button>
+                )}
+            </td>
+                                </>
+            :
+            null
+                    }
 
 
                     </tr>
@@ -366,7 +375,10 @@ function Comment(props) {
                     )}
                     </tbody>
                 </table>
-            <form onSubmit={handleSubmit} className={styles.commentForm}>
+            {
+                memId !== undefined?
+                <>
+                <form onSubmit={handleSubmit} className={styles.commentForm}>
                 <textarea
                     name="content"
                     cols="105"
@@ -375,6 +387,10 @@ function Comment(props) {
                 />
                 <button type="submit">작성</button>
             </form>
+                </>
+                :
+                null
+            }
         </div>
     );
 }
