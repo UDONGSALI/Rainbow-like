@@ -33,7 +33,7 @@ public class LoginController {
         Member member = memberRepository.findByMemId(credentials.getUsername());
 
         // 토큰에 아이디와 유형을 넣어서 생산
-        String jwts = jwtService.getToken(member.getMemId(), member.getType().toString());
+        String jwts = jwtService.getToken(member.getMemId(), member.getType().toString(), member.getMemNum());
 
         // 생성된 토큰을 HTTP 응답 헤더에 추가하여 클라이언트에게 반환
         return ResponseEntity.ok()
