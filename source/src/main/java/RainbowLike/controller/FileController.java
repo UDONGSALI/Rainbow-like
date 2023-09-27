@@ -56,6 +56,22 @@ public class FileController {
         return fileRepository.findByPostIsNotNull();
     }
 
+    @GetMapping("/table/{name}")
+    private Iterable<File> getFindByTableName(@PathVariable String name){
+        switch (name) {
+            case "post":
+                return fileRepository.findByPostIsNotNull();
+            case "edu":
+                return fileRepository.findByEduIsNotNull();
+            case "eduHist":
+                return fileRepository.findByEduHistIsNotNull();
+            case "member":
+                return fileRepository.findByMemberIsNotNull();
+            default:
+                throw new IllegalArgumentException("Invalid table name: " + name);
+        }
+    }
+
     @DeleteMapping("/eduNum/{eduNum}")
     private void deleteFilesByEduNum(@PathVariable Long eduNum) {
         Iterable<File> files = getFilesByEduNum(eduNum);
