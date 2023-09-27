@@ -40,6 +40,7 @@ import LaborListPage from "./js/pages/Post/LaborListPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
+    const isLabor = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
     const memId = sessionStorage.getItem("memId");
     const navigate = useNavigate();
 
@@ -115,7 +116,7 @@ function App() {
                 <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
-                <Route path="/labor" element={<LaborListPage/>}/>
+                <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
             </Routes>
         </div>
     )

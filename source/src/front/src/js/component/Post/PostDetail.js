@@ -141,11 +141,12 @@ function PostDetail(props) {
                 <button onClick={onDelClick} className={styles.postDeleteButton}>삭제</button>
                 <button onClick={() => {
                     if (post.board.boardNum <= 2) {
-                        navigate(`/post/${post.boardNum}`);
-                    } else if (post.board.boardNum >= 3) {
-                        navigate(`/imgPost/${post.boardNum}`);
-                    }
-                }} className={styles.postListButton}>
+                        navigate(`/post/${post.board.boardNum}`);
+                    } else if (post.board.boardNum >= 3 && post.board.boardNum <= 5) {
+                        navigate(`/imgPost/${post.board.boardNum}`);
+                    } else if (post.board.boardNum >= 7) {
+                        navigate(`/csl/${post.board.boardNum}`);
+                }}} className={styles.postListButton}>
                     목록으로
                 </button>
             </div>

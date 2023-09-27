@@ -8,7 +8,8 @@ import styled from '@emotion/styled';
 import Pagination from "../Common/Pagination";
 
 function CounselingList(props) {
-    const {boardNum} = props;
+    const { boardNum } = props;
+    const isLabor = sessionStorage.getItem("role") === "LABOR";
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
@@ -17,19 +18,20 @@ function CounselingList(props) {
     const itemsCountPerPage = 10;  // 원하는 페이지당 항목 수를 설정하세요.
     const totalItemsCount = posts.length;
     const pageRangeDisplayed = 5;  // 원하는 범위대로 설정하세요.
+
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
         // 필요하면 추가적인 로직 구현
     };
 useEffect(() => {
-        fetch(SERVER_URL + "post/7")
+        fetch(SERVER_URL + `post/${boardNum}`)
             .then(res => res.json())
             .then(data => {
                 const reversedData = [...data].reverse();
                 setPosts(reversedData);
             })
             .catch(err => console.error(err));
-    }, []);
+    }, [boardNum]);
 
     useEffect(() => {
         fetch(SERVER_URL + "files/post")
@@ -69,36 +71,38 @@ useEffect(() => {
         const rowId = params.row.postNum;
         navigate(`/post/detail/${rowId}`);
     };
-    const columns = [
-        {
-            field: 'postNum',
-            headerName: '번호',
-            headerAlign: 'center',
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
-                <CenteredData>
-                    <StyledCell>
-                        {params.row.postNum - 5}
-                    </StyledCell>
-                </CenteredData>
-            ),
-            width: 50
-        },
-        {
-            field: 'title',
-            headerName: '제목',
-            headerAlign: 'center',
-            width: 350,
-            renderCell: (params) => (
-                <div
-                    style={{cursor: 'pointer'}}
-                    onClick={() => onRowClick(params)}
-                >
-                    <StyledCell>{params.value}</StyledCell>
-                </div>
-            ),
-        },
+
+    const getColumns = () => {
+        const baseColumns = [
+            {
+                field: 'postNum',
+                headerName: '번호',
+                headerAlign: 'center',
+                sortable: false,
+                filterable: false,
+                renderCell: (params) => (
+                    <CenteredData>
+                        <StyledCell>
+                            {params.row.postNum - 17}
+                        </StyledCell>
+                    </CenteredData>
+                ),
+                width: 50
+            },
+            {
+                field: 'title',
+                headerName: '제목',
+                headerAlign: 'center',
+                width: 350,
+                renderCell: (params) => (
+                    <div
+                        style={{cursor: 'pointer'}}
+                        onClick={() => onRowClick(params)}
+                    >
+                        <StyledCell>{params.value}</StyledCell>
+                    </div>
+                )
+            },
         {
             field: 'member',
             headerName: '작성자',
@@ -166,41 +170,30 @@ useEffect(() => {
 
             )
         },
-        {
-            field: 'editLink',
-            headerName: '수정',
-            headerAlign: 'center',
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
-                <CenteredData>
-                    <EditButton
-                        style={{cursor: 'pointer'}}
-                        onClick={() => onEditClick(params)}
-                    >
-                        수정
-                    </EditButton>
-                </CenteredData>
-            ),
-        },
-        {
-            field: 'deleteLink',
-            headerName: '삭제',
-            headerAlign: 'center',
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
-                <CenteredData>
-                    <DeleteButton
-                        onClick={() => onDelClick(params.row.deleteLink)}
-                    >
-                        삭제
-                    </DeleteButton>
-                </CenteredData>
-            ),
-        },
     ];
+        if (isLabor) {
+            baseColumns.push({
+                field: 'editLink',
+                headerName: '수정',
+                headerAlign: 'center',
+                sortable: false,
+                filterable: false,
+                renderCell: (params) => (
+                    <CenteredData>
+                        <EditButton
+                            style={{cursor: 'pointer'}}
+                            onClick={() => onEditClick(params)}
+                        >
+                            수정
+                        </EditButton>
+                    </CenteredData>
+                )
+            });
+        }
+        return baseColumns;
+    };
 
+    const columns = getColumns();
     return (
         <div style={{display: 'flex', flexDirection: 'column',
             alignItems: 'center',width:'100%' }}>
