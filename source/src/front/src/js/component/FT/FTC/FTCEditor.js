@@ -5,12 +5,13 @@ import {SERVER_URL} from "../../Common/constants";
 
 function FTCEditor(props){
     const { id } = useParams();
-    const {memId} = props;
+    const memId = sessionStorage.getItem("memId");
+    const memNum = sessionStorage.getItem("memNum");
     const navigate = useNavigate();
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
 
     const [formData, setFormData] = useState({
-        memNum: 1,
+        memNum: memNum,
         speField: '',
         applyContent: '',
         statusDtl: '',

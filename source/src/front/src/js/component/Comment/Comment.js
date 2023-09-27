@@ -6,14 +6,16 @@ import { SERVER_URL } from "../Common/constants";
 function Comment(props) {
     const { id } = useParams();
     const memId = sessionStorage.getItem("memId");
+    const memNum = sessionStorage.getItem("memNum");
     const [comms, setComms] = useState([]);
     const [open, setOpen] = useState(false);
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    console.log(memNum);
 
 
     const [replyFormData, setReplyFormData] = useState({
         postNum: id,
-        memNum: memId,
+        memNum: memNum,
         content: '',
         parentNum: '0',
         delYN: 'N',
@@ -22,7 +24,7 @@ function Comment(props) {
 
     const [editFormData, setEditFormData] = useState({
         postNum: id,
-        memNum: memId,
+        memNum: memNum,
         content: '',
         parentNum: '0',
         delYN: 'N',
@@ -114,7 +116,7 @@ function Comment(props) {
 // 댓글 작성
     const [formData, setFormData] = useState({
         postNum: id,
-        memNum: memId,
+        memNum: memNum,
         content: '',
         parentNum: '0',
         delYN : 'N'
@@ -141,7 +143,7 @@ function Comment(props) {
 
                 setFormData({
                     postNum: id,
-                    memNum: 1,
+                    memNum: memNum,
                     content: '',
                     parentNum: '0',
                     delYN : 'N'
@@ -184,7 +186,7 @@ function Comment(props) {
             .then((data) => {
                 setReplyFormData({
                     postNum: id,
-                    memNum: memId,
+                    memNum: memNum,
                     content: '',
                     parentNum: '0',
                     delYN : 'N'
@@ -249,7 +251,7 @@ function Comment(props) {
             .then((data) => {
                 setEditFormData({
                     postNum: id,
-                    memNum: memId,
+                    memNum: memNum,
                     content: '',
                     parentNum: '0',
                     delYN : 'N'
@@ -297,7 +299,7 @@ function Comment(props) {
                         </td>
 
                         {
-                            comment.member.memNum === memId || isAdmin?
+                            comment.member.memId === memId || isAdmin?
                                 <>
                             <td>
                             {comment.delYN === 'N' && (
@@ -376,7 +378,7 @@ function Comment(props) {
                     </tbody>
                 </table>
             {
-                memId !== undefined?
+                memId?
                 <>
                 <form onSubmit={handleSubmit} className={styles.commentForm}>
                 <textarea
