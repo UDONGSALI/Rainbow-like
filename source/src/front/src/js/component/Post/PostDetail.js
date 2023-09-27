@@ -4,12 +4,16 @@ import { SERVER_URL } from '../Common/constants';
 import styles from '../../../css/component/Post/PostDetail.module.css';
 
 function PostDetail(props) {
-    const { postNum } = props;
+    const { postNum,boardNum } = props;
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    const isLabor = sessionStorage.getItem("role") === "LABOR";
+    const memNum = sessionStorage.getItem("memNum");
     const [post, setPost] = useState(null);
     const [open, setOpen] = useState(false);
     const [files, setFiles] = useState([]);
     const [prevPostTitle, setPrevPostTitle] = useState(null);
     const [nextPostTitle, setNextPostTitle] = useState(null);
+    const [lastPostNum, setLastPostNum] = useState(null);
     const navigate = useNavigate();
 
     // 이전 글과 다음 글의 postNum 계산
@@ -67,6 +71,36 @@ function PostDetail(props) {
         navigate('/posts');
     };
 
+
+    //마지막 postNum 상태 저장
+    useEffect(() => {
+        fetch(`${SERVER_URL}posts/${postNum}`)
+            .then(response => response.json())
+            .then(data => {
+                setPost(data);
+                if (!lastPostNum || postNum > lastPostNum) {
+                    setLastPostNum(postNum);
+                }
+            })
+            .catch(error => console.error(error));
+    }, [postNum]);
+
+    useEffect(() => {
+        // 게시글 접근 권한 조건
+        fetch(`${SERVER_URL}posts/${postNum}`)
+            .then(response => response.json())
+            .then(data => {
+                setPost(data);
+                if (boardNum === 7) {
+                    if (!isAdmin && !isLabor && memNum !== data.post.memNum) {
+                        alert("이 페이지에 접근할 수 없습니다.");
+                        navigate('/'); // 또는 다른 페이지로 리다이렉트
+                    }
+                }
+            })
+            .catch(error => console.error(error));
+    }, [postNum]);
+
     useEffect(() => {
         // 이전 글의 제목 가져오기
         fetch(`${SERVER_URL}posts/${prevPostNum}`)
@@ -74,13 +108,14 @@ function PostDetail(props) {
             .then(data => setPrevPostTitle(data.post))
             .catch(error => console.error(error));
 
-        // 다음 글의 제목 가져오기
-        fetch(`${SERVER_URL}posts/${nextPostNum}`)
-            .then(response => response.json())
-            .then(data => setNextPostTitle(data.post))
-            .catch(error => console.error(error));
-
-    }, [postNum, prevPostNum, nextPostNum]);
+        // 현재 postNum이 마지막 글이 아니라면 다음 글의 제목 가져오기
+        if (postNum < lastPostNum) {
+            fetch(`${SERVER_URL}posts/${nextPostNum}`)
+                .then(response => response.json())
+                .then(data => setNextPostTitle(data.post))
+                .catch(error => console.error(error));
+        }
+    }, [postNum, prevPostNum, nextPostNum, lastPostNum]);
 
 
     const onEditClick = () => {
@@ -93,6 +128,8 @@ function PostDetail(props) {
 //이전 글과 다음 글 게시판이 같다면 이동
     const canGoToPrevPost = prevPostTitle && prevPostTitle.board.boardNum === post.board.boardNum;
     const canGoToNextPost = nextPostTitle && nextPostTitle.board.boardNum === post.board.boardNum;
+// 기존 코드에서 boardNum이 7보다 크거나 같은지 확인하는 변수
+    const hidePrevNextButtons = post.board.boardNum >= 7;
 
     return (
         <div className={styles.postDetail}> {/* CSS 모듈 적용 */}
@@ -151,7 +188,8 @@ function PostDetail(props) {
                 </button>
             </div>
             <div className={styles.prevNextButtons}>
-                {canGoToPrevPost && (
+                {/* boardNum이 7보다 작을 때만 이전 글 버튼 표시 */}
+                {!hidePrevNextButtons && canGoToPrevPost && (
                     <div className={styles.prevButton}>
                         &nbsp;&nbsp;∧ 이전 글 -&nbsp;
                         <button
@@ -164,7 +202,8 @@ function PostDetail(props) {
                         </button>
                     </div>
                 )}
-                {canGoToNextPost && (
+                {/* boardNum이 7보다 작을 때만 다음 글 버튼 표시 */}
+                {!hidePrevNextButtons && canGoToNextPost && (
                     <div className={styles.nextButton}>
                         &nbsp;&nbsp;∨ 다음 글 -&nbsp;
                         <button

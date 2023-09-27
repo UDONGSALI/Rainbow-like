@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {DataGrid} from "@mui/x-data-grid";
 import Snackbar from '@mui/material/Snackbar';
 import {useNavigate} from 'react-router-dom';
@@ -8,7 +8,8 @@ import styled from '@emotion/styled';
 import Pagination from "../Common/Pagination";
 
 function CounselingList(props) {
-    const { boardNum } = props;
+    const { boardNum,memNum } = props;
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const isLabor = sessionStorage.getItem("role") === "LABOR";
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -31,7 +32,7 @@ useEffect(() => {
                 setPosts(reversedData);
             })
             .catch(err => console.error(err));
-    }, [boardNum]);
+    }, [boardNum, memNum]);
 
     useEffect(() => {
         fetch(SERVER_URL + "files/post")
@@ -68,12 +69,13 @@ useEffect(() => {
     };
 
     const onRowClick = (params) => {
-        const rowId = params.row.postNum;
-        navigate(`/post/detail/${rowId}`);
+        if (isAdmin || isLabor || params.row.member.memNum == memNum) {
+            const rowId = params.row.postNum;
+            navigate(`/post/detail/${rowId}`);
+        }
     };
 
-    const getColumns = () => {
-        const baseColumns = [
+    const columns = [
             {
                 field: 'postNum',
                 headerName: '번호',
@@ -87,17 +89,23 @@ useEffect(() => {
                         </StyledCell>
                     </CenteredData>
                 ),
-                width: 50
+                width: 80
             },
             {
                 field: 'title',
                 headerName: '제목',
                 headerAlign: 'center',
-                width: 350,
+                width: 400,
                 renderCell: (params) => (
                     <div
-                        style={{cursor: 'pointer'}}
-                        onClick={() => onRowClick(params)}
+                        style={{
+                            cursor: (isAdmin || isLabor || params.row.member.memNum == memNum) ? 'pointer' : 'default'
+                        }}
+                        onClick={() => {
+                            if (isAdmin || isLabor || params.row.member.memNum == memNum) {
+                                onRowClick(params);
+                            }
+                        }}
                     >
                         <StyledCell>{params.value}</StyledCell>
                     </div>
@@ -107,7 +115,7 @@ useEffect(() => {
             field: 'member',
             headerName: '작성자',
             headerAlign: 'center',
-            width: 80,
+            width: 100,
             valueGetter: (params) => {
                 const members = Array.isArray(params.row.member) ? params.row.member : [params.row.member];
                 return members.map((m) => m.name).join(', ');
@@ -121,10 +129,24 @@ useEffect(() => {
             ),
         },
         {
+            field: 'writeDate',
+            headerName: '작성일',
+            headerAlign: 'center',
+            width: 100,
+            renderCell: (params) => (
+                <CenteredData>
+                    <StyledCell>
+                        {params.value.slice(0, 10)}
+                    </StyledCell>
+                </CenteredData>
+
+            )
+        },
+        {
             field: 'pageView',
             headerName: '조회수',
             headerAlign: 'center',
-            width: 80,
+            width: 120,
             renderCell: (params) => (
                 <CenteredData>
                     <StyledCell>
@@ -154,53 +176,17 @@ useEffect(() => {
                     </div>
                 );
             },
-            width: 50,
-        },
-        {
-            field: 'writeDate',
-            headerName: '작성일',
-            headerAlign: 'center',
-            width: 100,
-            renderCell: (params) => (
-                <CenteredData>
-                    <StyledCell>
-                        {params.value.slice(0, 10)}
-                    </StyledCell>
-                </CenteredData>
-
-            )
+            width: 80,
         },
     ];
-        if (isLabor) {
-            baseColumns.push({
-                field: 'editLink',
-                headerName: '수정',
-                headerAlign: 'center',
-                sortable: false,
-                filterable: false,
-                renderCell: (params) => (
-                    <CenteredData>
-                        <EditButton
-                            style={{cursor: 'pointer'}}
-                            onClick={() => onEditClick(params)}
-                        >
-                            수정
-                        </EditButton>
-                    </CenteredData>
-                )
-            });
-        }
-        return baseColumns;
-    };
 
-    const columns = getColumns();
     return (
         <div style={{display: 'flex', flexDirection: 'column',
             alignItems: 'center',width:'100%' }}>
             <DataGrid
                 columns={columns}
                 rows={postsWithFiles}
-                style={{ width: '920px', height: 400 }}
+                style={{ width: '900px', height: 400 }}
                 disableRowSelectionOnClick={true}
                 getRowId={getRowId}
                 hideFooter={true}

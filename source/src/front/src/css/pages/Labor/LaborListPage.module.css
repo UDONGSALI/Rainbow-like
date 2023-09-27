@@ -69,7 +69,7 @@
 }
 
 .noticeBorderBox {
-    width: 49%;
+    width: 47.5%;
     margin: 2rem auto; /* 화면 가운데 정렬 및 상단 간격 설정 */
     border: 1px solid #9a9a9a;
     border-radius: 5px;
