@@ -56,6 +56,9 @@ import MyActivePage from "./js/pages/My/MyActivePage";
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
     const memId = sessionStorage.getItem("memId");
+    const memNum = sessionStorage.getItem("memNum");
+    console.log(memNum+ "멤넘")
+    console.log(memId+ "멤넘")
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -67,6 +70,8 @@ function App() {
             const decodedToken = decodeToken(token);
             // 유형을 세션 스토리지에 저장
             sessionStorage.setItem("role", decodedToken.role);
+            // 멤넙을 세션 스토리지에 저장
+            sessionStorage.setItem("memNum", decodedToken.memNum);
             // username을 세션 스토리지에 저장
             sessionStorage.setItem("memId", decodedToken.sub);
         }
