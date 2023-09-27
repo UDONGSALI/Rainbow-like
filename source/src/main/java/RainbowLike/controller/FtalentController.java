@@ -11,6 +11,7 @@ import RainbowLike.entity.Member;
 import RainbowLike.repository.FemaleTalentMatchingRepository;
 import RainbowLike.repository.FtConsumerRepository;
 import RainbowLike.repository.FtWorkerRepository;
+import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.FTalentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class FtalentController {
@@ -28,6 +30,8 @@ public class FtalentController {
     FtConsumerRepository ftcRepository;
     @Autowired
     FemaleTalentMatchingRepository ftmRepository;
+    @Autowired
+    MemberRepository memRepository;
     @Autowired
     FTalentService ftService;
 
@@ -47,7 +51,20 @@ public class FtalentController {
 
         return ftmRepository.findAll();
     }
+    public void createTestFtw(){
+        ArrayList<FtwDto> ftwDtoList = FtwDto.createTestFtw();
+        ftService.createFtw(ftwDtoList);
+    }
 
+    public void createTestFtc(){
+        ArrayList<FtcDto> ftcDtoList = FtcDto.createTestFtc();
+        ftService.createFtc(ftcDtoList);
+    }
+
+    public void createTestFtm(){
+        ArrayList<FtmDto> ftmDtoList = FtmDto.createTestFtm();
+        ftService.createFtm(ftmDtoList);
+    }
     @RequestMapping("/ftm/find/{ftcNum}")
     public Iterable<FemaleTalentMatching> getFTMResult(@PathVariable Long ftcNum) {
         FtConsumer ftc = new FtConsumer();
@@ -218,22 +235,18 @@ public class FtalentController {
         return ResponseEntity.ok(savedFtm);
     }
 
+    @GetMapping("/ftwsms/{ftcNum}")
+    public List<String> getTelByFtcNum(@PathVariable Long ftcNum) {
+        // 받은 ftcNum을 consumerNum으로 지정하고 서비스 호출
+        List<String> telList = ftService.findWTelByConsumerNum(ftcNum);
 
-
-    public void createTestFtw(){
-        ArrayList<FtwDto> ftwDtoList = FtwDto.createTestFtw();
-        ftService.createFtw(ftwDtoList);
+        return telList;
     }
-
-    public void createTestFtc(){
-        ArrayList<FtcDto> ftcDtoList = FtcDto.createTestFtc();
-        ftService.createFtc(ftcDtoList);
+    @GetMapping("/ftcsms/{ftcNum}")
+    public String getwTelByFtcNum(@PathVariable Long ftcNum) {
+        // 받은 ftcNum을 consumerNum으로 지정하고 서비스 호출
+        List<String> telList = ftService.findCTelByConsumerNum(ftcNum);
+        String tel = telList.get(0);
+        return tel;
     }
-
-    public void createTestFtm(){
-        ArrayList<FtmDto> ftmDtoList = FtmDto.createTestFtm();
-        ftService.createFtm(ftmDtoList);
-    }
-
-
 }
