@@ -15,6 +15,7 @@ public class DefaultFileController {
     private final MemberRepository memberRepository;
     private final SpaceRepository spaceRepository;
     private final EduRepository eduRepository;
+    private final EduHistRepository eduHistRepository;
     private final PostRepository postRepository;
     private final FileRepository fileRepository;
     public void createDefaultFiles() {
@@ -211,6 +212,33 @@ public class DefaultFileController {
         post17File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/17/sj6.jpg");
 
         fileList.add(post17File1);
+
+        // 교육 내역 관련
+
+        File eduHist1File1 = new File();
+        eduHist1File1.setEduHist(eduHistRepository.findByEduHistNum(1L));
+        eduHist1File1.setFileName("eduHist/1/참새.jfif");
+        eduHist1File1.setFileOriName("참새.jfif");
+        eduHist1File1.setFileUri("https://storage.googleapis.com/rainbow_like/eduHist/1/참새.jfif");
+
+        fileList.add(eduHist1File1);
+
+        File eduHist1File2 = new File();
+        eduHist1File2.setEduHist(eduHistRepository.findByEduHistNum(1L));
+        eduHist1File2.setFileName("eduHist/1/나가.jpg");
+        eduHist1File2.setFileOriName("나가.jpg");
+        eduHist1File2.setFileUri("https://storage.googleapis.com/rainbow_like/eduHist/1/나가.jpg");
+
+        fileList.add(eduHist1File2);
+
+        File eduHist4File1 = new File();
+        eduHist4File1.setEduHist(eduHistRepository.findByEduHistNum(4L));
+        eduHist4File1.setFileName("eduHist/4/테스트.xlsx");
+        eduHist4File1.setFileOriName("테스트.xlsx");
+        eduHist4File1.setFileUri("https://storage.googleapis.com/rainbow_like/eduHist/4/테스트.xlsx");
+
+        fileList.add(eduHist4File1);
+
 
         for (File file : fileList) {
             fileRepository.save(file);

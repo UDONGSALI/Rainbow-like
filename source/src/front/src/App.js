@@ -44,8 +44,6 @@ function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
     const memId = sessionStorage.getItem("memId");
     const memNum = sessionStorage.getItem("memNum");
-    console.log(memNum+ "멤넘")
-    console.log(memId+ "멤넘")
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -96,7 +94,7 @@ function App() {
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
                 <Route path="/edu/apply/:eduNum" element={memId? <EduApplyPage/>: <LoginPage />}/>
-                <Route path="/edu/applyck" element={memId? <EduApplyCheckPage memId={memId}/>:<LoginPage />}/>
+                <Route path="/edu/applylist" element={memId? <EduApplyCheckPage memId={memId}/>:<LoginPage />}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
                 <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
