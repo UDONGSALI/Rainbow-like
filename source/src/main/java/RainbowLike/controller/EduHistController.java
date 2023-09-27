@@ -9,10 +9,15 @@ import RainbowLike.repository.EduHistRepository;
 import RainbowLike.repository.EduRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.EduService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,22 +34,26 @@ public class EduHistController {
     private final MemberRepository memberRepository;
     private final EduRepository eduRepository;
     private final EduService eduService;
+    private final FileController fileController;
 
 
     @GetMapping
     private Iterable<EduHist> getEduHists() {
         return eduHistRepository.findAll();
     }
+
     @GetMapping("/{id}")
-    public EduHist getEduHist(@PathVariable Long id) {
+    private EduHist getEduHist(@PathVariable Long id) {
         return eduHistRepository.findById(id).orElse(null);  // orElse(null)은 ID에 해당하는 EduHist가 없을 경우 null을 반환하도록 합니다.
     }
+
     @GetMapping("/memid/{memId}")
-    public Iterable<EduHist> getEduHistByMemId(@PathVariable String memId) {
+    private Iterable<EduHist> getEduHistByMemId(@PathVariable String memId) {
         return eduHistRepository.findByMember(memberRepository.findByMemId(memId));
     }
+
     @GetMapping("/search/{option}/{value}/{memId}")
-    public Iterable<EduHist> searchEduHist(@PathVariable String option, @PathVariable String value, @PathVariable String memId) {
+    private Iterable<EduHist> searchEduHist(@PathVariable String option, @PathVariable String value, @PathVariable String memId) {
         Iterable<EduHist> result;
         switch (option) {
             case "eduName":
@@ -74,15 +83,27 @@ public class EduHistController {
     }
 
     private boolean isAdmin(String memId) {
-        if (memberRepository.findByMemId(memId).getType() == Type.ADMIN){
+        if (memberRepository.findByMemId(memId).getType() == Type.ADMIN) {
             return true;
-        }else {
+        } else {
             return false;
         }
 
     }
+
+    @GetMapping("/check/{memNum}/{eduNum}")
+    public boolean eduHistCheck(@PathVariable Long memNum, @PathVariable Long eduNum){
+        List<EduHist> eduHists = eduHistRepository.findByMemberAndEdu(memberRepository.findByMemNum(memNum), eduRepository.findByEduNum(eduNum));
+        if (eduHists.size() >= 1 ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEduHistStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    private ResponseEntity<?> updateEduHistStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
         Optional<EduHist> optionalEduHist = eduHistRepository.findById(id);
 
         if (optionalEduHist.isPresent()) {
@@ -103,7 +124,7 @@ public class EduHistController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteEduHist(@PathVariable Long id) {
+    private ResponseEntity<?> deleteEduHist(@PathVariable Long id) {
         if (eduHistRepository.existsById(id)) {
             eduHistRepository.deleteById(id);
             return ResponseEntity.ok().build();
@@ -127,6 +148,40 @@ public class EduHistController {
 
         return ResponseEntity.ok(savedEduHist);
     }
+
+    @PostMapping("/andfile")
+    @Transactional
+    public ResponseEntity<String> saveEduHistAndFile(
+            @RequestParam("eduHistData") String eduHistDataJson, // JSON 문자열 받기
+            @RequestParam(name = "file", required = false) List<MultipartFile> files, @RequestParam(name="tableName", required = false) String tableName, @RequestParam(name="number", required = false) Long number) {
+
+        EduHistDto eduHistDto;
+        try {
+            eduHistDto = new ObjectMapper().readValue(eduHistDataJson, EduHistDto.class); // JSON 문자열을 DTO 객체로 변환
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("교육 정보에 문제가 생겼습니다!"); // 적절한 오류 응답 반환
+        }
+
+        try {
+            saveEduHist(eduHistDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("교육 정보에 문제가 생겼습니다!");
+        }
+
+        if (files != null && !files.isEmpty()) {
+            try {
+                fileController.uploadFiles(files, tableName, number);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.badRequest().body("파일에 문제가 생겼습니다!");
+            }
+        }
+
+        return ResponseEntity.ok("신청이 완료 되었습니다!");
+    }
+
 
     public void createDefaultEduHists() {
         List<EduHistDto> eduHistDtos = EduHistDto.creatDefaultEduHist();

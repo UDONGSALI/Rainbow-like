@@ -105,6 +105,24 @@ public class DefaultFileController {
 
         fileList.add(edu4File2);
 
+        File edu5File1 = new File();
+        edu5File1.setEdu(eduRepository.findByEduNum(5L));
+        edu5File1.setFileName("edu/5/edu5_1.png");
+        edu5File1.setFileOriName("edu5_1.png");
+        edu5File1.setFileUri("https://storage.googleapis.com/rainbow_like/edu/5/edu5_1.png");
+
+        fileList.add(edu5File1);
+
+        File edu5File2 = new File();
+        edu5File2.setEdu(eduRepository.findByEduNum(5L));
+        edu5File2.setFileName("edu/5/edu5_2.png");
+        edu5File2.setFileOriName("edu5_2.png");
+        edu5File2.setFileUri("https://storage.googleapis.com/rainbow_like/edu/5/edu5_2.png");
+
+        fileList.add(edu5File2);
+
+        // 게시글 관련
+
         File post10File1 = new File();
         post10File1.setPost(postRepository.findByPostNum(10L));
         post10File1.setFileName("post/10/notice2.png");

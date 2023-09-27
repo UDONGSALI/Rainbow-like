@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function FileUpload({ onFileChange, maxSize = 5, maxCount = 5, acceptedFormats = [] }) {
+function FileUpload({ onFileChange, maxSize = 5, maxCount = 5, acceptedFormats = [], noFileMessage }) {
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     // maxSize를 MB에서 bytes로 변환
@@ -44,6 +44,9 @@ function FileUpload({ onFileChange, maxSize = 5, maxCount = 5, acceptedFormats =
                 onChange={handleFileChange}
                 accept={acceptedFormats.join(',')}
             />
+            {selectedFiles.length === 0 && noFileMessage && (
+                <p style={{ color: 'red' }}>{noFileMessage}</p>
+            )}
         </div>
     );
 }
