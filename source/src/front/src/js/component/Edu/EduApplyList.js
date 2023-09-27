@@ -30,7 +30,7 @@ function EduApplyList(props) {
             .then(response => response.json())
             .then(data => {
                 const formattedData = data.map((item, index) => ({ id: index + 1, ...item }));
-                setEduApply(formattedData);
+                setEduApply(formattedData.reverse());  // .reverse()를 사용하여 배열을 역순으로 만듭니다.
             })
             .catch(error => console.error("Error fetching eduApply:", error));
     }, [memId, isAdmin]);

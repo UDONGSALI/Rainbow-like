@@ -17,18 +17,18 @@ function SearchComponent({
     const handleSearchTermChange = (e) => {
         const inputTerm = e.target.value;
         // 검색어 상태만 업데이트하고 실제 검색은 수행하지 않습니다.
-        setSearchTerm({ ...searchTerm, term: inputTerm });
+        setSearchTerm({...searchTerm, term: inputTerm});
     };
 
     const handleSearchOptionChange = (e) => {
         // 검색 옵션 상태만 업데이트하고 실제 검색은 수행하지 않습니다.
-        setSearchTerm({ ...searchTerm, value: e.target.value });
+        setSearchTerm({...searchTerm, value: e.target.value});
     };
 
     const handleStatusSelectChange = (e) => {
         const selectedStatus = e.target.value;
         // 선택된 상태를 업데이트합니다.
-        setSearchTerm({ ...searchTerm, term: selectedStatus });
+        setSearchTerm({...searchTerm, term: selectedStatus});
     };
 
     const handleEnterKey = (event) => {
@@ -54,7 +54,17 @@ function SearchComponent({
                     ))}
                 </select>
 
-                {searchTerm.value === 'status' ? (
+                {searchTerm.value === 'type' ? (
+                    <select value={searchTerm.term} onChange={handleSearchTermChange}>
+                        <option value="EDU">교육</option>
+                        <option value="BUSINESS">사업</option>
+                    </select>
+                ) : searchTerm.value === 'recuMethod' ? (
+                    <select value={searchTerm.term} onChange={handleSearchTermChange}>
+                        <option value="ADMIN_APPROVAL">관리자 승인</option>
+                        <option value="FIRST_COME">선착순 모집</option>
+                    </select>
+                ) : searchTerm.value === 'status' ? (
                     <select value={searchTerm.term} onChange={handleStatusSelectChange}>
                         <option value="WAIT">미승인</option>
                         <option value="APPROVE">승인</option>
@@ -70,10 +80,12 @@ function SearchComponent({
                     />
                 )}
 
-                <button onClick={onSearch}>검색</button>
-            </div>
+
+            <button onClick={onSearch}>검색</button>
         </div>
-    );
+</div>
+)
+    ;
 }
 
 export default SearchComponent;
