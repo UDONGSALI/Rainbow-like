@@ -35,10 +35,8 @@ import SignUpPage from "./js/pages/Login/SignUpPage";
 import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
 import ClubEditorPage from "./js/pages/Club/ClubEditorPage";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
-import Footer from "./js/layout/Footer/footer";
-
 import LaborListPage from "./js/pages/Post/LaborListPage";
-import MyActivePage from "./js/pages/My/MyActivePage";
+import Footer from "./js/layout/Footer/footer";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -95,6 +93,8 @@ function App() {
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
+                <Route path="/edu/applyck" element={<EduApplyCheckPage memId={memId}/>}/>
                 <Route path="/edu/apply/:eduNum" element={memId? <EduApplyPage/>: <LoginPage />}/>
                 <Route path="/edu/applyck" element={memId? <EduApplyCheckPage memId={memId}/>:<LoginPage />}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
@@ -122,11 +122,7 @@ function App() {
                 <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
-                <Route path="/labor" element={<LaborListPage/>}/>
-                <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
-                <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
-                <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
-                <Route path="/mypage/active/" element={<MyActivePage/>}/>
+                <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
             </Routes>
             <Footer/>
         </div>
