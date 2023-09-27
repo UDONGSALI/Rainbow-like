@@ -15,7 +15,7 @@ export default function MyActivePost(props) {
     useEffect(() => {
         // 실제로 사용자 정보를 가져오는 방법에 따라서 구현
         // 예시로 사용자 정보를 가져온다고 가정
-        const fetchedUserInfo = { memNum: 1 }; // 예시로 1번 멤버 정보를 가져왔다고 가정
+        const fetchedUserInfo = { memNum:sessionStorage.getItem("memNum") }; // 예시로 1번 멤버 정보를 가져왔다고 가정
         setMemNum(fetchedUserInfo.memNum); // memNum 상태 업데이트
     }, []);
 

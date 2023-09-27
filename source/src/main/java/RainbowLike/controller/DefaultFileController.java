@@ -212,6 +212,74 @@ public class DefaultFileController {
 
         fileList.add(post17File1);
 
+        //공간 관련 이미지
+
+        File space1File1 = new File();
+        space1File1.setSpace(spaceRepository.findBySpaceNum(1L));
+        space1File1.setFileName("space/1/space1.jpg");
+        space1File1.setFileOriName("space1.jpg");
+        space1File1.setFileUri("https://storage.googleapis.com/rainbow_like/space/1/space1.jpg");
+
+        fileList.add(space1File1);
+
+        File space2File1 = new File();
+        space2File1.setSpace(spaceRepository.findBySpaceNum(2L));
+        space2File1.setFileName("space/2/space2.jpg");
+        space2File1.setFileOriName("space2.jpg");
+        space2File1.setFileUri("https://storage.googleapis.com/rainbow_like/space/2/space2.jpg");
+
+        fileList.add(space2File1);
+
+        File space3File1 = new File();
+        space3File1.setSpace(spaceRepository.findBySpaceNum(3L));
+        space3File1.setFileName("space/3/space3.jpg");
+        space3File1.setFileOriName("space3.jpg");
+        space3File1.setFileUri("https://storage.googleapis.com/rainbow_like/space/3/space3.jpg");
+
+        fileList.add(space3File1);
+
+
+        File space4File1 = new File();
+        space4File1.setSpace(spaceRepository.findBySpaceNum(4L));
+        space4File1.setFileName("space/4/space4.jpg");
+        space4File1.setFileOriName("space4.jpg");
+        space4File1.setFileUri("https://storage.googleapis.com/rainbow_like/space/4/space4.jpg");
+
+        fileList.add(space4File1);
+
+        File space5File1 = new File();
+        space5File1.setSpace(spaceRepository.findBySpaceNum(5L));
+        space5File1.setFileName("space/5/space5.jpg");
+        space5File1.setFileOriName("space5.jpg");
+        space5File1.setFileUri("https://storage.googleapis.com/rainbow_like/space/5/space5.jpg");
+
+        fileList.add(space5File1);
+
+        File space6File1 = new File();
+        space6File1.setSpace(spaceRepository.findBySpaceNum(6L));
+        space6File1.setFileName("space/6/space6.jpg");
+        space6File1.setFileOriName("space6.jpg");
+        space6File1.setFileUri("https://storage.googleapis.com/rainbow_like/space/6/space6.jpg");
+
+        fileList.add(space6File1);
+
+        File space7File1 = new File();
+        space7File1.setSpace(spaceRepository.findBySpaceNum(7L));
+        space7File1.setFileName("space/7/space7.jpg");
+        space7File1.setFileOriName("space7.jpg");
+        space7File1.setFileUri("https://storage.googleapis.com/rainbow_like/space/7/space7.jpg");
+
+        fileList.add(space7File1);
+
+        File space8File1 = new File();
+        space8File1.setSpace(spaceRepository.findBySpaceNum(8L));
+        space8File1.setFileName("space/8/space8.jpg");
+        space8File1.setFileOriName("space8.jpg");
+        space8File1.setFileUri("https://storage.googleapis.com/rainbow_like/space/8/space8.jpg");
+
+        fileList.add(space8File1);
+
+
         for (File file : fileList) {
             fileRepository.save(file);
         }
