@@ -6,7 +6,7 @@ import styles from '../../../css/pages/Labor/LaborListPage.module.css';
 import '../../../css/font.css';
 import {useParams} from "react-router-dom";
 
-;
+
 function LaborListPage() {
     const { boardNum } = useParams();
     const  memNum = sessionStorage.getItem("memNum")
