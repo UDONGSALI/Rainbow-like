@@ -119,12 +119,11 @@ function App() {
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
                 <Route path="/ftm" element={<FTMListPage/>}/>
                 <Route path="/ftmpop/:speField/:ftcNum" element={<MatchingPopup/>}/>
-                <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
+                <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
             </Routes>
-            <Footer/>
         </div>
     )
 }

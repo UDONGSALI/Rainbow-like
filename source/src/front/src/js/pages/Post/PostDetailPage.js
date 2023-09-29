@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import PostDetail from "../../component/Post/PostDetail";
-import { useParams } from 'react-router-dom'; // useParams를 import 합니다.
+import { useParams } from 'react-router-dom';
+import Footer from "../../layout/Footer/footer"; // useParams를 import 합니다.
+import { useLocation } from 'react-router-dom';
 
 function PostDetailPage() {
-    const { postNum,boardNum } = useParams(); // URL에서 필요한 값을 받아옵니다.
+    const { boardNum,postNum } = useParams(); // URL에서 필요한 값을 받아옵니다.
 
     let pageTitle;
     switch (boardNum) {
@@ -28,11 +30,15 @@ function PostDetailPage() {
         case '8':
             pageTitle = '온라인상담';
             break;
+        default:
+            pageTitle = '알 수 없는 게시판'; // 또는 적절한 오류 메시지
+            break;
     }
     return (
         <div>
             <h2 style={{ textAlign: 'center',marginTop:'20px' ,marginBottom:'20px'}}>{pageTitle}</h2>
             <PostDetail postNum={ postNum } boardNum = {boardNum} /> {/* postNum을 PostDetail 컴포넌트로 전달합니다. */}
+            <Footer />
         </div>
     );
 }
