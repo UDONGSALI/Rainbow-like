@@ -87,6 +87,7 @@ function App() {
                 <Route path="/admin/edu" element={isAdmin ? <EduListPage/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
+                <Route path="/admin/edu/apply" element={isAdmin ? <EduApplyCheckPage memId={memId}/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>

@@ -1,51 +1,66 @@
-import React, { useEffect, useState } from "react";
+// 1. React 관련
+import React, { useEffect, useMemo, useState } from "react";
+// 2. 외부 라이브러리 관련
 import { DataGrid } from "@mui/x-data-grid";
-import { SERVER_URL } from "../Common/constants";
-import { useNavigate, useLocation } from "react-router-dom";
 import styled from '@emotion/styled';
 import Pagination from "@mui/material/Pagination";
+// 3. 프로젝트 내 공통 모듈 관련
+import { SERVER_URL } from "../Common/constants";
+import { useNavigate, useLocation } from "react-router-dom";
+// 4. 컴포넌트 관련
 import SearchComponent from "../Common/SearchComponent";
 import Certificate from "./CertificateModal";
+// 5. 훅 관련
+import useSearch from "../hook/useSearch";
+import useFetch from "../hook/useFetch";
+import usePagination from "../hook/usePagination";
+// 6. Helper 함수나 Renderer 관련
+import { renderStatusCell } from "./statusRenderer";
+import renderApprovalStatusCell from "./renderApprovalStatusCell";
 
-
-
-// Define constants for the role strings
 const ADMIN_ROLE = "ADMIN";
 const USER_ROLE = "USER";
 
 function EduApplyList(props) {
-    const [eduApply, setEduApply] = useState([]);
+    // 1. React Router 관련
     const navigate = useNavigate();
+    const location = useLocation();
+// 2. 사용자 관련
     const { memId } = props;
-    const [files, setFiles] = useState([]);
     const userRole = sessionStorage.getItem("role");
     const isAdmin = userRole === ADMIN_ROLE;
-    const [activePage, setActivePage] = useState(1);
-    const itemsPerPage = 10;
-    const [searchTerm, setSearchTerm] = useState({ term: '', value: 'eduName' });
-    const location = useLocation();
+// 3. 로컬 상태 관리
+    const { activePage, setActivePage } = usePagination(1);
     const [isCertificateOpen, setIsCertificateOpen] = useState(false);
     const [currentCertificateData, setCurrentCertificateData] = useState({ name: "", eduName: "" });
+    const [eduApply, setEduApply] = useState([]);
+// 4. 커스텀 훅
+    const { searchTerm, setSearchTerm, handleSearch } = useSearch(memId, setEduApply);
+// 상수
+    const itemsPerPage = 10;
+    const SEARCH_OPTIONS = [
+        { value: 'eduName', label: '프로그램명', type: 'text' },
+        { value: 'status', label: '승인 상태', type: 'select', options: [
+                { label: "미승인", value: "WAIT" },
+                { label: "승인", value: "APPROVE" },
+                { label: "완료", value: "COMPLETE" }
+            ]},
+    ];
+    if (isAdmin) {
+        SEARCH_OPTIONS.push({ value: 'memId', label: '신청자', type: 'text' });
+    }
+
+    const eduHistUrl = isAdmin ? SERVER_URL + 'eduHist' : SERVER_URL + `eduHist/memid/${memId}`;
+    const { data: rawEduApplyData, loading: eduApplyLoading } = useFetch(eduHistUrl, []);
+
+    const { data: files, loading: filesLoading } = useFetch(SERVER_URL + 'files/table/eduHist', []);
 
     useEffect(() => {
-        const apiUrl = isAdmin ? SERVER_URL + 'eduHist' : SERVER_URL + `eduHist/memid/${memId}`;
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const formattedData = data.map((item, index) => ({ id: index + 1, ...item }));
-                setEduApply(formattedData.reverse());
-            })
-            .catch(error => console.error("Error fetching eduApply:", error));
-    }, [memId, isAdmin]);
-
-    useEffect(() => {
-        fetch(SERVER_URL + 'files/table/eduHist')
-            .then(response => response.json())
-            .then(data => {
-                setFiles(data);
-            })
-            .catch(error => console.error("Error fetching files:", error));
-    }, []);
+        if (!eduApplyLoading && rawEduApplyData) {
+            const formattedData = rawEduApplyData.map((item, index) => ({ id: index + 1, ...item, eduHistNum: item.eduHistNum }));
+            setEduApply(formattedData.reverse());
+        }
+    }, [rawEduApplyData, eduApplyLoading]);
 
     useEffect(() => {
         if (files.length > 0) {
@@ -67,76 +82,67 @@ function EduApplyList(props) {
                 }
                 return item;
             });
-            setEduApply(updatedEduApply);
-        }
-    }, [files]);
 
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const pageFromUrl = parseInt(params.get('page'), 10);
+            const hasChanged = !eduApply.every((item, index) => JSON.stringify(item) === JSON.stringify(updatedEduApply[index]));
 
-        if (!isNaN(pageFromUrl)) {
-            setActivePage(pageFromUrl);
+            if (hasChanged) {
+                setEduApply(updatedEduApply);
+            }
         }
-    }, [location.search]);
+    }, [files, eduApply]);
+
 
     const handleTitleClick = (eduNum) => {
         navigate(`/edu/detail/${eduNum}`);
     }
 
-    const handleStatusChange = (rowId, newStatus) => {
+    const handleStatusChange = (eduHistNum, newStatus) => {
         const requestOptions = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: newStatus })
         };
 
-        fetch(SERVER_URL + 'eduHist/' + (rowId + 1), requestOptions)
+        fetch(SERVER_URL + 'eduHist/' + eduHistNum, requestOptions)
             .then(response => {
                 if (response.ok) {
                     const updatedRows = eduApply.map(row =>
-                        row.id === rowId ? { ...row, status: newStatus } : row
+                        row.eduHistNum === eduHistNum ? { ...row, status: newStatus } : row
                     );
                     setEduApply(updatedRows);
+                    alert('승인 상태를 변경 했습니다!');
                 } else {
-                    throw new Error('Network response was not ok');
+                    throw new Error();
                 }
             })
             .catch(error => {
                 console.error("Error updating status:", error);
+                alert('승인 상태 변경 중 문제가 발생했습니다.');
             });
     }
 
-    const handleDelete = (rowId) => {
-        fetch(SERVER_URL + 'eduHist/' + (rowId + 1), {
+    const handleDelete = (eduHistNum) => {
+        const isConfirmed = window.confirm("정말 취소 하시겠습니까?");
+        if (!isConfirmed) return;
+
+        fetch(SERVER_URL + 'eduHist/' + eduHistNum, {
             method: 'DELETE'
         })
             .then(response => {
                 if (response.ok) {
-                    const updatedRows = eduApply.filter(row => row.id !== rowId);
+                    const updatedRows = eduApply.filter(row => row.eduHistNum !== eduHistNum);
                     setEduApply(updatedRows);
+                    alert('성공적으로 취소 했습니다!');
                 } else {
-                    throw new Error('Network response was not ok');
+                    throw new Error();
                 }
             })
             .catch(error => {
                 console.error("Error deleting eduHist:", error);
+                alert('취소 중 문제가 발생했습니다.');
             });
     }
 
-    const handleSearch = () => {
-        const apiUrl = `${SERVER_URL}eduHist/search/${searchTerm.value}/${searchTerm.term}/${memId}`;
-
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const formattedData = data.map((item, index) => ({ id: index + 1, ...item }));
-                setEduApply(formattedData);
-            })
-            .catch(error => console.error("Error fetching search results:", error));
-    };
 
     const handlePageChange = (event, newPage) => {
         navigate(`${location.pathname}?page=${newPage}`);
@@ -152,92 +158,14 @@ function EduApplyList(props) {
         }
     };
 
-    const getCurrentPageData = () => {
+    const currentPageData = useMemo(() => {
         const startIndex = (activePage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         return eduApply.slice(startIndex, endIndex);
-    }
-
-    const baseSearchOptions = [
-        { value: 'eduName', label: '프로그램명' },
-        { value: 'status', label: '승인 상태' }
-    ];
-
-    const adminSearchOption = { value: 'memId', label: '신청자' };
-
-    const searchOptions = isAdmin ? [...baseSearchOptions, adminSearchOption] : baseSearchOptions;
-
-    const renderStatusCell = (params) => {
-        const currentDate = new Date();
-        const recuStdt = new Date(params.row.edu?.recuStdt);
-        const recuEddt = new Date(params.row.edu?.recuEddt);
-        const eduStdt = new Date(params.row.edu?.eduStdt);
-        const eduEddt = new Date(params.row.edu?.eduEddt);
-        const recuPerson = params.row.edu?.recuPerson;
-        const capacity = params.row.edu?.capacity;
-
-        let eduStatusText;
-        let eduStatusClass = "eduStatusCell";
-
-        if (currentDate < recuStdt) {
-            eduStatusText = '접수 대기';
-            eduStatusClass += ' WAITING';
-        } else if (currentDate >= recuStdt && currentDate <= recuEddt) {
-            if (recuPerson >= capacity) {
-                eduStatusText = '접수 마감';
-                eduStatusClass += ' REGISTRATION_CLOSED';
-            } else {
-                eduStatusText = '접수 중';
-                eduStatusClass += ' REGISTRATION_OPEN';
-            }
-        } else if (currentDate >= eduStdt && currentDate <= eduEddt) {
-            eduStatusText = '교육 중';
-            eduStatusClass += ' PROCESSING';
-        } else if (currentDate > recuEddt && currentDate < eduEddt) {
-            eduStatusText = '교육 대기';
-            eduStatusClass += ' WAITING';
-        } else if (currentDate >= eduEddt) {
-            eduStatusText = '교육 종료';
-            eduStatusClass += ' ENDED';
-        } else {
-            eduStatusText = '기타 상태';
-        }
-
-        return (
-            <div className={eduStatusClass}>
-                {eduStatusText}
-            </div>
-        );
-    };
-
-    const renderApprovalStatusCell = (params) => {
-        const statusText = {
-            WAIT: '미승인',
-            APPROVE: '승인',
-            COMPLETE: '완료'
-        }[params.value] || params.value;
-
-        return (
-            isAdmin ? (
-                <select
-                    value={params.value}
-                    onChange={(e) => handleStatusChange(params.row.id, e.target.value)}
-                    className={`approvalStatus ${params.value}`}
-                >
-                    <option value="WAIT">미승인</option>
-                    <option value="APPROVE">승인</option>
-                    <option value="COMPLETE">완료</option>
-                </select>
-            ) : (
-                <div className={`approvalStatus ${params.value}`}>
-                    {statusText}
-                </div>
-            )
-        );
-    };
+    }, [eduApply, activePage, itemsPerPage]);
 
     const columns = [
-        { field: 'id', headerName: '번호', width: 40 },
+        { field: 'eduHistNum', headerName: '번호', width: 40 },
         {
             field: 'type',
             headerName: '구분',
@@ -279,10 +207,7 @@ function EduApplyList(props) {
             field: 'applyDate',
             headerName: '신청 일시',
             width: 120,
-            valueGetter: (params) => {
-                const date = new Date(params.row.applyDate);
-                return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-            }
+            valueGetter: getApplyDate
         },
         {
             field: 'applyDoc',
@@ -309,7 +234,7 @@ function EduApplyList(props) {
             field: 'status',
             headerName: '승인 상태',
             width: 100,
-            renderCell: renderApprovalStatusCell,
+            renderCell: (params) => renderApprovalStatusCell(params, isAdmin, handleStatusChange),
         },
         {
             field: 'printCertificate',
@@ -326,12 +251,17 @@ function EduApplyList(props) {
             headerName: '취소',
             width: 40,
             renderCell: (params) => (
-                <button onClick={() => handleDelete(params.row.id)}>
+                <button onClick={() => handleDelete(params.row.eduHistNum)}>
                     취소
                 </button>
             ),
         }
     ];
+
+    function getApplyDate(params) {
+        const date = new Date(params.row.applyDate);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+    }
 
     return (
         <Wrapper style={{ textAlign: 'center' }}>
@@ -340,17 +270,23 @@ function EduApplyList(props) {
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
                     onSearch={handleSearch}
-                    searchOptions={searchOptions}
+                    searchOptions={SEARCH_OPTIONS}
                     totalCount={eduApply.length}
                     currentPage={activePage}
                     totalPages={Math.ceil(eduApply.length / itemsPerPage)}
                 />
-                <StyledDataGrid
-                    columns={columns}
-                    rows={getCurrentPageData()}
-                    pageSize={5}
-                    hideFooter={true}
-                />
+
+                {eduApplyLoading ? (
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>로딩중...</div>
+                ) : (
+                    <StyledDataGrid
+                        columns={columns}
+                        rows={currentPageData}
+                        pageSize={5}
+                        hideFooter={true}
+                    />
+                )}
+
                 <div className="paginationContainer" style={{ marginTop: '10px' }}>
                     <Pagination
                         count={Math.ceil(eduApply.length / itemsPerPage)}
@@ -370,23 +306,23 @@ function EduApplyList(props) {
     );
 }
 
-
 const StyledScrollHideDiv = styled.div`
-    max-height: 50px;
-    overflow-y: auto;
-    width: 100%;
-    scrollbar-width: none; // Firefox
-    -ms-overflow-style: none;  // IE and Edge
+  max-height: 50px;
+  overflow-y: auto;
+  width: 100%;
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none;  // IE and Edge
 
-    &::-webkit-scrollbar {
-        display: none; // Chrome, Safari, and Opera
-    }
+  &::-webkit-scrollbar {
+    display: none; // Chrome, Safari, and Opera
+  }
 `;
 
 const Wrapper = styled.div`
   width: fit-content;
   margin: 0 auto; // 중앙 정렬을 위한 스타일
 `;
+
 const StyledDataGrid = styled(DataGrid)`
 
   width: 100%;
@@ -462,35 +398,6 @@ const StyledDataGrid = styled(DataGrid)`
     text-overflow: ellipsis; // 넘치는 내용을 '...'로 표시
     max-width: 280px; // 셀의 최대 너비. 필요에 따라 조절하세요.
   }
-
-  & .eduStatusCell {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px 8px;
-    border-radius: 3px;
-
-    &.WAITING {
-      background-color: #a38ced;
-      color: white; // 글자 색상 추가
-    }
-
-    &.PROCESSING {
-      background-color: #53468b;
-      color: white; // 글자 색상 추가
-    }
-
-    &.REGISTRATION_CLOSED {
-      background-color: gray;
-      color: white; // 글자 색상 추가
-    }
-
-    &.REGISTRATION_OPEN {
-      background-color: #5ae507;
-      color: white; // 글자 색상 추가
-    }
-  }
-
 `;
 
 export default EduApplyList;

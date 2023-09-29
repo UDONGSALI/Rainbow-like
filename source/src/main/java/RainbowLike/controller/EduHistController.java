@@ -95,7 +95,7 @@ public class EduHistController {
     }
 
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateEduHistStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
         Optional<EduHist> optionalEduHist = eduHistRepository.findById(id);
 
