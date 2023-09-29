@@ -18,8 +18,28 @@ function EduList() {
     const [searchTerm, setSearchTerm] = useState({ term: '', value: 'eduName' });
     const [filteredEdus, setFilteredEdus] = useState([]);
     const location = useLocation();
-
-
+    const SEARCH_OPTIONS = [
+        { label: "프로그램명", value: "eduName", type: "text" },
+        {
+            label: "구분",
+            value: "type",
+            type: "select",
+            options: [
+                { label: "교육", value: "EDU" },
+                { label: "사업", value: "BUSINESS" }
+            ]
+        },
+        { label: "내용", value: "content", type: "text" },
+        {
+            label: "접수 방법",
+            value: "recuMethod",
+            type: "select",
+            options: [
+                { label: "관리자 승인", value: "ADMIN_APPROVAL" },
+                { label: "선착순 모집", value: "FIRST_COME" }
+            ]
+        }
+    ];
 
     const VALUE_TO_LABEL_MAPPING = {
         "EDU": "교육",
@@ -43,6 +63,14 @@ function EduList() {
         // useSearchParams 대신 useLocation 사용
         const urlSearchParams = new URLSearchParams(location.search);
         const currentActivePage = urlSearchParams.get("page");
+        const currentSearchTermValue = urlSearchParams.get("searchValue");
+        const currentSearchTermTerm = urlSearchParams.get("searchTerm");
+        if (currentSearchTermTerm) {
+            setSearchTerm({
+                value: currentSearchTermValue,
+                term: currentSearchTermTerm
+            });
+        }
         if (currentActivePage) {
             setActivePage(parseInt(currentActivePage));
         }
@@ -56,12 +84,20 @@ function EduList() {
                 const formattedEdus = data._embedded.edus.map((edu) => ({
                     id: edu._links.edu.href,
                     ...edu,
-                }));
-                setEdus(formattedEdus.reverse());  // .reverse()를 사용하여 배열을 역순으로 만듭니다.
+                })).reverse();
+                setEdus(formattedEdus);
 
-                // 여기서 totalCount와 totalPages 상태를 업데이트합니다.
-                setTotalCount(formattedEdus.length);
-                setTotalPages(Math.ceil(formattedEdus.length / itemsCountPerPage));
+                const filtered = formattedEdus.filter(edu => {
+                    const targetValue = edu[searchTerm.value];
+                    if (searchTerm.value === "type" || searchTerm.value === "recuMethod") {
+                        return targetValue?.toLowerCase().includes(searchTerm.term.toLowerCase());
+                    }
+                    return targetValue?.toLowerCase().includes(searchTerm.term.toLowerCase());
+                });
+
+                setFilteredEdus(filtered);
+                setTotalCount(filtered.length);
+                setTotalPages(Math.ceil(filtered.length / itemsCountPerPage));
             })
             .catch((err) => console.error(err));
     };
@@ -69,8 +105,10 @@ function EduList() {
 
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
-        fetchEdus(pageNumber);
-        navigate({ pathname: location.pathname, search: `page=${pageNumber}` });
+        navigate({
+            pathname: location.pathname,
+            search: `page=${pageNumber}&searchValue=${searchTerm.value}&searchTerm=${searchTerm.term}`
+        });
     };
 
     const handleTitleClick = (eduNum) => {
@@ -117,7 +155,6 @@ function EduList() {
         setFilteredEdus(filtered);
         setTotalPages(Math.ceil(filtered.length / itemsCountPerPage));
         setTotalCount(filtered.length);
-        setActivePage(1);
     };
 
     const getColumns = () => {
@@ -253,13 +290,6 @@ function EduList() {
     };
 
     const columns = getColumns();
-
-    const SEARCH_OPTIONS = [
-        { label: "프로그램명", value: "eduName", type: "text" },
-        { label: "구분", value: "type", type: "select" },
-        { label: "내용", value: "content", type: "text" },
-        { label: "접수 방법", value: "recuMethod", type: "select" }
-    ];
 
     return (
         <Wrapper style={{ textAlign: 'center' }}>
