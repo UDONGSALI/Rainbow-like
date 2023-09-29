@@ -12,7 +12,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -130,6 +131,24 @@ public class MemberFormDto {
         memberFormDto.setAddrPost("35235");
 
         return memberFormDto;
+    }static public  List<MemberFormDto> createtestMember() {
+        List<MemberFormDto> memberFormDtoList = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            MemberFormDto memberFormDto = new MemberFormDto();
+            memberFormDto.setMemId("user" + i);
+            memberFormDto.setPwd("12341234");
+            memberFormDto.setName("테스트" + i);
+            memberFormDto.setEmail("test@abc.com" + i);
+            memberFormDto.setType(Type.USER);
+            memberFormDto.setGender(Gender.FEMALE);
+            memberFormDto.setTel("0101234567" + i);
+            memberFormDto.setBir(LocalDate.of(2000, 10, 10));
+            memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
+            memberFormDto.setAddrDtl("양호빌딩 6층");
+            memberFormDto.setAddrPost("35235");
+            memberFormDtoList.add(memberFormDto);
+        }
+        return memberFormDtoList;
     }
 
 

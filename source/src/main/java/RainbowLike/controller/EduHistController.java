@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +46,7 @@ public class EduHistController {
     }
 
     @GetMapping("/search/{option}/{value}/{memId}")
-    private Iterable<EduHist> searchEduHist(@PathVariable String option, @PathVariable String value, @PathVariable String memId) {
+    public Iterable<EduHist> searchEduHist(@PathVariable String option, @PathVariable String value, @PathVariable String memId) {
         Iterable<EduHist> result;
         switch (option) {
             case "eduName":
@@ -97,7 +96,7 @@ public class EduHistController {
 
 
     @PutMapping("/{id}")
-    private ResponseEntity<?> updateEduHistStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    public ResponseEntity<?> updateEduHistStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
         Optional<EduHist> optionalEduHist = eduHistRepository.findById(id);
 
         if (optionalEduHist.isPresent()) {
@@ -118,7 +117,7 @@ public class EduHistController {
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<?> deleteEduHist(@PathVariable Long id) {
+    public ResponseEntity<?> deleteEduHist(@PathVariable Long id) {
         if (eduHistRepository.existsById(id)) {
             eduHistRepository.deleteById(id);
             return ResponseEntity.ok().build();

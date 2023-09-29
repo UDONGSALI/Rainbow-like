@@ -51,10 +51,6 @@ public class FileController {
     private Iterable<File> getFilesByPostNum(@PathVariable Long postNum) {
        return fileRepository.findByPost(postRepository.findByPostNum(postNum));
     }
-    @GetMapping("/post")
-    private Iterable<File> getFindByPostIsNotNull(){
-        return fileRepository.findByPostIsNotNull();
-    }
 
     @GetMapping("/table/{name}")
     private Iterable<File> getFindByTableName(@PathVariable String name){

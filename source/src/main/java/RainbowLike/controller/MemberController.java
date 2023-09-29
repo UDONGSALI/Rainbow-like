@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -90,8 +91,8 @@ public class MemberController {
         boolean check1 = memberService.checkIdDuplicate("admin");
         if (check1) // 이미 admin 계정이 있는 경우 관리자계정 생성하지않음
             return;
-        MemberFormDto memberFormDto = MemberFormDto.createAdmin();
-        Member member = Member.createMember(memberFormDto, passwordEncoder);
+        MemberFormDto memberFormDto1 = MemberFormDto.createAdmin();
+        Member member = Member.createMember(memberFormDto1, passwordEncoder);
         memberService.saveMember(member);
 
         // 유저
@@ -117,6 +118,14 @@ public class MemberController {
         MemberFormDto memberFormDto4 = MemberFormDto.createCounselor();
         member = Member.createMember(memberFormDto4, passwordEncoder);
         memberService.saveMember(member);
+
+        // 테스트 더미
+        List<MemberFormDto> memberFormDtoList = MemberFormDto.createtestMember();
+        System.out.println("멤버 더미 확인");
+        for (MemberFormDto memberFormDto: memberFormDtoList) {
+            member = Member.createMember(memberFormDto, passwordEncoder);
+            memberService.saveMember(member);
+        }
     }
 
 
