@@ -9,18 +9,7 @@ function SjNewsPage() {
     const { boardNum } = useParams();
     const [posts, setPosts] = useState([]); // 게시글 목록을 저장할 상태
 
-    let pageTitle;
-    switch (boardNum) {
-        case '3':
-            pageTitle = '세종시 기관 및 단체 소식';
-            break;
-        case '4':
-            pageTitle = '여플소식';
-            break;
-        case '5':
-            pageTitle = '뉴스레터';
-            break;
-    }
+    let pageTitle ='세종시 기관 및 단체 소식';
 
     return (
         <div>

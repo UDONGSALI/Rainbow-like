@@ -67,8 +67,13 @@ function PostNoticeList(props) {
 
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
-        navigate(`/post/detail/${rowId}`);
+        const boardNumber = params.row.board.boardNum;
+
+        navigate(`/post/detail/${boardNum}/${rowId}`, {
+            state: { boardNum: boardNumber }
+        });
     };
+
     const columns = [
         {
             field: 'postNum',

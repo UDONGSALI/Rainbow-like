@@ -6,20 +6,12 @@ import styles from '../../../css/pages/Labor/LaborListPage.module.css';
 import '../../../css/font.css';
 import {useParams} from "react-router-dom";
 
-;
+
 function LaborListPage() {
     const { boardNum } = useParams();
     const  memNum = sessionStorage.getItem("memNum")
 
-    let pageTitle;
-    switch (boardNum) {
-        case '7':
-            pageTitle = '노무상담게시판';
-            break;
-        case '8':
-            pageTitle = '온라인상담';
-            break;
-    }
+    let pageTitle = '노무상담게시판';
 
     return (
         <div>

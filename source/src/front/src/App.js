@@ -116,15 +116,14 @@ function App() {
                 <Route path="/ftc/new" element={memId? <FTCFormPage/> : <loginPage />}/>
                 <Route path="/ftc/:id" element={<FTCDtlPage />} />
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
+                <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/ftm" element={isAdmin? <FTMListPage/> : null}/>
                 <Route path="/ftmpop/:ftcNum" element={isAdmin? <MatchingPopup /> : null}/>
-                <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
                 <Route path="/mypage/active" element={<MyActivePage/>}/>
             </Routes>
-            <Footer/>
         </div>
     )
 }
