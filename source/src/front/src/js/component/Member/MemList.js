@@ -4,6 +4,7 @@ import {DataGrid} from '@mui/x-data-grid';
 import MemberEditor from "./MemberEditor";
 import styled from '@emotion/styled';
 import Pagination from "@mui/material/Pagination";
+import SearchComponent from "../Common/SearchComponent";
 
 
 function MemList() {
@@ -14,7 +15,23 @@ function MemList() {
     const [selectedMember, setSelectedMember] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
+    const [pageInfo, setPageInfo] = useState(null);
+    const [searchTerm, setSearchTerm] = useState({
+        value: '',  // 검색 옵션
+        term: ''   // 검색어
+    });
+    const SEARCH_OPTIONS = [
+        { value: 'memId', label: '아이디', type: 'text' },
+        { value: 'type', label: '유형', type: 'select', options: ['ADMIN', 'USER', 'LABOR', 'COUNSELOR'] },
+        { value: 'name', label: '이름', type: 'text' },
+        { value: 'addr', label: '주소', type: 'text' },
+        { value: 'gender', label: '성별', type: 'select', options: ['FEMALE', 'MALE'] },
+    ];
 
+    const handleSearch = () => {
+        // 현재 페이지를 1로 리셋하고 검색 진행
+        setCurrentPage(1);
+    };
 
     const membersWithFiles = members.map((member) => {
 
@@ -29,19 +46,18 @@ function MemList() {
         };
     });
 
-    console.log(members)
-    console.log(membersWithFiles);
-
-    const displayedMembers = membersWithFiles.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
-
     // 컴포넌트가 마운트될 때 멤버 목록을 불러오는 효과를 정의합니다.
     useEffect(() => {
-        fetch(SERVER_URL + 'api/members')
+        const url = `${SERVER_URL}api/members?page=${currentPage-1}&size=${itemsPerPage}&${searchTerm.value}=${searchTerm.term}`;
+        fetch(url)
             .then((res) => res.json())
-            .then((data) => setMembers(data._embedded.members))
+            .then((data) => {
+                setMembers(data._embedded.members);
+                setPageInfo(data.page);
+            })
             .catch((err) => console.error(err));
-    }, []);
+    }, [currentPage, searchTerm]);
+
 
     // 컴포넌트가 마운트될 때 파일 목록을 불러오는 효과를 정의합니다.
     useEffect(() => {
@@ -73,13 +89,48 @@ function MemList() {
             field: 'type',
             headerName: '유형',
             width: 80,
-            renderCell: (row) => (
-                <div>
-                    {row.value === 'ADMIN' ? '관리자' :
-                        row.value === 'USER' ? '일반 회원' :
-                            row.value === 'LABOR' ? '노무사' :
-                                row.value === 'COUNSELOR' ? '상담사' : ''}
-                </div>
+            renderCell: (params) => (
+                <select
+                    value={params.value}
+                    onChange={(e) => {
+                        const newValue = e.target.value;
+
+                        fetch(`${SERVER_URL}api/members/${params.id.split('/').pop()}`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                type: newValue,
+                            }),
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                console.log('Update successful:', data);
+
+                                // members 상태를 업데이트하여 화면 갱신
+                                setMembers((prevMembers) => {
+                                    return prevMembers.map((member) => {
+                                        if (member._links.self.href === params.row._links.self.href) {
+                                            return {
+                                                ...member,
+                                                type: newValue
+                                            };
+                                        }
+                                        return member;
+                                    });
+                                });
+                            })
+                            .catch((error) => {
+                                console.error('Error updating type:', error);
+                            });
+                    }}
+                >
+                    <option value="ADMIN">관리자</option>
+                    <option value="USER">일반 회원</option>
+                    <option value="LABOR">노무사</option>
+                    <option value="COUNSELOR">상담사</option>
+                </select>
             ),
         },
         {field: 'name', headerName: '이름', width: 100},
@@ -121,8 +172,9 @@ function MemList() {
             width: 150,
             renderCell: (row) => (
                 <StyledScrollHideDiv>
-                    {row.value && row.value.map((file) => (
-                        <div>
+                    {row.value && row.value.map((file, index) => (
+                        // key prop 추가
+                        <div key={index}>
                             <p><a href={file.fileUri}>{file.fileOriName}</a></p>
                         </div>
                     ))}
@@ -168,16 +220,25 @@ function MemList() {
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
+            <SearchComponent
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                totalCount={pageInfo ? pageInfo.totalElements : 0}
+                currentPage={currentPage}
+                totalPages={pageInfo ? pageInfo.totalPages : 1}
+                onSearch={handleSearch}
+                searchOptions={SEARCH_OPTIONS}
+            />
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
                 <StyledDataGrid
                     columns={columns}
-                    rows={displayedMembers}  // 현재 페이지에 맞는 데이터만 사용
+                    rows={membersWithFiles}  // 현재 페이지에 맞는 데이터만 사용
                     getRowId={(row) => row._links.self.href}
                     hideFooter={true}
                 />
                 <div className="paginationContainer" style={{marginTop: '10px'}}>
                     <Pagination
-                        count={Math.ceil(membersWithFiles.length / itemsPerPage)}
+                        count={pageInfo ? pageInfo.totalPages : 1}
                         page={currentPage}
                         onChange={handlePageChange}
                         color="primary"
