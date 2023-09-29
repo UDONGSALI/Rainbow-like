@@ -27,7 +27,10 @@ function MatchingPopup() {
     };
 
     const onMatchingClick = () => {
-        console.log(post);
+        if (Object.keys(checkedRows).length === 0) {
+            alert('선택된 항목이 없습니다.');
+            return;
+        }
 
         // 모든 비동기 작업을 저장할 배열
         const matchPromises = [];
@@ -43,6 +46,7 @@ function MatchingPopup() {
         Promise.all(matchPromises)
             .then(() => {
                 upDateFtmYN();
+                ftmSms();
                 alert('매칭을 완료했습니다.');
                 onClosePopup();
             })
@@ -65,6 +69,7 @@ function MatchingPopup() {
             },
             body: JSON.stringify(postData),
         })
+
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -88,6 +93,22 @@ function MatchingPopup() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(postData),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            });
+    }
+
+    const ftmSms = () =>{
+        return fetch(SERVER_URL + "sms/ftmsms/" + ftcNum, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(),
         })
             .then((response) => {
                 if (!response.ok) {

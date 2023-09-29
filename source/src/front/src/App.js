@@ -37,13 +37,12 @@ import ClubEditorPage from "./js/pages/Club/ClubEditorPage";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 import LaborListPage from "./js/pages/Post/LaborListPage";
 import Footer from "./js/layout/Footer/footer";
+import MyActivePage from "./js/pages/My/MyActivePage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
     const memId = sessionStorage.getItem("memId");
     const memNum = sessionStorage.getItem("memNum");
-    console.log(memNum+ "멤넘")
-    console.log(memId+ "멤넘")
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -96,33 +95,34 @@ function App() {
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/edu/applyck" element={<EduApplyCheckPage memId={memId}/>}/>
                 <Route path="/edu/apply/:eduNum" element={memId? <EduApplyPage/>: <LoginPage />}/>
-                <Route path="/edu/applyck" element={memId? <EduApplyCheckPage memId={memId}/>:<LoginPage />}/>
+                <Route path="/edu/applylist" element={memId? <EduApplyCheckPage memId={memId}/>:<LoginPage />}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
-                <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
-                <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
+                <Route path="/rent/status" element={<RentStatusPage/>}/>
+                <Route path="/rent/application/:spaceNum" element={<RentApplicationPage/>}/>
                 <Route path="/posts" element={<PostList/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/clubs" element={<ClubPage/>}/>
-                <Route path="/clubs/new" element={<ClubFormPage/>}/>
+                <Route path="/clubs/new" element={memId? <ClubFormPage/>: <LoginPage />}/>
                 <Route path="/clubs/:id" element={<ClubDtlPage/>}/>
                 <Route path="/clubs/edit/:id" element={<ClubEditorPage/>}/>
-                <Route path="/ftmain" element={<FTMainPage/>}/>
-                <Route path="/ftw" element={<FTWListPage/>}/>
-                <Route path="/ftw/new" element={<FTWFormPage/>}/>
-                <Route path="/ftw/:id" element={<FTWDtlPage/>}/>
+                <Route path="/ftmain" element={<FTMainPage />} />
+                <Route path="/ftw" element={isAdmin? <FTWListPage /> : null} />
+                <Route path="/ftw/new" element={memId? <FTWFormPage /> : <loginPage />} />
+                <Route path="/ftw/:id" element={<FTWDtlPage />} />
                 <Route path="/ftw/edit/:id" element={<FTWEditPage/>}/>
-                <Route path="/ftc" element={<FTCListPage/>}/>
-                <Route path="/ftc/new" element={<FTCFormPage/>}/>
-                <Route path="/ftc/:id" element={<FTCDtlPage/>}/>
+                <Route path="/ftc" element={isAdmin?<FTCListPage/> : null}/>
+                <Route path="/ftc/new" element={memId? <FTCFormPage/> : <loginPage />}/>
+                <Route path="/ftc/:id" element={<FTCDtlPage />} />
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
-                <Route path="/ftm" element={<FTMListPage/>}/>
-                <Route path="/ftmpop/:speField/:ftcNum" element={<MatchingPopup/>}/>
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
+                <Route path="/ftm" element={isAdmin? <FTMListPage/> : null}/>
+                <Route path="/ftmpop/:ftcNum" element={isAdmin? <MatchingPopup /> : null}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
+                <Route path="/mypage/active" element={<MyActivePage/>}/>
             </Routes>
         </div>
     )
