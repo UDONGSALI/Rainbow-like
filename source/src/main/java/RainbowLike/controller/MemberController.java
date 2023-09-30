@@ -1,7 +1,12 @@
 package RainbowLike.controller;
 
 
+import RainbowLike.constant.EduType;
+import RainbowLike.constant.Gender;
+import RainbowLike.constant.RecuMethod;
+import RainbowLike.constant.Type;
 import RainbowLike.dto.MemberFormDto;
+import RainbowLike.entity.Edu;
 import RainbowLike.entity.Member;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.MemberService;
@@ -11,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,6 +50,33 @@ public class MemberController {
     @GetMapping("/tel-id/{id}")
     private String getTelByMemId(@PathVariable String id) {
         return memberRepository.findByMemId(id).getTel();
+    }
+
+    @GetMapping("/search/{option}/{value}")
+    public Iterable<Member> searchMember(@PathVariable String option, @PathVariable String value) {
+        Iterable<Member> result;
+        switch (option) {
+            case "memId":
+                result = memberRepository.findByMemIdContaining(value);
+                break;
+            case "type":
+                Type type = Type.valueOf(value);
+                result = memberRepository.findByType(type);
+                break;
+            case "name":
+                result = memberRepository.findByNameContaining(value);
+                break;
+            case "addr":
+                result = memberRepository.findByAddrContaining(value);
+                break;
+            case "gender":
+                Gender gender = Gender.valueOf(value);
+                result = memberRepository.findByGender(gender);
+                break;
+            default:
+                result = new ArrayList<>();
+        }
+        return result;
     }
 
     @GetMapping("/check/{type}/{value}")
