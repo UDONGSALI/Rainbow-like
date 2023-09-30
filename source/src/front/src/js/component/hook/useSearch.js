@@ -1,24 +1,24 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";  // <-- 추가
-import { SERVER_URL } from "../Common/constants";
-
-function useSearch(memId, setEduApply) {
-    const [searchTerm, setSearchTerm] = useState({ term: '', value: 'eduName' });
-
-    const navigate = useNavigate();  // <-- 추가
-    const location = useLocation();  // <-- 추가
+import { useNavigate, useLocation } from "react-router-dom";
+function useSearch(apiBaseUrl, setData, initialValue = { term: '', value: 'eduName' }, memId = null, resetPageOnSearch = true) {
+    const [searchTerm, setSearchTerm] = useState(initialValue);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleSearch = () => {
-        const apiUrl = `${SERVER_URL}eduHist/search/${searchTerm.value}/${searchTerm.term}/${memId}`;
+        const apiUrl = memId
+            ? `${apiBaseUrl}/search/${searchTerm.value}/${searchTerm.term}/${memId}`
+            : `${apiBaseUrl}/search/${searchTerm.value}/${searchTerm.term}`;
 
         return fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 const formattedData = data.map((item, index) => ({ id: index + 1, ...item }));
-                setEduApply(formattedData);
+                setData(formattedData.reverse());
 
-                // 여기에 추가
-                navigate(`${location.pathname}?page=1`);
+                if (resetPageOnSearch) {
+                    navigate(`${location.pathname}?page=1`);
+                }
 
                 return formattedData;
             })

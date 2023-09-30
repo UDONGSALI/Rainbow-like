@@ -1,5 +1,8 @@
 package RainbowLike.repository;
 
+import RainbowLike.constant.EduType;
+import RainbowLike.constant.RecuMethod;
+import RainbowLike.constant.Type;
 import RainbowLike.entity.Edu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,6 +17,8 @@ public interface EduRepository extends JpaRepository<Edu, Long> {
     List<Edu> findByEduNameContaining(String eduName);
 
     List<Edu> findByContentContaining(String content);
+    List<Edu> findByType(EduType type);
+    List<Edu> findByRecuMethod(RecuMethod recuMethod);
 
     Edu findTopByOrderByEduNumDesc();
 

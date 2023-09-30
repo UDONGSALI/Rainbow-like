@@ -1,7 +1,11 @@
 package RainbowLike.controller;
 
+import RainbowLike.constant.EduType;
+import RainbowLike.constant.RecuMethod;
+import RainbowLike.constant.Status;
 import RainbowLike.dto.EduDto;
 import RainbowLike.entity.Edu;
+import RainbowLike.entity.EduHist;
 import RainbowLike.repository.EduRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -12,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,6 +41,30 @@ public class EduController {
             // 타입이 잘못 지정되거나 지원하지 않는 경우 오류 메시지 반환
             throw new IllegalArgumentException("Unsupported search type: " + type);
         }
+    }
+
+    @GetMapping("/search/{option}/{value}")
+    public Iterable<Edu> searchEduHist(@PathVariable String option, @PathVariable String value) {
+        Iterable<Edu> result;
+        switch (option) {
+            case "eduName":
+                result = eduRepository.findByEduNameContaining(value);
+                break;
+            case "content":
+                result = eduRepository.findByContentContaining(value);
+                break;
+            case "type":
+                EduType type = EduType.valueOf(value);
+                result = eduRepository.findByType(type);
+                break;
+            case "recuMethod":
+                RecuMethod recuMethod = RecuMethod.valueOf(value);
+                result = eduRepository.findByRecuMethod(recuMethod);
+                break;
+            default:
+                result = new ArrayList<>();
+        }
+        return result;
     }
     @PostMapping
     private ResponseEntity<Edu> saveEdu(@RequestBody Edu edu) {

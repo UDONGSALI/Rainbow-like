@@ -1,90 +1,147 @@
-import React, {useEffect, useState} from 'react';
-import {SERVER_URL} from '../Common/constants';
-import {DataGrid} from '@mui/x-data-grid';
-import MemberEditor from "./MemberEditor";
+// 1. React 관련
+import React, { useEffect, useState } from 'react';
+// 2. 외부 라이브러리 관련
+import { DataGrid } from '@mui/x-data-grid';
 import styled from '@emotion/styled';
 import Pagination from "@mui/material/Pagination";
+// 3. 프로젝트 내 공통 모듈 관련
+import { SERVER_URL } from '../Common/constants';
+import { useLocation, useNavigate } from 'react-router-dom';
+// 4. 컴포넌트 관련
+import MemberEditor from "./MemberEditor";
 import SearchComponent from "../Common/SearchComponent";
-
+// 5. 훅 관련
+import useFetch from "../hook/useFetch";
+import usePagination from "../hook/usePagination";
+import useSearch from "../hook/useSearch";
 
 function MemList() {
-    // 멤버 목록과 모달 상태를 관리하는 상태 변수들을 정의합니다.
-    const [members, setMembers] = useState([]);
-    const [files, setFiles] = useState([]);
-    const [openModal, setOpenModal] = useState(false);
-    const [selectedMember, setSelectedMember] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
+    // 1. Router Hooks
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // 2. 상수 및 상태
     const itemsPerPage = 10;
-    const [pageInfo, setPageInfo] = useState(null);
-    const [searchTerm, setSearchTerm] = useState({
-        value: '',  // 검색 옵션
-        term: ''   // 검색어
-    });
     const SEARCH_OPTIONS = [
-        { value: 'memId', label: '아이디', type: 'text' },
-        { value: 'type', label: '유형', type: 'select', options: ['ADMIN', 'USER', 'LABOR', 'COUNSELOR'] },
+        { value: 'memId', label: 'ID', type: 'text' },
+        {
+            value: 'type',
+            label: '유형',
+            type: 'select',
+            options: [
+                { value: 'ADMIN', label: '관리자' },
+                { value: 'USER', label: '일반 회원' },
+                { value: 'LABOR', label: '노무사' },
+                { value: 'COUNSELOR', label: '상담사' }
+            ]
+        },
         { value: 'name', label: '이름', type: 'text' },
         { value: 'addr', label: '주소', type: 'text' },
-        { value: 'gender', label: '성별', type: 'select', options: ['FEMALE', 'MALE'] },
+        {
+            value: 'gender',
+            label: '성별',
+            type: 'select',
+            options: [
+                { value: 'FEMALE', label: '여자' },
+                { value: 'MALE', label: '남자' }
+            ]
+        }
     ];
 
-    const handleSearch = () => {
-        // 현재 페이지를 1로 리셋하고 검색 진행
-        setCurrentPage(1);
+    // 3. 로컬 상태 관리
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedMember, setSelectedMember] = useState(null);
+    const [pageInfo, setPageInfo] = useState(null);
+    const [membersWithFiles, setMembersWithFiles] = useState([]);
+
+    // 4. 커스텀 훅 사용
+    const { activePage, setActivePage } = usePagination(1);
+    const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}members`, setMembersWithFiles);
+    const { data: members, loading: membersLoading } = useFetch(SERVER_URL + 'members', []);
+    const { data: files, loading: filesLoading } = useFetch(SERVER_URL + 'files/table/member', []);
+
+    useEffect(() => {
+        if (files.length > 0) {
+            const fileMap = {};
+            files.forEach(file => {
+                if (!fileMap[file.member.memNum]) {
+                    fileMap[file.member.memNum] = [];
+                }
+                fileMap[file.member.memNum].push(file);
+            });
+
+            const updatedMembers = members.map(item => {
+                const matchingFiles = fileMap[item.memNum];
+                if (matchingFiles && matchingFiles.length) {
+                    return {
+                        ...item,
+                        files: matchingFiles
+                    };
+                }
+                return item;
+            });
+
+            const hasChanged = !members.every((item, index) => JSON.stringify(item) === JSON.stringify(updatedMembers[index]));
+
+            if (hasChanged) {
+                setMembersWithFiles(updatedMembers.reverse());
+            }
+        }
+    }, [files, members]);
+
+    const handleOpenModal = (member) => {
+        setSelectedMember(member);
+        setOpenModal(true);
     };
 
-    const membersWithFiles = members.map((member) => {
+    const handleCloseModal = () => {
+        setSelectedMember(null);
+        setOpenModal(false);
+    };
 
-        // 각 멤버에 대한 파일 정보를 찾는 로직 작성
-        const memberFiles = files.filter((file) => {
-            if (!file.member) return false;
-            return file.member.memNum == member._links.member.href.split('/').pop();
+    const handlePageChange = (event, newPage) => {
+        navigate(`${location.pathname}?page=${newPage}`);
+        setActivePage(newPage);
+    }
+
+    const handleUpdate = (updatedMember) => {
+        setMembersWithFiles((prevMembers) => {
+            return prevMembers.map((member) => {
+                if (member.memNum == updatedMember._links.self.href.split("/").pop()) {
+                    return {
+                        ...member,
+                        ...updatedMember,
+                    };
+                }
+                return member;
+            });
         });
-        return {
-            ...member,
-            memberFiles, // 각 멤버의 파일 정보를 추가합니다.
-        };
-    });
 
-    // 컴포넌트가 마운트될 때 멤버 목록을 불러오는 효과를 정의합니다.
-    useEffect(() => {
-        const url = `${SERVER_URL}api/members?page=${currentPage-1}&size=${itemsPerPage}&${searchTerm.value}=${searchTerm.term}`;
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => {
-                setMembers(data._embedded.members);
-                setPageInfo(data.page);
+    };
+
+    const MemberDelete = (memNum) => {
+        const isConfirmed = window.confirm("정말 삭제 하시겠습니까?");
+        if (!isConfirmed) return;
+
+        fetch(`${SERVER_URL}api/members/${memNum}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    const updatedRows = membersWithFiles.filter(row => row.memNum !== memNum);
+                    setMembersWithFiles(updatedRows);
+                    alert('성공적으로 삭제 했습니다!');
+                } else {
+                    throw new Error();
+                }
             })
-            .catch((err) => console.error(err));
-    }, [currentPage, searchTerm]);
+            .catch(err => console.error(err))
+    }
 
-
-    // 컴포넌트가 마운트될 때 파일 목록을 불러오는 효과를 정의합니다.
-    useEffect(() => {
-        fetch(SERVER_URL + "files/table/member")
-            .then(res => {
-                return res.json();
-            })
-            .then(data => {
-                setFiles(data);
-            })
-            .catch(err => console.error(err));
-    }, []);
-
-    // 데이터 그리드의 컬럼 설정을 정의합니다.
     const columns = [
         {
-            field: '_links.member.href',
+            field: 'memNum',
             headerName: '번호',
-            sortable: false,
-            filterable: false,
-            renderCell: (row) => (
-                <div>{(row.id).split('/').pop()}</div>
-            ),
             width: 40
-
         },
-        {field: 'memId', headerName: '아이디', width: 100},
         {
             field: 'type',
             headerName: '유형',
@@ -94,8 +151,7 @@ function MemList() {
                     value={params.value}
                     onChange={(e) => {
                         const newValue = e.target.value;
-
-                        fetch(`${SERVER_URL}api/members/${params.id.split('/').pop()}`, {
+                        fetch(`${SERVER_URL}api/members/${params.row.memNum}`, {
                             method: 'PATCH',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -107,11 +163,10 @@ function MemList() {
                             .then((response) => response.json())
                             .then((data) => {
                                 console.log('Update successful:', data);
-
                                 // members 상태를 업데이트하여 화면 갱신
-                                setMembers((prevMembers) => {
+                                setMembersWithFiles((prevMembers) => {
                                     return prevMembers.map((member) => {
-                                        if (member._links.self.href === params.row._links.self.href) {
+                                        if (member.memNum === params.row.memNum) {
                                             return {
                                                 ...member,
                                                 type: newValue
@@ -120,6 +175,7 @@ function MemList() {
                                         return member;
                                     });
                                 });
+                                alert("회원 유형을 변경 했습니다!");
                             })
                             .catch((error) => {
                                 console.error('Error updating type:', error);
@@ -133,9 +189,10 @@ function MemList() {
                 </select>
             ),
         },
+        {field: 'memId', headerName: '아이디', width: 100},
         {field: 'name', headerName: '이름', width: 100},
         {field: 'bir', headerName: '생년월일', width: 100},
-        {field: 'tel', headerName: '전화번호', width: 100},
+        {field: 'tel', headerName: '전화번호', width: 120},
         {
             field: 'gender',
             headerName: '성별',
@@ -147,7 +204,7 @@ function MemList() {
         {field: 'email', headerName: '이메일', width: 130},
         {field: 'jdate', headerName: '가입일', width: 100},
         {
-            field: '_links.self.href.detail',
+            field: 'detail',
             headerName: '정보 수정',
             sortable: false,
             filterable: false,
@@ -157,7 +214,7 @@ function MemList() {
             width: 100
         },
         {
-            field: '_links.self.href.delete',
+            field: 'delete',
             headerName: '회원 삭제',
             sortable: false,
             filterable: false,
@@ -170,82 +227,61 @@ function MemList() {
             field: 'memberFiles',
             headerName: '제출 문서',
             width: 150,
-            renderCell: (row) => (
-                <StyledScrollHideDiv>
-                    {row.value && row.value.map((file, index) => (
-                        // key prop 추가
-                        <div key={index}>
-                            <p><a href={file.fileUri}>{file.fileOriName}</a></p>
-                        </div>
-                    ))}
-                </StyledScrollHideDiv>
-            ),
+            renderCell: (row) => {
+                return (
+                    <StyledScrollHideDiv>
+                        {row.row.files && row.row.files.map((file, index) => (
+                            <div key={index}><a href={file.fileUri}>{file.fileOriName}</a></div>
+                        ))}
+                    </StyledScrollHideDiv>
+                );
+            },
         }
     ];
 
-    // 멤버 목록을 다시 불러오는 함수를 정의합니다.
-    const fetchMembers = () => {
-        const token = sessionStorage.getItem('jwt');
-        fetch(SERVER_URL + 'api/members', {
-            headers: {Authorization: token},
-        })
-            .then((response) => response.json())
-            .then((data) => setMembers(data._embedded.members))
-            .catch((err) => console.error(err));
-    };
-
-    // 상세 정보 모달을 열기 위한 함수를 정의합니다.
-    const handleOpenModal = (member) => {
-        setSelectedMember(member);
-        setOpenModal(true);
-    };
-
-    // 상세 정보 모달을 닫기 위한 함수를 정의합니다.
-    const handleCloseModal = () => {
-        setSelectedMember(null);
-        setOpenModal(false);
-    };
-
-    const handlePageChange = (event, value) => {
-        setCurrentPage(value);
-    };
-
-    //멤버를 삭제합니다.
-    const MemberDelete = (url) => {
-        fetch(url, {method: 'DELETE'})
-            .then(response => fetchMembers())
-            .catch(err => console.error(err))
-    }
-
-
     return (
-        <Wrapper style={{textAlign: 'center'}}>
-            <SearchComponent
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                totalCount={pageInfo ? pageInfo.totalElements : 0}
-                currentPage={currentPage}
-                totalPages={pageInfo ? pageInfo.totalPages : 1}
-                onSearch={handleSearch}
-                searchOptions={SEARCH_OPTIONS}
-            />
-            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                <StyledDataGrid
-                    columns={columns}
-                    rows={membersWithFiles}  // 현재 페이지에 맞는 데이터만 사용
-                    getRowId={(row) => row._links.self.href}
-                    hideFooter={true}
+        <Wrapper style={{ textAlign: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <SearchComponent
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    onSearch={handleSearch}
+                    searchOptions={SEARCH_OPTIONS}
+                    totalCount={membersWithFiles.length}
+                    currentPage={activePage}
+                    totalPages={Math.ceil(membersWithFiles.length / itemsPerPage)}
                 />
-                <div className="paginationContainer" style={{marginTop: '10px'}}>
-                    <Pagination
-                        count={pageInfo ? pageInfo.totalPages : 1}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                        color="primary"
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    {membersLoading ? (
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '200px'
+                        }}>로딩중...</div>
+                    ) : (
+                        <StyledDataGrid
+                            columns={columns}
+                            rows={membersWithFiles.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
+                            getRowId={(row) => row.memNum}
+                            hideFooter={true}
+                        />
+                    )}
+                    <div className="paginationContainer" style={{ marginTop: '10px' }}>
+                        <Pagination
+                            count={Math.ceil(membersWithFiles.length / itemsPerPage)}
+                            page={activePage}
+                            onChange={handlePageChange}
+                            color="primary"
+                        />
+                    </div>
+                    <MemberEditor
+                        member={selectedMember}
+                        open={openModal}
+                        onClose={handleCloseModal}
+                        onUpdate={handleUpdate}  // 추가
                     />
                 </div>
-                <MemberEditor member={selectedMember} open={openModal} onClose={handleCloseModal}
-                              onUpdate={fetchMembers}/>
             </div>
         </Wrapper>
     );
@@ -267,6 +303,7 @@ const Wrapper = styled.div`
   width: fit-content;
   margin: 0 auto; // 중앙 정렬을 위한 스타일
 `;
+
 const StyledDataGrid = styled(DataGrid)`
 
   width: 100%;
@@ -299,7 +336,7 @@ const StyledDataGrid = styled(DataGrid)`
     align-items: center;
   }
 
-  & button {
+  button {
     padding: 3px 5px;
     margin: 0 5px;
     border: none;
@@ -313,17 +350,62 @@ const StyledDataGrid = styled(DataGrid)`
       background-color: #2980b9;
     }
   }
-`;
 
-const MemberFileList = styled.div`
-  overflow: auto;
-  max-height: 50px;
-  line-height: 0.5;
-  width: 200px;
-  scrollbar-width: none; // Firefox
+  & .MuiDataGrid-cell[data-field="eduName"] {
+    justify-content: left;
+  }
 
-  &::-webkit-scrollbar {
-    display: none; // Chrome, Safari, and Opera
+  & .typeCell {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+
+    &.BUSINESS {
+      color: #855cdc;
+    }
+
+    &.EDU {
+      color: #1e6bfa;
+    }
+  }
+
+  & .eduNameCell {
+    cursor: pointer;
+    white-space: nowrap; // 내용을 한 줄에 표시
+    overflow: hidden; // 내용이 넘치면 숨김
+    text-overflow: ellipsis; // 넘치는 내용을 '...'로 표시
+    max-width: 280px; // 셀의 최대 너비. 필요에 따라 조절하세요.
+  }
+
+  & .statusCell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border-radius: 3px;
+
+    &.WAITING {
+      background-color: #a38ced;
+      color: white; // 글자 색상 추가
+    }
+
+    &.PROCESSING {
+      background-color: #53468b;
+      color: white; // 글자 색상 추가
+    }
+
+    &.REGISTRATION_CLOSED {
+      background-color: gray;
+      color: white; // 글자 색상 추가
+    }
+
+    &.REGISTRATION_OPEN {
+      background-color: #5ae507;
+      color: white; // 글자 색상 추가
+    }
   }
 `;
 
