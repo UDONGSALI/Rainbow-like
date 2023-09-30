@@ -1,12 +1,12 @@
 // 1. React 관련
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useState} from "react";
 // 2. 외부 라이브러리 관련
-import { DataGrid } from "@mui/x-data-grid";
+import {DataGrid} from "@mui/x-data-grid";
 import styled from '@emotion/styled';
-import Pagination from "@mui/material/Pagination";
+import {Pagination} from "@mui/material";
 // 3. 프로젝트 내 공통 모듈 관련
-import { SERVER_URL } from "../Common/constants";
-import { useNavigate, useLocation } from "react-router-dom";
+import {SERVER_URL} from "../Common/constants";
+import {useLocation, useNavigate} from "react-router-dom";
 // 4. 컴포넌트 관련
 import SearchComponent from "../Common/SearchComponent";
 import Certificate from "./CertificateModal";
@@ -15,7 +15,7 @@ import useSearch from "../hook/useSearch";
 import useFetch from "../hook/useFetch";
 import usePagination from "../hook/usePagination";
 // 6. Helper 함수나 Renderer 관련
-import { renderStatusCell } from "./statusRenderer";
+import {renderStatusCell} from "./statusRenderer";
 import renderApprovalStatusCell from "./renderApprovalStatusCell";
 
 const ADMIN_ROLE = "ADMIN";
@@ -26,38 +26,44 @@ function EduApplyList(props) {
     const navigate = useNavigate();
     const location = useLocation();
 // 2. 사용자 관련
-    const { memId } = props;
+    const {memId} = props;
     const userRole = sessionStorage.getItem("role");
     const isAdmin = userRole === ADMIN_ROLE;
 // 3. 로컬 상태 관리
-    const { activePage, setActivePage } = usePagination(1);
+    const {activePage, setActivePage} = usePagination(1);
     const [isCertificateOpen, setIsCertificateOpen] = useState(false);
-    const [currentCertificateData, setCurrentCertificateData] = useState({ name: "", eduName: "" });
+    const [currentCertificateData, setCurrentCertificateData] = useState({name: "", eduName: ""});
     const [eduApply, setEduApply] = useState([]);
 // 4. 커스텀 훅
-    const { searchTerm, setSearchTerm, handleSearch } = useSearch(memId, setEduApply);
+    const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}eduHist`, setEduApply, undefined, memId);
 // 상수
     const itemsPerPage = 10;
     const SEARCH_OPTIONS = [
-        { value: 'eduName', label: '프로그램명', type: 'text' },
-        { value: 'status', label: '승인 상태', type: 'select', options: [
-                { label: "미승인", value: "WAIT" },
-                { label: "승인", value: "APPROVE" },
-                { label: "완료", value: "COMPLETE" }
-            ]},
+        {value: 'eduName', label: '프로그램명', type: 'text'},
+        {
+            value: 'status', label: '승인 상태', type: 'select', options: [
+                {label: "미승인", value: "WAIT"},
+                {label: "승인", value: "APPROVE"},
+                {label: "완료", value: "COMPLETE"}
+            ]
+        },
     ];
     if (isAdmin) {
-        SEARCH_OPTIONS.push({ value: 'memId', label: '신청자', type: 'text' });
+        SEARCH_OPTIONS.push({value: 'memId', label: '신청자', type: 'text'});
     }
 
     const eduHistUrl = isAdmin ? SERVER_URL + 'eduHist' : SERVER_URL + `eduHist/memid/${memId}`;
-    const { data: rawEduApplyData, loading: eduApplyLoading } = useFetch(eduHistUrl, []);
 
-    const { data: files, loading: filesLoading } = useFetch(SERVER_URL + 'files/table/eduHist', []);
+    const {data: rawEduApplyData, loading: eduApplyLoading} = useFetch(eduHistUrl, []);
+
+    const {data: files, loading: filesLoading} = useFetch(SERVER_URL + 'files/table/eduHist', []);
 
     useEffect(() => {
         if (!eduApplyLoading && rawEduApplyData) {
-            const formattedData = rawEduApplyData.map((item, index) => ({ id: index + 1, ...item, eduHistNum: item.eduHistNum }));
+            const formattedData = rawEduApplyData.map((item, index) => ({
+                id: index + 1, ...item,
+                eduHistNum: item.eduHistNum
+            }));
             setEduApply(formattedData.reverse());
         }
     }, [rawEduApplyData, eduApplyLoading]);
@@ -99,15 +105,15 @@ function EduApplyList(props) {
     const handleStatusChange = (eduHistNum, newStatus) => {
         const requestOptions = {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: newStatus })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({status: newStatus})
         };
 
         fetch(SERVER_URL + 'eduHist/' + eduHistNum, requestOptions)
             .then(response => {
                 if (response.ok) {
                     const updatedRows = eduApply.map(row =>
-                        row.eduHistNum === eduHistNum ? { ...row, status: newStatus } : row
+                        row.eduHistNum === eduHistNum ? {...row, status: newStatus} : row
                     );
                     setEduApply(updatedRows);
                     alert('승인 상태를 변경 했습니다!');
@@ -151,21 +157,15 @@ function EduApplyList(props) {
 
     const handleCertificatePrint = (status, name, eduName) => {
         if (status === 'COMPLETE') {
-            setCurrentCertificateData({ name, eduName });
+            setCurrentCertificateData({name, eduName});
             setIsCertificateOpen(true);
         } else {
             alert('교육 수료 후 출력이 가능합니다!');
         }
     };
 
-    const currentPageData = useMemo(() => {
-        const startIndex = (activePage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        return eduApply.slice(startIndex, endIndex);
-    }, [eduApply, activePage, itemsPerPage]);
-
     const columns = [
-        { field: 'eduHistNum', headerName: '번호', width: 40 },
+        {field: 'eduHistNum', headerName: '번호', width: 40},
         {
             field: 'type',
             headerName: '구분',
@@ -182,7 +182,7 @@ function EduApplyList(props) {
             headerName: '프로그램명',
             width: 230,
             renderCell: (params) => (
-                <div onClick={() => handleTitleClick(params.row.edu.eduNum)} style={{ cursor: 'pointer' }}
+                <div onClick={() => handleTitleClick(params.row.edu.eduNum)} style={{cursor: 'pointer'}}
                      className="eduNameCell">
                     {params.row.edu?.eduName}
                 </div>
@@ -200,9 +200,9 @@ function EduApplyList(props) {
             field: 'eduStatus',
             headerName: '교육 상태',
             width: 100,
-            renderCell: renderStatusCell,
+            renderCell: (params) => renderStatusCell(params.row.edu),
         },
-        { field: 'memId', headerName: '신청자', width: 100, valueGetter: (params) => params.row.member?.memId },
+        {field: 'memId', headerName: '신청자', width: 100, valueGetter: (params) => params.row.member?.memId},
         {
             field: 'applyDate',
             headerName: '신청 일시',
@@ -241,7 +241,8 @@ function EduApplyList(props) {
             headerName: '수료증',
             width: 70,
             renderCell: (params) => (
-                <div onClick={() => handleCertificatePrint(params.row.status, params.row.member?.name, params.row.edu?.eduName)}>
+                <div
+                    onClick={() => handleCertificatePrint(params.row.status, params.row.member?.name, params.row.edu?.eduName)}>
                     🖨️
                 </div>
             ),
@@ -264,8 +265,8 @@ function EduApplyList(props) {
     }
 
     return (
-        <Wrapper style={{ textAlign: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Wrapper style={{textAlign: 'center'}}>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
                 <SearchComponent
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
@@ -275,19 +276,22 @@ function EduApplyList(props) {
                     currentPage={activePage}
                     totalPages={Math.ceil(eduApply.length / itemsPerPage)}
                 />
-
                 {eduApplyLoading ? (
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>로딩중...</div>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '200px'
+                    }}>로딩중...</div>
                 ) : (
                     <StyledDataGrid
                         columns={columns}
-                        rows={currentPageData}
+                        rows={eduApply.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                         pageSize={5}
                         hideFooter={true}
                     />
                 )}
-
-                <div className="paginationContainer" style={{ marginTop: '10px' }}>
+                <div className="paginationContainer" style={{marginTop: '10px'}}>
                     <Pagination
                         count={Math.ceil(eduApply.length / itemsPerPage)}
                         page={activePage}
@@ -311,7 +315,7 @@ const StyledScrollHideDiv = styled.div`
   overflow-y: auto;
   width: 100%;
   scrollbar-width: none; // Firefox
-  -ms-overflow-style: none;  // IE and Edge
+  -ms-overflow-style: none; // IE and Edge
 
   &::-webkit-scrollbar {
     display: none; // Chrome, Safari, and Opera
@@ -397,6 +401,34 @@ const StyledDataGrid = styled(DataGrid)`
     overflow: hidden; // 내용이 넘치면 숨김
     text-overflow: ellipsis; // 넘치는 내용을 '...'로 표시
     max-width: 280px; // 셀의 최대 너비. 필요에 따라 조절하세요.
+  }
+
+  & .statusCell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border-radius: 3px;
+
+    &.WAITING {
+      background-color: #a38ced;
+      color: white; // 글자 색상 추가
+    }
+
+    &.PROCESSING {
+      background-color: #53468b;
+      color: white; // 글자 색상 추가
+    }
+
+    &.REGISTRATION_CLOSED {
+      background-color: gray;
+      color: white; // 글자 색상 추가
+    }
+
+    &.REGISTRATION_OPEN {
+      background-color: #5ae507;
+      color: white; // 글자 색상 추가
+    }
   }
 `;
 

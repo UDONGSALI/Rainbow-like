@@ -1,169 +1,104 @@
-import React, { useEffect, useState } from "react";
-import { SERVER_URL } from '../Common/constants';
-import { DataGrid } from "@mui/x-data-grid";
-import { useNavigate, useSearchParams, useLocation   } from 'react-router-dom';
+// 1. React 관련
+import React, {useEffect, useState} from "react";
+// 2. 외부 라이브러리 관련
+import {DataGrid} from "@mui/x-data-grid";
 import styled from '@emotion/styled';
 import {Pagination} from "@mui/material";
+// 3. 프로젝트 내 공통 모듈 관련
+import {SERVER_URL} from '../Common/constants';
+import {useLocation, useNavigate} from 'react-router-dom';
+// 4. 컴포넌트 관련
 import SearchComponent from "../Common/SearchComponent";
+// 5. 훅 관련
+import useSearch from "../hook/useSearch";
+import usePagination from "../hook/usePagination";
+import useFetch from "../hook/useFetch";
+// 6. Helper 함수나 Renderer 관련
+import {renderStatusCell} from "./statusRenderer";
 
 function EduList() {
-    // 1. 상수 및 useState Hooks
-    const navigate = useNavigate();
+    // 1. 상수 및 상태
+    const itemsPerPage = 10;
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    const itemsCountPerPage = 10;
-    const [edus, setEdus] = useState([]);
-    const [activePage, setActivePage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
-    const [totalCount, setTotalCount] = useState(0);
-    const [searchTerm, setSearchTerm] = useState({ term: '', value: 'eduName' });
-    const [filteredEdus, setFilteredEdus] = useState([]);
-    const location = useLocation();
     const SEARCH_OPTIONS = [
-        { label: "프로그램명", value: "eduName", type: "text" },
+        {label: "프로그램명", value: "eduName", type: "text"},
         {
             label: "구분",
             value: "type",
             type: "select",
             options: [
-                { label: "교육", value: "EDU" },
-                { label: "사업", value: "BUSINESS" }
+                {label: "교육", value: "EDU"},
+                {label: "사업", value: "BUSINESS"}
             ]
         },
-        { label: "내용", value: "content", type: "text" },
+        {label: "내용", value: "content", type: "text"},
         {
             label: "접수 방법",
             value: "recuMethod",
             type: "select",
             options: [
-                { label: "관리자 승인", value: "ADMIN_APPROVAL" },
-                { label: "선착순 모집", value: "FIRST_COME" }
+                {label: "관리자 승인", value: "ADMIN_APPROVAL"},
+                {label: "선착순 모집", value: "FIRST_COME"}
             ]
         }
     ];
 
-    const VALUE_TO_LABEL_MAPPING = {
-        "EDU": "교육",
-        "BUSINESS": "사업",
-        "ADMIN_APPROVAL": "관리자 승인",
-        "FIRST_COME": "선착순 모집"
-    };
+    // 2. Router Hooks
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    // 2. useEffect Hooks
+    // 3. 로컬 상태 관리
+    const [edus, setEdus] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
+    const [totalCount, setTotalCount] = useState(0);
+
+    // 4. 커스텀 훅 사용
+    const {activePage, setActivePage} = usePagination(1);
+    const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}edus`, setEdus);
+    const {data: fetchedEdus, loading} = useFetch(`${SERVER_URL}edus`);
+
     useEffect(() => {
-        if(edus.length) {
-            setFilteredEdus(edus);
+        if (!loading) {
+            setEdus(fetchedEdus.reverse());
+            setTotalPages(Math.ceil(fetchedEdus.length / itemsPerPage));
         }
-    }, [edus]);
+    }, [loading, fetchedEdus]);
 
     useEffect(() => {
-        fetchEdus();
-    }, [activePage]);
-
-    useEffect(() => {
-        // useSearchParams 대신 useLocation 사용
         const urlSearchParams = new URLSearchParams(location.search);
         const currentActivePage = urlSearchParams.get("page");
-        const currentSearchTermValue = urlSearchParams.get("searchValue");
-        const currentSearchTermTerm = urlSearchParams.get("searchTerm");
-        if (currentSearchTermTerm) {
-            setSearchTerm({
-                value: currentSearchTermValue,
-                term: currentSearchTermTerm
-            });
-        }
         if (currentActivePage) {
             setActivePage(parseInt(currentActivePage));
         }
     }, [location.search]);
 
-    // 3. Helper 함수 및 Event Handlers
-    const fetchEdus = () => {
-        fetch(`${SERVER_URL}api/edus?page=0&size=1000000`)
-            .then((res) => res.json())
-            .then((data) => {
-                const formattedEdus = data._embedded.edus.map((edu) => ({
-                    id: edu._links.edu.href,
-                    ...edu,
-                })).reverse();
-                setEdus(formattedEdus);
+    const handlePageChange = (event, newPage) => {
+        navigate(`${location.pathname}?page=${newPage}`);
+        setActivePage(newPage);
+    }
 
-                const filtered = formattedEdus.filter(edu => {
-                    const targetValue = edu[searchTerm.value];
-                    if (searchTerm.value === "type" || searchTerm.value === "recuMethod") {
-                        return targetValue?.toLowerCase().includes(searchTerm.term.toLowerCase());
-                    }
-                    return targetValue?.toLowerCase().includes(searchTerm.term.toLowerCase());
-                });
+    const handleTitleClick = (eduNum) => navigate('/edu/detail/' + eduNum);
+    const handleEdit = (eduNum) => navigate('/admin/edu/edit/' + eduNum);
 
-                setFilteredEdus(filtered);
-                setTotalCount(filtered.length);
-                setTotalPages(Math.ceil(filtered.length / itemsCountPerPage));
-            })
-            .catch((err) => console.error(err));
-    };
-
-
-    const handlePageChange = (pageNumber) => {
-        setActivePage(pageNumber);
-        navigate({
-            pathname: location.pathname,
-            search: `page=${pageNumber}&searchValue=${searchTerm.value}&searchTerm=${searchTerm.term}`
-        });
-    };
-
-    const handleTitleClick = (eduNum) => {
-        navigate('/edu/detail/' + eduNum.split('/').pop());
-    };
-
-    const handleEdit = (eduNum) => {
-        navigate('/admin/edu/edit/' + eduNum.split('/').pop());
-    };
-
-    const EduDelete = (url) => {
-        // 해당 edu의 정보를 먼저 찾습니다.
-        const eduToDelete = edus.find(edu => edu._links.edu.href === url);
-        const eduName = eduToDelete?.eduName || "Unknown Program";
-
-        fetch(url, { method: 'DELETE' })
+    const EduDelete = (eduNum) => {
+        fetch(`${SERVER_URL}api/edus/${eduNum}`, {method: 'DELETE'})
             .then(() => {
-                fetchEdus();
-                // 삭제가 완료된 후에 알림을 표시합니다.
-                alert(`${eduName} 데이터가 삭제 되었습니다.`);
+                const updatedRows = edus.filter(row => row.eduNum !== eduNum);
+                setEdus(updatedRows);
+                alert(`데이터가 삭제 되었습니다.`);
             })
             .catch(err => {
                 console.error(err);
                 alert('삭제 중 오류가 발생했습니다.');
             });
     };
-
-    const paginatedEdus = filteredEdus.slice((activePage - 1) * itemsCountPerPage, activePage * itemsCountPerPage);
-
-    const handleSearch = () => {
-        const filtered = edus.filter(edu => {
-            // 검색 대상 필드 값
-            const targetValue = edu[searchTerm.value];
-
-            // 'type' 또는 'recuMethod'으로 검색하는 경우, 셀렉트로 검색
-            if (searchTerm.value === "type" || searchTerm.value === "recuMethod") {
-                const targetLabel = VALUE_TO_LABEL_MAPPING[targetValue];
-                return targetValue?.toLowerCase().includes(searchTerm.term.toLowerCase());
-            }
-            // 기본적인 텍스트 포함 검색
-            return targetValue?.toLowerCase().includes(searchTerm.term.toLowerCase());
-        });
-
-        setFilteredEdus(filtered);
-        setTotalPages(Math.ceil(filtered.length / itemsCountPerPage));
-        setTotalCount(filtered.length);
-    };
-
     const getColumns = () => {
         const baseColumns = [
             {
-                field: '_links.edu.href',
+                field: 'eduNum',
                 headerName: '번호',
                 renderCell: (row) => (
-                    <div>{row.id.split('/').pop()}</div>
+                    <div>{row.id}</div>
                 ),
                 width: 30
             },
@@ -219,53 +154,14 @@ function EduList() {
                 field: 'status',
                 headerName: '상태',
                 width: 80,
-                renderCell: (params) => {
-                    const currentDate = new Date();
-                    const recuStdt = new Date(params.row.recuStdt);
-                    const recuEddt = new Date(params.row.recuEddt);
-                    const eduStdt = new Date(params.row.eduStdt);
-                    const eduEddt = new Date(params.row.eduEddt);
-                    const recuPerson = params.row.recuPerson;
-                    const capacity = params.row.capacity;
-
-                    let statusText = "기타 상태";
-                    let statusClass = "statusCell";
-
-                    if (currentDate < recuStdt) {
-                        statusText = '접수 대기';
-                        statusClass += ' WAITING';
-                    } else if (currentDate >= recuStdt && currentDate <= recuEddt) {
-                        if (recuPerson >= capacity) {
-                            statusText = '접수 마감';
-                            statusClass += ' REGISTRATION_CLOSED';
-                        } else {
-                            statusText = '접수 중';
-                            statusClass += ' REGISTRATION_OPEN';
-                        }
-                    } else if (currentDate >= eduStdt && currentDate <= eduEddt) {
-                        statusText = params.row.type === 'BUSINESS' ? '사업 중' : '교육 중';
-                        statusClass += ' PROCESSING';
-                    } else if (currentDate > recuEddt && currentDate < eduEddt) {
-                        statusText = params.row.type === 'BUSINESS' ? '사업 대기' : '교육 대기';
-                        statusClass += ' WAITING';
-                    } else if (currentDate >= eduEddt) {
-                        statusText = params.row.type === 'BUSINESS' ? '사업 종료' : '교육 종료';
-                        statusClass += ' ENDED';  // 변경된 부분
-                    }
-
-                    return (
-                        <div className={statusClass}>
-                            {statusText}
-                        </div>
-                    );
-                },
+                renderCell: (params) => renderStatusCell(params.row),
             },
         ];
 
         if (isAdmin) {
             baseColumns.push(
                 {
-                    field: '_links.self.href.delete',
+                    field: 'delete',
                     headerName: '삭제',
                     sortable: false,
                     filterable: false,
@@ -275,7 +171,7 @@ function EduList() {
                     width: 60,
                 },
                 {
-                    field: '_links.self.href.edit',
+                    field: 'edit',
                     headerName: '수정',
                     sortable: false,
                     filterable: false,
@@ -292,31 +188,38 @@ function EduList() {
     const columns = getColumns();
 
     return (
-        <Wrapper style={{ textAlign: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Wrapper style={{textAlign: 'center'}}>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
                 <SearchComponent
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
-                    totalCount={totalCount}
-                    currentPage={activePage}
-                    totalPages={totalPages}
-                    searchOptions={SEARCH_OPTIONS}
                     onSearch={handleSearch}
+                    searchOptions={SEARCH_OPTIONS}
+                    totalCount={edus.length}
+                    currentPage={activePage}
+                    totalPages={Math.ceil(edus.length / itemsPerPage)}
                 />
-                <StyledDataGrid
-                    columns={columns}
-                    rows={paginatedEdus}
-                    hideFooter={true}
-                />
-                <div className="paginationContainer" style={{ marginTop: '10px' }}>
+                {loading ? (
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '200px'
+                    }}>로딩중...</div>
+                ) : (
+                    <StyledDataGrid
+                        columns={columns}
+                        rows={edus.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
+                        getRowId={(row) => row.eduNum}
+                        hideFooter={true}
+                    />
+                )}
+                <div className="paginationContainer" style={{marginTop: '10px'}}>
                     <Pagination
-                        className="pagination"
-                        count={totalPages}
+                        count={Math.ceil(edus.length / itemsPerPage)}
                         page={activePage}
-                        onChange={(event, newPage) => handlePageChange(newPage)}
+                        onChange={handlePageChange}
                         color="primary"
-                        showFirstButton
-                        showLastButton
                     />
                 </div>
             </div>
@@ -324,6 +227,18 @@ function EduList() {
     );
 
 }
+
+const StyledScrollHideDiv = styled.div`
+  max-height: 50px;
+  overflow-y: auto;
+  width: 100%;
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE and Edge
+
+  &::-webkit-scrollbar {
+    display: none; // Chrome, Safari, and Opera
+  }
+`;
 
 const Wrapper = styled.div`
   width: fit-content;
@@ -363,7 +278,18 @@ const StyledDataGrid = styled(DataGrid)`
   }
 
   button {
+    padding: 3px 5px;
+    margin: 0 5px;
     border: none;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #2980b9;
+    }
   }
 
   & .MuiDataGrid-cell[data-field="eduName"] {
