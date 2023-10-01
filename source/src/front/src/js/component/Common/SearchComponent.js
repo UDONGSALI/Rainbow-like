@@ -26,7 +26,9 @@ function SearchComponent({
 
     const handleEnterKey = (event) => {
         if (event.key === 'Enter' || event.type === 'click') {
-            if (searchTerm.term.trim() === '') {
+            if (searchTerm.value === '') {  // 검색 옵션이 '선택'인지 확인
+                alert('검색 옵션을 선택하세요!');
+            } else if (searchTerm.term.trim() === '') {
                 alert('검색어를 입력하세요!');
             } else {
                 onSearch();
@@ -43,6 +45,7 @@ function SearchComponent({
             </div>
             <div className={styles.right}>
                 <select value={searchTerm.value} onChange={handleSearchOptionChange}>
+                    <option value="">{SEARCH_PLACEHOLDER}</option>
                     {searchOptions.map((option, index) => (
                         <option key={index} value={option.value}>
                             {option.label}

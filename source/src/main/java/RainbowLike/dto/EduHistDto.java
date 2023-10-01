@@ -19,7 +19,6 @@ import java.util.ArrayList;
 @Setter
 public class EduHistDto {
 
-
     private Long eduNum;
 
     private Long memNum;
@@ -38,7 +37,7 @@ public class EduHistDto {
 
 
 
-    static public ArrayList<EduHistDto> creatDefaultEduHist(){
+    static public ArrayList<EduHistDto> createDefaultEduHist(){
         ArrayList<EduHistDto> eduHists = new ArrayList<>();
         for (int i = 1; i <= 4; i++) {
             for (int j = 1; j <= 4; j++) {

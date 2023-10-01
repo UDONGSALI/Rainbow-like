@@ -1,4 +1,4 @@
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import './App.css';
 import LoginPage from "./js/pages/Login/LoginPage";
 import React, {useEffect} from "react";
@@ -78,31 +78,34 @@ function App() {
         }
     }
 
+    function RedirectToLogin() {
+        const navigate = useNavigate();
+            navigate('/login');
+    }
+
+
     return (
         <div className="App">
             <NavBar/>
             <Routes>
                 <Route path="/" element={<Main/>}/>
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
-                <Route path="/admin/edu" element={isAdmin ? <EduListPage/> : null}/>
+                <Route path="/admin/edu" element={isAdmin ? <EduListPage type="admin" /> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
-                <Route path="/admin/edu/apply" element={isAdmin ? <EduApplyCheckPage memId={memId}/> : null}/>
+                <Route path="/admin/eduApply" element={isAdmin ? <EduApplyCheckPage memId={memId}  type="admin" /> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
-                <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
-                <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
-                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-                <Route path="/edu/applyck" element={<EduApplyCheckPage memId={memId}/>}/>
-                <Route path="/edu/apply/:eduNum" element={memId? <EduApplyPage/>: <LoginPage />}/>
-                <Route path="/edu/applylist" element={memId? <EduApplyCheckPage memId={memId}/>:<LoginPage />}/>
+                <Route path="/edu/list" element={<EduListPage/>}/>
+                <Route path="/edu/list/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/edu/list/apply/:eduNum" element={memId ? <EduApplyPage/> : <Navigate to="/login" replace />} />
+                <Route path="/edu/applylist" element={memId? <EduApplyCheckPage memId={memId}  />:<Navigate to="/login" replace />}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
                 <Route path="/rent/status" element={<RentStatusPage/>}/>
                 <Route path="/rent/application/:spaceNum" element={<RentApplicationPage/>}/>
                 <Route path="/posts" element={<PostList/>}/>
-                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/clubs" element={<ClubPage/>}/>
                 <Route path="/clubs/new" element={memId? <ClubFormPage/>: <LoginPage />}/>
