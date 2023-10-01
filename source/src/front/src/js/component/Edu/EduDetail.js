@@ -10,7 +10,7 @@ function EduDetail() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(SERVER_URL + `files`)
+        fetch(SERVER_URL + `files/eduNum/${eduNum}`)
             .then((response) => response.json())
             .then((data) => setFiles(data))
             .catch((error) => console.error(error));
@@ -86,7 +86,7 @@ function EduDetail() {
     };
 
     const handleApplyButtonClick = () => {
-        navigate(`/edu/apply/${eduNum}`);
+        navigate(`/edu/list/apply/${eduNum}`);
     };
 
     // Define filteredFiles here

@@ -44,7 +44,7 @@
 .inputGroup input:focus + label,
 .inputGroup input:not(:placeholder-shown) + label {
     transform: translateY(-15px);
-    font-size: 14px;
+    font-size: 12px;
     color: #007bff;
 }
 

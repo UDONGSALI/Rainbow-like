@@ -78,7 +78,7 @@ function EduForm({ eduNum }) {
 
                 if (response.ok) {
                     alert('정보가 수정되었습니다.');
-
+                    navigate(`/edu/list/detail/${eduNum}`);
                     // Step 3: 새 파일들 업로드
                     if (selectedFiles.length > 0) {
                         const formDataWithFiles = new FormData();

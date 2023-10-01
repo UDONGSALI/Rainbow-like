@@ -138,7 +138,7 @@ function EduApply(props) {
                 }
 
                 // 서버에 신청 데이터 전송
-                return fetch(SERVER_URL + 'eduHist/andfile', {
+                return fetch(SERVER_URL + 'eduHist', {
                     method: 'POST',
                     body: formData,
                 });
@@ -151,7 +151,7 @@ function EduApply(props) {
             })
             .then(data => {
                 alert(data);  // 성공 메시지 출력
-                window.location.href = `/edu/detail/${eduNum}`;
+                window.location.href = `/edu/list/detail/${eduNum}`;
             })
             .catch(error => {
                 // 이미 신청했거나, 다른 오류 발생 시 이곳에서 처리
