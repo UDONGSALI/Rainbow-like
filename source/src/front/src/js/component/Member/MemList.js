@@ -228,9 +228,12 @@ function MemList() {
             headerName: '제출 문서',
             width: 150,
             renderCell: (row) => {
+                if (!row.row.files || row.row.files.length === 0) {
+                    return <div>파일 없음</div>;
+                }
                 return (
                     <StyledScrollHideDiv>
-                        {row.row.files && row.row.files.map((file, index) => (
+                        {row.row.files.map((file, index) => (
                             <div key={index}><a href={file.fileUri}>{file.fileOriName}</a></div>
                         ))}
                     </StyledScrollHideDiv>
