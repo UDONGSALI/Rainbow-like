@@ -52,7 +52,7 @@ function EduApplyList(props) {
         SEARCH_OPTIONS.push({value: 'memId', label: '신청자', type: 'text'});
     }
 
-    const eduHistUrl = isAdmin ? SERVER_URL + 'eduHist' : SERVER_URL + `eduHist/memid/${memId}`;
+    const eduHistUrl = isAdmin ? SERVER_URL + 'eduHist' : SERVER_URL + `eduHist/search/memId/${memId}/${memId}`;
 
     const {data: rawEduApplyData, loading: eduApplyLoading} = useFetch(eduHistUrl, []);
 
@@ -99,7 +99,7 @@ function EduApplyList(props) {
 
 
     const handleTitleClick = (eduNum) => {
-        navigate(`/edu/detail/${eduNum}`);
+        navigate(`/edu/list/detail/${eduNum}`);
     }
 
     const handleStatusChange = (eduHistNum, newStatus) => {

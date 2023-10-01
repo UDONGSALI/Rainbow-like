@@ -77,7 +77,7 @@ function EduList() {
         setActivePage(newPage);
     }
 
-    const handleTitleClick = (eduNum) => navigate('/edu/detail/' + eduNum);
+    const handleTitleClick = (eduNum) => navigate('/edu/list/detail/' + eduNum);
     const handleEdit = (eduNum) => navigate('/admin/edu/edit/' + eduNum);
 
     const EduDelete = (eduNum) => {
