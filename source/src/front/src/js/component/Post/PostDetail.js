@@ -5,9 +5,6 @@ import styles from '../../../css/component/Post/PostDetail.module.css';
 
 function PostDetail(props) {
     const { postNum,boardNum } = props;
-    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    const isLabor = sessionStorage.getItem("role") === "LABOR";
-    const memNum = sessionStorage.getItem("memNum");
     const [post, setPost] = useState(null);
     const [open, setOpen] = useState(false);
     const [files, setFiles] = useState([]);
