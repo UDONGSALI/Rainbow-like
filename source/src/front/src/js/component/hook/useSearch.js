@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-function useSearch(apiBaseUrl, setData, initialValue = { term: '', value: 'eduName' }, memId = null, resetPageOnSearch = true) {
+function useSearch(apiBaseUrl, setData, initialValue = { term: '', value: '' }, memId = null, resetPageOnSearch = true) {
     const [searchTerm, setSearchTerm] = useState(initialValue);
     const navigate = useNavigate();
     const location = useLocation();
