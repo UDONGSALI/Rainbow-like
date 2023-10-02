@@ -7,9 +7,9 @@ import {headerInfo, urlData} from "../../layout/Header/Data/AdminHeader"; // 오
 function EduDetailPage() {
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} />
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'교육 등록'}/>
             <EduForm/>
-            <ResizeAndUploadButton />
+            <ResizeAndUploadButton/>
         </div>
     );
 }
