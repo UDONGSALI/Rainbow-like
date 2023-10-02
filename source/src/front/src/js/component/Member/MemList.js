@@ -128,7 +128,7 @@ function MemList() {
                 if (response.ok) {
                     const updatedRows = membersWithFiles.filter(row => row.memNum !== memNum);
                     setMembersWithFiles(updatedRows);
-                    alert('성공적으로 삭제 했습니다!');
+                    alert(`데이터가 삭제 되었습니다.`);
                 } else {
                     throw new Error();
                 }
@@ -204,6 +204,23 @@ function MemList() {
         {field: 'email', headerName: '이메일', width: 130},
         {field: 'jdate', headerName: '가입일', width: 100},
         {
+            field: 'memberFiles',
+            headerName: '제출 문서',
+            width: 150,
+            renderCell: (row) => {
+                if (!row.row.files || row.row.files.length === 0) {
+                    return <div>파일 없음</div>;
+                }
+                return (
+                    <StyledScrollHideDiv>
+                        {row.row.files.map((file, index) => (
+                            <div key={index}><a href={file.fileUri}>{file.fileOriName}</a></div>
+                        ))}
+                    </StyledScrollHideDiv>
+                );
+            },
+        },
+        {
             field: 'detail',
             headerName: '정보 수정',
             sortable: false,
@@ -223,23 +240,6 @@ function MemList() {
             ),
             width: 100
         },
-        {
-            field: 'memberFiles',
-            headerName: '제출 문서',
-            width: 150,
-            renderCell: (row) => {
-                if (!row.row.files || row.row.files.length === 0) {
-                    return <div>파일 없음</div>;
-                }
-                return (
-                    <StyledScrollHideDiv>
-                        {row.row.files.map((file, index) => (
-                            <div key={index}><a href={file.fileUri}>{file.fileOriName}</a></div>
-                        ))}
-                    </StyledScrollHideDiv>
-                );
-            },
-        }
     ];
 
     return (
