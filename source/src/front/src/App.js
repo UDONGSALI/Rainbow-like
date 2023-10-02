@@ -1,4 +1,4 @@
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import './App.css';
 import LoginPage from "./js/pages/Login/LoginPage";
 import React, {useEffect} from "react";
@@ -36,16 +36,16 @@ import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
 import ClubEditorPage from "./js/pages/Club/ClubEditorPage";
 import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 import LaborListPage from "./js/pages/Post/LaborListPage";
-import Footer from "./js/layout/Footer/footer";
 import ErrorPage from "./js/pages/ErrorPage";
+import BoardPostListPage from "./js/pages/Board/BoardPostListPage";
+import BoardListPage from "./js/pages/Board/BoardListPage";
+import OrgListPage from "./js/pages/Organization/OrgListPage";
 
 function App() {
-    const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
-    const isLabor = sessionStorage.getItem("role") === "LABOR"; // 사용자가 LABOR인지 확인
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    const isLabor = sessionStorage.getItem("role") === "LABOR";
     const memId = sessionStorage.getItem("memId");
     const memNum = sessionStorage.getItem("memNum");
-    console.log(memNum+ "멤넘")
-    console.log(memId+ "멤넘")
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -81,24 +81,30 @@ function App() {
         }
     }
 
+
     return (
         <div className="App">
             <NavBar/>
             <Routes>
                 <Route path="/" element={<Main/>}/>
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
-                <Route path="/admin/edu" element={isAdmin ? <EduListPage/> : null}/>
+                <Route path="/admin/edu" element={isAdmin ? <EduListPage type="admin"/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
+                <Route path="/admin/eduApply"
+                       element={isAdmin ? <EduApplyCheckPage memId={memId} type="admin"/> : null}/>
+                <Route path="/admin/org" element={isAdmin ? <OrgListPage/> : null}/>
+                <Route path="/admin/board" element={isAdmin ? <BoardListPage/> : null}/>
+                <Route path="/admin/board/post/:boardNum" element={isAdmin ? <BoardPostListPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
-                <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
-                <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
-                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-                <Route path="/edu/applyck" element={<EduApplyCheckPage memId={memId}/>}/>
-                <Route path="/edu/apply/:eduNum" element={memId? <EduApplyPage/>: <LoginPage />}/>
-                <Route path="/edu/applyck" element={memId? <EduApplyCheckPage memId={memId}/>:<LoginPage />}/>
+                <Route path="/edu/list" element={<EduListPage/>}/>
+                <Route path="/edu/list/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/edu/list/apply/:eduNum"
+                       element={memId ? <EduApplyPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/edu/applylist"
+                       element={memId ? <EduApplyCheckPage memId={memId}/> : <Navigate to="/login" replace/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
                 <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
