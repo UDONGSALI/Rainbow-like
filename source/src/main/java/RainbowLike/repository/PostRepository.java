@@ -18,6 +18,9 @@ public interface PostRepository extends JpaRepository <Post,Long> {
     Post findTopByOrderByPostNumDesc();
 
     Iterable<Post> findByBoard(Board clubBoard);
+    Iterable<Post> findByBoardAndTitleContaining(Board board, String title);
+    Iterable<Post> findByBoardAndContentContaining(Board board, String content);
+    Iterable<Post> findByBoardAndMemberIn(Board board, List<Member> members);
 
 //    List<Post> findByIdAndContent(Long id, String content);
 

@@ -70,6 +70,17 @@ public class OrganizationDto {
         organizationDto4.setAddrPost("30151");
         organizationDtos.add(organizationDto4);
 
+//        for (int i = 0; i < 100; i++) {
+//            OrganizationDto organizationDto = new OrganizationDto();
+//            organizationDto.setName("test" + i);
+//            organizationDto.setUrl("test" + i);
+//            organizationDto.setTel("test" + i);
+//            organizationDto.setAddr("test" + i);
+//            organizationDto.setAddrDtl("test" + i);
+//            organizationDto.setAddrPost("test" + i);
+//            organizationDtos.add(organizationDto);
+//        }
+
         return organizationDtos;
     }
 }
