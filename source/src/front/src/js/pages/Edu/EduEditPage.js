@@ -10,11 +10,11 @@ function EduEditpage() {
     const { eduNum } = useParams();
 
     return (
-        <>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} />
+        <div>
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'교육 수정'} />
             <EduForm eduNum ={eduNum}/>
             <ResizeAndUploadButton />
-        </>
+        </div>
     )
 };
 

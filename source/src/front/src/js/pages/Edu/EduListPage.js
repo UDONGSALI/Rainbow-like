@@ -11,10 +11,12 @@ function EduListPage({type}) {
         require('../../layout/Header/Data/AdminHeader') :
         require('../../layout/Header/Data/EduHeader');
 
+    const footerTitle = type === 'admin' ? '교육 관리': '교육 신청'
+
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData}/>
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             <EduList/>
             {isAdmin && <NavigationButton name="추가하기" url="/admin/edu/add" fontSize={"10px"}/>}
         </div>

@@ -16,7 +16,6 @@ function BoardPostList({boardNum}) {
         {label: "작성자", value: "member", type: "text", valueGetter: (post) => post.member.memId},
     ];
     const [posts, setPosts] = useState([]);
-    const [boardName, setBoardName] = useState("");
     const {activePage, setActivePage} = usePagination(1);
     const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}post/${boardNum}`, setPosts);
     const {data: fetchedPosts, loading} = useFetch(`${SERVER_URL}post/${boardNum}`);
@@ -27,20 +26,6 @@ function BoardPostList({boardNum}) {
             setPosts(fetchedPosts.reverse());
         }
     }, [loading, fetchedPosts]);
-
-    useEffect(() => {
-        fetch(`${SERVER_URL}api/boards/${boardNum}`)
-            .then(response => {
-                if (!response.ok) throw new Error(response.statusText);
-                return response.json();
-            })
-            .then(data => {
-                setBoardName(data.boardName);  // 가정: API 응답에 'boardName' 필드가 있다고 함
-            })
-            .catch(error => {
-                console.error('Error fetching board name:', error);
-            });
-    }, [boardNum]);
 
     const handleDelete = (postNum) => {
         // 사용자에게 삭제 확인 메시지 보여주기
@@ -113,7 +98,6 @@ function BoardPostList({boardNum}) {
     return (
         <Wrapper style={{textAlign: 'center'}}>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                <h1>{boardName}</h1>
                 <SearchComponent
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}

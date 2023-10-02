@@ -10,10 +10,11 @@ function EduApplyCheckPage(props) {
         require('../../layout/Header/Data/AdminHeader') :
         require('../../layout/Header/Data/EduHeader');
 
+    const footerTitle = type === 'admin' ? '교육 신청 관리': '교육 신청 내역'
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData}/>
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             <EduApplyList memId={memId}/>
         </div>
     );
