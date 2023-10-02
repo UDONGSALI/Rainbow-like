@@ -16,7 +16,7 @@ public class Organization {
     private Long orgNum;
 
     @Column(nullable = false)
-    private String Name;
+    private String name;
 
     private String url;
 

@@ -46,12 +46,10 @@ function EduList() {
     // 2. Router Hooks
     const navigate = useNavigate();
     const location = useLocation();
-
     // 3. 로컬 상태 관리
     const [edus, setEdus] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
-
     // 4. 커스텀 훅 사용
     const {activePage, setActivePage} = usePagination(1);
     const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}edus`, setEdus);
@@ -81,16 +79,18 @@ function EduList() {
     const handleEdit = (eduNum) => navigate('/admin/edu/edit/' + eduNum);
 
     const EduDelete = (eduNum) => {
-        fetch(`${SERVER_URL}api/edus/${eduNum}`, {method: 'DELETE'})
-            .then(() => {
-                const updatedRows = edus.filter(row => row.eduNum !== eduNum);
-                setEdus(updatedRows);
-                alert(`데이터가 삭제 되었습니다.`);
-            })
-            .catch(err => {
-                console.error(err);
-                alert('삭제 중 오류가 발생했습니다.');
-            });
+        if (window.confirm("정말 삭제 하시겠습니까?")) {
+            fetch(`${SERVER_URL}api/edus/${eduNum}`, {method: 'DELETE'})
+                .then(() => {
+                    const updatedRows = edus.filter(row => row.eduNum !== eduNum);
+                    setEdus(updatedRows);
+                    alert(`데이터가 삭제 되었습니다.`);
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('삭제 중 오류가 발생했습니다.');
+                });
+        }
     };
     const getColumns = () => {
         const baseColumns = [
@@ -161,22 +161,22 @@ function EduList() {
         if (isAdmin) {
             baseColumns.push(
                 {
-                    field: 'delete',
-                    headerName: '삭제',
-                    sortable: false,
-                    filterable: false,
-                    renderCell: (row) => (
-                        <button onClick={() => EduDelete(row.id)}>삭제</button>
-                    ),
-                    width: 60,
-                },
-                {
                     field: 'edit',
                     headerName: '수정',
                     sortable: false,
                     filterable: false,
                     renderCell: (row) => (
                         <button onClick={() => handleEdit(row.id)}>수정</button>
+                    ),
+                    width: 60,
+                },
+                {
+                    field: 'delete',
+                    headerName: '삭제',
+                    sortable: false,
+                    filterable: false,
+                    renderCell: (row) => (
+                        <button onClick={() => EduDelete(row.id)}>삭제</button>
                     ),
                     width: 60,
                 },

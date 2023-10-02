@@ -38,6 +38,9 @@ import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
 import LaborListPage from "./js/pages/Post/LaborListPage";
 import Footer from "./js/layout/Footer/footer";
 import MyActivePage from "./js/pages/My/MyActivePage";
+import OrgListPage from "./js/pages/Organization/OrgListPage";
+import BoardListPage from "./js/pages/Board/BoardListPage";
+import BoardPostListPage from "./js/pages/Board/BoardPostListPage";
 
 function App() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
@@ -78,12 +81,6 @@ function App() {
         }
     }
 
-    function RedirectToLogin() {
-        const navigate = useNavigate();
-            navigate('/login');
-    }
-
-
     return (
         <div className="App">
             <NavBar/>
@@ -94,6 +91,9 @@ function App() {
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/admin/eduApply" element={isAdmin ? <EduApplyCheckPage memId={memId}  type="admin" /> : null}/>
+                <Route path="/admin/org" element={isAdmin ? <OrgListPage/> : null}/>
+                <Route path="/admin/board" element={isAdmin ? <BoardListPage/> : null}/>
+                <Route path="/admin/board/post/:boardNum" element={isAdmin ? <BoardPostListPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>

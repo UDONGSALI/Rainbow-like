@@ -25,7 +25,6 @@ import java.util.List;
 public class EduController {
 
     private final EduService eduService;
-
     @GetMapping
     private Iterable<Edu> getEdus() {
         return eduService.findAll();
