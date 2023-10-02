@@ -7,7 +7,7 @@ import {headerInfo, urlData} from "../../layout/Header/Data/LoginHeader";
 const LoginPage = () => {
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} />
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'Login'}/>
             <Login />
         </div>
     );

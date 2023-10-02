@@ -24,7 +24,7 @@ function SignUpPage() {
 
     return (
         <>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData}/>
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'회원가입'}/>
             <div style={{display: 'flex', justifyContent: "center"}}>
                 <SignAgreement onAgreementChange={handleAgreement}/>
                 <SignUp onSignUpClick={handleSignUpClick}/>
