@@ -89,22 +89,6 @@ function PostDetail(props) {
 
 
     useEffect(() => {
-        // 게시글 접근 권한 조건
-        fetch(`${SERVER_URL}posts/${postNum}`)
-            .then(response => response.json())
-            .then(data => {
-                setPost(data);
-                if (boardNum === 7) {
-                    if (!isAdmin && !isLabor && memNum !== data.post.memNum) {
-                        alert("이 페이지에 접근할 수 없습니다.");
-                        navigate('/'); // 또는 다른 페이지로 리다이렉트
-                    }
-                }
-            })
-            .catch(error => console.error(error));
-    }, [postNum]);
-
-    useEffect(() => {
         // post 상태가 있고, post.board.boardNum이 7보다 작을 때만 이전 글의 제목을 가져옴
         if (post && post.board.boardNum < 7) {
             // 이전 글의 제목 가져오기
