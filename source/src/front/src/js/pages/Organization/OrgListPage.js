@@ -7,7 +7,7 @@ function OrgListPage() {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData}/>
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'유관 기관'}/>
             <OrgList/>
         </div>
     );

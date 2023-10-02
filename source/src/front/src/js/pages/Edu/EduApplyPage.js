@@ -11,7 +11,7 @@ function EduApplyPage() {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} />
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={"교육 신청"}/>
             <EduApply eduNum={eduNum} memId={memId}/>
             <BackButton/>
         </div>
