@@ -58,8 +58,8 @@ function BoardPostList({boardNum}) {
     };
 
     const columns = [
-        {field: 'postNum', headerName: '번호', width: 100},
-        {field: 'title', headerName: '제목', width: 300},
+        {field: 'postNum', headerName: '번호', width: 50},
+        {field: 'title', headerName: '제목', width: 200},
         {
             field: 'member',
             headerName: '작성자',
@@ -85,6 +85,14 @@ function BoardPostList({boardNum}) {
             }
         },
         {field: 'pageView', headerName: '조회수', width: 100},
+        ...(boardNum == 9 ? [
+            {field: 'clubAllowStatus', headerName: '허용 상태', width: 100},
+            {field: 'clubRecuStatus', headerName: '모집 상태', width: 100},
+            {field: 'delYN', headerName: '삭제 여부', width: 100},
+        ] : []),
+        ...(boardNum == 7 || boardNum == 8 ? [
+            {field: 'parentsNum', headerName: '부모 글', width: 100},
+        ] : []),
         {
             field: 'deleteAction',
             headerName: '삭제',
