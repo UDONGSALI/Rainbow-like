@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import bcrypt from 'bcryptjs';
 import styles from '../../../css/component/Login/SignUp.module.css';
 import FileUpload from "../Common/FileUpload";
 import axios from "axios";
@@ -226,16 +225,14 @@ function SignUp({ onSignUpClick }) {
             return;
         }
 
-        const hashedPwd = bcrypt.hashSync(formData.pwd, 10);
-        const dataToSend = {...formData, pwd: hashedPwd}; // 여기서만 pwd를 바꿉니다.
 
         try {
-            const response = await fetch(SERVER_URL + 'api/members', {
+            const response = await fetch(SERVER_URL + 'members', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(dataToSend),  // 암호화된 비밀번호가 포함된 데이터를 전송
+                body: JSON.stringify(formData),  // 암호화된 비밀번호가 포함된 데이터를 전송
             });
 
             if (response.status === 200 || response.status === 201) {  // 200 OK 응답을 받은 경우
