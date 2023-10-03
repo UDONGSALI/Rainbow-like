@@ -71,9 +71,13 @@ useEffect(() => {
     const onRowClick = (params) => {
         if (isAdmin || isLabor || params.row.member.memNum == memNum) {
             const rowId = params.row.postNum;
-            navigate(`/post/detail/${rowId}`);
+            const boardNumber = params.row.board.boardNum;
+
+            navigate(`/post/detail/${boardNum}/${rowId}`, {
+                state: {boardNum: boardNumber}
+            });
         }
-    };
+    }
 
     const columns = [
             {

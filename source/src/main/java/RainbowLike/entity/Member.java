@@ -92,24 +92,9 @@ public class Member {
     @JsonBackReference(value="member-ftConsumers")
     private List<FtConsumer> ftConsumers = new ArrayList<>();
 
-
-    public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
-        Member member = new Member();
-        member.setMemId(memberFormDto.getMemId());
-        String password = passwordEncoder.encode(memberFormDto.getPwd());
-        member.setPwd(password);
-        member.setName(memberFormDto.getName());
-        member.setEmail(memberFormDto.getEmail());
-        member.setGender(memberFormDto.getGender());
-        member.setTel(memberFormDto.getTel());
-        member.setBir(memberFormDto.getBir());
-        member.setAddr(memberFormDto.getAddr());
-        member.setAddrDtl(memberFormDto.getAddrDtl());
-        member.setAddrPost(memberFormDto.getAddrPost());
-        member.setJdate(LocalDate.now());
-        member.setType(memberFormDto.getType());
-        return member;
-    }
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @JsonBackReference(value="member-logs")
+    private List<Log> logs = new ArrayList<>();
 
     public Member(String memId, String pwd, Type type, String name, Gender gender, LocalDate bir, String tel, String email, String addr, String addrDtl, LocalDate jdate) {
         super();

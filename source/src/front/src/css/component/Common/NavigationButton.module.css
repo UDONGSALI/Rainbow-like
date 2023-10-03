@@ -1,6 +1,6 @@
 .navButton {
     position: fixed;
-    top: calc(100vh / 6);
+    top: calc(100vh / 2.5);
     left: calc(100vw / 30);
     z-index: 1000;
     background-color: skyblue;

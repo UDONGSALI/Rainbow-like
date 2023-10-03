@@ -50,12 +50,28 @@ function ImgPostList(props) {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+    const onRowClick = (params) => {
+        const rowId = params.row.postNum;
+        const boardNumber = params.row.board.boardNum;
+
+        navigate(`/post/detail/${rowId}`, {
+            state: { boardNum: boardNumber }
+        });
+    };
+
     return (
         <div>
             <div className={styles.sjNewsListContainer}>
                 {currentPosts.map((post, index) => (
                     // Link 컴포넌트로 게시글을 감싸고, 스타일을 직접 지정
-                    <Link to={`/post/detail/${post.postNum}`} key={post.postNum} className={styles.customLink}>
+                    <Link
+                        to={{
+                            pathname: `/post/detail/${boardNum}/${post.postNum}`,
+                            state: { boardNum: post.board.boardNum }
+                        }}
+                        key={post.postNum}
+                        className={styles.customLink}
+                    >
                         <div className={styles.postDetail}>
                             <div className={styles.leftTop}>
                                 <img

@@ -1,34 +1,28 @@
 package RainbowLike.controller;
 
-
-import RainbowLike.dto.BoardDto;
 import RainbowLike.entity.Board;
 import RainbowLike.repository.BoardRepository;
 import RainbowLike.service.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.annotation.Order;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/boards")
 public class BoardController {
 
-    private final BoardService boardService;
-
     private final BoardRepository boardRepository;
-
-    @PostConstruct
-    private void createBoards() {
-        ArrayList<BoardDto> boardDtoList = BoardDto.createBoards();
-        boardService.createBoards(boardDtoList);
+    private final BoardService boardService;
+    @GetMapping
+    private ResponseEntity<Iterable<Board>> getBoards() {
+        Iterable<Board> boards = boardService.getAllBoards();
+        return ResponseEntity.ok(boards);
     }
 
-    @RequestMapping("/boards")
-    private Iterable<Board> getBoards() {
-        return boardRepository.findAll();
-    }
+
 }
