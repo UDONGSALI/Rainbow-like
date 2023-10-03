@@ -92,100 +92,93 @@ function EduList() {
                 });
         }
     };
-    const getColumns = () => {
-        const baseColumns = [
-            {
-                field: 'eduNum',
-                headerName: '번호',
-                renderCell: (row) => (
-                    <div>{row.id}</div>
-                ),
-                width: 30
-            },
-            {
-                field: 'type',
-                headerName: '구분',
-                width: 30,
-                renderCell: (row) => (
-                    <div className={`typeCell ${row.value}`}>
-                        {row.value === 'BUSINESS' ? '사업' :
-                            row.value === 'EDU' ? '교육' : ''}
-                    </div>
-                ),
-            },
-            {
-                field: 'eduName',
-                headerName: '프로그램명',
-                width: 300,
-                renderCell: (row) => (
-                    <div onClick={() => handleTitleClick(row.id)} className="eduNameCell">
-                        {row.value}
-                    </div>
-                ),
-            },
-            {
-                field: 'recuMethod',
-                headerName: '접수 방법',
-                width: 100,
-                renderCell: (row) => (
-                    <div>
-                        {row.value === 'ADMIN_APPROVAL' ? '관리자 승인' :
-                            row.value === 'FIRST_COME' ? '선착순 모집' : row.value}
-                    </div>
-                ),
-            },
-            {
-                field: 'recuStdt~recuEddt',
-                headerName: '모집 기간',
-                width: 170,
-                valueGetter: (params) => {
-                    return `${params.row.recuStdt}~${params.row.recuEddt}`;
-                },
-            },
-            {
-                field: 'recuPerson+/+capacity',
-                headerName: '신청인/정원',
-                width: 100,
-                valueGetter: (params) => {
-                    return `${params.row.recuPerson}/${params.row.capacity}`;
-                },
-            },
-            {
-                field: 'status',
-                headerName: '상태',
-                width: 80,
-                renderCell: (params) => renderStatusCell(params.row),
-            },
-        ];
 
-        if (isAdmin) {
-            baseColumns.push(
-                {
-                    field: 'edit',
-                    headerName: '수정',
-                    sortable: false,
-                    filterable: false,
-                    renderCell: (row) => (
-                        <button onClick={() => handleEdit(row.id)}>수정</button>
-                    ),
-                    width: 60,
-                },
-                {
-                    field: 'delete',
-                    headerName: '삭제',
-                    sortable: false,
-                    filterable: false,
-                    renderCell: (row) => (
-                        <button onClick={() => EduDelete(row.id)}>삭제</button>
-                    ),
-                    width: 60,
-                },
-            );
-        }
-        return baseColumns;
-    };
-
-    const columns = getColumns();
+    const columns = [
+        {
+            field: 'eduNum',
+            headerName: '번호',
+            renderCell: (row) => (
+                <div>{row.id}</div>
+            ),
+            width: 30
+        },
+        {
+            field: 'type',
+            headerName: '구분',
+            width: 30,
+            renderCell: (row) => (
+                <div className={`typeCell ${row.value}`}>
+                    {row.value === 'BUSINESS' ? '사업' :
+                        row.value === 'EDU' ? '교육' : ''}
+                </div>
+            ),
+        },
+        {
+            field: 'eduName',
+            headerName: '프로그램명',
+            width: 300,
+            renderCell: (row) => (
+                <div onClick={() => handleTitleClick(row.id)} className="eduNameCell">
+                    {row.value}
+                </div>
+            ),
+        },
+        {
+            field: 'recuMethod',
+            headerName: '접수 방법',
+            width: 100,
+            renderCell: (row) => (
+                <div>
+                    {row.value === 'ADMIN_APPROVAL' ? '관리자 승인' :
+                        row.value === 'FIRST_COME' ? '선착순 모집' : row.value}
+                </div>
+            ),
+        },
+        {
+            field: 'recuStdt~recuEddt',
+            headerName: '모집 기간',
+            width: 170,
+            valueGetter: (params) => {
+                return `${params.row.recuStdt}~${params.row.recuEddt}`;
+            },
+        },
+        {
+            field: 'recuPerson+/+capacity',
+            headerName: '신청인/정원',
+            width: 100,
+            valueGetter: (params) => {
+                return `${params.row.recuPerson}/${params.row.capacity}`;
+            },
+        },
+        {
+            field: 'status',
+            headerName: '상태',
+            width: 80,
+            renderCell: (params) => renderStatusCell(params.row),
+        },
+        ...(isAdmin ? [
+            {
+                field: 'edit',
+                headerName: '수정',
+                sortable: false,
+                filterable: false,
+                renderCell: (row) => (
+                    <button onClick={() => handleEdit(row.id)}>수정</button>
+                ),
+                width: 60,
+            },
+            {
+                field: 'delete',
+                headerName: '삭제',
+                sortable: false,
+                filterable: false,
+                renderCell: (row) => (
+                    <button onClick={() => EduDelete(row.id)}>삭제</button>
+                ),
+                width: 60,
+            },
+        ] : []),
+    ];
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
