@@ -21,7 +21,7 @@ import renderApprovalStatusCell from "./renderApprovalStatusCell";
 const ADMIN_ROLE = "ADMIN";
 const USER_ROLE = "USER";
 
-function EduApplyList(props) {
+function EduHistList(props) {
     // 1. React Router 관련
     const navigate = useNavigate();
     const location = useLocation();
@@ -432,4 +432,4 @@ const StyledDataGrid = styled(DataGrid)`
   }
 `;
 
-export default EduApplyList;
+export default EduHistList;
