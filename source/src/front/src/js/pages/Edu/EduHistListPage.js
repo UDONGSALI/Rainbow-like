@@ -1,9 +1,9 @@
 import React from 'react';
-import EduApplyList from "../../component/Edu/EduApplyList";
+import EduHistList from "../../component/Edu/EduHistList";
 import UrlComponent from "../../layout/Header/UrlComponent";
 import {headerInfo, urlData} from "../../layout/Header/Data/AdminHeader";
 
-function EduApplyCheckPage(props) {
+function EduHistListPage(props) {
     const { memId, type } = props;
 
     const { headerInfo, urlData } = type === 'admin' ?
@@ -15,9 +15,9 @@ function EduApplyCheckPage(props) {
     return (
         <div>
             <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
-            <EduApplyList memId={memId}/>
+            <EduHistList memId={memId}/>
         </div>
     );
 }
 
-export default EduApplyCheckPage;
+export default EduHistListPage;

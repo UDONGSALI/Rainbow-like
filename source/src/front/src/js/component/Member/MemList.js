@@ -60,6 +60,7 @@ function MemList() {
     const { data: members, loading: membersLoading } = useFetch(SERVER_URL + 'members', []);
     const { data: files, loading: filesLoading } = useFetch(SERVER_URL + 'files/table/member', []);
 
+
     useEffect(() => {
         if (files.length > 0) {
             const fileMap = {};
@@ -86,6 +87,9 @@ function MemList() {
             if (hasChanged) {
                 setMembersWithFiles(updatedMembers.reverse());
             }
+        } else {
+            // files가 비어있을 때 members를 그대로 membersWithFiles로 설정
+            setMembersWithFiles(members);
         }
     }, [files, members]);
 
