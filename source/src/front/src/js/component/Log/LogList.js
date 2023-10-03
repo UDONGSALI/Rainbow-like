@@ -98,7 +98,7 @@ function LogList() {
         {
             field: 'type',
             headerName: '유형',
-            width: 80
+            width: 100
         },
         {
             field: 'memId', // member.memId의 값을 직접 접근하기 어려울 수 있습니다.
