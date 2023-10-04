@@ -31,4 +31,7 @@ public interface PostRepository extends JpaRepository <Post,Long> {
 
 
     List<Post> findByMember(Member member);
+
+
+
 }
