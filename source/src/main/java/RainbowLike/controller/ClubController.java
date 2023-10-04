@@ -18,10 +18,13 @@ public class ClubController {
     @Autowired
     ClubRepository clubRepository;
 
+
     @GetMapping("/clubs/{postId}") // /clubs/post/{postId} 엔드포인트를 정의
     public Optional<Post> getPostById(@PathVariable Long postId) {
         return clubRepository.findById(postId);
     }
+
+
 
 
 
