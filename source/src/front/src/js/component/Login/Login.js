@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { SERVER_URL } from '../Common/constants';
-import { Button, Snackbar, Stack, TextField, Typography } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {SERVER_URL} from '../Common/constants';
+import {Button, Snackbar, Stack, TextField, Typography} from '@mui/material';
+import {Link, useNavigate} from 'react-router-dom';
 import FindIdPasswordModal from "./FindIdPasswordModal";
 
 function Login({memId}) {
@@ -37,7 +37,7 @@ function Login({memId}) {
     const [open, setOpen] = useState(false);
 
     const handleChange = (e) => {
-        setUser({ ...user, [e.target.name]: e.target.value });
+        setUser({...user, [e.target.name]: e.target.value});
     };
 
     const handleCaptchaAnswerChange = (e) => {
@@ -60,7 +60,7 @@ function Login({memId}) {
 
         fetch(SERVER_URL + 'login', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(user)
         })
             .then(res => {
@@ -84,6 +84,11 @@ function Login({memId}) {
             });
     };
 
+    const logout = () => {
+        sessionStorage.clear();
+        window.location.reload();
+    };
+
     const handleSubmit = () => {
         login();
     };
@@ -95,6 +100,68 @@ function Login({memId}) {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
+
+    if (memId) {
+        return (
+            <div style={{
+                width: '60%',
+                margin: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                padding: '20px',
+                backgroundColor: '#f9f9f9',
+                boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',
+                borderRadius: '5px'
+            }}>
+                <Stack alignItems='flex-start' style={{
+                    width: '40%',
+                    padding: '20px',
+                    backgroundColor: '#ffffff',
+                    boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',
+                    borderRadius: '5px'
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        width: '100%',
+                        padding: '16px',
+                        borderRadius: '4px'
+                    }}>
+                        <Stack style={{flex: '1'}}>
+                            <Typography variant="h5" style={{lineHeight:'1', marginTop:'25px'}}>
+                                {memId}님, 환영합니다!
+                            </Typography>
+                            <br/>
+                        </Stack>
+                        <Button
+                            variant="contained"
+                            style={{
+                                maxHeight: '250px',
+                                marginLeft: '10px',
+                                backgroundColor: buttonColor,
+                                fontWeight: 'bold',
+                                border: 'none',
+                                borderRadius: '5px',
+                                boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)',
+                                transition: 'all 0.3s'
+                            }}
+                            onClick={logout}
+                            onMouseEnter={() => {
+                                setButtonColor("#53468b");
+                            }}
+                            onMouseLeave={() => {
+                                setButtonColor("#a38ced");
+                            }}
+                        >
+                            Logout
+                        </Button>
+                    </div>
+                </Stack>
+            </div>
+        );
+    }
+
 
     return (
         <div style={{

@@ -14,7 +14,7 @@ import useSearch from "../hook/useSearch";
 import usePagination from "../hook/usePagination";
 import useFetch from "../hook/useFetch";
 // 6. Helper 함수나 Renderer 관련
-import {renderStatusCell} from "./statusRenderer";
+import {renderStatusCell} from "./RenderCell/statusRenderer";
 
 function EduList() {
     // 1. 상수 및 상태

@@ -1,6 +1,5 @@
 package RainbowLike.constant;
 
 public enum Status {
-
-    WAIT, APPROVE, COMPLETE
+    WAIT, APPROVE, REJECT, COMPLETE
 }
