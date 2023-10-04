@@ -11,7 +11,6 @@ function PostForm(props) {
     const memId = sessionStorage.getItem("memId");
     const [member, setMember] = useState([]);
     const [formData, setFormData] = useState({});
-    const [filePreview, setFilePreview] = useState(null);  // 파일 미리보기를 위한 state
 
     useEffect(() => {
         memberSet();
@@ -50,7 +49,6 @@ function PostForm(props) {
             const reader = new FileReader();
 
             reader.onloadend = () => {
-                setFilePreview(reader.result);
             };
 
             if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
@@ -160,16 +158,6 @@ function PostForm(props) {
                         accept=".jpg,.jpeg,.png,.gif,.mp4,.mov,.avi,.flv"
                         onChange={handleFileChange}
                     />
-                    {/* 첨부파일 미리보기 */}
-                    {filePreview && filePreview.startsWith("data:image/") && (
-                        <img src={filePreview} alt="Preview" style={{ width: '100%', marginTop: '10px' }} />
-                    )}
-                    {filePreview && filePreview.startsWith("data:video/") && (
-                        <video controls style={{ width: '100%', marginTop: '10px' }}>
-                            <source src={filePreview} type="video/mp4" />
-                            Your browser does not support the video tag.
-                        </video>
-                    )}
                 </div>
                 <button type="submit">게시글 작성</button>
             </form>
