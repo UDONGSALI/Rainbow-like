@@ -115,8 +115,8 @@ function App() {
                 <Route path="/edu/applylist" element={memId ? <EduHistListPage memId={memId}/> : <Navigate to="/login" replace/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
-                <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
-                <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
+                <Route path="/rent/status" element={<RentStatusPage/>}/>
+                <Route path="/rent/application/:spaceNum" element={<RentApplicationPage/>}/>
                 <Route path="/posts" element={<PostList/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
