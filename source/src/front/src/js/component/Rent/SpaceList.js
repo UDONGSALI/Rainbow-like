@@ -4,6 +4,7 @@ import {DataGrid} from '@mui/x-data-grid';
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {SERVER_URL} from "../Common/constants";
+import SpaceModal from "./SpaceModal";
 
 
 function SpaceList() {
@@ -18,8 +19,6 @@ function SpaceList() {
         {field: 'rentTime', headerName: '대관시간', width: 100},
         {field: 'rentFee', headerName: '이용료', width: 100},
         {field: 'facilities', headerName: '구비시설', width: 200},
-        {field: 'date', headerName: '날짜', width: 200},
-        {field: 'time', headerName: '시간', width: 200},
 
     ];
 
@@ -56,6 +55,7 @@ function SpaceList() {
                           }}
                 />
             )}
+            <SpaceModal/>
         </div>
     );
 }

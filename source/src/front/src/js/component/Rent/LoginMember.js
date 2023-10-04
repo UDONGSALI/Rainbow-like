@@ -8,20 +8,20 @@ const LoginMember = () => {
         const fetchMemberData = async () => {
             try {
                 // 로컬 스토리지에서 세션 토큰 가져오기
-                const sessionToken = localStorage.getItem('sessionToken');
+                const memId = localStorage.getItem('memId');
 
-                if (!sessionToken) {
-                    // 세션 토큰이 없는 경우 로그인 페이지로 리디렉션
-                    // window.location.href = '/login'; // 로그인 페이지 URL에 맞게 변경
+                if (!memId) {
+                    // memId가 없는 경우 로그인 페이지로 리디렉션
+                    window.location.href = '/login'; // 로그인 페이지 URL에 맞게 변경
                     return;
                 }
 
                 // 서버로부터 멤버 정보 가져오기
-                const response = await fetch('/api/members/current-user', {
+                const response = await fetch('/api/members', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionToken}`
+                        'Authorization': `Bearer ${memId}`
                     },
                 });
 

@@ -45,7 +45,7 @@ export default function MyActivePost(props) {
                 const postsWithNumbers = data.map((post, index) => ({
                     ...post,
                     id: post.postNum,
-                    number: index + 1, // 각 행에 번호를 순차적으로 할당
+                    number: data.length - index, // 각 행에 번호를 순차적으로 할당
                 }));
                 setPosts(postsWithNumbers);
 
