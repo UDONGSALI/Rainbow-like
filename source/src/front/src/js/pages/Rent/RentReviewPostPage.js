@@ -3,7 +3,7 @@ import React from "react";
 import Footer from "../../layout/Footer/footer";
 
 
-function RentReviewPage() {
+function RentReviewPostPage() {
     return (
         <div id="rentBody">
 
@@ -11,4 +11,4 @@ function RentReviewPage() {
     )
 }
 
-export default RentReviewPage;
+export default RentReviewPostPage;

@@ -1,6 +1,7 @@
 import React from "react";
 import RentAgreeForm from "../../component/Rent/RentAgreeForm";
 import RentSpace from "../../component/Rent/RentSpace";
+import LoginMember from "../../component/Rent/LoginMember";
 
 
 function RentApplicationPage() {
@@ -8,6 +9,7 @@ function RentApplicationPage() {
         <div>
             <RentSpace/>
             <RentAgreeForm/>
+            <LoginMember/>
         </div>
     )
 };

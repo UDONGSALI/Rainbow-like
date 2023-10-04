@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {DataGrid} from "@mui/x-data-grid";
 import {SERVER_URL} from "../../../../js/component/Common/constants";
 import {useNavigate} from "react-router-dom";
 import styles from "../../../../css/component/Mypage/MyActivePost.module.css";
-
+import CustomDataGrid from "../../Common/CustomDataGrid";
 
 
 export default function MyActivePost(props) {
@@ -15,7 +14,7 @@ export default function MyActivePost(props) {
     useEffect(() => {
         // 실제로 사용자 정보를 가져오는 방법에 따라서 구현
         // 예시로 사용자 정보를 가져온다고 가정
-        const fetchedUserInfo = { memNum:sessionStorage.getItem("memNum") }; // 예시로 1번 멤버 정보를 가져왔다고 가정
+        const fetchedUserInfo = {memNum: sessionStorage.getItem("memNum")}; // 예시로 1번 멤버 정보를 가져왔다고 가정
         setMemNum(fetchedUserInfo.memNum); // memNum 상태 업데이트
     }, []);
 
@@ -56,51 +55,53 @@ export default function MyActivePost(props) {
             });
     };
 
-   const onRowClick = (params) => {
+    const onRowClick = (params) => {
         const rowId = params.row.postNum;
         const boardName = params.row.board.boardName; // 게시글의 유형에 따른 필드 (예: type 필드)
 
-       console.log('rowId:', rowId);
-       console.log('boardName:', boardName);
+        console.log('rowId:', rowId);
+        console.log('boardName:', boardName);
 
         let targetPath = ""; // 이동할 경로 초기화
 
-       // boardName에 따라 다른 경로 설정
-       if (boardName === '공지사항') {
-           targetPath = `/post/detail/${rowId}`;
-       } else if (boardName === '모임 페이지') {
-           targetPath = `/clubs/${rowId}`;
-       } else if (boardName === '세종시 기관 및 단체 소식') {
-           targetPath = `/post/detail/${rowId}`;
-       } else if (boardName === '대관 이용 후기') {
-           targetPath = `/rent/review/${rowId}`;
-       } else if (boardName === '온라인 상담') {
-           targetPath = `/rent/review/${rowId}`;
-       } else {
-           targetPath = `/post/detail/${rowId}`;
-       }
+        // boardName에 따라 다른 경로 설정
+        if (boardName === '공지사항') {
+            targetPath = `/post/detail/${rowId}`;
+        } else if (boardName === '모임 페이지') {
+            targetPath = `/clubs/${rowId}`;
+        } else if (boardName === '세종시 기관 및 단체 소식') {
+            targetPath = `/post/detail/${rowId}`;
+        } else if (boardName === '대관 이용 후기') {
+            targetPath = `/rent/review/${rowId}`;
+        } else if (boardName === '온라인 상담') {
+            targetPath = `/rent/review/${rowId}`;
+        } else {
+            targetPath = `/post/detail/${rowId}`;
+        }
 
-       // 실제로 경로 이동
-       navigate(targetPath);
-   };
+        // 실제로 경로 이동
+        navigate(targetPath);
+    };
 
 
     const columns = [
         {
             field: "number",
             headerName: "번호",
-            width: 100,
+            width: 80,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
+            headerAlign: 'center',
         },
         {
             field: "boardName", // 게시판 구분을 "boardName"으로 변경
             headerName: "구분", // 열의 헤더 이름
-            width: 300,
+            width: 250,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
+            headerAlign: 'center',
             valueGetter: (params) => {
                 const boards = Array.isArray(params.row.board) ? params.row.board : [params.row.board];
                 return boards.map((b) => b.boardName).join(', ');
@@ -109,13 +110,13 @@ export default function MyActivePost(props) {
         {
             field: "title",
             headerName: "제목",
-            width: 500,
+            width:800,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
 
             renderCell: (params) => (
                 <div
-                    style={{ cursor: "pointer" }}
+                    style={{cursor: "pointer"}}
                     onClick={() => onRowClick(params)}
                 >
                     {params.value}
@@ -129,6 +130,7 @@ export default function MyActivePost(props) {
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
+            headerAlign: 'center',
             valueFormatter: (params) => {
                 //작성일을 JS Date 객체로 파싱
                 const writeDate = new Date(params.value);
@@ -139,6 +141,7 @@ export default function MyActivePost(props) {
             },
         },
     ];
+
     function CustomNoRowsOverlay() {
         return (
             <div
@@ -147,7 +150,7 @@ export default function MyActivePost(props) {
                     justifyContent: 'center',
                     alignItems: 'center',
                     height: '100%',
-                    fontWeight:'bold',
+                    fontWeight: 'bold',
                     flexDirection: 'column',
                 }}
             >
@@ -169,15 +172,17 @@ export default function MyActivePost(props) {
 
                     }}
                 >
-                    <DataGrid
+                    <CustomDataGrid
                         className={styles.customDataGrid}
                         columns={columns}
                         rows={posts}
+                        pageSize={5} // 페이지당 5개의 행을 보여줍니다.
                         getRowId={(row) => row.postNum}
                         components={{
-                            NoRowsOverlay: CustomNoRowsOverlay}}
+                            NoRowsOverlay: CustomNoRowsOverlay
+                        }}
                         pagination={true} // 페이지네이션 활성화
-                        // autoHeight={true} // 스크롤 영역 없애기
+
 
                     />
                 </div>
