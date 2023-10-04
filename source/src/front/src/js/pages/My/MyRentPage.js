@@ -3,15 +3,15 @@ import UrlComponent from "../../layout/Header/UrlComponent";
 import {headerInfo, urlData} from "../../layout/Header/Data/MyHeader";
 import React from "react";
 
-const MyCouselPage = () => {
+const MyRentPage = () => {
     return (
 
         <div id={styles.container}>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'상담 내역'}/>
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'공간대관 신청내역'}/>
 
         </div>
 
     );
 }
 
-export default MyCouselPage;
+export default MyRentPage;

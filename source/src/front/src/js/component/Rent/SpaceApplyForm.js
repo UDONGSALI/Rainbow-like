@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from "react";
-
-import {DataGrid} from '@mui/x-data-grid';
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {SERVER_URL} from "../Common/constants";
@@ -8,6 +6,8 @@ import {LocalizationProvider, TimePicker} from "@mui/x-date-pickers";
 import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from 'dayjs';
+import CustomDataGrid from "../Common/CustomDataGrid";
+import SpaceModal from "./SpaceModal";
 
 function SpaceApplyForm() {
     const [spaces, setSpaces] = useState([]);
@@ -36,7 +36,6 @@ function SpaceApplyForm() {
     };
 
 
-
     //신청하기 버튼//
     function redirectToURL() {
         window.location.href = "http://localhost:3000/rent/application/{:spaceNum}";
@@ -47,45 +46,53 @@ function SpaceApplyForm() {
         {
             id: 1,
             spaceName: "공유오피스(폴짝)",
+            maxPerson: "6명",
             imageURL: "https://storage.googleapis.com/rainbow_like/space/1/space1.jpg", // 첫 번째 행의 이미지 URL
 
         },
         {
             id: 2,
             spaceName: "공유오피스(반짝)",
+            maxPerson: "6명",
             imageURL: "https://storage.googleapis.com/rainbow_like/space/2/space2.jpg", // 첫 번째 행의 이미지 URL
 
         },
         {
             id: 3,
             spaceName: "공유오피스(활짝)",
+            maxPerson: "8명",
             imageURL: "https://storage.googleapis.com/rainbow_like/space/3/space3.jpg", // 첫 번째 행의 이미지 URL
             // 다른 행들...
         },
         {
             id: 4,
             spaceName: "상담실(꼼지락)",
+            maxPerson: "4명",
             imageURL: "https://storage.googleapis.com/rainbow_like/space/4/space4.jpg", // 첫 번째 행의 이미지 URL
             // 다른 행들...
         }, {
             id: 5,
             spaceName: "상담실(어슬렁)",
+            maxPerson: "4명",
             imageURL: "https://storage.googleapis.com/rainbow_like/space/5/space5.jpg", // 첫 번째 행의 이미지 URL
             // 다른 행들...
         }, {
             id: 6,
             spaceName: "강의실(혜윰)",
+            maxPerson: "24명",
             imageURL: "https://storage.googleapis.com/rainbow_like/space/6/space6.jpg", // 첫 번째 행의 이미지 URL
             // 다른 행들...
         }, {
             id: 7,
             spaceName: "다목적 활동실(라온)",
+            maxPerson: "20명",
             imageURL: "https://storage.googleapis.com/rainbow_like/space/7/space7.jpg", // 첫 번째 행의 이미지 URL
             // 다른 행들...
         },
         {
             id: 8,
             spaceName: "멀티미디어실(하람)",
+            maxPerson: "24명",
             imageURL: "https://storage.googleapis.com/rainbow_like/space/8/space8.jpg", // 첫 번째 행의 이미지 URL
             // 다른 행들...
         },
@@ -94,18 +101,34 @@ function SpaceApplyForm() {
 
     //칼럼
     const columns = [
-            {field: 'spaceName', headerName: '공간명', width: 400,
+            {
+                field: 'spaceName', headerName: '공간', width: 420,
                 renderCell: (params) => (
-                    <img
-                        alt={params.row.spaceName}
-                        src={params.row.imageURL}
-                        style={{ width: "100%", height: "100%", padding:"5%" }} // 이미지 크기 설정
-                    />),
+                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}} >
+                        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                            <span style={{fontSize: "23px", fontWeight: "bold"}}>{params.row.spaceName}</span>
+                            <p style={{fontSize: "15px"}}>최대인원 <span
+                                style={{fontSize: "18px", fontWeight: "bold"}}>{params.row.maxPerson}</span></p>
+                        </div>
+                        <div>
+                            <img
+                                alt={params.row.spaceName}
+                                src={params.row.imageURL}
+                                style={{width: "400px", height: "250px", padding: "3%"}}
+                            />
+
+                        </div>
+                        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'
+                        }}>
+                            <SpaceModal spaceInfo={params.row.spaceName}/>
+                        </div>
+                    </div>),
 
             },
 
+
             {
-                field: 'time', headerName: '시간', width: 700,
+                field: 'time', headerName: '시간 선택', width: 600,
                 renderCell: () => (
                     <Stack className="buttonWrap" spacing={2} direction="row">
                         {/* TimePicker를 사용하여 시간 선택 */}
@@ -116,7 +139,7 @@ function SpaceApplyForm() {
                                     defaultValue={dayjs('2022-01-01 T09:00')}
                                     ampm={false}
                                     minutesStep={30}
-                                    views={['hours','minutes']}
+                                    views={['hours', 'minutes']}
                                     minTime={minTime}
                                     maxTime={maxTime}
                                     disabledHours={disabledHours}
@@ -128,7 +151,7 @@ function SpaceApplyForm() {
                                     onChange={(newValue) => setValue(newValue)}
                                     ampm={false}
                                     minutesStep={30}
-                                    views={['hours','minutes']}
+                                    views={['hours', 'minutes']}
                                     disabledHours={disabledHours}
                                     disabledMinutes={disabledMinutes}
                                 />
@@ -164,7 +187,6 @@ function SpaceApplyForm() {
     ;
 
 
-
     useEffect(() => {
         fetch(SERVER_URL + 'api/spaces')
             .then(response => response.json())
@@ -186,21 +208,26 @@ function SpaceApplyForm() {
             {loading ? (
                 <p>Loading....</p>
             ) : (
-                <DataGrid className="spaceList"
-                          columns={columns}
-                          rows={rows}
-                          getRowId={(row) => row.id}
-                          style={{
-                              position: "relative",
-                              width: "100%",
-                              paddingLeft: "15%",
-                              paddingRight: "15%",
+                <CustomDataGrid className="spaceList"
+                                columns={columns}
+                                rows={rows}
+                                getRowId={(row) => row.id}
+                                style={{
+                                    position: "relative",
+                                    width: "100%",
+                                    paddingLeft: "15%",
+                                    paddingRight: "15%",
 
-                          }}
-                          hideFooter={true}
-                          rowHeight={250}
+                                }}
+
+
+                                hideFooter={true}
+                                rowHeight={400}
+
                 />
+
             )}
+
         </div>
     );
 }
