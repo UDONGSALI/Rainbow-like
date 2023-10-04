@@ -1,9 +1,6 @@
 package RainbowLike;
 
 import RainbowLike.controller.*;
-import RainbowLike.repository.BoardRepository;
-import RainbowLike.repository.MemberRepository;
-import RainbowLike.repository.PostRepository;
 import RainbowLike.service.EduHistService;
 import RainbowLike.service.RentHistService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +19,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     private final EduHistService eduHistService;
     private final DefaultFileController defaultFileController;
     private final FtalentController ftalentController;
+    private final SmsController smsController;
 
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
@@ -44,6 +42,8 @@ public class RainbowLikeApplication implements CommandLineRunner {
         ftalentController.createTestFtw();
         ftalentController.createTestFtc();
         ftalentController.createTestFtm();
+
+        smsController.createTestSms();
     }
 }
 

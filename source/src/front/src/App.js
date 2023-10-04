@@ -15,9 +15,9 @@ import NoticeListPage from './js/pages/Post/NoticeListPage';
 import Main from "./js/component/screens/Main";
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import PostList from "./js/component/Post/PostList";
-import RentPage from "./js/pages/Rent/RentPage";
+import RentProcessPage from "./js/pages/Rent/RentProcessPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
-import RentApplicationPage from "./js/pages/Rent/RentApplicationPage";
+import RentApplyPage from "./js/pages/Rent/RentApplyPage";
 import FTMainPage from "./js/pages/FT/FTMainPage";
 import FTWListPage from "./js/pages/FT/FTW/FTWListPage";
 import FTWFormPage from "./js/pages/FT/FTW/FTWFormPage";
@@ -43,6 +43,13 @@ import OrgListPage from "./js/pages/Organization/OrgListPage";
 import {useTracking} from "./js/component/hook/useTracking";
 import LogListPage from "./js/pages/Log/LogListPage";
 import RentHistListPage from "./js/pages/Rent/RentHistListPage";
+import MyActivePage from "./js/pages/My/MyActivePage";
+import MyEduPage from "./js/pages/My/MyEduPage";
+import MyRentPage from "./js/pages/My/MyRentPage";
+import MyFTWPage from "./js/pages/My/MyFTWPage";
+import MyClubPage from "./js/pages/My/MyClubPage";
+import MyCounselPage from "./js/pages/My/MyCounselPage";
+import RentReviewPostPage from "./js/pages/Rent/RentReviewPostPage";
 
 
 function App() {
@@ -113,35 +120,49 @@ function App() {
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/list/detail/:eduNum" element={<EduDetailPage/>}/>
-                <Route path="/edu/list/apply/:eduNum" element={memId ? <EduApplyPage/> : <Navigate to="/login" replace/>}/>
-                <Route path="/edu/applylist" element={memId ? <EduHistListPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/edu/list/apply/:eduNum"
+                       element={memId ? <EduApplyPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/edu/applylist"
+                       element={memId ? <EduHistListPage memId={memId}/> : <Navigate to="/login" replace/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
-                <Route path="/rent" element={<RentPage/>}/>
-                <Route path="/rent/status" element={<RentStatusPage/>}/>
-                <Route path="/rent/application/:spaceNum" element={<RentApplicationPage/>}/>
+
                 <Route path="/posts" element={<PostList/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
-                <Route path="/clubs" element={<ClubPage/>}/>
-                <Route path="/clubs/new" element={<ClubFormPage/>}/>
-                <Route path="/clubs/:id" element={<ClubDtlPage/>}/>
-                <Route path="/clubs/edit/:id" element={<ClubEditorPage/>}/>
-                <Route path="/ftmain" element={<FTMainPage/>}/>
-                <Route path="/ftw" element={<FTWListPage/>}/>
-                <Route path="/ftw/new" element={<FTWFormPage/>}/>
-                <Route path="/ftw/:id" element={<FTWDtlPage/>}/>
+                <Route path="/sj" element={<SjNewsPage/>}/>
+                <Route path="/clubs" element={<ClubPage />}/>
+                <Route path="/clubs/new" element={memId? <ClubFormPage /> : <Navigate to ="/login" replace/> }/>
+                <Route path="/clubs/:id" element={<ClubDtlPage />}/>
+                <Route path="/clubs/edit/:id" element={<ClubEditorPage />}/>
+                <Route path="/ftmain" element={<FTMainPage />} />
+                <Route path="/ftw" element={isAdmin? <FTWListPage /> : null } />
+                <Route path="/ftw/new" element={memId? <FTWFormPage /> : <Navigate to ="/login" replace/> } />
+                <Route path="/ftw/:id" element={<FTWDtlPage />} />
                 <Route path="/ftw/edit/:id" element={<FTWEditPage/>}/>
-                <Route path="/ftc" element={<FTCListPage/>}/>
-                <Route path="/ftc/new" element={<FTCFormPage/>}/>
-                <Route path="/ftc/:id" element={<FTCDtlPage/>}/>
+                <Route path="/ftc" element={isAdmin? <FTCListPage/> : null}/>
+                <Route path="/ftc/new" element={memId? <FTCFormPage /> : <Navigate to ="/login" replace/> }/>
+                <Route path="/ftc/:id" element={<FTCDtlPage />} />
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
-                <Route path="/ftm" element={<FTMListPage/>}/>
-                <Route path="/ftmpop/:speField/:ftcNum" element={<MatchingPopup/>}/>
+                <Route path="/ftmpop/:ftcNum" element={isAdmin? <MatchingPopup /> : null}/>
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
+
+                {/*공간대관페이지관련*/}
+                <Route path="/rent/process" element={<RentProcessPage/>}/>
+                <Route path="/rent/status" element={<RentStatusPage/>}/>
+                <Route path="/rent/apply" element={<RentApplyPage/>}/>
+                <Route path="/rent/review" element={<RentReviewPostPage/>}/>
+
+                {/*마이페이지관련*/}
+                <Route path="/mypage/edu" element={<MyEduPage/>}/>
+                <Route path="/mypage/rent" element={<MyRentPage/>}/>
+                <Route path="/mypage/active" element={<MyActivePage/>}/>
+                <Route path="/mypage/ftw" element={<MyFTWPage/>}/>
+                <Route path="/mypage/club" element={<MyClubPage/>}/>
+                <Route path="/mypage/csl" element={<MyCounselPage/>}/>
             </Routes>
         </div>
     )
