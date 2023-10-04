@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, {useEffect, useMemo, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 import styles from '../../../css/component/Edu/EduDetail.module.css';
-import { SERVER_URL } from '../Common/constants';
+import {SERVER_URL} from '../Common/constants';
 
 function EduDetail() {
     const [eduData, setEduData] = useState(null);
     const [files, setFiles] = useState([]);
-    const { eduNum } = useParams();
+    const {eduNum} = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(SERVER_URL + `files`)
+        fetch(SERVER_URL + `files/eduNum/${eduNum}`)
             .then((response) => response.json())
             .then((data) => setFiles(data))
             .catch((error) => console.error(error));
@@ -64,11 +64,11 @@ function EduDetail() {
     const getTypeTitleAndStyle = (type) => {
         switch (type) {
             case "EDU":
-                return { title: "교육", className: styles.typeEDU };
+                return {title: "교육", className: styles.typeEDU};
             case "BUSINESS":
-                return { title: "사업", className: styles.typeBUSINESS };
+                return {title: "사업", className: styles.typeBUSINESS};
             default:
-                return { title: type, className: "" };
+                return {title: type, className: ""};
         }
     };
 
@@ -86,7 +86,7 @@ function EduDetail() {
     };
 
     const handleApplyButtonClick = () => {
-        navigate(`/edu/apply/${eduNum}`);
+        navigate(`/edu/list/apply/${eduNum}`);
     };
 
     // Define filteredFiles here
@@ -96,43 +96,47 @@ function EduDetail() {
     );
 
     return (
-        <div className={styles.container}>
-            {eduData ? (
-                <div>
-                    <div className={styles.headerContent}>
-                        <div className={styles.leftTop}>
-                            {filteredFiles[0] && <img src={filteredFiles[0].fileUri} alt="First Image" />}
-                        </div>
-                        <div className={styles.rightTop}>
-                            <h1 className={styles.header}>
+            <div className={styles.container}>
+                {eduData ? (
+                    <div>
+                        <div className={styles.headerContent}>
+                            <div className={styles.leftTop}>
+                                {filteredFiles[0] && <img src={filteredFiles[0].fileUri} alt="First Image"/>}
+                            </div>
+                            <div className={styles.rightTop}>
+                                <h1 className={styles.header}>
                                 <span className={getTypeTitleAndStyle(eduData.type).className}>
                                     <strong>{getTypeTitleAndStyle(eduData.type).title}</strong>
                                 </span>&nbsp;&nbsp;&nbsp;{eduData.eduName}
-                            </h1>
-                            <p className={styles.detail}><strong>교육 일시:</strong> {renderDateRange(eduData.eduStdt, eduData.eduEddt)}</p>
-                            <p className={styles.detail}><strong>장소:</strong> {eduData.eduAddr}</p>
-                            <p className={styles.detail}><strong>대상:</strong> {eduData.target}</p>
-                            <p className={styles.detail}><strong>신청 기간:</strong> {eduData.recuStdt} ~ {eduData.recuEddt}</p>
-                            <p className={styles.detail}><strong>신청 방법:</strong> {getRecuMethodDescription(eduData.recuMethod)}</p>
-                            <p className={styles.detail}><strong>문의 전화번호:</strong> {eduData.tel}</p>
-                            {isWithinApplicationPeriod(eduData.recuStdt, eduData.recuEddt) && isBelowMaxApplicants(eduData.recuPerson, eduData.capacity) && (
-                                <button className={styles.applyButton} onClick={handleApplyButtonClick}>신청하기</button>
-                            )}
+                                </h1>
+                                <p className={styles.detail}><strong>교육
+                                    일시:</strong> {renderDateRange(eduData.eduStdt, eduData.eduEddt)}</p>
+                                <p className={styles.detail}><strong>장소:</strong> {eduData.eduAddr}</p>
+                                <p className={styles.detail}><strong>대상:</strong> {eduData.target}</p>
+                                <p className={styles.detail}><strong>신청
+                                    기간:</strong> {eduData.recuStdt} ~ {eduData.recuEddt}</p>
+                                <p className={styles.detail}><strong>신청
+                                    방법:</strong> {getRecuMethodDescription(eduData.recuMethod)}</p>
+                                <p className={styles.detail}><strong>문의 전화번호:</strong> {eduData.tel}</p>
+                                {isWithinApplicationPeriod(eduData.recuStdt, eduData.recuEddt) && isBelowMaxApplicants(eduData.recuPerson, eduData.capacity) && (
+                                    <button className={styles.applyButton}
+                                            onClick={handleApplyButtonClick}>신청하기</button>
+                                )}
+                            </div>
+                        </div>
+                        <br/>
+                        <hr/>
+                        <br/>
+                        <div className={styles.mainContent}>
+                            {filteredFiles[1] && <img src={filteredFiles[1].fileUri} alt="Second Image"/>}
+                            <br/>
+                            <p className={styles.detailContent}>{eduData.content}</p>
                         </div>
                     </div>
-                    <br />
-                    <hr />
-                    <br />
-                    <div className={styles.mainContent}>
-                        {filteredFiles[1] && <img src={filteredFiles[1].fileUri} alt="Second Image" />}
-                        <br />
-                        <p className={styles.detailContent}>{eduData.content}</p>
-                    </div>
-                </div>
-            ) : (
-                <p>Loading...</p>
-            )}
-        </div>
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </div>
     );
 }
 

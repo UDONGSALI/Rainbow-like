@@ -1,4 +1,4 @@
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import './App.css';
 import LoginPage from "./js/pages/Login/LoginPage";
 import React, {useEffect} from "react";
@@ -34,18 +34,31 @@ import ClubFormPage from "./js/pages/Club/ClubFormPage";
 import SignUpPage from "./js/pages/Login/SignUpPage";
 import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
 import ClubEditorPage from "./js/pages/Club/ClubEditorPage";
-import EduApplyCheckPage from "./js/pages/Edu/EduApplyCheckPage";
+import EduHistListPage from "./js/pages/Edu/EduHistListPage";
 import LaborListPage from "./js/pages/Post/LaborListPage";
-import Footer from "./js/layout/Footer/footer";
-import MyActivePage from "./js/pages/My/MyActivePage";
+import ErrorPage from "./js/pages/ErrorPage";
+import BoardPostListPage from "./js/pages/Board/BoardPostListPage";
+import BoardListPage from "./js/pages/Board/BoardListPage";
+import OrgListPage from "./js/pages/Organization/OrgListPage";
+import {useTracking} from "./js/component/hook/useTracking";
+import {SERVER_URL} from "./js/component/Common/constants";
+import { useLocation } from 'react-router-dom';
+import LogListPage from "./js/pages/Log/LogListPage";
+
+
 
 function App() {
-    const isAdmin = sessionStorage.getItem("role") === "ADMIN"; // 사용자가 ADMIN인지 확인
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    const isLabor = sessionStorage.getItem("role") === "LABOR";
     const memId = sessionStorage.getItem("memId");
     const memNum = sessionStorage.getItem("memNum");
-    console.log(memNum+ "멤넘")
-    console.log(memId+ "멤넘")
     const navigate = useNavigate();
+    const {trackButtonClick, trackPageView, saveEventLogToServer } = useTracking(memId);
+
+    useEffect(() => {
+        trackPageView();
+    }, [trackPageView]);
+
 
     useEffect(() => {
         // sessionStorage에서 JWT 토큰을 가져옵니다.
@@ -62,6 +75,7 @@ function App() {
             sessionStorage.setItem("memId", decodedToken.sub);
         }
     }, [navigate]);
+
 
     // JWT 토큰을 디코딩하는 함수
     function decodeToken(token) {
@@ -80,53 +94,56 @@ function App() {
         }
     }
 
+
     return (
-        <div className="App">
+        <div className="App" onClick={trackButtonClick} >
             <NavBar/>
             <Routes>
                 <Route path="/" element={<Main/>}/>
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
-                <Route path="/admin/edu" element={isAdmin ? <EduListPage/> : null}/>
+                <Route path="/admin/edu" element={isAdmin ? <EduListPage type="admin"/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
+                <Route path="/admin/eduApply" element={isAdmin ? <EduHistListPage memId={memId} type="admin"/> : null}/>
+                <Route path="/admin/org" element={isAdmin ? <OrgListPage/> : null}/>
+                <Route path="/admin/board" element={isAdmin ? <BoardListPage/> : null}/>
+                <Route path="/admin/board/post/:boardNum" element={isAdmin ? <BoardPostListPage/> : null}/>
+                <Route path="/admin/log" element={isAdmin ? <LogListPage/> : null}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
-                <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
-                <Route path="/edu/detail/:eduNum" element={<EduDetailPage/>}/>
-                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-                <Route path="/edu/applyck" element={<EduApplyCheckPage memId={memId}/>}/>
-                <Route path="/edu/apply/:eduNum" element={memId? <EduApplyPage/>: <LoginPage />}/>
-                <Route path="/edu/applyck" element={memId? <EduApplyCheckPage memId={memId}/>:<LoginPage />}/>
+                <Route path="/edu/list" element={<EduListPage/>}/>
+                <Route path="/edu/list/detail/:eduNum" element={<EduDetailPage/>}/>
+                <Route path="/edu/list/apply/:eduNum" element={memId ? <EduApplyPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/edu/applylist" element={memId ? <EduHistListPage memId={memId}/> : <Navigate to="/login" replace/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/rent" element={<RentPage/>}/>
-                <Route path="/rent/status" element={<RentStatusPage/>}/>
-                <Route path="/rent/application/:spaceNum" element={<RentApplicationPage/>}/>
+                <Route path="/rent/rentStatus" element={<RentStatusPage/>}/>
+                <Route path="/rent/rentApplication/:spaceNum" element={<RentApplicationPage/>}/>
                 <Route path="/posts" element={<PostList/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/clubs" element={<ClubPage/>}/>
-                <Route path="/clubs/new" element={memId? <ClubFormPage/>: <LoginPage />}/>
+                <Route path="/clubs/new" element={<ClubFormPage/>}/>
                 <Route path="/clubs/:id" element={<ClubDtlPage/>}/>
                 <Route path="/clubs/edit/:id" element={<ClubEditorPage/>}/>
-                <Route path="/ftmain" element={<FTMainPage />} />
-                <Route path="/ftw" element={isAdmin? <FTWListPage /> : null} />
-                <Route path="/ftw/new" element={memId? <FTWFormPage /> : <loginPage />} />
-                <Route path="/ftw/:id" element={<FTWDtlPage />} />
+                <Route path="/ftmain" element={<FTMainPage/>}/>
+                <Route path="/ftw" element={<FTWListPage/>}/>
+                <Route path="/ftw/new" element={<FTWFormPage/>}/>
+                <Route path="/ftw/:id" element={<FTWDtlPage/>}/>
                 <Route path="/ftw/edit/:id" element={<FTWEditPage/>}/>
-                <Route path="/ftc" element={isAdmin?<FTCListPage/> : null}/>
-                <Route path="/ftc/new" element={memId? <FTCFormPage/> : <loginPage />}/>
-                <Route path="/ftc/:id" element={<FTCDtlPage />} />
+                <Route path="/ftc" element={<FTCListPage/>}/>
+                <Route path="/ftc/new" element={<FTCFormPage/>}/>
+                <Route path="/ftc/:id" element={<FTCDtlPage/>}/>
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
-                <Route path="/ftm" element={isAdmin? <FTMListPage/> : null}/>
-                <Route path="/ftmpop/:ftcNum" element={isAdmin? <MatchingPopup /> : null}/>
-                <Route path="/post/detail/:postNum" element={<PostDetailPage/>}/>
+                <Route path="/ftm" element={<FTMListPage/>}/>
+                <Route path="/ftmpop/:speField/:ftcNum" element={<MatchingPopup/>}/>
+                <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
-                <Route path="/mypage/active" element={<MyActivePage/>}/>
+                <Route path="/error" element={<ErrorPage/>}/>
             </Routes>
-            <Footer/>
         </div>
     )
 }

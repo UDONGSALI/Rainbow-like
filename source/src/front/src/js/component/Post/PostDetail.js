@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
 import styles from '../../../css/component/Post/PostDetail.module.css';
 
 function PostDetail(props) {
     const { postNum,boardNum } = props;
-    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    const isLabor = sessionStorage.getItem("role") === "LABOR";
-    const memNum = sessionStorage.getItem("memNum");
     const [post, setPost] = useState(null);
     const [open, setOpen] = useState(false);
     const [files, setFiles] = useState([]);
@@ -21,7 +18,7 @@ function PostDetail(props) {
     const nextPostNum = parseInt(postNum) + 1;
 
     useEffect(() => {
-        fetch(SERVER_URL + `files`)
+        fetch(SERVER_URL + "files/table/post")
             .then((response) => response.json())
             .then((data) => {
                 setFiles(data);
@@ -72,50 +69,40 @@ function PostDetail(props) {
     };
 
 
-    //마지막 postNum 상태 저장
     useEffect(() => {
-        fetch(`${SERVER_URL}posts/${postNum}`)
-            .then(response => response.json())
-            .then(data => {
-                setPost(data);
-                if (!lastPostNum || postNum > lastPostNum) {
-                    setLastPostNum(postNum);
-                }
+        fetch(SERVER_URL + "files/table/post")
+            .then((response) => response.json())
+            .then((data) => {
+                setFiles(data);
+
+                // files[].post.postNum 중 가장 큰 값을 찾아 lastPostNum 상태로 설정
+                const maxPostNum = Math.max(...data.map(file => file.post.postNum));
+                setLastPostNum(maxPostNum);
             })
-            .catch(error => console.error(error));
-    }, [postNum]);
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
 
     useEffect(() => {
-        // 게시글 접근 권한 조건
-        fetch(`${SERVER_URL}posts/${postNum}`)
-            .then(response => response.json())
-            .then(data => {
-                setPost(data);
-                if (boardNum === 7) {
-                    if (!isAdmin && !isLabor && memNum !== data.post.memNum) {
-                        alert("이 페이지에 접근할 수 없습니다.");
-                        navigate('/'); // 또는 다른 페이지로 리다이렉트
-                    }
-                }
-            })
-            .catch(error => console.error(error));
-    }, [postNum]);
+        // post 상태가 있고, post.board.boardNum이 7보다 작을 때만 이전 글의 제목을 가져옴
+        if (post && post.board.boardNum < 7) {
+            // 이전 글의 제목 가져오기
+            fetch(`${SERVER_URL}posts/${prevPostNum}`)
+                .then(response => response.json())
+                .then(data => setPrevPostTitle(data.post))
+                .catch(error => console.error(error));
+        }
 
-    useEffect(() => {
-        // 이전 글의 제목 가져오기
-        fetch(`${SERVER_URL}posts/${prevPostNum}`)
-            .then(response => response.json())
-            .then(data => setPrevPostTitle(data.post))
-            .catch(error => console.error(error));
-
-        // 현재 postNum이 마지막 글이 아니라면 다음 글의 제목 가져오기
-        if (postNum < lastPostNum) {
+        // 현재 postNum이 마지막 글이 아니고, boardNum이 7보다 작을 때만 다음 글의 제목 가져오기
+        if (postNum < lastPostNum && post && post.board.boardNum < 7) {
             fetch(`${SERVER_URL}posts/${nextPostNum}`)
                 .then(response => response.json())
                 .then(data => setNextPostTitle(data.post))
                 .catch(error => console.error(error));
         }
-    }, [postNum, prevPostNum, nextPostNum, lastPostNum]);
+    }, [prevPostNum, lastPostNum, post]); // post도 의존성 배열에 추가했습니다.
 
 
     const onEditClick = () => {
@@ -125,11 +112,13 @@ function PostDetail(props) {
     if (!post) {
         return <div>Loading...</div>;
     }
+
 //이전 글과 다음 글 게시판이 같다면 이동
-    const canGoToPrevPost = prevPostTitle && prevPostTitle.board.boardNum === post.board.boardNum;
-    const canGoToNextPost = nextPostTitle && nextPostTitle.board.boardNum === post.board.boardNum;
+    const canGoToPrevPost = prevPostTitle && prevPostTitle.board.boardNum == post.board.boardNum;
+    const canGoToNextPost = nextPostTitle && nextPostTitle.board.boardNum == post.board.boardNum && lastPostNum > postNum;
 // 기존 코드에서 boardNum이 7보다 크거나 같은지 확인하는 변수
-    const hidePrevNextButtons = post.board.boardNum >= 7;
+    const hidePrevNextButtons = post.board.boardNum >= 7 && lastPostNum == postNum;
+
 
     return (
         <div className={styles.postDetail}> {/* CSS 모듈 적용 */}
@@ -194,7 +183,7 @@ function PostDetail(props) {
                         &nbsp;&nbsp;∧ 이전 글 -&nbsp;
                         <button
                             onClick={() => {
-                                navigate(`/post/detail/${prevPostNum}`);
+                                navigate(`/post/detail/${boardNum}/${prevPostNum}`);
                             }}
                             className={styles.prevButtonStyle}
                         >
@@ -208,7 +197,7 @@ function PostDetail(props) {
                         &nbsp;&nbsp;∨ 다음 글 -&nbsp;
                         <button
                             onClick={() => {
-                                navigate(`/post/detail/${nextPostNum}`);
+                                navigate(`/post/detail/${boardNum}/${nextPostNum}`);
                             }}
                             className={styles.nextButtonStyle}
                         >

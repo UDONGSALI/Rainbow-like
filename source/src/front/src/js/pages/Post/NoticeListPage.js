@@ -6,15 +6,7 @@ import { useParams } from 'react-router-dom';
 function NoticeListPage() {
     const { boardNum } = useParams();
 
-    let pageTitle;
-    switch (boardNum) {
-        case '1':
-            pageTitle = '공지사항';
-            break;
-        case '2':
-            pageTitle = '언론보도';
-            break;
-    }
+    let pageTitle = '공지사항';
 
     return (
         <div>
