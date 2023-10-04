@@ -7,6 +7,9 @@ import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,9 +76,9 @@ public class MemberController {
     }
 
     @PutMapping("/id/{id}/{pwd}")
-    private ResponseEntity<?> memberPwdChange(@PathVariable String id,@PathVariable String pwd) {
+    private ResponseEntity<?> memberPwdChange(@PathVariable String id, @PathVariable String pwd) {
         System.out.println("아이디" + id);
-        System.out.println("비밀번호"+ pwd);
+        System.out.println("비밀번호" + pwd);
         Member member = memberRepository.findByMemId(id);
         member.setPwd(pwd);
         memberRepository.save(member);
@@ -118,6 +121,36 @@ public class MemberController {
         member = Member.createMember(memberFormDto4, passwordEncoder);
         memberService.saveMember(member);
     }
+
+    //현재 로그인한 유저정보
+    @GetMapping("/current-user")
+    public ResponseEntity<Member> getMemberInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).build();
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) principal;
+
+            String username = userDetails.getUsername();  // 여기서 사용자의 아이디를 가져옴
+            Member member = memberRepository.findByMemId(username);
+
+            if (member != null) {
+                // 멤버 정보를 반환
+                return ResponseEntity.ok(member);
+            } else {
+                return ResponseEntity.status(401).build();
+            }
+        } else {
+            return ResponseEntity.status(401).build();
+        }
+    }
+
+
+
 
 
 }
