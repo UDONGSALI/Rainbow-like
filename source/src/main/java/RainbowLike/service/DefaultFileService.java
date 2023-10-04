@@ -1,16 +1,16 @@
-package RainbowLike.controller;
+package RainbowLike.service;
 
 import RainbowLike.entity.File;
 import RainbowLike.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+@Service
 @RequiredArgsConstructor
-public class DefaultFileController {
+public class DefaultFileService {
 
     private final MemberRepository memberRepository;
     private final SpaceRepository spaceRepository;
