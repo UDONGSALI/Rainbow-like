@@ -33,7 +33,6 @@ public class RentHistController {
     public void createBasicRent() {
         ArrayList<RentHistDto> rentHistDtoList =RentHistDto.createRentHists();
         rentHistService.createRentHists(rentHistDtoList);
-
     }
 
 }

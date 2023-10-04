@@ -41,10 +41,7 @@ import BoardPostListPage from "./js/pages/Board/BoardPostListPage";
 import BoardListPage from "./js/pages/Board/BoardListPage";
 import OrgListPage from "./js/pages/Organization/OrgListPage";
 import {useTracking} from "./js/component/hook/useTracking";
-import {SERVER_URL} from "./js/component/Common/constants";
-import { useLocation } from 'react-router-dom';
 import LogListPage from "./js/pages/Log/LogListPage";
-
 
 
 function App() {
@@ -53,7 +50,7 @@ function App() {
     const memId = sessionStorage.getItem("memId");
     const memNum = sessionStorage.getItem("memNum");
     const navigate = useNavigate();
-    const {trackButtonClick, trackPageView, saveEventLogToServer } = useTracking(memId);
+    const {trackButtonClick, trackPageView, saveEventLogToServer} = useTracking(memId);
 
     useEffect(() => {
         trackPageView();
@@ -96,7 +93,7 @@ function App() {
 
 
     return (
-        <div className="App" onClick={trackButtonClick} >
+        <div className="App" onClick={trackButtonClick}>
             <NavBar/>
             <Routes>
                 <Route path="/" element={<Main/>}/>

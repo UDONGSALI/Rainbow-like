@@ -4,7 +4,7 @@ import { Button, Snackbar, Stack, TextField, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import FindIdPasswordModal from "./FindIdPasswordModal";
 
-function Login() {
+function Login({memId}) {
     // 로그인 실패 횟수를 localStorage에서 가져옵니다.
     const storedFailedAttempts = localStorage.getItem('failedAttempts') || 0;
     const [failedAttempts, setFailedAttempts] = useState(parseInt(storedFailedAttempts, 10));
