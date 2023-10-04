@@ -1,18 +1,14 @@
 import React from 'react';
 import {AppBar, Toolbar, Typography} from "@mui/material";
 import Login from "../../component/Login/Login";
+import UrlComponent from "../../layout/Header/UrlComponent";
+import {headerInfo, urlData} from "../../layout/Header/Data/LoginHeader";
 
 const LoginPage = () => {
     return (
         <div>
-        <AppBar position={"static"}>
-            <Toolbar>
-                <Typography variant={'h6'}>
-                    <p>로그인</p>
-                </Typography>
-            </Toolbar>
-        </AppBar>
-        <Login />
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'Login'}/>
+            <Login />
         </div>
     );
 };

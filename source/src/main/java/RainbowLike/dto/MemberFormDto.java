@@ -12,7 +12,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -62,74 +64,89 @@ public class MemberFormDto {
     @NotBlank(message = "우편번호는 필수 입력 값입니다.")
     private String addrPost;
 
-    public MemberFormDto() {
-    }
-    static public MemberFormDto createAdmin() {
-        MemberFormDto memberFormDto = new MemberFormDto();
-        memberFormDto.setMemId("admin");
-        memberFormDto.setPwd("12341234");
-        memberFormDto.setName("관리자");
-        memberFormDto.setEmail("admin@abc.com");
-        memberFormDto.setType(Type.ADMIN);
-        memberFormDto.setGender(Gender.FEMALE);
-        memberFormDto.setTel("01012345678");
-        memberFormDto.setBir(LocalDate.of(2000, 10, 10));
-        memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
-        memberFormDto.setAddrDtl("양호빌딩 6층");
-        memberFormDto.setAddrPost("35235");
+    @NotBlank
+    private LocalDate jdate;
 
-        return memberFormDto;
-    }
+    static public  List<MemberFormDto> createtestMember() {
+        List<MemberFormDto> memberFormDtoList = new ArrayList<>();
 
-    static public MemberFormDto createUser() {
-        MemberFormDto memberFormDto = new MemberFormDto();
-        memberFormDto.setMemId("user");
-        memberFormDto.setPwd("12341234");
-        memberFormDto.setName("유저");
-        memberFormDto.setEmail("user@abc.com");
-        memberFormDto.setType(Type.USER);
-        memberFormDto.setGender(Gender.FEMALE);
-        memberFormDto.setTel("01012345678");
-        memberFormDto.setBir(LocalDate.of(2000, 10, 10));
-        memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
-        memberFormDto.setAddrDtl("양호빌딩 6층");
-        memberFormDto.setAddrPost("35235");
+        MemberFormDto memberFormDto1 = new MemberFormDto();
+        memberFormDto1.setMemId("admin");
+        memberFormDto1.setPwd("12341234");
+        memberFormDto1.setName("관리자");
+        memberFormDto1.setEmail("admin@abc.com");
+        memberFormDto1.setType(Type.ADMIN);
+        memberFormDto1.setGender(Gender.FEMALE);
+        memberFormDto1.setTel("01012345678");
+        memberFormDto1.setBir(LocalDate.of(2000, 10, 10));
+        memberFormDto1.setAddr("대전광역시 서구 둔산서로 17");
+        memberFormDto1.setAddrDtl("양호빌딩 6층");
+        memberFormDto1.setAddrPost("35235");
+        memberFormDto1.setJdate(LocalDate.now());
+        memberFormDtoList.add(memberFormDto1);
 
-        return memberFormDto;
-    }
+        MemberFormDto memberFormDto2 = new MemberFormDto();
+        memberFormDto2.setMemId("user");
+        memberFormDto2.setPwd("12341234");
+        memberFormDto2.setName("유저");
+        memberFormDto2.setEmail("user@abc.com");
+        memberFormDto2.setType(Type.USER);
+        memberFormDto2.setGender(Gender.FEMALE);
+        memberFormDto2.setTel("01012345678");
+        memberFormDto2.setBir(LocalDate.of(2000, 10, 10));
+        memberFormDto2.setAddr("대전광역시 서구 둔산서로 17");
+        memberFormDto2.setAddrDtl("양호빌딩 6층");
+        memberFormDto2.setAddrPost("35235");
+        memberFormDto2.setJdate(LocalDate.now());
+        memberFormDtoList.add(memberFormDto2);
 
-    static public MemberFormDto createLabor() {
-        MemberFormDto memberFormDto = new MemberFormDto();
-        memberFormDto.setMemId("labor");
-        memberFormDto.setPwd("12341234");
-        memberFormDto.setName("노무사");
-        memberFormDto.setEmail("labor@abc.com");
-        memberFormDto.setType(Type.LABOR);
-        memberFormDto.setGender(Gender.FEMALE);
-        memberFormDto.setTel("01023456789");
-        memberFormDto.setBir(LocalDate.of(2000, 10, 10));
-        memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
-        memberFormDto.setAddrDtl("양호빌딩 6층");
-        memberFormDto.setAddrPost("35235");
+        MemberFormDto memberFormDto3 = new MemberFormDto();
+        memberFormDto3.setMemId("labor");
+        memberFormDto3.setPwd("12341234");
+        memberFormDto3.setName("노무사");
+        memberFormDto3.setEmail("labor@abc.com");
+        memberFormDto3.setType(Type.LABOR);
+        memberFormDto3.setGender(Gender.FEMALE);
+        memberFormDto3.setTel("01023456789");
+        memberFormDto3.setBir(LocalDate.of(2000, 10, 10));
+        memberFormDto3.setAddr("대전광역시 서구 둔산서로 17");
+        memberFormDto3.setAddrDtl("양호빌딩 6층");
+        memberFormDto3.setAddrPost("35235");
+        memberFormDto3.setJdate(LocalDate.now());
+        memberFormDtoList.add(memberFormDto3);
 
-        return memberFormDto;
-    }
+        MemberFormDto memberFormDto4 = new MemberFormDto();
+        memberFormDto4.setMemId("counselor");
+        memberFormDto4.setPwd("12341234");
+        memberFormDto4.setName("상담사");
+        memberFormDto4.setEmail("counselor@abc.com");
+        memberFormDto4.setType(Type.COUNSELOR);
+        memberFormDto4.setGender(Gender.FEMALE);
+        memberFormDto4.setTel("01012345678");
+        memberFormDto4.setBir(LocalDate.of(2000, 10, 10));
+        memberFormDto4.setAddr("대전광역시 서구 둔산서로 17");
+        memberFormDto4.setAddrDtl("양호빌딩 6층");
+        memberFormDto4.setAddrPost("35235");
+        memberFormDto4.setJdate(LocalDate.now());
+        memberFormDtoList.add(memberFormDto4);
 
-    static public MemberFormDto createCounselor() {
-        MemberFormDto memberFormDto = new MemberFormDto();
-        memberFormDto.setMemId("counselor");
-        memberFormDto.setPwd("12341234");
-        memberFormDto.setName("상담사");
-        memberFormDto.setEmail("counselor@abc.com");
-        memberFormDto.setType(Type.COUNSELOR);
-        memberFormDto.setGender(Gender.FEMALE);
-        memberFormDto.setTel("01012345678");
-        memberFormDto.setBir(LocalDate.of(2000, 10, 10));
-        memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
-        memberFormDto.setAddrDtl("양호빌딩 6층");
-        memberFormDto.setAddrPost("35235");
-
-        return memberFormDto;
+//        for (int i = 0; i < 100; i++) {
+//            MemberFormDto memberFormDto = new MemberFormDto();
+//            memberFormDto.setMemId("user" + i);
+//            memberFormDto.setPwd("12341234");
+//            memberFormDto.setName("테스트" + i);
+//            memberFormDto.setEmail("test@abc.com" + i);
+//            memberFormDto.setType(Type.USER);
+//            memberFormDto.setGender(Gender.FEMALE);
+//            memberFormDto.setTel("0101234567" + i);
+//            memberFormDto.setBir(LocalDate.of(2000, 10, 10));
+//            memberFormDto.setAddr("대전광역시 서구 둔산서로 17");
+//            memberFormDto.setAddrDtl("양호빌딩 6층");
+//            memberFormDto.setAddrPost("35235");
+//            memberFormDto.setJdate(LocalDate.now());
+//            memberFormDtoList.add(memberFormDto);
+//        }
+        return memberFormDtoList;
     }
 
 

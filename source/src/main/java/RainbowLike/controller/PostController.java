@@ -35,6 +35,12 @@ public class PostController {
         return postRepository.findByBoard(boardRepository.findByBoardNum(boardNum));
     }
 
+    @GetMapping("/post/{boardNum}/search/{option}/{value}")
+    public ResponseEntity<Iterable<Post>> searchBoardPost(@PathVariable Long boardNum, @PathVariable String option, @PathVariable String value) {
+        Iterable<Post> postInfo = postService.searchPostsByBoardNumAndOptionAndValue(boardNum, option, value);
+        return ResponseEntity.ok(postInfo);
+    }
+
     @RequestMapping("/clubs")
     public Iterable<Post> getClubPosts() {
         //게시판 이름으로 게시글 요청
@@ -64,7 +70,6 @@ public class PostController {
 
         return ResponseEntity.ok(postInfo);
     }
-
 
 
 
@@ -130,6 +135,18 @@ public class PostController {
 
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/post/{postNum}")
+    public ResponseEntity<?> deletePost(@PathVariable Long postNum) {
+        try {
+            postService.deletePost(postNum);
+            return ResponseEntity.ok("Post deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error occurred while deleting post: " + e.getMessage());
+        }
+    }
+
+
 
     public void createPosts(){
         ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();

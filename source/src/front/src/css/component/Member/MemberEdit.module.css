@@ -1,31 +1,16 @@
 .memberDetailContainer {
-    width: 350px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    background-color: #f9f9f9;
+    width: 500px;
 }
 
-.memberDetailContainer h2 {
-    text-align: center;
-    margin-bottom: 20px;
+.memberDetailContainer .inputGroup{
+    margin-top: 12px;
 }
 
-.memberDetailContainer .inputGroup {
-    width: 94.5%;
-}
-
-.memberDetailContainer input,
-.memberDetailContainer select,
-.memberDetailContainer button {
-    margin-bottom: 15px;
+.memberDetailContainer .inputGroup input{
+    font-size: 12px;
     padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
 }
+
 
 .memberDetailContainer button {
     background-color: #007bff;

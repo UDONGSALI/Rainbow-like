@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { TextField, Stack, Button } from '@mui/material';
 import axios from 'axios';
 import {SERVER_URL} from "../Common/constants";
-import bcrypt from "bcryptjs";
 
 const ChangePassword = ({
                             usernameForChange, handleMouseEnter, handleMouseLeave, buttonColors, closeModal
@@ -23,8 +22,7 @@ const ChangePassword = ({
         }
 
         try {
-            const hashedPwd = bcrypt.hashSync(password, 10);
-            const response = await axios.put(`${SERVER_URL}members/id/${usernameForChange}/${hashedPwd}`);
+            const response = await axios.put(`${SERVER_URL}members/id/${usernameForChange}/${password}`);
 
             if (response.status === 200) {
                 alert("비밀번호가 변경 되었습니다!");
