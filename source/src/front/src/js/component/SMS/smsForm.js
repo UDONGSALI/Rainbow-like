@@ -1,48 +1,28 @@
 import React, {useEffect, useState} from "react";
-import styles from '../../../css/component/Club/ClubForm.module.css';
+import styles from '../../../../css/component/Club/ClubForm.module.css';
 import {useNavigate} from "react-router-dom";
-import {SERVER_URL} from "../Common/constants";
+import {SERVER_URL} from "../../component/Common/constants";
 
-function ClubForm(props){
-    const navigate = useNavigate();
-    const memId = sessionStorage.getItem("memId");
-    const [member, setMember] = useState([]);
+function smsForm(){
     const [formData, setFormData] = useState({});
+    const [recepData, setRecepData] = useState({});
 
-        useEffect(() => {
-        memberSet();
-
+    useEffect(() => {
         const formSet = {
-            memNum: member.memNum,
-            boardNum: 9,
-            title: '',
-            content: '',
-            pageView: 0,
-            parentsNum: '',
-            clubAllowStatus: '승인대기',
-            clubRecuStatus: '',
-            delYN : 'N'
-            }
+           smsType : '',
+            sendTel : '01075260231',
+            content : '',
+            sendDate : new Date.now()
+        }
+        const recepSet = {
+            smsHistNum : '',
+            recepTel : '',
+        }
 
-            setFormData(formSet);
+        setFormData(formSet);
+        setRecepData(recepSet);
 
-        }, [member.memNum]);
-
-
-
-    const memberSet = () => {
-        fetch(SERVER_URL + `members/id/${memId}`)
-        .then(response => response.json())
-        .then(data => {
-            setMember(data);
-        })
-        .catch(error => {
-            alert('회원 정보를 찾을 수 없습니다!');
-            window.location.href = '/login';
-        }, [member.memNum]);
-    }
-
-
+    }, [formData.content]);
 
 
     const handleChange = (e) => {
@@ -54,7 +34,7 @@ function ClubForm(props){
         e.preventDefault();
 
         // API 호출하여 게시글 정보 전송
-        fetch('http://localhost:8090/posts/new', {
+        fetch('http://localhost:8090/sms/newhist', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -122,4 +102,5 @@ function ClubForm(props){
 
 };
 
-export default ClubForm;
+
+export default smsForm;
