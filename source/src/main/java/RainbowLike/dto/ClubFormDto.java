@@ -20,7 +20,7 @@ public class ClubFormDto {
     private String clubAllowStatus;
     private String clubRecuStatus;
 
-    public ClubFormDto(){
+    public ClubFormDto(Long postNum, String title){
 
     }
 
@@ -33,7 +33,7 @@ public class ClubFormDto {
         this.clubRecuStatus = clubRecuStatus;
     }
 
-    public ClubFormDto(String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus, Long memNum, Long boardNum){
+    public ClubFormDto(String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus, Long memNum, Long boardNum) {
         Board board = new Board();
         Member member = new Member();
 
@@ -47,6 +47,7 @@ public class ClubFormDto {
         board.setBoardNum(boardNum);
         this.memNum = memNum;
         member.setMemNum(memNum);
+
     }
 
 
