@@ -1,6 +1,7 @@
 package RainbowLike;
 
 import RainbowLike.controller.*;
+import RainbowLike.service.DefaultFileService;
 import RainbowLike.service.EduHistService;
 import RainbowLike.service.RentHistService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     private final CommentController commentController;
     private final RentHistService rentHistService;
     private final EduHistService eduHistService;
-    private final DefaultFileController defaultFileController;
+    private final DefaultFileService defaultFileService;
     private final FtalentController ftalentController;
     private final SmsController smsController;
 
@@ -37,7 +38,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
         eduHistService.createDefaultEduHists();
 
-        defaultFileController.createDefaultFiles();
+        defaultFileService.createDefaultFiles();
 
         ftalentController.createTestFtw();
         ftalentController.createTestFtc();
