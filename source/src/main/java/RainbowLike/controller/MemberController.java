@@ -7,8 +7,12 @@ import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
     @GetMapping
     public ResponseEntity<Iterable<Member>> getMembers() {
         return ResponseEntity.ok(memberService.findAllMembers());
@@ -66,6 +71,32 @@ public class MemberController {
             return ResponseEntity.ok(updatedMember);
         }
         return ResponseEntity.badRequest().body("Failed to update password");
+    }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<Member> getMemberInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).build();
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) principal;
+
+            String username = userDetails.getUsername();  // 여기서 사용자의 아이디를 가져옴
+            Member member = memberRepository.findByMemId(username);
+
+            if (member != null) {
+                // 멤버 정보를 반환
+                return ResponseEntity.ok(member);
+            } else {
+                return ResponseEntity.status(401).build();
+            }
+        } else {
+            return ResponseEntity.status(401).build();
+        }
     }
 
 }
