@@ -11,12 +11,6 @@
 
 }
 
-#active >.main > h3{
-    margin-top: 5%;
-    font-size: 25px;
-    font-weight: bold;
-    margin-bottom: 2%;
-}
 
 #active >.main > .posts{
     width: 100%;

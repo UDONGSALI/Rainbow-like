@@ -13,6 +13,7 @@ function ClubDetail(props) {
     const navigate = useNavigate();
 console.log(memId);
 
+
     useEffect(() => {
         // 조회수 증가 API 호출
         fetch(`${SERVER_URL}posts/${id}/increase-view`, {

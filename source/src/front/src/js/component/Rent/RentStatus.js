@@ -34,7 +34,6 @@ const getToday=()=>{
 
     return(
         <div id={styles.title}>
-            <h2>대관 현황</h2>
             <div className={styles.rentStatus}>
                 <div className={styles.spaceName}>
                     <ul>

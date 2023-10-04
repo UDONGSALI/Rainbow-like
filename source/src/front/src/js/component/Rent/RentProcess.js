@@ -75,7 +75,7 @@ export default function RentProcess() {
 
     return (
         <div id={styles.title}>
-            <h2>절차 및 이용기준</h2>
+
             <div className={styles.main1}><h3>대관 신청 절차</h3>
                 <div className={styles.boxWrap}>
                     <Box className={styles.boxStyle} sx={{
