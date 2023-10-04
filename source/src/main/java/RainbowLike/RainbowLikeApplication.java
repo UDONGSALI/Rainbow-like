@@ -2,6 +2,7 @@ package RainbowLike;
 
 import RainbowLike.controller.*;
 import RainbowLike.service.EduHistService;
+import RainbowLike.service.RentHistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,7 +15,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
     private final PostController postController;
     private final CommentController commentController;
-    private final RentHistController rentHistController;
+    private final RentHistService rentHistService;
     private final EduHistService eduHistService;
     private final DefaultFileController defaultFileController;
     private final FtalentController ftalentController;
@@ -28,7 +29,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        rentHistController.createBasicRent();
+        rentHistService.createBasicRent();
 
         postController.createPosts();
 

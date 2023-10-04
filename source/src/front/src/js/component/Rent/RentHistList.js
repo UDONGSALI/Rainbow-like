@@ -9,18 +9,20 @@ import {SERVER_URL} from "../Common/constants";
 import {useLocation, useNavigate} from "react-router-dom";
 // 4. 컴포넌트 관련
 import SearchComponent from "../Common/SearchComponent";
-import Certificate from "./RenderCell/Certificates";
+import Permit from "./RenderCell/Permit";
 // 5. 훅 관련
 import useSearch from "../hook/useSearch";
 import useFetch from "../hook/useFetch";
 import usePagination from "../hook/usePagination";
+import StatusCell from "./RenderCell/StatusCell";
+import payStatusCell from "./RenderCell/PayStatusCell";
+import ApplyDateCell from "./RenderCell/ApplyDateCell";
+import InfoModal from "../../../css/component/Common/InfoModal";
 // 6. Helper 함수나 Renderer 관련
-import {renderStatusCell} from "./RenderCell/statusRenderer";
-import renderApprovalStatusCell from "./RenderCell/renderApprovalStatusCell";
 
 const ADMIN_ROLE = "ADMIN";
 
-function EduHistList(props) {
+function RentHistList(props) {
     // 1. React Router 관련
     const navigate = useNavigate();
     const location = useLocation();
@@ -29,93 +31,65 @@ function EduHistList(props) {
     const userRole = sessionStorage.getItem("role");
     const isAdmin = userRole === ADMIN_ROLE;
 // 3. 로컬 상태 관리
-    const [eduHist, setEduHist] = useState([]);
     const {activePage, setActivePage} = usePagination(1);
-    const [isCertificateOpen, setIsCertificateOpen] = useState(false);
-    const [currentCertificateData, setCurrentCertificateData] = useState({name: "", eduName: ""});
+    const [isPermitOpen, setIsPermitOpen] = useState(false);
+    const [currentPermitData, setCurrentPermitData] = useState({spaceName: "", getRentDate: "", getRentTime: ""});
+    const [rentHist, setRentHist] = useState([]);
+    const [infoData, setInfoData] = useState(null);
+    const [infoTitle, setInfoTitle] = useState("");
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 // 4. 커스텀 훅
-    const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}eduHist`, setEduHist, undefined, memId);
+    const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}rent`, setRentHist, undefined, memId);
 // 상수
     const itemsPerPage = 10;
     const SEARCH_OPTIONS = [
-        {value: 'eduName', label: '프로그램명', type: 'text'},
+        {value: 'spaceName', label: '공간명', type: 'text'},
         ...(isAdmin ? [
             {value: 'memId', label: '회원 ID', type: 'text'}
         ] : []),
         {
-            value: 'status', label: '신청 상태', type: 'select', options: [
+            value: 'applyStatus', label: '신청 상태', type: 'select', options: [
                 {label: "대기", value: "WAIT"},
                 {label: "승인", value: "APPROVE"},
-                {label: "거부", value: "REJECT"},
-                {label: "완료", value: "COMPLETE"}
+                {label: "거부", value: "REJECT"}
+            ]
+        },
+        {
+            value: 'payStatus', label: '결제 상태', type: 'select', options: [
+                {label: "대기", value: "WAIT"},
+                {label: "완료", value: "COMPLETE"},
             ]
         },
     ];
 
-    const eduHistUrl = isAdmin ? SERVER_URL + 'eduHist' : SERVER_URL + `eduHist/search/memId/${memId}/${memId}`;
+    const rentHistUrl = isAdmin ? SERVER_URL + 'rent' : SERVER_URL + `rent/search/memId/${memId}/${memId}`;
 
-    const {data: rawEduApplyData, loading: eduHistLoading} = useFetch(eduHistUrl, []);
-
-    const {data: files, loading: filesLoading} = useFetch(SERVER_URL + 'files/table/eduHist', []);
+    const {data: rawRentHistData, loading: RentHistLoading} = useFetch(rentHistUrl, []);
 
     useEffect(() => {
-        if (!eduHistLoading && rawEduApplyData) {
-            const formattedData = rawEduApplyData.map((item, index) => ({
-                id: index + 1, ...item,
-                eduHistNum: item.eduHistNum
+        if (!RentHistLoading && rawRentHistData) {
+            const formattedData = rawRentHistData.map((item) => ({
+                id: item.rentHistNum, ...item
             }));
-            setEduHist(formattedData.reverse());
+            setRentHist(formattedData.reverse());
         }
-    }, [rawEduApplyData, eduHistLoading]);
-
-    useEffect(() => {
-        if (files.length > 0) {
-            const fileMap = {};
-            files.forEach(file => {
-                if (!fileMap[file.eduHist.eduHistNum]) {
-                    fileMap[file.eduHist.eduHistNum] = [];
-                }
-                fileMap[file.eduHist.eduHistNum].push(file);
-            });
-
-            const updatedEduApply = eduHist.map(item => {
-                const matchingFiles = fileMap[item.eduHistNum];
-                if (matchingFiles && matchingFiles.length) {
-                    return {
-                        ...item,
-                        files: matchingFiles
-                    };
-                }
-                return item;
-            });
-
-            const hasChanged = !eduHist.every((item, index) => JSON.stringify(item) === JSON.stringify(updatedEduApply[index]));
-
-            if (hasChanged) {
-                setEduHist(updatedEduApply);
-            }
-        }
-    }, [files, eduHist]);
+    }, [rawRentHistData, RentHistLoading]);
 
 
-    const handleTitleClick = (eduNum) => {
-        navigate(`/edu/list/detail/${eduNum}`);
-    }
-
-    const handleStatusChange = (eduHistNum, newStatus) => {
+    const handleStatusChange = (rentHistNum, newStatus) => {
         const requestOptions = {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({status: newStatus})
         };
 
-        fetch(SERVER_URL + 'eduHist/' + eduHistNum, requestOptions)
+        fetch(SERVER_URL + 'rent/' + rentHistNum, requestOptions)
             .then(response => {
                 if (response.ok) {
-                    const updatedRows = eduHist.map(row =>
-                        row.eduHistNum === eduHistNum ? {...row, status: newStatus} : row
+                    const updatedRows = rentHist.map(row =>
+                        row.rentHistNum === rentHistNum ? {...row, status: newStatus} : row
                     );
-                    setEduHist(updatedRows);
+                    setRentHist(updatedRows);
                     alert('신청 상태를 변경 했습니다!');
                 } else {
                     throw new Error();
@@ -127,17 +101,17 @@ function EduHistList(props) {
             });
     }
 
-    const handleDelete = (eduHistNum) => {
+    const handleDelete = (rentHistNum) => {
         const isConfirmed = window.confirm("정말 취소 하시겠습니까?");
         if (!isConfirmed) return;
 
-        fetch(SERVER_URL + 'eduHist/' + eduHistNum, {
+        fetch(SERVER_URL + 'rent/' + rentHistNum, {
             method: 'DELETE'
         })
             .then(response => {
                 if (response.ok) {
-                    const updatedRows = eduHist.filter(row => row.eduHistNum !== eduHistNum);
-                    setEduHist(updatedRows);
+                    const updatedRows = rentHist.filter(row => row.rentHistNum !== rentHistNum);
+                    setRentHist(updatedRows);
                     alert('성공적으로 취소 했습니다!');
                 } else {
                     throw new Error();
@@ -155,94 +129,112 @@ function EduHistList(props) {
         setActivePage(newPage);
     }
 
-    const handleCertificatePrint = (status, name, eduName) => {
-        if (status === 'COMPLETE') {
-            setCurrentCertificateData({name, eduName});
-            setIsCertificateOpen(true);
+    const handlePermitPrint = (applyStatus, payStatus, spaceName, getRentDate, getRentTime) => {
+        if (applyStatus === 'APPROVE' && payStatus === 'COMPLETE') {
+            setCurrentPermitData({spaceName, getRentDate, getRentTime});
+            setIsPermitOpen(true);
         } else {
-            alert('교육 수료 후 출력이 가능합니다!');
+            alert('대여 승인 및 결제 완료 후 출력이 가능합니다!');
         }
     };
 
+    const handleSpaceClick = (space) => {
+        setInfoTitle("공간 정보");
+        setInfoData(space);
+        setIsInfoModalOpen(true);
+    };
+
+    const handleMemIdClick = (member) => {
+        if (isAdmin) {
+            setInfoTitle("회원 정보");
+            setInfoData(member);
+            setIsInfoModalOpen(true);
+        }
+    };
+
+
+    function getRentDate(params) {
+        const date = new Date(params.row.rentStdt); // 대여 시작일을 기준으로 합니다.
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    }
+
+    function getRentTime(params) {
+        const startTime = new Date(params.row.rentStdt);
+        const endTime = new Date(params.row.rentEddt);
+        return `${String(startTime.getHours()).padStart(2, '0')}:${String(startTime.getMinutes()).padStart(2, '0')} - ${String(endTime.getHours()).padStart(2, '0')}:${String(endTime.getMinutes()).padStart(2, '0')}`;
+    }
+
     const columns = [
-        {field: 'eduHistNum', headerName: '번호', width: 40},
+        {field: 'rentHistNum', headerName: '번호', width: 40},
         {
-            field: 'type',
-            headerName: '구분',
-            width: 40,
+            field: 'spaceName',
+            headerName: '공간명',
+            width: 100,
             renderCell: (row) => (
-                <div className={`typeCell ${row.row.edu.type}`}>
-                    {row.row.edu.type === 'BUSINESS' ? '사업' :
-                        row.row.edu.type === 'EDU' ? '교육' : ''}
-                </div>
-            ),
+                <span
+                    onClick={() => handleSpaceClick(row.row.space)}
+                    style={{cursor: "pointer"}}
+                >
+                {row.row.space?.spaceName || ''}
+            </span>
+            )
         },
         {
-            field: 'eduName',
-            headerName: '프로그램명',
-            width: 230,
-            renderCell: (params) => (
-                <div onClick={() => handleTitleClick(params.row.edu.eduNum)} style={{cursor: 'pointer'}}
-                     className="eduNameCell">
-                    {params.row.edu?.eduName}
-                </div>
-            ),
-        },
-        {
-            field: 'recuPerson+/+capacity',
-            headerName: '모집 인원',
+            field: 'memId',
+            headerName: '회원 ID',
             width: 100,
-            valueGetter: (params) => {
-                return `${params.row.edu?.recuPerson}/${params.row.edu?.capacity}`;
-            },
+            renderCell: (row) => (
+                <span
+                    onClick={() => handleMemIdClick(row.row.member)}
+                    style={{cursor: isAdmin ? "pointer" : "default"}}
+                >
+                {row.row.member?.memId || ''}
+            </span>
+            )
         },
         {
-            field: 'eduStatus',
-            headerName: '교육 상태',
+            field: 'rentDate',
+            headerName: '대여 일',
             width: 100,
-            renderCell: (params) => renderStatusCell(params.row.edu),
+            renderCell: getRentDate
         },
-        {field: 'memId', headerName: '신청자', width: 100, valueGetter: (params) => params.row.member?.memId},
+        {
+            field: 'rentTime',
+            headerName: '대여 시간',
+            width: 150,
+            renderCell: getRentTime
+        },
         {
             field: 'applyDate',
             headerName: '신청 일시',
-            width: 120,
-            valueGetter: getApplyDate
+            width: 150,
+            renderCell: ApplyDateCell
         },
         {
-            field: 'applyDoc',
-            headerName: '신청서',
-            width: 120,
-            renderCell: (params) => {
-                if (params.row.files && params.row.files.length > 0) {
-                    return (
-                        <StyledScrollHideDiv>
-                            {params.row.files.map((file, index) => (
-                                <div key={index}>
-                                    <a href={file.fileUri} target="_blank" rel="noopener noreferrer">
-                                        {file.fileOriName}
-                                    </a>
-                                </div>
-                            ))}
-                        </StyledScrollHideDiv>
-                    );
-                }
-                return "파일 없음";
-            }
-        },
-        {
-            field: 'status',
+            field: 'applyStatus',
             headerName: '신청 상태',
             width: 100,
-            renderCell: (params) => renderApprovalStatusCell(params, isAdmin, handleStatusChange),
+            renderCell: (params) => <StatusCell params={params} handleStatusChange={handleStatusChange}/>
         },
         {
-            field: 'printCertificate',
-            headerName: '수료증',
+            field: 'payStatus',
+            headerName: '결제 상태',
+            width: 100,
+            renderCell: payStatusCell,
+        },
+        {
+            field: 'permit',
+            headerName: '허가증',
             width: 70,
             renderCell: (params) => (
                 <div
-                    onClick={() => handleCertificatePrint(params.row.status, params.row.member?.name, params.row.edu?.eduName)}>
+                    onClick={() => handlePermitPrint(
+                        params.row.applyStatus,
+                        params.row.payStatus,  // 여기에 payStatus를 추가합니다.
+                        params.row.space?.spaceName,
+                        getRentDate(params),
+                        getRentTime(params)
+                    )}>
                     🖨️
                 </div>
             ),
@@ -252,17 +244,12 @@ function EduHistList(props) {
             headerName: '취소',
             width: 40,
             renderCell: (params) => (
-                <button onClick={() => handleDelete(params.row.eduHistNum)}>
+                <button onClick={() => handleDelete(params.row.rentHistNum)}>
                     취소
                 </button>
             ),
         }
     ];
-
-    function getApplyDate(params) {
-        const date = new Date(params.row.applyDate);
-        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-    }
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
@@ -272,11 +259,11 @@ function EduHistList(props) {
                     setSearchTerm={setSearchTerm}
                     onSearch={handleSearch}
                     searchOptions={SEARCH_OPTIONS}
-                    totalCount={eduHist.length}
+                    totalCount={rentHist.length}
                     currentPage={activePage}
-                    totalPages={Math.ceil(eduHist.length / itemsPerPage)}
+                    totalPages={Math.ceil(rentHist.length / itemsPerPage)}
                 />
-                {eduHistLoading ? (
+                {RentHistLoading ? (
                     <div style={{
                         display: 'flex',
                         justifyContent: 'center',
@@ -286,25 +273,32 @@ function EduHistList(props) {
                 ) : (
                     <StyledDataGrid
                         columns={columns}
-                        rows={eduHist.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
+                        rows={rentHist.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                         pageSize={5}
                         hideFooter={true}
                     />
                 )}
                 <div className="paginationContainer" style={{marginTop: '10px'}}>
                     <Pagination
-                        count={Math.ceil(eduHist.length / itemsPerPage)}
+                        count={Math.ceil(rentHist.length / itemsPerPage)}
                         page={activePage}
                         onChange={handlePageChange}
                         color="primary"
                     />
                 </div>
             </div>
-            <Certificate
-                isOpen={isCertificateOpen}
-                onClose={() => setIsCertificateOpen(false)}
-                name={currentCertificateData.name}
-                eduName={currentCertificateData.eduName}
+            <Permit
+                isOpen={isPermitOpen}
+                onClose={() => setIsPermitOpen(false)}
+                spaceName={currentPermitData.spaceName}
+                getRentDate={currentPermitData.getRentDate}
+                getRentTime={currentPermitData.getRentTime}
+            />
+            <InfoModal
+                title={infoTitle}
+                data={infoData}
+                open={isInfoModalOpen}
+                onClose={() => setIsInfoModalOpen(false)}
             />
         </Wrapper>
     );
@@ -432,4 +426,4 @@ const StyledDataGrid = styled(DataGrid)`
   }
 `;
 
-export default EduHistList;
+export default RentHistList;
