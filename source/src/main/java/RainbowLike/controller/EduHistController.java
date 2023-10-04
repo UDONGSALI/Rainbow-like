@@ -28,7 +28,6 @@ public class EduHistController {
     public ResponseEntity<Iterable<EduHist>> searchEduHist(@PathVariable String option, @PathVariable String value, @PathVariable String memId) {
         Iterable<EduHist> results = eduHistService.searchEduHist(option, value, memId);
         return ResponseEntity.ok(results);
-
     }
 
     @GetMapping("/check/{memNum}/{eduNum}")
