@@ -3,11 +3,13 @@ import styles from  '../../../css/component/Club/ClubForm.module.css';
 import {useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../Common/constants";
 
-function ClubEditor(props){
-    const { id } = useParams();
+function ClubEditor(props) {
+    const {id} = useParams();
     const memId = sessionStorage.getItem("memId");
+    const memNum = sessionStorage.getItem("memNum");
     const navigate = useNavigate();
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    const [member, setMember] = useState([]);
 
     const [formData, setFormData] = useState({
         memNum: '',
@@ -20,9 +22,8 @@ function ClubEditor(props){
         parentsNum: '',
         clubAllowStatus: '',
         clubRecuStatus: '',
-        delYN : 'N'
+        delYN: 'N'
     });
-
 
 
     useEffect(() => {
@@ -54,92 +55,104 @@ function ClubEditor(props){
             .catch(error => console.error(error));
     }, [id]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-
-        if (value === '') {
-            // 선택되지 않았을 때 이전 값을 유지
-            setFormData({ ...formData });
-        } else {
-            setFormData({ ...formData, [name]: value });
-        }
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-
-        // API 호출하여 게시글 정보 전송
-        fetch(SERVER_URL + "posts/edit/" + id, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                alert('게시글을 수정했습니다.');
-
-                //게시글 상세로 이동
-                navigate(`/clubs/${id}`);
+    useEffect(() => {
+        fetch(SERVER_URL + `members/id/${memId}`)
+            .then(response => response.json())
+            .then(data => {
+                setMember(data);
             })
-            .catch((error) => {
-                // 오류 처리
-                console.error('Error:', error);
+            .catch(error => {
+                alert('회원 정보를 찾을 수 없습니다!');
+                window.location.href = '/login';
             });
-    };
+    }, []);
 
-    return (
-        <div className={styles.registrationFormContainer}>
-            <h2>게시글 수정 폼</h2>
-            <form onSubmit={handleSubmit} className={styles.registrationForm}>
+            const handleChange = (e) => {
+                const {name, value} = e.target;
 
-                {
-                    isAdmin?
-                    <div className={styles.inputGroup}>
-                    <select
-                        name="clubAllowStatus"
-                        value={formData.clubAllowStatus}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">허가여부</option>
-                        <option value="허가">허가</option>
-                        <option value="거부">거부</option>
-
-                    </select>
-                </div>
-                :
-                    null
+                if (value === '') {
+                    // 선택되지 않았을 때 이전 값을 유지
+                    setFormData({...formData});
+                } else {
+                    setFormData({...formData, [name]: value});
                 }
-                <div className={styles.inputGroup}>
-                    <select
-                        name="clubRecuStatus"
-                        value={formData.clubRecuStatus}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">진행 현황</option>
-                        <option value="진행중">진행중</option>
-                        <option value="모집중">모집중</option>
-                        <option value="모집마감">모집마감</option>
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
 
 
-                    </select>
-                </div>
+                // API 호출하여 게시글 정보 전송
+                fetch(SERVER_URL + "posts/edit/" + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        alert('게시글을 수정했습니다.');
 
-                <div className={styles.inputGroup}>
-                    <input
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        required
+                        //게시글 상세로 이동
+                        navigate(`/clubs/${id}`);
+                    })
+                    .catch((error) => {
+                        // 오류 처리
+                        console.error('Error:', error);
+                    });
+            };
+
+    return (isAdmin || memNum === formData.member.memNum) ? (
+            <div className={styles.registrationFormContainer}>
+                <h2>게시글 수정 폼</h2>
+                <form onSubmit={handleSubmit} className={styles.registrationForm}>
+
+                    {
+                        isAdmin ?
+                            <div className={styles.inputGroup}>
+                                <select
+                                    name="clubAllowStatus"
+                                    value={formData.clubAllowStatus}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">허가여부</option>
+                                    <option value="허가">허가</option>
+                                    <option value="거부">거부</option>
+
+                                </select>
+                            </div>
+                            :
+                            null
+                    }
+                    <div className={styles.inputGroup}>
+                        <select
+                            name="clubRecuStatus"
+                            value={formData.clubRecuStatus}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">진행 현황</option>
+                            <option value="진행중">진행중</option>
+                            <option value="모집중">모집중</option>
+                            <option value="모집마감">모집마감</option>
+
+
+                        </select>
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <input
+                            type="text"
+                            name="title"
+                            value={formData.title}
+                            onChange={handleChange}
+                            required
                         />
-                </div>
+                    </div>
 
-                <div className={styles.inputGroup}>
+                    <div className={styles.inputGroup}>
                     <textarea
                         name="content"
                         value={formData.content}
@@ -148,15 +161,18 @@ function ClubEditor(props){
                     >
                         본문을 작성해주세요.
                     </textarea>
-                </div>
+                    </div>
 
 
-
-
-                <button type="submit">게시글 수정</button>
-            </form>
-        </div>
-    );
+                    <button type="submit">게시글 수정</button>
+                </form>
+            </div>
+        ) :
+        (
+            <div>
+                <h1>잘못된 접근입니다.</h1>
+            </div>
+        );
 
 };
 

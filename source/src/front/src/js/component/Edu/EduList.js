@@ -13,8 +13,9 @@ import SearchComponent from "../Common/SearchComponent";
 import useSearch from "../hook/useSearch";
 import usePagination from "../hook/usePagination";
 import useFetch from "../hook/useFetch";
+import useDelete from "../hook/useDelete";
 // 6. Helper 함수나 Renderer 관련
-import {renderStatusCell} from "./statusRenderer";
+import {renderStatusCell} from "./RenderCell/statusRenderer";
 
 function EduList() {
     // 1. 상수 및 상태
@@ -48,17 +49,15 @@ function EduList() {
     const location = useLocation();
     // 3. 로컬 상태 관리
     const [edus, setEdus] = useState([]);
-    const [totalPages, setTotalPages] = useState(0);
-    const [totalCount, setTotalCount] = useState(0);
     // 4. 커스텀 훅 사용
     const {activePage, setActivePage} = usePagination(1);
     const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}edus`, setEdus);
     const {data: fetchedEdus, loading} = useFetch(`${SERVER_URL}edus`);
+    const deleteItem = useDelete(SERVER_URL);
 
     useEffect(() => {
         if (!loading) {
             setEdus(fetchedEdus.reverse());
-            setTotalPages(Math.ceil(fetchedEdus.length / itemsPerPage));
         }
     }, [loading, fetchedEdus]);
 
@@ -78,18 +77,12 @@ function EduList() {
     const handleTitleClick = (eduNum) => navigate('/edu/list/detail/' + eduNum);
     const handleEdit = (eduNum) => navigate('/admin/edu/edit/' + eduNum);
 
-    const EduDelete = (eduNum) => {
-        if (window.confirm("정말 삭제 하시겠습니까?")) {
-            fetch(`${SERVER_URL}api/edus/${eduNum}`, {method: 'DELETE'})
-                .then(() => {
-                    const updatedRows = edus.filter(row => row.eduNum !== eduNum);
-                    setEdus(updatedRows);
-                    alert(`데이터가 삭제 되었습니다.`);
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert('삭제 중 오류가 발생했습니다.');
-                });
+    const handleDelete = async (eduNum) => {
+        const isSuccess = await deleteItem('api/edus/' + eduNum, "삭제");
+
+        if (isSuccess) {
+            const updatedRows = edus.filter(row => row.eduNum !== eduNum);
+            setEdus(updatedRows);
         }
     };
 
@@ -173,7 +166,7 @@ function EduList() {
                 sortable: false,
                 filterable: false,
                 renderCell: (row) => (
-                    <button onClick={() => EduDelete(row.id)}>삭제</button>
+                    <button onClick={() => handleDelete(row.id)}>삭제</button>
                 ),
                 width: 60,
             },

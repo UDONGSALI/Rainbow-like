@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SmsHistRepository extends JpaRepository <SmsHist, Long> {
+
+
 }
