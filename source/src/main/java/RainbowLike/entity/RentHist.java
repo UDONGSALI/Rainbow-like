@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import RainbowLike.constant.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
@@ -42,27 +43,15 @@ public class RentHist {
     @Column(nullable = false)
     private LocalDateTime applyDate;
 
-    @Column(nullable = false,length = 50)
-    private String applyStatus;
+    @Column(nullable = false, length = 50)
+    @Enumerated(EnumType.STRING)
+    private Status applyStatus;
 
-    @Column(nullable = false,length = 50)
-    private String payStatus;
+    @Column(length = 50)
+    @Enumerated(EnumType.STRING)
+    private Status payStatus;
 
     @OneToMany(mappedBy = "rentHist", cascade = CascadeType.REMOVE)
     @JsonBackReference(value="rentHist-payHists")
     private List<PayHist> payHists = new ArrayList<>();
-
-
-
-    public RentHist(Member member, Space space, LocalDateTime rentStdt, LocalDateTime rentEddt, LocalDateTime applyDate, String applyStatus, String payStatus){
-        super();
-        this.member=member;
-        this.space=space;
-        this.rentStdt=rentStdt;
-        this.rentEddt=rentEddt;
-        this.applyDate=applyDate;
-        this.payStatus=payStatus;
-
-
-    }
 }

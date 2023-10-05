@@ -37,7 +37,7 @@ public class EduHist {
     @Column(nullable = false)
     private LocalDateTime applyDate;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 

@@ -2,7 +2,7 @@ import React from "react";
 import { Global, css } from "@emotion/react"; // 여기서 Global과 css를 가져옵니다.
 import styled from "@emotion/styled";
 
-function CertificateModal({ name, eduName, isOpen, onClose }) {
+function Permit({ spaceName, isOpen, onClose, getRentDate, getRentTime }) {
     if (!isOpen) return null;
 
     const currentDate = new Date();
@@ -14,19 +14,17 @@ function CertificateModal({ name, eduName, isOpen, onClose }) {
     return (
         <ModalBackground className="printModal" onClick={onClose}>
             <Global styles={globalPrintStyles} />
-            <CertificateWrapper onClick={e => e.stopPropagation()}>
-                <CertificateTitle>수료증</CertificateTitle>
-                <CertificateText>성명: {name}</CertificateText>
-                <CertificateText>프로그램명: {eduName}</CertificateText>
-                <CertificateText>
-                    위 사람은 성실히 프로그램을 이수하였기에 이 증서를 수여 합니다.
-                </CertificateText>
-                <CertificateDate>
+            <PermitWrapper onClick={e => e.stopPropagation()}>
+                <PermitTitle>허가증</PermitTitle>
+                <PermitText>
+                    {spaceName}에 대해 {getRentDate} / {getRentTime} 동안 이용을 허가 합니다.
+                </PermitText>
+                <RentDate>
                     {currentDate.getFullYear()}.{currentDate.getMonth() + 1}.{currentDate.getDate()}
-                </CertificateDate>
-                <CertificateIssuer>세종여성플라자</CertificateIssuer>
+                </RentDate>
+                <PermitIssuer>세종여성플라자</PermitIssuer>
                 <PrintButton className="printHide" onClick={handlePrint}>출력하기</PrintButton>
-            </CertificateWrapper>
+            </PermitWrapper>
         </ModalBackground>
     );
 }
@@ -69,7 +67,7 @@ const ModalBackground = styled.div`
   justify-content: center;
 `;
 
-const CertificateWrapper = styled.div`
+const PermitWrapper = styled.div`
   border: 3px double #3a3a3a;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -80,7 +78,7 @@ const CertificateWrapper = styled.div`
   background-image: url('https://www.transparenttextures.com/patterns/paper.png'); // 배경 이미지 추가
 `;
 
-const CertificateTitle = styled.h2`
+const PermitTitle = styled.h2`
   text-align: center;
   margin-bottom: 30px;
   font-family: 'Playfair Display', serif; // Google Fonts에서 가져온 폰트
@@ -90,7 +88,7 @@ const CertificateTitle = styled.h2`
   padding-bottom: 10px;
 `;
 
-const CertificateText = styled.p`
+const PermitText = styled.p`
   font-size: 18px;
   margin-bottom: 15px;
   font-family: 'Playfair Display', serif; // Google Fonts에서 가져온 폰트
@@ -98,14 +96,14 @@ const CertificateText = styled.p`
   text-align: left;
 `;
 
-const CertificateDate = styled.p`
+const RentDate = styled.p`
   text-align: right;
   margin-top: 40px;
   font-size: 16px;
   font-family: 'Playfair Display', serif; // Google Fonts에서 가져온 폰트
 `;
 
-const CertificateIssuer = styled.p`
+const PermitIssuer = styled.p`
   text-align: right;
   margin-top: 20px;
   font-size: 16px;
@@ -152,4 +150,4 @@ const globalPrintStyles = css`
   }
 `;
 
-export default CertificateModal;
+export default Permit;
