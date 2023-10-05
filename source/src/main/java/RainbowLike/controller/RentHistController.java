@@ -34,7 +34,7 @@ public class RentHistController {
     public ResponseEntity<?> updateRentHistStatus(@PathVariable Long rentHistNum, @RequestBody Map<String, String> body) {
         try {
             Status status = Status.valueOf(body.get("status").toUpperCase());
-            Optional<RentHist> updatedRentHist = rentHistService.updateRentHistStatus(rentHistNum, status);
+            Optional<RentHist> updatedRentHist = rentHistService.updateRentHistApplyStatus(rentHistNum, status);
             if (updatedRentHist.isPresent()) {
                 return ResponseEntity.ok(updatedRentHist.get());
             } else {

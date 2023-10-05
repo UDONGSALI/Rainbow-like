@@ -14,9 +14,12 @@ import Certificate from "./RenderCell/Certificates";
 import useSearch from "../hook/useSearch";
 import useFetch from "../hook/useFetch";
 import usePagination from "../hook/usePagination";
+import useDelete from "../hook/useDelete";
 // 6. Helper 함수나 Renderer 관련
 import {renderStatusCell} from "./RenderCell/statusRenderer";
 import renderApprovalStatusCell from "./RenderCell/renderApprovalStatusCell";
+import InfoModal from "../Common/InfoModal";
+import usePatch from "../hook/usePatch";
 
 const ADMIN_ROLE = "ADMIN";
 
@@ -33,8 +36,14 @@ function EduHistList(props) {
     const {activePage, setActivePage} = usePagination(1);
     const [isCertificateOpen, setIsCertificateOpen] = useState(false);
     const [currentCertificateData, setCurrentCertificateData] = useState({name: "", eduName: ""});
+    const [infoData, setInfoData] = useState(null);
+    const [infoTitle, setInfoTitle] = useState("");
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 // 4. 커스텀 훅
     const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}eduHist`, setEduHist, undefined, memId);
+    const deleteItem = useDelete(SERVER_URL);
+    const patchItem = usePatch(SERVER_URL);
+
 // 상수
     const itemsPerPage = 10;
     const SEARCH_OPTIONS = [
@@ -102,52 +111,25 @@ function EduHistList(props) {
         navigate(`/edu/list/detail/${eduNum}`);
     }
 
-    const handleStatusChange = (eduHistNum, newStatus) => {
-        const requestOptions = {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({status: newStatus})
-        };
+    const handleStatusChange = async (eduHistNum, newStatus) => {
+        const isSuccess = await patchItem('eduHist/' + eduHistNum, {status: newStatus}, "신청");
 
-        fetch(SERVER_URL + 'eduHist/' + eduHistNum, requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    const updatedRows = eduHist.map(row =>
-                        row.eduHistNum === eduHistNum ? {...row, status: newStatus} : row
-                    );
-                    setEduHist(updatedRows);
-                    alert('신청 상태를 변경 했습니다!');
-                } else {
-                    throw new Error();
-                }
-            })
-            .catch(error => {
-                console.error("Error updating status:", error);
-                alert('신청 상태 변경 중 문제가 발생했습니다.');
-            });
-    }
+        if (isSuccess) {
+            const updatedRows = eduHist.map(row =>
+                row.eduHistNum === eduHistNum ? {...row, status: newStatus} : row
+            );
+            setEduHist(updatedRows);
+        }
+    };
 
-    const handleDelete = (eduHistNum) => {
-        const isConfirmed = window.confirm("정말 취소 하시겠습니까?");
-        if (!isConfirmed) return;
+    const handleDelete = async (eduHistNum) => {
+        const isSuccess = await deleteItem('eduHist/' + eduHistNum, "취소");
 
-        fetch(SERVER_URL + 'eduHist/' + eduHistNum, {
-            method: 'DELETE'
-        })
-            .then(response => {
-                if (response.ok) {
-                    const updatedRows = eduHist.filter(row => row.eduHistNum !== eduHistNum);
-                    setEduHist(updatedRows);
-                    alert('성공적으로 취소 했습니다!');
-                } else {
-                    throw new Error();
-                }
-            })
-            .catch(error => {
-                console.error("Error deleting eduHist:", error);
-                alert('취소 중 문제가 발생했습니다.');
-            });
-    }
+        if (isSuccess) {
+            const updatedRows = eduHist.filter(row => row.eduHistNum !== eduHistNum);
+            setEduHist(updatedRows);
+        }
+    };
 
 
     const handlePageChange = (event, newPage) => {
@@ -161,6 +143,14 @@ function EduHistList(props) {
             setIsCertificateOpen(true);
         } else {
             alert('교육 수료 후 출력이 가능합니다!');
+        }
+    };
+
+    const handleMemIdClick = (member) => {
+        if (isAdmin) {
+            setInfoTitle("회원 정보");
+            setInfoData(member);
+            setIsInfoModalOpen(true);
         }
     };
 
@@ -202,7 +192,19 @@ function EduHistList(props) {
             width: 100,
             renderCell: (params) => renderStatusCell(params.row.edu),
         },
-        {field: 'memId', headerName: '신청자', width: 100, valueGetter: (params) => params.row.member?.memId},
+        {
+            field: 'memId',
+            headerName: '회원 ID',
+            width: 100,
+            renderCell: (row) => (
+                <span
+                    onClick={() => handleMemIdClick(row.row.member)}
+                    style={{cursor: isAdmin ? "pointer" : "default"}}
+                >
+                {row.row.member?.memId || ''}
+            </span>
+            )
+        },
         {
             field: 'applyDate',
             headerName: '신청 일시',
@@ -305,6 +307,12 @@ function EduHistList(props) {
                 onClose={() => setIsCertificateOpen(false)}
                 name={currentCertificateData.name}
                 eduName={currentCertificateData.eduName}
+            />
+            <InfoModal
+                title={infoTitle}
+                data={infoData}
+                open={isInfoModalOpen}
+                onClose={() => setIsInfoModalOpen(false)}
             />
         </Wrapper>
     );

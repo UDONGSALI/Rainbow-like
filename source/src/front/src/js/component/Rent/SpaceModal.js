@@ -4,16 +4,19 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import {SERVER_URL} from '../Common/constants';
 import Typography from '@mui/material/Typography';
+import styles from '../../../css/component/Rent/SpaceModal.module.css';
 
 const style = {
-    position: 'absolute',
+    position: 'relative',
+    display:'flex',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '80%',
+    width: '50%',
+    height: '50%',
     padding: 0,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '1px solid #000',
     boxShadow: 24,
     p: 4,
 };
@@ -26,15 +29,6 @@ export default function SpaceList({spaceInfo}) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const colums = [
-        {field: 'spaceName', headerName: '공간명', width: 200},
-        {field: 'maxPerson', headerName: '최대인원', width: 100},
-        {field: 'spaceUsage', headerName: '공간용도', width: 200},
-        {field: 'rentTime', headerName: '대관시간', width: 100},
-        {field: 'rentFee', headerName: '이용료', width: 100},
-        {field: 'facilities', headerName: '구비시설', width: 200},
-
-    ];
 
     useEffect(() => {
         fetch(SERVER_URL + 'api/spaces')
@@ -49,52 +43,71 @@ export default function SpaceList({spaceInfo}) {
             });
     }, []);
 
+
     return (
-        <div>
+        <div id={styles.modal}>
             {loading ? (
                 <p>Loading....</p>
             ) : (
-                <div>
-                    <Button onClick={handleOpen} style={{
-                        fontSize: '15px',
-                        fontWeight: 'bold',
-                        color: '#ffffff',
-                        backgroundColor: '#c1a1fa',
-                    }}>더보기</Button>
-                    <Modal
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
+                <div className={styles.extension}>
+                    <Button onClick={handleOpen}>더보기</Button>
+                    <Modal className={styles.modalForm}
+                           open={open}
+                           onClose={handleClose}
+                           aria-labelledby="modal-modal-title"
+                           aria-describedby="modal-modal-description"
                     >
-                        <Box sx={style}>
-                            <div className="modalForm" style={{display:"flex"}}>
-                                <div className="img" style={{padding :'5%'}}>
-                                    이미지 자리
-                                </div>
-                                <div className="spaceInfo">
-                                    <Typography>
-                                        {spaceInfo.spaceName} 스페이스이름
-                                        <img alt={spaceInfo.spaceName} src={spaceInfo.imageUrl} style={{ width: '100%', height: 'auto' }} />
-                                    </Typography>
-                                    <hr/>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        {/* Use spaceInfo to display space-specific information */}
-                                        {spaceInfo && (
-                                            <>
-                                                <p>{spaceInfo.spaceName}</p>
-                                                <p>최대인원 ㅣ {spaceInfo.maxPerson}</p>
-                                                <p>공간용도 ㅣ {spaceInfo.spaceUsage}</p>
-                                                <p>대관시간 ㅣ {spaceInfo.rentTime}</p>
-                                                <p>기본이용료 ㅣ {spaceInfo.rentFee}</p>
-                                                <p>구비시설 ㅣ {spaceInfo.facilities}</p>
 
-                                            </>
-                                        )}
-                                    </Typography>
+                        <Box  sx={style}>
+                                <div className={styles.outer}>
+                                    <div className={styles.innerWrap} >
+                                        <div className={styles.imgs}>
+                                            <img alt={spaceInfo.spaceName} src={spaceInfo.imageURL}
+                                                 style={{width: 350, height: 250}}/>
+                                        </div>
+                                        <div className={styles.spaceInformation}>
+                                            <Typography className={styles.spaceNames}>
+                                                {spaceInfo.spaceName}
+
+                                            </Typography>
+                                            <hr/>
+                                            <Typography className={styles.modalDescription} sx={{mt: 3}}>
+                                                {spaceInfo && (
+                                                    <>
+                                                        <p><b style={{ letterSpacing: '3px'}}>최대인원  ㅣ</b> {spaceInfo.maxPerson}</p>
+                                                        <p><b style={{ letterSpacing: '3px'}}>공간용도  ㅣ</b> {spaceInfo.spaceUsage}</p>
+                                                        <p><b style={{ letterSpacing: '3px'}}>대관시간  ㅣ</b> {spaceInfo.rentTime}</p>
+                                                        <p><b style={{ letterSpacing: '1px'}}>기본이용료ㅣ </b>{spaceInfo.rentFee}</p>
+                                                        <p><b style={{ letterSpacing: '3px'}}>구비시설  ㅣ </b>{spaceInfo.facilities}</p>
+
+                                                    </>
+                                                )}
+                                            </Typography>
+                                        </div>
+
+                                    </div>
+                                    <div className={styles.closedButton}>
+                                        <Button className={styles.closeBtn}
+                                                onClick={handleClose}
+                                                style={{
+                                                    position: 'relative',
+                                                    width: "100px",
+                                                    height: "50px",
+                                                    backgroundColor: "#a38ced",
+                                                    color: "#ffffff",
+                                                    borderRadius: '5px',
+                                                    fontSize: "15px",
+                                                    fontWeight: "bold",
+
+                                                }}>닫기
+                                        </Button>
+                                    </div>
+
                                 </div>
-                            </div>
+
                         </Box>
+
+
                     </Modal>
 
                 </div>
