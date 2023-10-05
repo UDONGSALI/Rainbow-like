@@ -14,11 +14,13 @@ import Permit from "./RenderCell/Permit";
 import useSearch from "../hook/useSearch";
 import useFetch from "../hook/useFetch";
 import usePagination from "../hook/usePagination";
-import StatusCell from "./RenderCell/StatusCell";
-import payStatusCell from "./RenderCell/PayStatusCell";
-import ApplyDateCell from "./RenderCell/ApplyDateCell";
-import InfoModal from "../../../css/component/Common/InfoModal";
+import useDelete from "../hook/useDelete";
+import usePatch from "../hook/usePatch";
 // 6. Helper 함수나 Renderer 관련
+import StatusCell from "./RenderCell/StatusCell";
+import ApplyDateCell from "./RenderCell/ApplyDateCell";
+import InfoModal from "../Common/InfoModal";
+import PayStatusCell from "./RenderCell/PayStatusCell";
 
 const ADMIN_ROLE = "ADMIN";
 
@@ -40,6 +42,8 @@ function RentHistList(props) {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 // 4. 커스텀 훅
     const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}rent`, setRentHist, undefined, memId);
+    const deleteItem = useDelete(SERVER_URL);
+    const patchItem = usePatch(SERVER_URL);
 // 상수
     const itemsPerPage = 10;
     const SEARCH_OPTIONS = [
@@ -74,54 +78,25 @@ function RentHistList(props) {
             setRentHist(formattedData.reverse());
         }
     }, [rawRentHistData, RentHistLoading]);
+    const handleStatusChange = async (rentHistNum, newStatus) => {
+        const isSuccess = await patchItem('rent/' + rentHistNum, {status: newStatus}, "신청");
 
+        if (isSuccess) {
+            const updatedRows = rentHist.map(row =>
+                row.rentHistNum === rentHistNum ? {...row, status: newStatus} : row
+            );
+            setRentHist(updatedRows);
+        }
+    };
 
-    const handleStatusChange = (rentHistNum, newStatus) => {
-        const requestOptions = {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({status: newStatus})
-        };
+    const handleDelete = async (rentHistNum) => {
+        const isSuccess = await deleteItem('rent/' + rentHistNum, "취소");
 
-        fetch(SERVER_URL + 'rent/' + rentHistNum, requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    const updatedRows = rentHist.map(row =>
-                        row.rentHistNum === rentHistNum ? {...row, status: newStatus} : row
-                    );
-                    setRentHist(updatedRows);
-                    alert('신청 상태를 변경 했습니다!');
-                } else {
-                    throw new Error();
-                }
-            })
-            .catch(error => {
-                console.error("Error updating status:", error);
-                alert('신청 상태 변경 중 문제가 발생했습니다.');
-            });
-    }
-
-    const handleDelete = (rentHistNum) => {
-        const isConfirmed = window.confirm("정말 취소 하시겠습니까?");
-        if (!isConfirmed) return;
-
-        fetch(SERVER_URL + 'rent/' + rentHistNum, {
-            method: 'DELETE'
-        })
-            .then(response => {
-                if (response.ok) {
-                    const updatedRows = rentHist.filter(row => row.rentHistNum !== rentHistNum);
-                    setRentHist(updatedRows);
-                    alert('성공적으로 취소 했습니다!');
-                } else {
-                    throw new Error();
-                }
-            })
-            .catch(error => {
-                console.error("Error deleting eduHist:", error);
-                alert('취소 중 문제가 발생했습니다.');
-            });
-    }
+        if (isSuccess) {
+            const updatedRows = rentHist.filter(row => row.rentHistNum !== rentHistNum);
+            setRentHist(updatedRows);
+        }
+    };
 
 
     const handlePageChange = (event, newPage) => {
@@ -152,6 +127,18 @@ function RentHistList(props) {
         }
     };
 
+    function handleOpenPaymentPopup(rentHist) {
+        const totalAmount = calculateTotalAmount(rentHist.space.rentFee, rentHist.rentStdt, rentHist.rentEddt);
+        const width = 500;
+        const height = 650;
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
+        const popupOptions = `scrollbars=no, width=${width}, height=${height}, top=${top}, left=${left}`;
+
+        // rentHistNum와 fee 값을 URL에 포함시키기
+        window.open(`/pay/${rentHist.id}/${totalAmount}`, 'PaymentPopup', popupOptions);
+    }
+
 
     function getRentDate(params) {
         const date = new Date(params.row.rentStdt); // 대여 시작일을 기준으로 합니다.
@@ -164,12 +151,25 @@ function RentHistList(props) {
         return `${String(startTime.getHours()).padStart(2, '0')}:${String(startTime.getMinutes()).padStart(2, '0')} - ${String(endTime.getHours()).padStart(2, '0')}:${String(endTime.getMinutes()).padStart(2, '0')}`;
     }
 
+    function calculateRentDuration(rentStdt, rentEddt) {
+        const startTime = new Date(rentStdt);
+        const endTime = new Date(rentEddt);
+        const duration = endTime - startTime;
+        return duration / (60 * 60 * 1000);  // 시간으로 변환
+    }
+
+    function calculateTotalAmount(rentFee, rentStdt, rentEddt) {
+        const cleanFee = parseInt(rentFee.replace('원', '').replace(/,/g, ''), 10);
+        const duration = calculateRentDuration(rentStdt, rentEddt);
+        return cleanFee * duration;
+    }
+
     const columns = [
         {field: 'rentHistNum', headerName: '번호', width: 40},
         {
             field: 'spaceName',
             headerName: '공간명',
-            width: 100,
+            width: 150,
             renderCell: (row) => (
                 <span
                     onClick={() => handleSpaceClick(row.row.space)}
@@ -220,7 +220,7 @@ function RentHistList(props) {
             field: 'payStatus',
             headerName: '결제 상태',
             width: 100,
-            renderCell: payStatusCell,
+            renderCell: (params) => <PayStatusCell {...params} onPayment={handleOpenPaymentPopup} setRentHist={setRentHist}/>,
         },
         {
             field: 'permit',

@@ -15,6 +15,7 @@ import OrgForm from "./OrgForm";
 import useSearch from "../hook/useSearch";
 import usePagination from "../hook/usePagination";
 import useFetch from "../hook/useFetch";
+import useDelete from "../hook/useDelete";
 
 function OrgList() {
     // 상수 및 상태 정의
@@ -34,6 +35,8 @@ function OrgList() {
     const { activePage, setActivePage } = usePagination(1);
     const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}org`,setOrgs);
     const { data: fetchedOrgs, loading } = useFetch(`${SERVER_URL}org`);
+    const deleteItem = useDelete(SERVER_URL);
+
 
     useEffect(() => {
         if (!loading) {
@@ -81,24 +84,12 @@ function OrgList() {
         setOrgs(updatedOrgs);
     };
 
-    const orgDelete = (orgNum) => {
-        if (window.confirm("정말 삭제 하시겠습니까?")) {
-            fetch(`${SERVER_URL}org/${orgNum}`, { method: "DELETE" })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response;
-                })
-                .then(() => {
-                    const updatedRows = orgs.filter((row) => row.orgNum !== orgNum);
-                    setOrgs(updatedRows);
-                    alert(`데이터가 삭제 되었습니다.`);
-                })
-                .catch((err) => {
-                    console.error(err);
-                    alert("삭제 중 오류가 발생했습니다.");
-                });
+    const handleDelete = async (orgNum) => {
+        const isSuccess = await deleteItem('org/' + orgNum, "삭제");
+
+        if (isSuccess) {
+            const updatedRows = orgs.filter(row => row.orgNum !== orgNum);
+            setOrgs(updatedRows);
         }
     };
 
@@ -135,7 +126,7 @@ function OrgList() {
             sortable: false,
             filterable: false,
             renderCell: (row) => (
-                <button onClick={() => orgDelete(row.id)}>삭제</button>
+                <button onClick={() => handleDelete(row.id)}>삭제</button>
             ),
             width: 60,
         },

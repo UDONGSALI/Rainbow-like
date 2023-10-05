@@ -29,4 +29,9 @@ public class PayHist {
     @Column(nullable = false)
     private LocalDateTime payDate;
 
+    @PrePersist
+    protected void onCreate() {
+        payDate = LocalDateTime.now();
+    }
+
 }
