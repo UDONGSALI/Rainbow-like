@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface RentHistRepository extends JpaRepository <RentHist,Long> {
 
+    RentHist findByRentHistNum(Long rentHistNum);
     List<RentHist> findByMemberIn(List<Member> members);
     List<RentHist> findBySpaceIn(List<Space> spaces);
     List<RentHist> findByApplyStatus(Status status);
