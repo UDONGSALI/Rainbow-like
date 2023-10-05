@@ -57,6 +57,7 @@ export default function MyActivePost(props) {
 
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
+        const boardNum = params.row.board.boardNum;
         const boardName = params.row.board.boardName; // 게시글의 유형에 따른 필드 (예: type 필드)
 
         console.log('rowId:', rowId);
@@ -66,11 +67,11 @@ export default function MyActivePost(props) {
 
         // boardName에 따라 다른 경로 설정
         if (boardName === '공지사항') {
-            targetPath = `/post/detail/${rowId}`;
+            targetPath =`/post/detail/${boardNum}/${rowId}`
         } else if (boardName === '모임 페이지') {
             targetPath = `/clubs/${rowId}`;
         } else if (boardName === '세종시 기관 및 단체 소식') {
-            targetPath = `/post/detail/${rowId}`;
+            targetPath =`/post/detail/${boardNum}/${rowId}`
         } else if (boardName === '대관 이용 후기') {
             targetPath = `/rent/review/${rowId}`;
         } else if (boardName === '온라인 상담') {
@@ -110,7 +111,7 @@ export default function MyActivePost(props) {
         {
             field: "title",
             headerName: "제목",
-            width:800,
+            width:580,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
 

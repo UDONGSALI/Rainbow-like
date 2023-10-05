@@ -62,7 +62,7 @@ public class RentHistDto {
         Member member1 = new Member();
         member1.setMemNum(1L);
         Space space1 = new Space();
-        space1.setSpaceNum(1L);
+        space1.setSpaceNum(7L);
         LocalDateTime rentStdt1 = LocalDateTime.of(2023, 9, 1, 18, 30, 0, 0);
         LocalDateTime rentEddt1 = LocalDateTime.of(2023, 9, 1, 20, 30, 0, 0);
         LocalDateTime applyDate1 = LocalDateTime.of(2023, 9, 1, 9, 30, 0, 0);
