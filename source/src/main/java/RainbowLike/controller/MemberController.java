@@ -73,7 +73,7 @@ public class MemberController {
         return ResponseEntity.badRequest().body("Failed to update password");
     }
 
-    @GetMapping("/current-user")
+    @GetMapping("/{memId}")
     public ResponseEntity<Member> getMemberInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

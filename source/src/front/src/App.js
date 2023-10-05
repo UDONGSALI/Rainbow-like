@@ -161,7 +161,7 @@ function App() {
                 <Route path="/rent/review" element={<RentReviewPostPage/>}/>
 
                 {/*마이페이지관련*/}
-                <Route path="/mypage/edu" element={<MyEduPage/>}/>
+                <Route path="/mypage/edu" element={memId ? <EduHistListPage memId={memId}/> : <Navigate to="/login" replace/>}/>
                 <Route path="/mypage/rent" element={<MyRentPage/>}/>
                 <Route path="/mypage/active" element={<MyActivePage/>}/>
                 <Route path="/mypage/ftw" element={<MyFTWPage/>}/>
