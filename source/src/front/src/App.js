@@ -1,4 +1,4 @@
-import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import './App.css';
 import LoginPage from "./js/pages/Login/LoginPage";
 import React, {useEffect} from "react";
@@ -27,7 +27,6 @@ import FTCListPage from "./js/pages/FT/FTC/FTCListPage";
 import FTCFormPage from "./js/pages/FT/FTC/FTCFormPage";
 import FTCDtlPage from "./js/pages/FT/FTC/FTCDtlPage";
 import FTCEditPage from "./js/pages/FT/FTC/FTCEditPage";
-import FTMListPage from "./js/pages/FT/FTM/FTMListPage";
 import MatchingPopup from "./js/component/FT/FTM/MatchingPopup";
 import ClubPage from "./js/pages/Club/ClubPage";
 import ClubFormPage from "./js/pages/Club/ClubFormPage";
@@ -50,6 +49,7 @@ import MyFTWPage from "./js/pages/My/MyFTWPage";
 import MyClubPage from "./js/pages/My/MyClubPage";
 import MyCounselPage from "./js/pages/My/MyCounselPage";
 import RentReviewPostPage from "./js/pages/Rent/RentReviewPostPage";
+import Pay from "./js/component/Pay/pay";
 
 
 function App() {
@@ -58,7 +58,10 @@ function App() {
     const memId = sessionStorage.getItem("memId");
     const memNum = sessionStorage.getItem("memNum");
     const navigate = useNavigate();
-    const {trackButtonClick, trackPageView, saveEventLogToServer} = useTracking(memId);
+    const {trackButtonClick, trackPageView} = useTracking(memId);
+    const location = useLocation();
+    const isPaymentRoute = location.pathname.includes("/pay/"); // /pay/로 시작하는 경로인지 확인
+
 
     useEffect(() => {
         trackPageView();
@@ -102,7 +105,7 @@ function App() {
 
     return (
         <div className="App" onClick={trackButtonClick}>
-            <NavBar/>
+            {!isPaymentRoute && <NavBar/>}
             <Routes>
                 <Route path="/" element={<Main/>}/>
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
@@ -110,7 +113,8 @@ function App() {
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/admin/eduHist" element={isAdmin ? <EduHistListPage memId={memId} type="admin"/> : null}/>
-                <Route path="/admin/rentHist" element={isAdmin ? <RentHistListPage memId={memId} type="admin"/> : null}/>
+                <Route path="/admin/rentHist"
+                       element={isAdmin ? <RentHistListPage memId={memId} type="admin"/> : null}/>
                 <Route path="/admin/org" element={isAdmin ? <OrgListPage/> : null}/>
                 <Route path="/admin/board" element={isAdmin ? <BoardListPage/> : null}/>
                 <Route path="/admin/board/post/:boardNum" element={isAdmin ? <BoardPostListPage/> : null}/>
@@ -124,26 +128,26 @@ function App() {
                        element={memId ? <EduApplyPage/> : <Navigate to="/login" replace/>}/>
                 <Route path="/edu/applylist"
                        element={memId ? <EduHistListPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/pay/:rentHistNum/:fee" element={<Pay/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
-
                 <Route path="/posts" element={<PostList/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/sj" element={<SjNewsPage/>}/>
-                <Route path="/clubs" element={<ClubPage />}/>
-                <Route path="/clubs/new" element={memId? <ClubFormPage /> : <Navigate to ="/login" replace/> }/>
-                <Route path="/clubs/:id" element={<ClubDtlPage />}/>
-                <Route path="/clubs/edit/:id" element={<ClubEditorPage />}/>
-                <Route path="/ftmain" element={<FTMainPage />} />
-                <Route path="/ftw" element={isAdmin? <FTWListPage /> : null } />
-                <Route path="/ftw/new" element={memId? <FTWFormPage /> : <Navigate to ="/login" replace/> } />
-                <Route path="/ftw/:id" element={<FTWDtlPage />} />
+                <Route path="/clubs" element={<ClubPage/>}/>
+                <Route path="/clubs/new" element={memId ? <ClubFormPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/clubs/:id" element={<ClubDtlPage/>}/>
+                <Route path="/clubs/edit/:id" element={<ClubEditorPage/>}/>
+                <Route path="/ftmain" element={<FTMainPage/>}/>
+                <Route path="/ftw" element={isAdmin ? <FTWListPage/> : null}/>
+                <Route path="/ftw/new" element={memId ? <FTWFormPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/ftw/:id" element={<FTWDtlPage/>}/>
                 <Route path="/ftw/edit/:id" element={<FTWEditPage/>}/>
-                <Route path="/ftc" element={isAdmin? <FTCListPage/> : null}/>
-                <Route path="/ftc/new" element={memId? <FTCFormPage /> : <Navigate to ="/login" replace/> }/>
-                <Route path="/ftc/:id" element={<FTCDtlPage />} />
+                <Route path="/ftc" element={isAdmin ? <FTCListPage/> : null}/>
+                <Route path="/ftc/new" element={memId ? <FTCFormPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/ftc/:id" element={<FTCDtlPage/>}/>
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
-                <Route path="/ftmpop/:ftcNum" element={isAdmin? <MatchingPopup /> : null}/>
+                <Route path="/ftmpop/:ftcNum" element={isAdmin ? <MatchingPopup/> : null}/>
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>

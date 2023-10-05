@@ -3,14 +3,12 @@ package RainbowLike.service;
 import RainbowLike.constant.Status;
 import RainbowLike.constant.Type;
 import RainbowLike.dto.RentHistDto;
-import RainbowLike.entity.EduHist;
 import RainbowLike.entity.RentHist;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.RentHistRepository;
 import RainbowLike.repository.SpaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,14 +67,13 @@ public class RentHistService {
     }
 
     public void createRentHists(List<RentHistDto> rentHistDtoList) {
-
         for (RentHistDto rentHistDto : rentHistDtoList) {
             RentHist rentHist = modelMapper.map(rentHistDto, RentHist.class);
             rentHistRepository.save(rentHist);
         }
     }
 
-    public Optional<RentHist> updateRentHistStatus(Long rentHistNum, Status status) {
+    public Optional<RentHist> updateRentHistApplyStatus(Long rentHistNum, Status status) {
         Optional<RentHist> optionalRentHist = rentHistRepository.findById(rentHistNum);
         if (optionalRentHist.isPresent()) {
             RentHist rentHist = optionalRentHist.get();
@@ -86,12 +83,17 @@ public class RentHistService {
         return Optional.empty();
     }
 
+    public RentHist updateRentHistPayStatus(RentHist rentHist) {
+        rentHist.setPayStatus(Status.COMPLETE);
+        return rentHistRepository.save(rentHist);
+    }
+
     public void cancelRentHist(Long rentHistNum) {
         rentHistRepository.deleteById(rentHistNum);
     }
 
     public void createBasicRent() {
-        ArrayList<RentHistDto> rentHistDtoList =RentHistDto.createRentHists();
+        ArrayList<RentHistDto> rentHistDtoList = RentHistDto.createRentHists();
         createRentHists(rentHistDtoList);
     }
 
