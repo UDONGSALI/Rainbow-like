@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -89,6 +90,20 @@ public class SmsService {
 
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
         return response;
+    }
+
+    public void saveSmsRecepTels(List<String> telList, Long histNum) {
+        // DB에 저장
+        for (String t : telList) {
+            SmsHist smsHist = new SmsHist();
+            smsHist.setSmsHistNum(histNum);
+
+            SmsRecepTel smsRecepTel = new SmsRecepTel();
+            smsRecepTel.setSmsHist(smsHist);
+            smsRecepTel.setRecepTel(t);
+
+            smsRecepTelRepository.save(smsRecepTel);
+        }
     }
 
 //    public Optional<SmsRecepTel> findSmsRecepTelBySmsHistNum(Long histNum) {

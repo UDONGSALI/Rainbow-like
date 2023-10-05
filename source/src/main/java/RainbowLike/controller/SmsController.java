@@ -5,6 +5,7 @@ import RainbowLike.dto.SmsHistDto;
 import RainbowLike.dto.SmsRecepTelDto;
 import RainbowLike.entity.SmsHist;
 import RainbowLike.entity.SmsRecepTel;
+import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.SmsHistRepository;
 import RainbowLike.repository.SmsRecepTelRepository;
 import RainbowLike.service.FTalentService;
@@ -46,6 +47,8 @@ public class SmsController {
 
     // 맵을 사용하여 전화번호와 인증번호를 저장
     private Map<String, String> phoneVerificationMap = new HashMap<>();
+    @Autowired
+    private MemberRepository memberRepository;
 
     public SmsController() {
         // 반드시 계정 내 등록된 유효한 API 키, API Secret Key를 입력해주셔야 합니다!
@@ -133,10 +136,53 @@ public class SmsController {
 
     }
 
-    @RequestMapping("/receptel/{id}")
-    public List<String> getRecepTel(@PathVariable Long id) {
-        List recepTelList = smsRecepTelRepository.findRecepTelBySmsHistNum(id);
+    @RequestMapping("/receptel/{histNum}")
+    public List<String> getRecepTel(@PathVariable Long histNum) {
+        List recepTelList = smsRecepTelRepository.findRecepTelBySmsHistNum(histNum);
         return recepTelList;
+    }
+
+    @GetMapping("/allmembertel")
+    public ResponseEntity<Object> getAllMemberTel() {
+        // 데이터베이스에서 가져온 데이터가 비어 있다면 빈 JSON 반환
+        List telList = memberRepository.findAllTels();
+        if (telList.isEmpty()) {
+            return ResponseEntity.ok(Collections.emptyMap());
+        }
+
+        // 데이터가 있는 경우 실제 데이터 반환
+        return ResponseEntity.ok(telList);
+    }
+
+    @PostMapping("/newhist")
+    public ResponseEntity<SmsHist> createSms (@RequestBody SmsHistDto smsHistDto){
+        SmsHist newSms = new SmsHist();
+        newSms.setSmsType(smsHistDto.getSmsType());
+        newSms.setSendTel(smsHistDto.getSendTel());
+        newSms.setContent(smsHistDto.getContent());
+        newSms.setSendDate(LocalDateTime.now());
+
+        SmsHist savedSms = smsHistRepository.save(newSms);
+
+        return ResponseEntity.ok(savedSms);
+    }
+    @PostMapping("/newRecepTel")
+    public ResponseEntity<SmsRecepTel> createSmsRecep (@RequestBody SmsRecepTelDto smsRecepTelDto){
+        SmsRecepTel newSms = new SmsRecepTel();
+        SmsHist hist = new SmsHist();
+        hist.setSmsHistNum(smsRecepTelDto.getSmsHistNum());
+        newSms.setSmsHist(hist);
+        newSms.setSmsRecepTelNum(smsRecepTelDto.getSmsHistNum());
+        newSms.setRecepTel(smsRecepTelDto.getRecepTel());
+
+        SmsRecepTel savedSms = smsRecepTelRepository.save(newSms);
+
+        return ResponseEntity.ok(savedSms);
+    }
+
+    @RequestMapping("/save/{histNum}")
+    public void saveSmsData(@PathVariable Long histNum, @RequestBody List<String> telList) {
+        smsService.saveSmsRecepTels(telList, histNum);
     }
 
     @PostMapping("/sendsms/{histNum}")
@@ -145,8 +191,18 @@ public class SmsController {
         String sendTel = histList.get().getSendTel();
         String txt = histList.get().getContent();
         List<String> recepTelList = smsRecepTelRepository.findRecepTelBySmsHistNum(histNum);
+
+        // 전송테스트용 받는 번호 지정
+        //        ArrayList<String> recepTelList = new ArrayList();
+//        recepTelList.add("01030623038");
+//        recepTelList.add("01030623038");
+//        recepTelList.add("01030942507");
+
         for (String r : recepTelList) {
-//            smsService.sendSMS(r, sendTel, txt);
+            // 실제 메세지 전송 메서드
+            // smsService.sendSMS(sendTel, r, txt);
+
+            //테스트를 위한 콘솔 출력
             System.out.println("보내는 사람 : " + sendTel);
             System.out.println("받는 사람 : " + r);
             System.out.println("전달 내용 : " + txt);
@@ -160,13 +216,13 @@ public class SmsController {
             List<String> cTelList = ftService.findCTelByConsumerNum(ftcNum);
             String cTel = cTelList.get(0);
 
-            // 테스트 중 실제 문자메시지 전송되지 않고 콘솔 출력하게 함
+            // 테스트를 위한 콘솔 출력 메서드
             ftService.ftcSms(cTel, ftcNum);
             for (String s : wTelList) {
                 ftService.ftwSms(s);
             }
 
-            //실제 메시지 전송 메서드 호출
+            //실제 메세지 전송 메서드 호출
 //        smsService.ftcSms(cTel, ftcNum);
 //        for (String s : wTelList) {
 //            smsService.ftwSms(s);
@@ -174,31 +230,6 @@ public class SmsController {
 
         }
 
-        @PostMapping("/newhist")
-        public ResponseEntity<SmsHist> createSms (@RequestBody SmsHistDto smsHistDto){
-            SmsHist newSms = new SmsHist();
-            newSms.setSmsType(smsHistDto.getSmsType());
-            newSms.setSendTel(smsHistDto.getSendTel());
-            newSms.setContent(smsHistDto.getContent());
-            newSms.setSendDate(LocalDateTime.now());
-
-            SmsHist savedSms = smsHistRepository.save(newSms);
-
-            return ResponseEntity.ok(savedSms);
-        }
-        @PostMapping("/newRecepTel")
-        public ResponseEntity<SmsRecepTel> createSmsRecep (@RequestBody SmsRecepTelDto smsRecepTelDto){
-            SmsRecepTel newSms = new SmsRecepTel();
-            SmsHist hist = new SmsHist();
-            hist.setSmsHistNum(smsRecepTelDto.getSmsHistNum());
-            newSms.setSmsHist(hist);
-            newSms.setSmsRecepTelNum(smsRecepTelDto.getSmsHistNum());
-            newSms.setRecepTel(smsRecepTelDto.getRecepTel());
-
-            SmsRecepTel savedSms = smsRecepTelRepository.save(newSms);
-
-            return ResponseEntity.ok(savedSms);
-        }
 
 
         public void createTestSms () {
