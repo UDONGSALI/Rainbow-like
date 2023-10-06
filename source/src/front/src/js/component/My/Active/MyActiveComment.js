@@ -15,7 +15,6 @@ export default function MyActiveComment() {
 
     useEffect(() => {
         // 실제로 사용자 정보를 가져오는 방법에 따라서 구현
-        // 예시로 사용자 정보를 가져온다고 가정
         const fetchedUserInfo = {memNum: sessionStorage.getItem("memNum")};
         setMemNum(fetchedUserInfo.memNum); // memNum 상태 업데이트
     }, []);
@@ -36,6 +35,7 @@ export default function MyActiveComment() {
         fetch(`${SERVER_URL}comments/member/${memNum}`)
             .then((response) => response.json())
             .then((data) => {
+                console.log(data);
                 // 해당 멤버의 댓글만 필터링하여 상태(State)에 저장
                 const memberComments = data.filter((comment) => comment.member.memNum === memNum);
                 setComments(memberComments);
@@ -54,13 +54,8 @@ export default function MyActiveComment() {
     };
 
     const onRowClick = (params) => {
-
-
-        const rowId = params.row.postNum;
-        const board = params.row.post && params.row.post.board;
-
-        // board가 정의되어 있지 않으면 'N/A'로 설정
-        const boardName = board ? board.boardName : 'N/A';
+        const rowId = params.row.post.postNum;
+        const boardName = params.row.post.board.boardName; // 게시글의 유형에 따른 필드 (예: type 필드)
 
         console.log('rowId:', rowId);
         console.log('boardName:', boardName);
@@ -119,7 +114,7 @@ export default function MyActiveComment() {
         {
             field: "title",
             headerName: "게시글",
-            width: 400,
+            width: 280,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
 
@@ -141,7 +136,7 @@ export default function MyActiveComment() {
         {
             field: "content",
             headerName: "댓글 내용",
-            width: 400,
+            width: 300,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
 

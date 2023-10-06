@@ -8,9 +8,9 @@ function EduHistListPage(props) {
 
     const { headerInfo, urlData } = type === 'admin' ?
         require('../../layout/Header/Data/AdminHeader') :
-        require('../../layout/Header/Data/EduHeader');
+        require('../../layout/Header/Data/MyHeader');
 
-    const footerTitle = type === 'admin' ? '교육 신청 관리': '교육 신청 내역'
+    const footerTitle = type === 'admin' ? '교육 신청 관리': '교육 신청내역'
 
     return (
         <div>

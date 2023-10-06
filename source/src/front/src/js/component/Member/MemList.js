@@ -14,6 +14,8 @@ import SearchComponent from "../Common/SearchComponent";
 import useFetch from "../hook/useFetch";
 import usePagination from "../hook/usePagination";
 import useSearch from "../hook/useSearch";
+import useDelete from "../hook/useDelete";
+import usePatch from "../hook/usePatch";
 
 function MemList() {
     // 1. Router Hooks
@@ -51,7 +53,6 @@ function MemList() {
     // 3. 로컬 상태 관리
     const [openModal, setOpenModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
-    const [pageInfo, setPageInfo] = useState(null);
     const [membersWithFiles, setMembersWithFiles] = useState([]);
 
     // 4. 커스텀 훅 사용
@@ -59,6 +60,8 @@ function MemList() {
     const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}members`, setMembersWithFiles);
     const { data: members, loading: membersLoading } = useFetch(SERVER_URL + 'members', []);
     const { data: files, loading: filesLoading } = useFetch(SERVER_URL + 'files/table/member', []);
+    const deleteItem = useDelete(SERVER_URL);
+    const patchItem = usePatch(SERVER_URL + "api/members");
 
 
     useEffect(() => {
@@ -123,22 +126,31 @@ function MemList() {
 
     };
 
-    const MemberDelete = (memNum) => {
-        const isConfirmed = window.confirm("정말 삭제 하시겠습니까?");
-        if (!isConfirmed) return;
+    const handleDelete = async (memNum) => {
+        const isSuccess = await deleteItem('api/members/' + memNum, "삭제");
 
-        fetch(`${SERVER_URL}api/members/${memNum}`, { method: 'DELETE' })
-            .then(response => {
-                if (response.ok) {
-                    const updatedRows = membersWithFiles.filter(row => row.memNum !== memNum);
-                    setMembersWithFiles(updatedRows);
-                    alert(`데이터가 삭제 되었습니다.`);
-                } else {
-                    throw new Error();
-                }
-            })
-            .catch(err => console.error(err))
-    }
+        if (isSuccess) {
+            const updatedRows = membersWithFiles.filter(row => row.memNum !== memNum);
+            setMembersWithFiles(updatedRows);
+        }
+    };
+
+    const handleTypeChange = async (memNum, newValue) => {
+        const isSuccess = await patchItem(`/${memNum}`, { type: newValue }, "회원 유형");
+        if (isSuccess) {
+            setMembersWithFiles((prevMembers) => {
+                return prevMembers.map((member) => {
+                    if (member.memNum === memNum) {
+                        return {
+                            ...member,
+                            type: newValue
+                        };
+                    }
+                    return member;
+                });
+            });
+        }
+    };
 
     const columns = [
         {
@@ -155,35 +167,7 @@ function MemList() {
                     value={params.value}
                     onChange={(e) => {
                         const newValue = e.target.value;
-                        fetch(`${SERVER_URL}api/members/${params.row.memNum}`, {
-                            method: 'PATCH',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                type: newValue,
-                            }),
-                        })
-                            .then((response) => response.json())
-                            .then((data) => {
-                                console.log('Update successful:', data);
-                                // members 상태를 업데이트하여 화면 갱신
-                                setMembersWithFiles((prevMembers) => {
-                                    return prevMembers.map((member) => {
-                                        if (member.memNum === params.row.memNum) {
-                                            return {
-                                                ...member,
-                                                type: newValue
-                                            };
-                                        }
-                                        return member;
-                                    });
-                                });
-                                alert("회원 유형을 변경 했습니다!");
-                            })
-                            .catch((error) => {
-                                console.error('Error updating type:', error);
-                            });
+                        handleTypeChange(params.row.memNum, newValue);
                     }}
                 >
                     <option value="ADMIN">관리자</option>
@@ -240,7 +224,7 @@ function MemList() {
             sortable: false,
             filterable: false,
             renderCell: (row) => (
-                <button onClick={() => MemberDelete(row.id)}>삭제</button>
+                <button onClick={() => handleDelete(row.id)}>삭제</button>
             ),
             width: 100
         },

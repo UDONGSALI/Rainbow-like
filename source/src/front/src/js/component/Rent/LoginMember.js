@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
 
 const LoginMember = () => {
     const [member, setMember] = useState(null);
@@ -7,21 +9,16 @@ const LoginMember = () => {
     useEffect(() => {
         const fetchMemberData = async () => {
             try {
-                // 로컬 스토리지에서 세션 토큰 가져오기
-                const sessionToken = localStorage.getItem('sessionToken');
+                const memId = localStorage.getItem('memId');
 
-                if (!sessionToken) {
-                    // 세션 토큰이 없는 경우 로그인 페이지로 리디렉션
-                    window.location.href = '/login'; // 로그인 페이지 URL에 맞게 변경
-                    return;
+                if (!memId) {
+                    throw new Error('memId가 없습니다.');
                 }
 
-                // 서버로부터 멤버 정보 가져오기
-                const response = await fetch('/api/members/current-user', {
+                const response = await fetch(`/api/members/${memId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionToken}`
                     },
                 });
 
@@ -29,21 +26,20 @@ const LoginMember = () => {
                     throw new Error('멤버 정보를 가져오는 데 실패했습니다.');
                 }
 
-                // JSON 형식으로 변환된 응답을 가져와서 상태 업데이트
                 const data = await response.json();
                 setMember(data);
-                setLoading(false); // 추가: 로딩 상태 갱신
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching member data:', error);
-                setLoading(false); // 추가: 로딩 상태 갱신
-                // TODO: 사용자에게 오류 메시지를 표시하는 로직 추가
+                setLoading(false);
+                // TODO: 로그인을 하셔야 대관신청을 하실 수 있습니다.
+                // 아래의 리디렉션 코드를 여기에 추가
+                window.location.href = '/login';
             }
         };
 
-        // 컴포넌트가 마운트될 때 데이터를 가져오도록 설정
         fetchMemberData();
-    }, []); // 빈 배열을 전달하여 한 번만 실행되도록 설정
-
+    }, []);
     return (
         <div id="title">
             {member !== null ? (  // member가 null이 아닌 경우에만 렌더링
