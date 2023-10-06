@@ -40,6 +40,7 @@ import BoardPostListPage from "./js/pages/Board/BoardPostListPage";
 import BoardListPage from "./js/pages/Board/BoardListPage";
 import OrgListPage from "./js/pages/Organization/OrgListPage";
 import {useTracking} from "./js/component/hook/useTracking";
+import {useToken} from "./js/component/hook/useToken";
 import LogListPage from "./js/pages/Log/LogListPage";
 import RentHistListPage from "./js/pages/Rent/RentHistListPage";
 import MyActivePage from "./js/pages/My/MyActivePage";
@@ -55,11 +56,9 @@ import SMSPage from "./js/pages/SMS/SMSPage";
 
 
 function App() {
+    const decodeToken = useToken();
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    const isLabor = sessionStorage.getItem("role") === "LABOR";
     const memId = sessionStorage.getItem("memId");
-    const memNum = sessionStorage.getItem("memNum");
-    const navigate = useNavigate();
     const {trackButtonClick, trackPageView} = useTracking(memId);
     const location = useLocation();
     const isPaymentRoute = location.pathname.includes("/pay/"); // /pay/로 시작하는 경로인지 확인
@@ -68,41 +67,6 @@ function App() {
     useEffect(() => {
         trackPageView();
     }, [trackPageView]);
-
-
-    useEffect(() => {
-        // sessionStorage에서 JWT 토큰을 가져옵니다.
-        const token = sessionStorage.getItem('jwt');
-
-        if (token) {
-            // JWT 디코딩 라이브러리를 사용하여 토큰을 디코딩합니다.
-            const decodedToken = decodeToken(token);
-            // 유형을 세션 스토리지에 저장
-            sessionStorage.setItem("role", decodedToken.role);
-            // 멤넙을 세션 스토리지에 저장
-            sessionStorage.setItem("memNum", decodedToken.memNum);
-            // username을 세션 스토리지에 저장
-            sessionStorage.setItem("memId", decodedToken.sub);
-        }
-    }, [navigate]);
-
-
-    // JWT 토큰을 디코딩하는 함수
-    function decodeToken(token) {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(
-                atob(base64)
-                    .split('')
-                    .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                    .join('')
-            );
-            return JSON.parse(jsonPayload);
-        } catch (error) {
-            return null;
-        }
-    }
 
 
     return (
