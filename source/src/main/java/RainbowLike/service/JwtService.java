@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Component
 public class JwtService {
-	static final long EXPIRATIONTIME = 86400000; // 토큰 만료 시간: 1일 (1 day in ms)
+	static final long EXPIRATIONTIME = 10800000; // 토큰 만료 시간: 3시간
 	static final String PREFIX = "Bearer"; // JWT 토큰의 접두사
 	static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // 서명 키 생성
 
