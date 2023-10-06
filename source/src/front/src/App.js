@@ -43,6 +43,7 @@ import OrgListPage from "./js/pages/Organization/OrgListPage";
 import {useTracking} from "./js/component/hook/useTracking";
 import LogListPage from "./js/pages/Log/LogListPage";
 import PostForm from "./js/component/Post/PostForm";
+import MyActivePage from "./js/pages/My/MyActivePage";
 
 
 function App() {
@@ -137,13 +138,14 @@ function App() {
                 <Route path="/ftc/:id" element={<FTCDtlPage/>}/>
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
                 <Route path="/ftm" element={<FTMListPage/>}/>
-                <Route path="/ftmpop/:speField/:ftcNum" element={<MatchingPopup/>}/>
+                <Route path="/ftmpop/:ftcNum" element={<MatchingPopup/>}/>
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
                 <Route path="/post/new" element={<PostForm/>}/>
+                <Route path="/mypage/active" element={<MyActivePage/>}/>
             </Routes>
         </div>
     )

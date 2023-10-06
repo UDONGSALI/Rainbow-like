@@ -92,11 +92,9 @@ function EduForm({eduNum}) {
                             method: 'POST',
                             body: formDataWithFiles,
                         });
-
                         const fileUploadData = await fileUploadResponse.text();
                         console.log('File upload response:', fileUploadData);
                     }
-
                     window.location.reload();
                 } else {
                     const errorData = await response.text();

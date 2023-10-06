@@ -12,7 +12,7 @@ const LoginMember = () => {
 
                 if (!sessionToken) {
                     // 세션 토큰이 없는 경우 로그인 페이지로 리디렉션
-                    // window.location.href = '/login'; // 로그인 페이지 URL에 맞게 변경
+                    window.location.href = '/login'; // 로그인 페이지 URL에 맞게 변경
                     return;
                 }
 

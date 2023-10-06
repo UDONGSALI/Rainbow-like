@@ -37,8 +37,8 @@ public class PostFormDto {
     }
 
     public PostFormDto(String title, String content, LocalDateTime writeDate, LocalDateTime editDate, int pageView, String consField, Long parentsNum, String clubAllowStatus, String clubRecuStatus, Long memNum, Long boardNum){
-//        Board board = new Board();
-//        Member member = new Member();
+        Board board = new Board();
+        Member member = new Member();
 
         this.title = title;
         this.content = content;
