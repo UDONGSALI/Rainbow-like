@@ -70,7 +70,7 @@ export default function MyActivePost(props) {
         } else if (boardName === '모임 페이지') {
             targetPath = `/clubs/${rowId}`;
         } else if (boardName === '세종시 기관 및 단체 소식') {
-            targetPath = `/post/detail/${rowId}`;
+            targetPath = `/post/detail/boardNum/${rowId}`;
         } else if (boardName === '대관 이용 후기') {
             targetPath = `/rent/review/${rowId}`;
         } else if (boardName === '온라인 상담') {
