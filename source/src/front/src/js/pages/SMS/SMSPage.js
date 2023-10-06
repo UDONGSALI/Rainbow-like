@@ -1,17 +1,23 @@
-import SMSForm from "../../component/SMS/SMSForm";
-import SMSList from "../../component/SMS/SMSList";
+import React, { useState } from 'react';
+import SMSForm from '../../component/SMS/SMSForm';
+import SMSList from '../../component/SMS/SMSList';
+import styles from '../../../css/pages/Club/ClubPage.module.css';
 
-function SMSPage(){
+function SMSPage() {
+    const [refreshList, setRefreshList] = useState(false);
 
-    return(
-        <div>
-            <h1>
-                sms 페이지
-            </h1>
-                <SMSForm />
-                <SMSList />
+    const handleRefresh = () => {
+        setRefreshList(!refreshList);
+    };
+
+    return (
+        <div className={styles.ClubMainPage}>
+            <SMSForm onFormSubmit={handleRefresh} />
+            <div className={styles.List}>
+                <SMSList refresh={refreshList} />
+            </div>
         </div>
-    )
+    );
 }
 
 export default SMSPage;

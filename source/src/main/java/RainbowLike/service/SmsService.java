@@ -4,6 +4,8 @@ import RainbowLike.dto.SmsHistDto;
 import RainbowLike.dto.SmsRecepTelDto;
 import RainbowLike.entity.SmsHist;
 import RainbowLike.entity.SmsRecepTel;
+import RainbowLike.repository.PayHistRepository;
+import RainbowLike.repository.RentHistRepository;
 import RainbowLike.repository.SmsHistRepository;
 import RainbowLike.repository.SmsRecepTelRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +19,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -36,14 +35,19 @@ public class SmsService {
     SmsHistRepository smsHistRepository;
     @Autowired
     SmsRecepTelRepository smsRecepTelRepository;
+    @Autowired
+    RentHistRepository rentRepository;
+    @Autowired
+    PayHistRepository payRepository;
 
-    // 맵을 사용하여 전화번호와 인증번호를 저장
     private Map<String, String> phoneVerificationMap = new HashMap<>();
 
     public SmsService(){
         this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, "https://api.coolsms.co.kr");
     }
 
+
+    // 인재풀 매칭시 매칭신청자에게 메세지 전송
     public SingleMessageSentResponse ftcSms (String to, Long ftcNum) {
         Message message = new Message();
         message.setFrom("01075260231");
@@ -53,6 +57,7 @@ public class SmsService {
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
         return response;
     }
+    // 인재풀 매칭 시 매칭된 인재에게 메세지 전송
     public SingleMessageSentResponse ftwSms (String to) {
         Message message = new Message();
         message.setFrom("01075260231");
@@ -63,6 +68,7 @@ public class SmsService {
         return response;
     }
 
+    // 메세지 예제 작성
     public void createTestSms(ArrayList<SmsHistDto> smsList) {
         for (SmsHistDto smsHistDto : smsList) {
             mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -72,6 +78,8 @@ public class SmsService {
         }
 
     }
+
+    // 메세지 수신번호목록 예제 작성
     public void createTestSmsRecep(ArrayList<SmsRecepTelDto> smsList) {
         for (SmsRecepTelDto smsRecepTelDto : smsList) {
             mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -82,6 +90,7 @@ public class SmsService {
 
     }
 
+    // 작성 메세지 전송 메서드
     public SingleMessageSentResponse sendSMS(String from, String to, String txt) {
         Message message = new Message();
         message.setFrom(from);
@@ -92,8 +101,8 @@ public class SmsService {
         return response;
     }
 
+    //작성메세지 수신번호 리스트 저장
     public void saveSmsRecepTels(List<String> telList, Long histNum) {
-        // DB에 저장
         for (String t : telList) {
             SmsHist smsHist = new SmsHist();
             smsHist.setSmsHistNum(histNum);
@@ -106,7 +115,93 @@ public class SmsService {
         }
     }
 
-//    public Optional<SmsRecepTel> findSmsRecepTelBySmsHistNum(Long histNum) {
-//        return Optional.ofNullable(smsRecepTelRepository.findBySmsHistNum(histNum));
+    // 대관 승인 메세지
+    public SingleMessageSentResponse rentApplySms(Long rentNum) {
+        List<Object[]> data = rentRepository.findData(rentNum);
+        String to = data.get(0)[0].toString();
+        String space = data.get(0)[1].toString();
+        String fee = data.get(0)[2].toString();
+        String day = data.get(0)[3].toString().substring(0, 10);
+        String time = data.get(0)[3].toString().substring(12, 17);
+
+        Message message = new Message();
+        message.setFrom("01075260231");
+        message.setTo(to);
+        if(space == "강의실(혜윰)" || space == "다목적 활동실(라온)" || space == "멀티미디어실(하람)"){
+            message.setText("신청하신" + space + "의 공간대여가 승인되었습니다. 사이트에 방문하여 결제금액 " + fee + "을 반드시 결제해주세요.");
+        }
+        else {
+            message.setText("신청하신" + space + "의 공간대여가 승인되었습니다. 예약시간(" + day + ", " + time + ")을 확인하시고 이용해주세요.");
+        }
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        return response;
+
+    }
+
+    // 대관 결제 확인 메세지
+    public SingleMessageSentResponse rentPaySms(Long rentNum) {
+        List<Object[]> data = rentRepository.findData(rentNum);
+        String to = data.get(0)[0].toString();
+        String space = data.get(0)[1].toString();
+        String fee = data.get(0)[2].toString();
+        String day = data.get(0)[3].toString().substring(0, 10);
+        String time = data.get(0)[3].toString().substring(12, 17);
+
+        Message message = new Message();
+        message.setFrom("01075260231");
+        message.setTo(to);
+        message.setText("신청하신" + space + "의 결제가 확인되었습니다. 예약시간(" + day + ", " + time + ")을 확인하시고 이용해주세요.");
+
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        return response;
+    }
+
+    //대관신청 확인 테스트(콘솔출력)
+public void rentApplyTest(Long rentNum) {
+        List<Object[]> data = rentRepository.findData(rentNum);
+        String to = data.get(0)[0].toString();
+        String space = data.get(0)[1].toString();
+        String fee = data.get(0)[2].toString();
+        String day = data.get(0)[3].toString().substring(0, 10);
+        String time = data.get(0)[3].toString().substring(11, 16);
+
+        if("무료".equals(fee)){
+            System.out.println("신청하신 " + space + "의 공간대여가 승인되었습니다. 예약일정(" + day + ", " + time + ")을 확인하시고 이용해주세요.");
+        }
+        else{
+            System.out.println("신청하신 " + space + "의 공간대여가 승인되었습니다. 사이트에 방문하여 결제금액 " + fee + "을 반드시 결제해주세요.");
+        }
+
+
+    }
+
+    //대관 결제 확인 테스트(콘솔출력)
+    public void rentPayTest(Long rentNum) {
+        List<Object[]> data = rentRepository.findData(rentNum);
+        String to = data.get(0)[0].toString();
+        String space = data.get(0)[1].toString();
+        String fee = data.get(0)[2].toString();
+        String day = data.get(0)[3].toString().substring(0, 10);
+        String time = data.get(0)[3].toString().substring(11, 16);
+
+        System.out.println("신청하신 " + space + "의 결제가 확인되었습니다. 예약일정(" + day + ", " + time + ")을 확인하시고 이용해주세요.");
+
+    }
+
+
+//    public SingleMessageSentResponse rentAgoSms(Long rentNum) {
+//        List<Object[]> data = rentRepository.findData(rentNum);
+//        String to = data.get(0)[0].toString();
+//        String space = data.get(0)[1].toString();
+//        String fee = data.get(0)[2].toString();
+//        String day = data.get(0)[3].toString().substring(0, 10);
+//        String time = data.get(0)[3].toString().substring(12, 17);
+//        Message message = new Message();
+//        message.setFrom("01075260231");
+//        message.setTo(to);
+//        message.setText("신청하신" + space + "의 공간대여가 하루 남았습니다. 예약시간(" + time + ")을 확인하시고 이용해주세요.");
+//
+//        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+//        return response;
 //    }
 }

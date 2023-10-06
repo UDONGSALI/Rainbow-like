@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../../css/component/Club/ClubList.module.css';
 import SMSDtl from "./SMSDtl";
 
-function SMSList() {
+function SMSList({ refresh }) {
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
@@ -15,6 +15,12 @@ function SMSList() {
     useEffect(() => {
         fetchPosts();
     }, []);
+
+    useEffect(() => {
+        if (refresh) {
+            fetchPosts();
+        }
+    }, [refresh]);
 
     const fetchPosts = () => {
         fetch(SERVER_URL + "sms/hist")
