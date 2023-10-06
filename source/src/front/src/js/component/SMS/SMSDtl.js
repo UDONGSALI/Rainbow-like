@@ -1,4 +1,4 @@
-import styles from '../../../css/pages/FT/FTModal.module.css';
+import styles from '../../../css/component/SMS/SMSodal.module.css';
 import React, {useEffect, useState} from "react";
 import {SERVER_URL} from "../../component/Common/constants";
 import FTWDtl from "../FT/FTW/FTWDtl";
@@ -39,12 +39,13 @@ function SMSDtl({onClose, histNum}){
         <div className={styles.modalOverlay}>
             <div className={styles.modal}>
                 <div className={styles.modalContent}>
-                    <h2>메세지 상세</h2>
-                    <div>
+                    <h3>메세지 상세</h3>
+                    <div className={styles.smsContent}>
                     {post.content}
                     </div>
-                    <div>
-                        <h3>전송받은 번호</h3>
+                    <h3>전송받은 번호</h3>
+
+                    <div className={styles.smsContent}>
                         <ul>
                             {tel.map((phoneNumber, index) => (
                                 <li key={index}>{phoneNumber}</li>
