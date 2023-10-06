@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -45,6 +46,17 @@ public class FileController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/qill")
+    public ResponseEntity<List<String>> uploadQillFiles(@RequestParam("file") List<MultipartFile> files, @RequestParam("tableName") String tableName, @RequestParam("number") Long number) {
+        try {
+            List<String> fileUrls = fileService.uploadFilesForQuill(files, tableName, number);
+            return ResponseEntity.ok(fileUrls);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Collections.emptyList());
         }
     }
 }

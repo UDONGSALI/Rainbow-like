@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -186,6 +187,120 @@ public class FileService {
             }
 
             return "파일 업로드 성공";
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IOException("파일 업로드 실패", e);
+        }
+    }
+
+    public List<String> uploadFilesForQuill(List<MultipartFile> files, String tableName, Long number) throws IOException {
+        Member member = null;
+        Space space = null;
+        Edu edu = null;
+        EduHist eduHist = null;
+        Post post;
+        post = null;
+        String midPath = "";
+
+        // Determine the correct path based on the provided tableName and number
+        if (number == 0) {
+            switch (tableName) {
+                case "member":
+                    member = memberRepository.findTopByOrderByMemNumDesc();
+                    midPath = tableName + "/" + member.getMemNum() + "/";
+                    break;
+                case "space":
+                    space = spaceRepository.findTopByOrderBySpaceNumDesc();
+                    midPath = tableName + "/" + space.getSpaceNum() + "/";
+                    break;
+                case "edu":
+                    edu = eduRepository.findTopByOrderByEduNumDesc();
+                    midPath = tableName + "/" + edu.getEduNum() + "/";
+                    break;
+                case "eduHist":
+                    eduHist = eduHistRepository.findTopByOrderByEduHistNumDesc();
+                    midPath = tableName + "/" + eduHist.getEduHistNum() + "/";
+                    break;
+                case "post":
+                    post = postRepository.findTopByOrderByPostNumDesc();
+                    midPath = tableName + "/" + post.getPostNum() + "/";
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid table name: " + tableName);
+            }
+        } else {
+            switch (tableName) {
+                case "member":
+                    member = memberRepository.findByMemNum(number);
+                    if (member != null) {
+                        midPath = tableName + "/" + member.getMemNum() + "/";
+                    }
+                    break;
+                case "space":
+                    space = spaceRepository.findBySpaceNum(number);
+                    if (space != null) {
+                        midPath = tableName + "/" + space.getSpaceNum() + "/";
+                    }
+                    break;
+                case "edu":
+                    edu = eduRepository.findByEduNum(number);
+                    if (edu != null) {
+                        midPath = tableName + "/" + edu.getEduNum() + "/";
+                    }
+                    break;
+                case "eduHist":
+                    eduHist = eduHistRepository.findByEduHistNum(number);
+                    if (eduHist != null) {
+                        midPath = tableName + "/" + eduHist.getEduHistNum() + "/";
+                    }
+                    break;
+                case "post":
+                    post = postRepository.findByPostNum(number);
+                    if (post != null) {
+                        midPath = tableName + "/" + post.getPostNum() + "/";
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid table name: " + tableName);
+            }
+        }
+
+        // Proceed with the file upload logic
+        try {
+            // Set up Google Cloud Storage
+            ClassPathResource resource = new ClassPathResource("rainbow-like-6e3171ac1695.json");
+            GoogleCredentials credentials = GoogleCredentials.fromStream(resource.getInputStream());
+            String projectId = "rainbow-like";
+            Storage storage = StorageOptions.newBuilder()
+                    .setProjectId(projectId)
+                    .setCredentials(credentials)
+                    .build()
+                    .getService();
+
+            List<String> uploadedFileUrls = new ArrayList<>();
+
+
+            for (MultipartFile file : files) {
+                String newFileName = midPath + file.getOriginalFilename();
+                String fileUrl = "https://storage.googleapis.com/" + bucketName + "/" + newFileName;
+                BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, newFileName).build();
+                Blob blob = storage.create(blobInfo, file.getBytes());
+
+                File createfile = new File();
+                createfile.setFileOriName(file.getOriginalFilename());
+                createfile.setFileName(newFileName);
+                createfile.setFileUri(fileUrl);
+                createfile.setMember(member);
+                createfile.setSpace(space);
+                createfile.setEdu(edu);
+                createfile.setPost(post);
+                createfile.setEduHist(eduHist);
+                fileRepository.save(createfile);
+
+                uploadedFileUrls.add(fileUrl);
+            }
+
+            return uploadedFileUrls;
         } catch (IOException e) {
             e.printStackTrace();
             throw new IOException("파일 업로드 실패", e);
