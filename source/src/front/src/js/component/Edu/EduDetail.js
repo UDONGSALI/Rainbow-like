@@ -39,6 +39,7 @@ function EduDetail() {
         };
     };
 
+    console.log(files)
     const renderDateRange = (startDate, endDate) => {
         const start = formatDateAndTime(startDate);
         const end = formatDateAndTime(endDate);
