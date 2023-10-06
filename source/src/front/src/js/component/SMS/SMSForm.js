@@ -2,10 +2,9 @@ import React, {useEffect, useState, Component} from "react";
 import styles from '../../../css/component/Club/ClubForm.module.css';
 import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../component/Common/constants";
-import axios from 'axios';
 
 
-function SMSForm() {
+function SMSForm({ onFormSubmit }) {
     const [formData, setFormData] = useState({});
     const [telData, setTelData] = useState([]);
     const navigate = useNavigate();
@@ -30,8 +29,8 @@ function SMSForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (formData.recepTel === "전체 회원") {
-            fetch(SERVER_URL + "sms/allmembertel", {
+        if (formData.recepTel === '전체 회원') {
+            fetch(SERVER_URL + 'sms/allmembertel', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,15 +39,15 @@ function SMSForm() {
                 .then((response) => response.json())
                 .then((data) => {
                     setTelData(data);
+                    onFormSubmit();
                 })
                 .catch((error) => {
-                    // 오류 처리
                     console.error('Error:', error);
                 });
-
-        } else if(formData.recepTel === "직접 입력") {
+        } else if (formData.recepTel === '직접 입력') {
             const recep = [formData.recepTelInput];
             setTelData(recep);
+            onFormSubmit();
         }
     };
 
