@@ -1,10 +1,9 @@
 package RainbowLike;
 
 import RainbowLike.controller.*;
-import RainbowLike.repository.BoardRepository;
-import RainbowLike.repository.MemberRepository;
-import RainbowLike.repository.PostRepository;
+import RainbowLike.service.DefaultFileService;
 import RainbowLike.service.EduHistService;
+import RainbowLike.service.RentHistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,10 +16,11 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
     private final PostController postController;
     private final CommentController commentController;
-    private final RentHistController rentHistController;
+    private final RentHistService rentHistService;
     private final EduHistService eduHistService;
-    private final DefaultFileController defaultFileController;
+    private final DefaultFileService defaultFileService;
     private final FtalentController ftalentController;
+    private final SmsController smsController;
 
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
@@ -30,7 +30,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        rentHistController.createBasicRent();
+        rentHistService.createBasicRent();
 
         postController.createPosts();
 
@@ -38,11 +38,13 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
         eduHistService.createDefaultEduHists();
 
-        defaultFileController.createDefaultFiles();
+        defaultFileService.createDefaultFiles();
 
         ftalentController.createTestFtw();
         ftalentController.createTestFtc();
         ftalentController.createTestFtm();
+
+        smsController.createTestSms();
     }
 }
 

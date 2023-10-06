@@ -11,7 +11,7 @@ export default function renderApprovalStatusCell(params, isAdmin, handleStatusCh
             onChange={(e) => handleStatusChange(params.row.eduHistNum, e.target.value)}
             className={`approvalStatus ${params.value}`}
         >
-            <option value="WAIT">미승인</option>
+            <option value="WAIT">대기</option>
             <option value="APPROVE">승인</option>
             <option value="COMPLETE">완료</option>
         </select>

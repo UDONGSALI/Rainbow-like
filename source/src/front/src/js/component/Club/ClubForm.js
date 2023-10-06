@@ -11,7 +11,6 @@ function ClubForm(props){
 
         useEffect(() => {
         memberSet();
-        console.log(member);
 
         const formSet = {
             memNum: member.memNum,
