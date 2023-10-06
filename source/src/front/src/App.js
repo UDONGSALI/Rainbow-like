@@ -50,6 +50,7 @@ import MyClubPage from "./js/pages/My/MyClubPage";
 import MyCounselPage from "./js/pages/My/MyCounselPage";
 import RentReviewPostPage from "./js/pages/Rent/RentReviewPostPage";
 import Pay from "./js/component/Pay/pay";
+import PostForm from "./js/component/Post/PostForm";
 
 
 function App() {
@@ -153,6 +154,7 @@ function App() {
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
+                <Route path="/post/new" element={<PostForm/>}/>
 
                 {/*공간대관페이지관련*/}
                 <Route path="/rent/process" element={<RentProcessPage/>}/>

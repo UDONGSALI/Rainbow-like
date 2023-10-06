@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import styles from '../../../css/component/Post/PostForm.module.css';
 import { useNavigate } from "react-router-dom";
 import { SERVER_URL } from "../Common/constants";
@@ -23,7 +23,6 @@ function PostForm(props) {
         delYN: 'N'
     });
     const [file, setFile] = useState(null);
-    const quillRef = useRef(null);
 
     useEffect(() => {
         fetch(SERVER_URL + `members/id/${memId}`)
@@ -60,6 +59,7 @@ function PostForm(props) {
         setFile(selectedFile);
     };
 
+    console.log(content)
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -93,85 +93,68 @@ function PostForm(props) {
             });
     };
 
-    const uploadFileToServer = async (file) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        try {
-            const response = await fetch(SERVER_URL + "/files/table/post", {
-                method: 'POST',
-                body: formData,
-            });
-            const data = await response.json();
-            // 서버 응답에서 이미지 URL 추출
-            return data.fileUrl;
-        } catch (error) {
-            console.error('File upload error:', error);
-            return null;
-        }
-    };
-
     function imageHandler() {
         const input = document.createElement('input');
         input.setAttribute('type', 'file');
         input.setAttribute('accept', 'image/*');
+        input.setAttribute('multiple', 'true');
         input.click();
 
         input.onchange = async () => {
-            const file = input.files[0];
+            const files = Array.from(input.files);
             const formData = new FormData();
 
-            formData.append('file', file);  // 'file' 필드에 이미지 파일 첨부
+            files.forEach(file => {
+                formData.append('file', file);
+            });
 
-            // 서버로 이미지 파일 전송
-            const response = await fetch(SERVER_URL + "/files/table/post", {  // 업로드 URL 수정
+            // 테이블 이름 및 번호에 따라 필요한 값을 설정해주세요.
+            formData.append('tableName', 'post');
+            formData.append('number', '0');
+
+            const response = await fetch(`${SERVER_URL}files/qill`, {
                 method: 'POST',
                 body: formData,
             });
-            const data = await response.json();
-
-            // 이미지 URL 가져오기
-            const imageUrl = data.fileUrl;  // URL 가져오는 필드 수정
+            const imageUrls = await response.json();
 
             const editor = quillRef.current.getEditor();
             const range = editor.getSelection();
-            editor.insertEmbed(range.index, 'image', imageUrl);
+
+            imageUrls.forEach((imageUrl, index) => {
+                editor.insertEmbed(range.index + index, 'image', imageUrl);
+            });
         };
     }
+    const modules = useMemo(() => {
+        return {
+            toolbar: {
+                container: [
+                    [{ header: [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                    ['image'],
+                ],
+                handlers: {
+                    // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
+                    image: imageHandler,
+                },
+            },
+        };
+    }, []);
+// 위에서 설정한 모듈들 foramts을 설정한다
+    const formats = [
+        'header',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'blockquote',
+        'image',
+    ];
+    const [value, setValue] = useState(''); // 에디터 속 콘텐츠를 저장하는 state
+    const quillRef = useRef(); // 에디터 접근을 위한 ref return (
 
-    const modules = {
-        toolbar: {
-            container: [
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['link', 'image', 'video']
-            ],
-            handlers: {
-                'image': function () {
-                    const input = document.createElement('input');
-                    input.setAttribute('type', 'file');
-                    input.click();
-
-                    // 파일 선택 이후의 동작
-                    input.onchange = async () => {
-                        const file = input.files[0];
-                        if (file) {
-                            try {
-                                // 서버에 파일 업로드
-                                const imageUrl = await uploadFileToServer(file);
-                                // 이미지 URL을 퀼 에디터에 삽입
-                                const range = this.quill.getSelection(true);
-                                this.quill.insertEmbed(range.index, 'image', imageUrl);
-                            } catch (error) {
-                                console.error('Failed to upload image:', error);
-                            }
-                        }
-                    };
-                }
-            }
-        }
-    };
-
-
+console.log(content)
     return (
         <div className={styles.registrationFormContainer}>
             <h2>게시글 작성</h2>
@@ -198,10 +181,11 @@ function PostForm(props) {
                     <label>내용:</label>
                     <ReactQuill
                         ref={quillRef}
-                        value={formData.content}
+                        theme="snow"
+                        value={content}
                         onChange={handleQuillChange}
-                        // modules={modules}
-                        bounds={".registrationFormContainer"}
+                        modules={modules}
+                        formats={formats}
                     />
                 </div>
                 <div className={styles.inputGroup}>
