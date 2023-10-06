@@ -7,7 +7,7 @@ import { SERVER_URL } from "../../Common/constants";
 
 
 function MatchingPopup() {
-    const { speField, ftcNum } = useParams();
+    const { ftcNum } = useParams();
     const [post, setPost] = useState([]);
     const [checkedRows, setCheckedRows] = useState({}); // checkedRows를 상태로 관리
 
