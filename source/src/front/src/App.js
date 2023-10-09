@@ -52,6 +52,7 @@ import MyCounselPage from "./js/pages/My/MyCounselPage";
 import RentReviewPostPage from "./js/pages/Rent/RentReviewPostPage";
 import Pay from "./js/component/Pay/pay";
 import SMSPage from "./js/pages/SMS/SMSPage";
+import PayListPage from "./js/pages/Pay/PayListPage";
 
 
 
@@ -74,6 +75,13 @@ function App() {
             {!isPaymentRoute && <NavBar/>}
             <Routes>
                 <Route path="/" element={<Main/>}/>
+
+
+                {/*로그인*/}
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/signUp" element={<SignUpPage/>}/>
+
+                {/*관리자*/}
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/admin/edu" element={isAdmin ? <EduListPage type="admin"/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
@@ -85,8 +93,9 @@ function App() {
                 <Route path="/admin/board" element={isAdmin ? <BoardListPage/> : null}/>
                 <Route path="/admin/board/post/:boardNum" element={isAdmin ? <BoardPostListPage/> : null}/>
                 <Route path="/admin/log" element={isAdmin ? <LogListPage/> : null}/>
-                <Route path="/login" element={<LoginPage/>}/>
-                <Route path="/signUp" element={<SignUpPage/>}/>
+                <Route path="/admin/pay" element={isAdmin ? <PayListPage/> : null}/>
+
+                {/*교육*/}
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/list/detail/:eduNum" element={<EduDetailPage/>}/>
@@ -94,12 +103,14 @@ function App() {
                        element={memId ? <EduApplyPage/> : <Navigate to="/login" replace/>}/>
                 <Route path="/edu/applylist"
                        element={memId ? <EduHistListPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+
+                {/*결제*/}
                 <Route path="/pay/:rentHistNum/:fee" element={<Pay/>}/>
+
+                {/*게시글*/}
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/posts" element={<PostList/>}/>
                 <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
-                <Route path="/sj" element={<SjNewsPage/>}/>
-                <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
