@@ -20,6 +20,7 @@ import {renderStatusCell} from "./RenderCell/statusRenderer";
 import renderApprovalStatusCell from "./RenderCell/renderApprovalStatusCell";
 import InfoModal from "../Common/InfoModal";
 import usePatch from "../hook/usePatch";
+import DateCell from "../Common/DateCell";
 
 const ADMIN_ROLE = "ADMIN";
 
@@ -208,8 +209,8 @@ function EduHistList(props) {
         {
             field: 'applyDate',
             headerName: '신청 일시',
-            width: 120,
-            valueGetter: getApplyDate
+            width: 150,
+            valueGetter: DateCell
         },
         {
             field: 'applyDoc',
@@ -260,11 +261,6 @@ function EduHistList(props) {
             ),
         }
     ];
-
-    function getApplyDate(params) {
-        const date = new Date(params.row.applyDate);
-        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-    }
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
