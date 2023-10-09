@@ -35,11 +35,11 @@ public class EduHistController {
         return ResponseEntity.ok(eduHistService.eduHistCheck(memNum, eduNum));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> updateEduHistStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    @PatchMapping("/{eduHistnum}")
+    public ResponseEntity<?> updateEduHistStatus(@PathVariable Long eduHistnum, @RequestBody Map<String, String> body) {
         try {
             Status status = Status.valueOf(body.get("status").toUpperCase());
-            Optional<EduHist> updatedEduHist = eduHistService.updateEduHistStatus(id, status);
+            Optional<EduHist> updatedEduHist = eduHistService.updateEduHistStatus(eduHistnum, status);
             if (updatedEduHist.isPresent()) {
                 return ResponseEntity.ok(updatedEduHist.get());
             } else {

@@ -16,7 +16,7 @@ function BoardPostListPage() {
                 return response.json();
             })
             .then(data => {
-                setBoardName(data.boardName);  // 가정: API 응답에 'boardName' 필드가 있다고 함
+                setBoardName(data.boardName);
             })
             .catch(error => {
                 console.error('Error fetching board name:', error);
