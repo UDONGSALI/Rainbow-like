@@ -117,9 +117,9 @@ function ClubEditor(props) {
                                     onChange={handleChange}
                                     required
                                 >
-                                    <option value="">허가여부</option>
-                                    <option value="허가">허가</option>
-                                    <option value="거부">거부</option>
+                                    <option value="WAIT">대기</option>
+                                    <option value="APPROVE">허가</option>
+                                    <option value="REJECT">거부</option>
 
                                 </select>
                             </div>
