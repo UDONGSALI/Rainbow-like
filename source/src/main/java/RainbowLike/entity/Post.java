@@ -1,6 +1,7 @@
 package RainbowLike.entity;
 
 import RainbowLike.constant.DelYN;
+import RainbowLike.constant.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Post extends BaseEntity{
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +26,11 @@ public class Post extends BaseEntity{
     @JsonManagedReference
     @JoinColumn(name = "mem_num")
     private Member member;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @JoinColumn(name = "mem_id")
+    private Member labor;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonManagedReference
@@ -43,13 +48,15 @@ public class Post extends BaseEntity{
     private int pageView;
 
     @Column(length = 50)
-    private String consField;
+    @Enumerated(EnumType.STRING)
+    private Status conselStatus;
 
     @Column
     private Long parentsNum;
 
     @Column(length = 50)
-    private String clubAllowStatus;
+    @Enumerated(EnumType.STRING)
+    private Status clubAllowStatus;
 
     @Column(length = 50)
     private String clubRecuStatus;
@@ -59,25 +66,11 @@ public class Post extends BaseEntity{
     private DelYN delYN;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    @JsonBackReference(value="post-files")
+    @JsonBackReference(value = "post-files")
     private List<File> files = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    @JsonBackReference(value="post-comments")
+    @JsonBackReference(value = "post-comments")
     private List<Comment> comments = new ArrayList<>();
 
-
-    public Post(Member member, Board board, String title, String content, LocalDateTime writeDate, int pageView, String clubAllowStatus, String clubRecuStatus) {
-        super();
-        this.member = member;
-        this.board = board;
-        this.title = title;
-        this.content = content;
-        this.writeDate = writeDate;
-        this.pageView = pageView;
-        this.clubAllowStatus = clubAllowStatus;
-        this.clubRecuStatus = clubRecuStatus;
-
-
-    }
 }

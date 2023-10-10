@@ -34,7 +34,6 @@ public class JwtService {
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
 				.signWith(key)
 				.compact();
-		System.out.println("토큰 생성: " + token);
 		return token;
 	}
 
@@ -52,7 +51,6 @@ public class JwtService {
 			Claims body = claims.getBody();
 
 			String bodyJson = body.toString();
-			System.out.println("JWT 본문: " + bodyJson);
 
 			if (body != null)
 				return body;

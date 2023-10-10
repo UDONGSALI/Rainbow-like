@@ -1,6 +1,7 @@
 package RainbowLike.dto;
 
 import RainbowLike.constant.DelYN;
+import RainbowLike.constant.Status;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,6 +18,8 @@ public class PostFormDto {
     private Long memNum;
     @JsonIgnore
     private Member member;
+    @JsonIgnore
+    private Member labor;
     private Long boardNum;
     @JsonIgnore
     private Board board;
@@ -25,32 +28,15 @@ public class PostFormDto {
     private LocalDateTime writeDate;
     private LocalDateTime editDate;
     private int pageView;
-    private String consField;
+    private Status conselStatus;
     private Long parentsNum;
-    private String clubAllowStatus;
+    private Status clubAllowStatus;
     private String clubRecuStatus;
     private DelYN delYN;
 
 
     public PostFormDto(){
 
-    }
-
-    public PostFormDto(String title, String content, LocalDateTime writeDate, LocalDateTime editDate, int pageView, String consField, Long parentsNum, String clubAllowStatus, String clubRecuStatus, Long memNum, Long boardNum){
-//        Board board = new Board();
-//        Member member = new Member();
-
-        this.title = title;
-        this.content = content;
-        this.writeDate = writeDate;
-        this.editDate = editDate;
-        this.pageView = pageView;
-        this.consField = consField;
-        this.parentsNum = parentsNum;
-        this.clubAllowStatus = clubAllowStatus;
-        this.clubRecuStatus = clubRecuStatus;
-        this.boardNum = boardNum;
-        this.memNum = memNum;
     }
 
     static public ArrayList<PostFormDto> createTestPost() {
@@ -70,8 +56,10 @@ public class PostFormDto {
 
         Member member1 = new Member();
         Member member2 = new Member();
+        Member member3 = new Member();
         member1.setMemNum(1L);
         member2.setMemNum(2L);
+        member3.setMemNum(3L);
 
 
         PostFormDto post1 = new PostFormDto();
@@ -80,7 +68,7 @@ public class PostFormDto {
         post1.setTitle("테스트 게시글 1");
         post1.setContent("테스트 게시글 본문 1");
         post1.setPageView(0);
-        post1.setClubAllowStatus("허가");
+        post1.setClubAllowStatus(Status.APPROVE);
         post1.setClubRecuStatus("모집중");
         post1.setDelYN(DelYN.N);
         postList.add(post1);
@@ -92,7 +80,7 @@ public class PostFormDto {
         post2.setContent("테스트 게시글 본문 2");
         post2.setWriteDate(LocalDateTime.now());
         post2.setPageView(0);
-        post2.setClubAllowStatus("허가");
+        post2.setClubAllowStatus(Status.APPROVE);
         post2.setClubRecuStatus("진행중");
         post2.setDelYN(DelYN.Y);
         postList.add(post2);
@@ -104,7 +92,7 @@ public class PostFormDto {
         post3.setContent("테스트 게시글 본문 3");
         post3.setWriteDate(LocalDateTime.now());
         post3.setPageView(0);
-        post3.setClubAllowStatus("거부");
+        post3.setClubAllowStatus(Status.REJECT);
         post3.setClubRecuStatus("거부");
         post3.setDelYN(DelYN.N);
         postList.add(post3);
@@ -117,7 +105,7 @@ public class PostFormDto {
         post4.setContent("상담 테스트 게시글 본문 1");
         post4.setWriteDate(LocalDateTime.now());
         post4.setPageView(0);
-        post4.setConsField("상담대기");
+        post4.setConselStatus(Status.WAIT);
         post4.setDelYN(DelYN.N);
         postList.add(post4);
 
@@ -129,7 +117,7 @@ public class PostFormDto {
         post5.setContent("상담 테스트 게시글 본문 2");
         post5.setWriteDate(LocalDateTime.now());
         post5.setPageView(0);
-        post5.setConsField("상담완료");
+        post5.setConselStatus(Status.WAIT);
         post5.setDelYN(DelYN.Y);
         postList.add(post5);
 
@@ -259,7 +247,9 @@ public class PostFormDto {
         post18.setBoard(board5);
         post18.setMember(member2);
         post18.setTitle("노무사 게시판 유저 글1 입니다.");
+        post18.setLabor(member3);
         post18.setContent("노무사 게시판 내용 입니다.");
+        post18.setConselStatus(Status.COMPLETE);
         post18.setWriteDate(LocalDateTime.now());
         post18.setPageView(0);
 
@@ -270,10 +260,22 @@ public class PostFormDto {
         post19.setMember(member2);
         post19.setTitle("노무사 게시판 유저 글2 입니다.");
         post19.setContent("노무사 게시판 내용2 입니다.");
+        post19.setConselStatus(Status.WAIT);
         post19.setWriteDate(LocalDateTime.now());
         post19.setPageView(0);
 
         postList.add(post19);
+
+        PostFormDto post20 = new PostFormDto();
+        post20.setBoard(board5);
+        post20.setMember(member2);
+        post20.setParentsNum(18L);
+        post20.setTitle("노무사 게시판  답글.");
+        post20.setContent("노무사 게시판  답글 입니다.");
+        post20.setWriteDate(LocalDateTime.now());
+        post20.setPageView(0);
+
+        postList.add(post20);
 
 
         return postList;

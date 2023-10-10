@@ -31,8 +31,6 @@ public class LogController {
 
     @PostMapping
     public ResponseEntity<Log> saveLog(@RequestBody LogDto logDto) {
-        System.out.println("로그확인 dto");
-        System.out.println(logDto);
         Log savedLog = logService.saveLog(logDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedLog);
     }
