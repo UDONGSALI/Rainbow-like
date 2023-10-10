@@ -44,7 +44,6 @@ import {useToken} from "./js/component/hook/useToken";
 import LogListPage from "./js/pages/Log/LogListPage";
 import RentHistListPage from "./js/pages/Rent/RentHistListPage";
 import MyActivePage from "./js/pages/My/MyActivePage";
-import MyEduPage from "./js/pages/My/MyEduPage";
 import MyRentPage from "./js/pages/My/MyRentPage";
 import MyFTWPage from "./js/pages/My/MyFTWPage";
 import MyClubPage from "./js/pages/My/MyClubPage";
@@ -90,8 +89,7 @@ function App() {
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/admin/eduHist" element={isAdmin ? <EduHistListPage memId={memId} type="admin"/> : null}/>
-                <Route path="/admin/rentHist"
-                       element={isAdmin ? <RentHistListPage memId={memId} type="admin"/> : null}/>
+                <Route path="/admin/rentHist" element={isAdmin ? <RentHistListPage memId={memId} type="admin"/> : null}/>
                 <Route path="/admin/org" element={isAdmin ? <OrgListPage/> : null}/>
                 <Route path="/admin/board" element={isAdmin ? <BoardListPage/> : null}/>
                 <Route path="/admin/board/post/:boardNum" element={isAdmin ? <BoardPostListPage/> : null}/>
@@ -102,10 +100,8 @@ function App() {
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/list/detail/:eduNum" element={<EduDetailPage/>}/>
-                <Route path="/edu/list/apply/:eduNum"
-                       element={memId ? <EduApplyPage/> : <Navigate to="/login" replace/>}/>
-                <Route path="/edu/applylist"
-                       element={memId ? <EduHistListPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/edu/list/apply/:eduNum" element={memId ? <EduApplyPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/edu/applylist" element={memId ? <EduHistListPage memId={memId} type="edu"/> : <Navigate to="/login" replace/>}/>
 
                 {/*결제*/}
                 <Route path="/pay/:rentHistNum/:fee" element={<Pay/>}/>
