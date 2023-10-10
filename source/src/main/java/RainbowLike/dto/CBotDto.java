@@ -69,7 +69,7 @@ public class CBotDto {
 
 
         CBotDto qna8 = new CBotDto();
-        qna8.setResCtgr("카테고리 3");
+        qna8.setResCtgr("카테고리3");
         qna8.setResTitle("qna 타이틀 3-3");
         qna8.setResContnet("qna 설명 3-3");
         qnaList.add(qna8);
