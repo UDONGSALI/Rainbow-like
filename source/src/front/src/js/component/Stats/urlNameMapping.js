@@ -1,0 +1,15 @@
+export const urlToNameMapping = {
+    "/login": "로그인",
+    "/signup": "회원가입",
+    "/admin/member": "관리자 - 회원 관리",
+    "/admin/edu": "관리자 - 교육 관리",
+    "/admin/eduHist": "관리자 - 교육 신청 관리",
+    "/admin/rentHist": "관리자 - 대관 신청 관리",
+    "/admin/pay": "관리자 - 결제 내역",
+    "/admin/org": "관리자 - 유관 기관",
+    "/admin/board": "관리자 - 게시판 관리",
+    "/admin/log": "관리자 - 로그",
+    "/edu/calendar": "관리자 - 교육 일정",
+    "/edu/list": "관리자 - 교육 신청",
+    "/edu/applylist": "관리자 - 교육 신청내역",
+};
