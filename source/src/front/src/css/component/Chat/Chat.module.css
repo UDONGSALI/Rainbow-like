@@ -1,0 +1,69 @@
+/* ChatBot.module.css */
+
+.chatbotContainer {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.chatHistory {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* ChatBot 메시지 왼쪽 정렬 */
+}
+
+.userInput {
+    display: flex;
+    align-items: center;
+}
+
+.message {
+    padding: 8px;
+    margin: 4px;
+    border-radius: 4px;
+    max-width: 80%; /* 메시지 최대 너비 설정 */
+}
+
+.user {
+    background-color: #a38ced; /* 클라이언트 측 메시지 배경색 */
+    color: white;
+    align-self: flex-end; /* 클라이언트 측 메시지 오른쪽 정렬 */
+}
+.user:after {
+    left: 100%;
+    top: 50%;
+    content: "";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-left-color: #a38ced;
+    border-width: 50px;
+    margin-top: -50px;
+}
+
+.bot {
+    background-color: #f0f0f0; /* ChatBot 측 메시지 배경색 */
+    color: black;
+}
+
+
+.qnaList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 16px;
+}
+
+.qnaItem {
+    cursor: pointer;
+    padding: 4px;
+}
+
+/* 선택된 항목을 강조하기 위한 스타일 */
+.qnaItem.active {
+    background-color: #a38ced;
+    color: white;
+}

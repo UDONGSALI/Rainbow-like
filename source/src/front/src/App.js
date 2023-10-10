@@ -52,6 +52,8 @@ import RentReviewPostPage from "./js/pages/Rent/RentReviewPostPage";
 import Pay from "./js/component/Pay/pay";
 import SMSPage from "./js/pages/SMS/SMSPage";
 import PayListPage from "./js/pages/Pay/PayListPage";
+import ChatPage from "./js/pages/Chat/ChatPage";
+import Chating from "./js/component/Chat/Chating";
 
 
 
@@ -62,6 +64,7 @@ function App() {
     const {trackButtonClick, trackPageView} = useTracking(memId);
     const location = useLocation();
     const isPaymentRoute = location.pathname.includes("/pay/"); // /pay/로 시작하는 경로인지 확인
+    const isChatRoute = location.pathname.includes("/chat");
 
 
     useEffect(() => {
@@ -71,7 +74,7 @@ function App() {
 
     return (
         <div className="App" onClick={trackButtonClick}>
-            {!isPaymentRoute && <NavBar/>}
+            {!isPaymentRoute && !isChatRoute && <NavBar/>}
             <Routes>
                 <Route path="/" element={<Main/>}/>
 
@@ -148,6 +151,10 @@ function App() {
                 {/*SMS*/}
                 <Route path="/sms" element={isAdmin? <SMSPage /> : null}/>
                 {/*<Route path="/sms" element={<SMSPage />}  />*/}
+
+                {/*챗봇 / 채팅*/}
+                <Route path="/chat" element={<ChatPage />} />
+                <Route path="/chat/:memNum" element={<Chating />} />
 
             </Routes>
         </div>
