@@ -7,14 +7,13 @@ import {useToken} from "../hook/useToken";
 
 function Login() {
 
-    const [memId, setMemId] = useState(sessionStorage.getItem("memId")); // memId를 상태로 관리합니다.
-    const decodeAndSetToken = useToken();
-    // 로그인 실패 횟수를 localStorage에서 가져옵니다.
+    const [memId, setMemId] = useState(sessionStorage.getItem("memId"));
+    const { decodeToken: decodeAndSetToken, deleteTokenFromServer } = useToken();
     const storedFailedAttempts = localStorage.getItem('failedAttempts') || 0;
     const [failedAttempts, setFailedAttempts] = useState(parseInt(storedFailedAttempts, 10));
 
     useEffect(() => {
-        setMemId(sessionStorage.getItem("memId")); // memId 값이 세션 스토리지에 변경될 때마다 상태를 업데이트합니다.
+        setMemId(sessionStorage.getItem("memId"));
     }, []);
 
     // 실패 횟수를 localStorage에 저장합니다.
@@ -95,6 +94,11 @@ function Login() {
     };
 
     const logout = () => {
+        const jti = sessionStorage.getItem('jti'); // 세션 스토리지에서 jti를 가져옴
+        console.log(jti)
+        if (jti) {
+            deleteTokenFromServer(jti);
+        }
         sessionStorage.clear();
         window.location.reload();
     };
