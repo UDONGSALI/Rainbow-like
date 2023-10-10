@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {SERVER_URL} from "../Common/constants";
 
 export function useToken() {
     const navigate = useNavigate();
@@ -10,6 +11,9 @@ export function useToken() {
             const decodedToken = decodeToken(token);
             if (!decodedToken) {
                 alert("로그아웃 되었습니다!");
+                const jti = sessionStorage.getItem('jti'); // 세션 스토리지에서 jti를 가져옴
+                console.log(jti)
+                deleteTokenFromServer(jti);
                 sessionStorage.clear()
                 navigate("/login");
             } else {
@@ -19,6 +23,8 @@ export function useToken() {
                 sessionStorage.setItem("memNum", decodedToken.memNum);
                 // username을 세션 스토리지에 저장
                 sessionStorage.setItem("memId", decodedToken.sub);
+                // 여기에 재발급 로직 추가 가능
+                sessionStorage.setItem("jti", decodedToken.jti);
                 // 여기에 재발급 로직 추가 가능
             }
         }
@@ -42,6 +48,11 @@ export function useToken() {
                     return null;  // 만료된 경우 null 반환
                 }
             }
+
+            // if (decoded.jti) {
+            //     sessionStorage.setItem("jti", decoded.jti); // 세션 스토리지에 jti 저장
+            // }
+
             return decoded;
         } catch (error) {
             console.error('토큰 디코딩 중 오류 발생:', error);
@@ -49,5 +60,17 @@ export function useToken() {
         }
     }
 
-    return decodeToken;
+
+    function deleteTokenFromServer(jti) {
+        fetch(`${SERVER_URL}token?jti=${jti}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    console.error("Error deleting token");
+                }
+            });
+    }
+
+    return { decodeToken, deleteTokenFromServer };
 }
