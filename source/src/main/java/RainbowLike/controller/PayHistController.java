@@ -20,9 +20,14 @@ public class PayHistController {
         return payHistService.findAll();
     }
 
+    @GetMapping("/search/{option}/{value}")
+    public Iterable<PayHist> searchLogByOption(@PathVariable String option, @PathVariable String value) {
+        return payHistService.searchByOptionAndValue(option, value);
+    }
+
     @PostMapping
-    public ResponseEntity<PaymentAndStatusChangeResult> processPaymentAndStatusChange(@RequestBody PayHistDto payHistDto) {
-        PaymentAndStatusChangeResult result = payHistService.processPaymentAndStatusChange(payHistDto);
+    public ResponseEntity<PaymentAndStatusChangeResult> addPayHist(@RequestBody PayHistDto payHistDto) {
+        PaymentAndStatusChangeResult result = payHistService.addPayHist(payHistDto);
         return ResponseEntity.ok(result);
     }
 }

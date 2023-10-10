@@ -1,8 +1,10 @@
 package RainbowLike.service;
 
+import RainbowLike.constant.Status;
 import RainbowLike.dto.PostFormDto;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Post;
+import RainbowLike.entity.RentHist;
 import RainbowLike.repository.BoardRepository;
 import RainbowLike.repository.ClubRepository;
 import RainbowLike.repository.MemberRepository;
@@ -11,20 +13,22 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class PostService {
-    private  final ClubRepository clubRepository;
-    private  final PostRepository postRepository;
-    private  final BoardRepository boardRepository;
     private  final MemberRepository memberRepository;
+    private  final BoardRepository boardRepository;
+    private  final PostRepository postRepository;
+    private final SmsService smsService;
     private final ModelMapper mapper;
 
     public void savePost(Post post) {
@@ -47,6 +51,43 @@ public class PostService {
                 return Collections.emptyList();
         }
     }
+
+    public Optional<Post> updateRentClubAllowStatus(Long postNum, Status status) {
+        Optional<Post> optionalRentHist = postRepository.findById(postNum);
+        if (optionalRentHist.isPresent()) {
+            Post post = optionalRentHist.get();
+            post.setClubAllowStatus(status);
+            return Optional.of(postRepository.save(post));
+        }
+        return Optional.empty();
+    }
+
+    @Transactional
+    public Optional<Post> updateLabor(Long postNum, String memId) {
+        Optional<Post> optionalPost = postRepository.findById(postNum);
+        smsService.updateLaborSms(postNum, true);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+            post.setLabor(memberRepository.findByMemId(memId));
+            post.setConselStatus(Status.APPROVE);
+            return Optional.of(postRepository.save(post));
+        }
+        return Optional.empty();
+    }
+
+    @Transactional
+    public Post cancelLabor(Long postNum) {
+        Optional<Post> optionalPost = postRepository.findById(postNum);
+        smsService.updateLaborSms(postNum, false);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+            post.setLabor(null);
+            post.setConselStatus(Status.WAIT);
+            return postRepository.save(post);
+        }
+        return null;
+    }
+
 
     public void deletePost(Long postNum) {
         if (postRepository.existsById(postNum)) {

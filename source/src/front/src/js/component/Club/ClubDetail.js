@@ -38,7 +38,6 @@ console.log(memId);
         fetchPost();
     }, []);
 
-
     const fetchPost = () =>{
         fetch(SERVER_URL + "posts/" + id)
             .then(response =>
@@ -99,6 +98,17 @@ console.log(memId);
         navigate("/clubs/edit/" + id);
     };
 
+    function convertStatus(status) {
+        switch (status) {
+            case 'WAIT':
+                return "대기";
+            case 'APPROVE':
+                return "허가";
+            case 'REJECT':
+                return "거부";
+        }
+    }
+
     if (!post) {
         return <div>Loading...</div>;
     }
@@ -113,7 +123,7 @@ console.log(memId);
                     {post.member.name}
                 </div>
                 <div className={styles.postMeta2}>
-                    <span className={styles.metaItem}>{post.post.clubAllowStatus}</span>
+                    <span className={styles.metaItem}>{convertStatus(post.post.clubAllowStatus)}</span>
                     <span className={styles.metaItem}>{post.post.clubRecuStatus}</span>
                     <span className={styles.metaItem}>조회수 {post.post.pageView}</span>
                 </div>
