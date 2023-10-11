@@ -23,4 +23,8 @@ public interface RentHistRepository extends JpaRepository <RentHist,Long> {
     @Modifying
     @Query("SELECT m.tel, s.spaceName, s.rentFee, r.rentStdt, r.rentEddt FROM RentHist r JOIN r.member m JOIN r.space s WHERE r.rentHistNum = :rentNum")
     List<Object[]> findData(Long rentNum);
+
+    List<RentHist> findByMember(Member member);
+
+    List<RentHist> findByMember_MemNum(Long memNum);
 }
