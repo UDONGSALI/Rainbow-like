@@ -11,8 +11,7 @@ public class PostByMemberService {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
-    private ClubRepository clubRepository;
+
 
     public Member getMemberByMemNum(Long memNum) {
         return memberRepository.findByMemNum(memNum);
