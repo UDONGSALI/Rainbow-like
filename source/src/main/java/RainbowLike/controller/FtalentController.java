@@ -35,6 +35,7 @@ public class FtalentController {
     @Autowired
     FTalentService ftService;
 
+
     @RequestMapping("/ftw")
     public Iterable<FtWorker> getWorkers() {
 
@@ -249,4 +250,6 @@ public class FtalentController {
         String tel = telList.get(0);
         return tel;
     }
+
+
 }
