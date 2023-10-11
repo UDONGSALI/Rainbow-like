@@ -1,5 +1,10 @@
 package RainbowLike.service;
 
+import RainbowLike.constant.DelYN;
+import RainbowLike.constant.Gender;
+import RainbowLike.constant.Type;
+import RainbowLike.entity.Edu;
+import RainbowLike.entity.Member;
 import RainbowLike.entity.Token;
 import RainbowLike.repository.TokenRepository;
 import io.jsonwebtoken.Claims;
@@ -15,29 +20,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
 public class JwtService {
 
     private final TokenRepository tokenRepository;
-    static final long EXPIRATIONTIME = 10800000; // 토큰 만료 시간: 3시간
+    static final long EXPIRATIONTIME = 18000000; // 토큰 만료 시간: 3시간
     static final String PREFIX = "Bearer"; // JWT 토큰의 접두사
     static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // 서명 키 생성
 
-    // 사용자의 username과 role 정보를 바탕으로 JWT 토큰을 생성하고 반환합니다.
     public String getToken(String memId, String role, Long memNum) {
+        Optional<Token> existingTokenOptional = tokenRepository.findByMemId(memId);
+        if (existingTokenOptional.isPresent()) {
+            Token existingToken = existingTokenOptional.get();
+            existingToken.setDelYN(DelYN.Y);
+            tokenRepository.save(existingToken);
+        }
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
         claims.put("memNum", memNum);
-
-        // JWT ID를 생성. 이를 위해서는 UUID 또는 다른 방법을 사용하여 고유한 값을 생성할 수 있습니다.
         String jti = UUID.randomUUID().toString();
         claims.put("jti", jti);
+
 
         String token = Jwts.builder()
                 .setClaims(claims)
@@ -45,7 +52,6 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
                 .signWith(key)
                 .compact();
-
         saveToken(jti, memId, role, memNum);
         return token;
     }
@@ -56,6 +62,7 @@ public class JwtService {
         tokenEntity.setMemId(memId);
         tokenEntity.setRole(role);
         tokenEntity.setMemNum(memNum);
+        tokenEntity.setDelYN(DelYN.N);
         tokenEntity.setExpirationDate(new Date(System.currentTimeMillis() + EXPIRATIONTIME));
 
         tokenRepository.save(tokenEntity);
@@ -82,9 +89,31 @@ public class JwtService {
         return null;
     }
 
+    public Iterable<Token> findAll() {
+        return tokenRepository.findByDelYN(DelYN.N);
+    }
+    public Token findByJti(String jti) {
+        return tokenRepository.findByJti(jti);
+    }
+
+    public Iterable<Token> searchToken(String option, String value) {
+        switch (option) {
+            case "memId":
+                return tokenRepository.findByMemIdContaining(value);
+            case "type":
+                return tokenRepository.findByRole(value);
+            default:
+                return new ArrayList<>();
+        }
+    }
+
     @Transactional
     public void deleteTokenByJti(String jti) {
         tokenRepository.deleteByJti(jti);
+    }
+    @Transactional
+    public void deleteTokenByTokenNum(Long tokenNum) {
+        tokenRepository.deleteById(tokenNum);
     }
 
     @Scheduled(fixedRate = 1 * 60 * 1000)

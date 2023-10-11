@@ -3,7 +3,6 @@ import './App.css';
 import LoginPage from "./js/pages/Login/LoginPage";
 import React, {useEffect} from "react";
 import MemManagePage from "./js/pages/Member/MemManagePage";
-import NavBar from './js/layout/Navbar/NavBar';
 import EduCalendarPage from "./js/pages/Edu/EduCalendarPage";
 import EduListPage from "./js/pages/Edu/EduListPage";
 import EduDetailPage from "./js/pages/Edu/EduDetailPage";
@@ -54,6 +53,7 @@ import SMSPage from "./js/pages/SMS/SMSPage";
 import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
 import Chating from "./js/component/Chat/Chating";
+import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 
 
 
@@ -74,7 +74,8 @@ function App() {
 
     return (
         <div className="App" onClick={trackButtonClick}>
-            {!isPaymentRoute && !isChatRoute && <NavBar/>}
+
+            {!isPaymentRoute && !isChatRoute &&  <Navbar/>}
             <Routes>
                 <Route path="/" element={<Main/>}/>
 
@@ -95,6 +96,9 @@ function App() {
                 <Route path="/admin/board/post/:boardNum" element={isAdmin ? <BoardPostListPage/> : null}/>
                 <Route path="/admin/log" element={isAdmin ? <LogListPage/> : null}/>
                 <Route path="/admin/pay" element={isAdmin ? <PayListPage/> : null}/>
+                <Route path="admin/ftmain" element={<FTMainPage  type="admin" />} />
+                <Route path="admin/ftmain/ftw/:id" element={<FTWDtlPage type="admin" />} />
+
 
                 {/*교육*/}
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
@@ -137,15 +141,15 @@ function App() {
                 <Route path="/clubs/edit/:id" element={<ClubEditorPage />}/>
 
                 {/*인재풀*/}
-                <Route path="/ftmain" element={<FTMainPage />} />
-                <Route path="/ftw" element={isAdmin? <FTWListPage /> : null } />
+                <Route path="/ftmain" element={<FTMainPage/>} />
                 <Route path="/ftw/new" element={memId? <FTWFormPage /> : <Navigate to ="/login" replace/> } />
-                <Route path="/ftw/:id" element={<FTWDtlPage />} />
+                <Route path="/ftw/dtl/:id" element={<FTWDtlPage />} />
                 <Route path="/ftw/edit/:id" element={<FTWEditPage/>}/>
-                <Route path="/ftc" element={isAdmin? <FTCListPage/> : null}/>
                 <Route path="/ftc/new" element={memId? <FTCFormPage /> : <Navigate to ="/login" replace/> }/>
-                <Route path="/ftc/:id" element={<FTCDtlPage />} />
+                <Route path="/ftc/dtl/:id" element={<FTCDtlPage />} />
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
+                <Route path="/admin/ftmain/ftw" element={isAdmin? <FTWListPage /> : null } />
+                <Route path="/admin/ftmain/ftc" element={isAdmin? <FTCListPage/> : null}/>
                 <Route path="/ftmpop/:ftcNum" element={isAdmin? <MatchingPopup /> : null}/>
 
                 {/*SMS*/}

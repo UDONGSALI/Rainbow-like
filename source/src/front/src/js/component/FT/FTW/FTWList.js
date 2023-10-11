@@ -9,6 +9,7 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const ftmMode = ftcNum != null;
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     // const [checkedRows, setCheckedRows] = useState({}); // 개별 체크 상태를 저장하는 객체
 
 
@@ -205,7 +206,7 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
         if (ftmMode) {
             const popupWindow = window.open(`/ftw/${rowId}`, '_blank', 'width=1000,height=600');
         } else {
-            navigate(`/ftw/${rowId}`);
+            navigate(`/ftw/dtl/${rowId}`);
         }
     };
 
@@ -225,7 +226,12 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
                     </ul>
                 </div>
                 :
-                <button  onClick = {() => navigate('/ftmain')}>DB 메인</button>
+                <button onClick={() => {
+                    const path = isAdmin ? '/admin/ftmain' : '/ftmain';
+                    navigate(path);
+                }}>
+                    DB 메인
+                </button>
             }
             <DataGrid columns={columns}
                       rows={posts}

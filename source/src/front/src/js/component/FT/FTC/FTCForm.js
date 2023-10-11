@@ -38,7 +38,7 @@ function FTCForm(props){
                 alert('게시글을 작성했습니다.');
                 console.log(data);
                 const newPostId = data.ftConsumerNum; // 예: 응답 데이터에서 게시글의 ID 필드를 추출합니다.
-                navigate(`/ftc/${newPostId}`); // 추출한 ID를 사용하여 리디렉션합니다.
+                navigate(`/ftc/dtl/${newPostId}`); // 추출한 ID를 사용하여 리디렉션합니다.
 
             })
             .catch((error) => {

@@ -29,8 +29,6 @@ function BoardPostListPage() {
             });
     }, [boardNum]);
 
-    console.log(boardNum + '보드넘')
-
     const handleSlideChange = (swiper) => {
         const newBoardNum = swiper.realIndex + 1;  // realIndex 사용
         if (newBoardNum <= 9) {

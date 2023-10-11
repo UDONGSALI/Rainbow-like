@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {SERVER_URL} from "../Common/constants";
 
 export function useToken() {
+    checkTokenStatus();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -11,8 +12,7 @@ export function useToken() {
             const decodedToken = decodeToken(token);
             if (!decodedToken) {
                 alert("로그아웃 되었습니다!");
-                const jti = sessionStorage.getItem('jti'); // 세션 스토리지에서 jti를 가져옴
-                console.log(jti)
+                const jti = sessionStorage.getItem('jti');
                 deleteTokenFromServer(jti);
                 sessionStorage.clear()
                 navigate("/login");
@@ -25,10 +25,86 @@ export function useToken() {
                 sessionStorage.setItem("memId", decodedToken.sub);
                 // 여기에 재발급 로직 추가 가능
                 sessionStorage.setItem("jti", decodedToken.jti);
-                // 여기에 재발급 로직 추가 가능
+
+                const expirationDate = new Date(decodedToken.exp * 1000);
+                const oneHourFromNow = new Date().getTime() + 60 * 60 * 1000;
+                if (expirationDate.getTime() <= oneHourFromNow) {
+                    refreshToken();
+                }
             }
+            checkTokenStatus();
         }
     }, [navigate]);
+
+    function getToken(credentials) {
+        return fetch(`${SERVER_URL}login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials),
+        })
+            .then((res) => {
+                const jwtToken = res.headers.get('Authorization');
+                if (jwtToken) {
+                    sessionStorage.setItem('jwt', jwtToken);
+                    decodeToken(jwtToken); // Decode and set token info in session storage
+                    return { success: true, token: jwtToken };
+                } else {
+                    return { success: false };
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                return { success: false, error: err };
+            });
+    }
+
+    function refreshToken() {
+        const currentToken = sessionStorage.getItem('jwt');
+        return fetch(`${SERVER_URL}token/refresh`, {
+            method: 'GET',
+            headers: {
+                'Authorization': currentToken
+            },
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.token) {
+                    sessionStorage.setItem('jwt', data.token);
+                    decodeToken(data.token);
+                    return { success: true, token: data.token };
+                } else {
+                    return { success: false };
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                return { success: false, error: err };
+            });
+    }
+
+    function checkTokenStatus() {
+        const jti = sessionStorage.getItem('jti');
+        if(jti) {
+            fetch(`${SERVER_URL}token/${jti}`)
+                .then(res => res.text())
+                .then(data => {
+                    if (data === "Y") {
+                        alert("다른 곳에서 로그인 되었습니다!");
+                        deleteTokenFromServer(jti);
+                        sessionStorage.clear();
+                        navigate("/login");
+                    }
+                    else if (!data){
+                        alert("서버에서 로그아웃 되었습니다. 관리자에게 문의 하세요.");
+                        sessionStorage.clear()
+                        navigate("/login");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+    }
 
     function decodeToken(token) {
         try {
@@ -48,18 +124,12 @@ export function useToken() {
                     return null;  // 만료된 경우 null 반환
                 }
             }
-
-            // if (decoded.jti) {
-            //     sessionStorage.setItem("jti", decoded.jti); // 세션 스토리지에 jti 저장
-            // }
-
             return decoded;
         } catch (error) {
             console.error('토큰 디코딩 중 오류 발생:', error);
             return null;
         }
     }
-
 
     function deleteTokenFromServer(jti) {
         fetch(`${SERVER_URL}token?jti=${jti}`, {
@@ -72,5 +142,5 @@ export function useToken() {
             });
     }
 
-    return { decodeToken, deleteTokenFromServer };
+    return { decodeToken, deleteTokenFromServer, getToken };
 }
