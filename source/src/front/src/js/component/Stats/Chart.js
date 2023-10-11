@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import useFetch from "../hook/useFetch";
 import { SERVER_URL } from "../Common/constants";
-import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
-import {urlToNameMapping} from "./urlNameMapping";
+import { PieChart as RechartsPieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
+import {urlToNameMapping} from "./urlToNameMapping";
 
-function PieChartComponent() {
+function Chart() {
     const { data: fetchedLogs, loading } = useFetch(`${SERVER_URL}log`);
     const [memberType, setMemberType] = useState("ALL");
     const [chartData, setChartData] = useState([]);
@@ -50,7 +50,7 @@ function PieChartComponent() {
                 <option value="COUNSELOR">상담사</option>
             </select>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                <PieChart width={800} height={400}>
+                <RechartsPieChart  width={800} height={400}>
                     <Pie
                         data={chartData}
                         cx={370}
@@ -74,7 +74,7 @@ function PieChartComponent() {
                         }
                     </Pie>
                     <Tooltip formatter={(value, name) => [`${value}`, `${getUrlName(name)}`]} />
-                </PieChart>
+                </RechartsPieChart >
                 <div style={{ width: 350, border: '1px solid #ccc', borderRadius: '10px', padding: '10px', boxShadow: '0px 4px 8px rgba(0,0,0,0.1)' }}>
                     <h4 style={{ textAlign: 'center', marginBottom: '20px' }}>가장 많이 방문한 페이지</h4>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -96,4 +96,4 @@ function PieChartComponent() {
     );
 }
 
-export default PieChartComponent;
+export default Chart;

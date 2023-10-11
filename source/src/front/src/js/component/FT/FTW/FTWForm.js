@@ -43,7 +43,7 @@ function FTWForm(props){
                 alert('등록이 신청되었습니다.');
                 console.log(data);
                 const newPostId = data.ftWorkerNum;
-                navigate(`/ftw/${newPostId}`);
+                navigate(`/ftw/dtl/${newPostId}`);
 
             })
             .catch((error) => {

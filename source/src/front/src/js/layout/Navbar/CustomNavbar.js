@@ -1,46 +1,79 @@
-import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Button from 'react-bootstrap/Button';
-import './CustomNavbar.module.css';
+import React, { useState } from 'react';
+import styles from './CustomNavbar.module.css';
 
 
 function CustomNavbar() {
+    const [searchMode, setSearchMode] = useState(false);
+    const [activeMenu, setActiveMenu] = useState(null);
+
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" className="justify-content-between">
-            <Navbar.Brand href="#home">Logo</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbarNav"/>
-            <Navbar.Collapse id="basic-navbarNav">
-                <Nav className="mr-auto">
-                    <NavDropdown title="home" id="basic-nav-dropdown" className="full-width-dropdown">
-                        <NavDropdown.Item href="#action/1">homeService 1</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/2">homeService 2</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3">homeService 3</NavDropdown.Item>
-                    </NavDropdown>
-                    <NavDropdown title="about" id="basic-nav-dropdown" className="full-width-dropdown">
-                        <NavDropdown.Item href="#action/1">aboutService 1</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/2">aboutService 2</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3">aboutService 3</NavDropdown.Item>
-                    </NavDropdown>
-                    <NavDropdown title="Services" id="basic-nav-dropdown" className="full-width-dropdown">
-                        <NavDropdown.Item href="#action/1">ServicesService 1</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/2">ServicesService 2</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3">ServicesService 3</NavDropdown.Item>
-                    </NavDropdown>
-                    <NavDropdown title="contact" id="basic-nav-dropdown" className="full-width-dropdown">
-                        <NavDropdown.Item href="#action/1">contactService 1</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/2">contactService 2</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3">contactService 3</NavDropdown.Item>
-                    </NavDropdown>
-                </Nav>
-            </Navbar.Collapse>
-            <div className="navbar-buttons">  {/* Navbar.Collapse 바깥으로 이동 */}
-                <Button variant="outline-success" className="mr-2">Search</Button>
-                <Button variant="outline-primary">Login</Button>
-            </div>
-        </Navbar>
+        <div className={styles.navbar}>
+            {searchMode ? (
+                <SearchBar setSearchMode={setSearchMode} />
+            ) : (
+                <>
+                    <Menu title="기관소개" setActiveMenu={setActiveMenu} menuName="menu1" />
+                    <Menu title="신청 · 접수" setActiveMenu={setActiveMenu} menuName="menu2" />
+                    {/* ... */}
+                    <button onClick={() => setSearchMode(true)}>🔍</button>
+                </>
+            )}
+            <ItemArea activeMenu={activeMenu} />
+        </div>
     );
 }
+
+function SearchBar({ setSearchMode }) {
+    return (
+        <div className={styles.searchBar}>
+            <input placeholder="검색어를 입력하세요." />
+            <button onClick={() => setSearchMode(false)}>X</button>
+        </div>
+    );
+}
+
+function Menu({ title, setActiveMenu, menuName }) {
+    return (
+        <div
+            className={styles.menuItem}
+            onMouseEnter={() => setActiveMenu(menuName)}
+            onMouseLeave={() => setActiveMenu(null)}>
+            {title}
+        </div>
+    );
+}
+function ItemArea({ activeMenu }) {
+    if (!activeMenu) return null;
+
+    let items = [
+        { title: "교육 일정", subItems: [] },
+        { title: "교육 및 사업 신청", subItems: ["서브아이템1", "서브아이템2"] },
+        // ...
+    ];
+
+    return (
+        <div className={styles.itemArea}>
+            {items.map(item => (
+                <Item key={item.title} title={item.title} subItems={item.subItems} isActive={item.title === activeMenu} />
+            ))}
+        </div>
+    );
+}
+
+function Item({ title, subItems, isActive }) {
+    return (
+        <div className={styles.item}>
+            {title}
+            {isActive && subItems.map(subItem => (
+                <SubItem key={subItem} title={subItem} />
+            ))}
+        </div>
+    );
+}
+
+function SubItem({ title }) {
+    return <div className={styles.subItem}>{title}</div>;
+}
+
 
 export default CustomNavbar;

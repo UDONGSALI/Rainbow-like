@@ -79,7 +79,7 @@ function FTCDtl(props) {
                 {isAdmin ?
                     <>
                     <button onClick={onMatchClick}>매칭하기</button>
-                    <button onClick={() => navigate("/ftc")}>리스트로</button>
+                    <button onClick={() => navigate("/admin/ftmain/ftc")}>리스트로</button>
                     </>
                     : null}
 
