@@ -5,7 +5,7 @@ import axios from "axios";
 import {SERVER_URL} from "../Common/constants";
 import {useDaumPostcodePopup} from "react-daum-postcode";
 
-function SignUp({ onSignUpClick }) {
+function SignUp() {
     // State
     const [formData, setFormData] = useState({
         memId: '',
@@ -25,14 +25,12 @@ function SignUp({ onSignUpClick }) {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [errors, setErrors] = useState({});
     const [isDateInputFocused, setDateInputFocus] = useState(false);
-    const [isDuplicateChecked, setDuplicateChecked] = useState(false);
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [passwordError, setPasswordError] = useState(null);
     const [isSmsBtnActive, setSmsBtnActive] = useState(false);
-    const [smsCode, setSmsCode] = useState(''); // 서버로부터 받아온 인증번호 저장
-    const [userSmsInput, setUserSmsInput] = useState(''); // 사용자가 입력한 인증번호 저장
-    const [isSmsInputActive, setSmsInputActive] = useState(false);// SMS 확인 버튼 활성 비활성화
-    const [smsError, setSmsError] = useState('인증이 되지 않았습니다.'); // 기본 에러 메시지 설정
+    const [userSmsInput, setUserSmsInput] = useState('');
+    const [isSmsInputActive, setSmsInputActive] = useState(false);
+    const [smsError, setSmsError] = useState('인증이 되지 않았습니다.');
     const [isSmsVerified, setIsSmsVerified] = useState(false);
     const open = useDaumPostcodePopup();
 
@@ -312,7 +310,7 @@ function SignUp({ onSignUpClick }) {
 
 
     return (
-        <div className={styles.signFormContainer} onClick={onSignUpClick}>
+        <div className={styles.signFormContainer}>
             <h2><strong>회원가입</strong></h2>
             <form onSubmit={handleSubmit} className={styles.signForm}>
                 <div className={styles.inputGroup}>

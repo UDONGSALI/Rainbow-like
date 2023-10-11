@@ -54,7 +54,7 @@
 .signForm button {
     width: 100%;
     padding: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 9px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 3px;
@@ -87,7 +87,7 @@
 }
 .signForm span {
     display: block;
-    margin-top: -10px;
+    margin-top: -7px;
     margin-bottom: 5px;
     font-size: 13px;
 }

@@ -3,11 +3,19 @@ import {SERVER_URL} from '../Common/constants';
 import {Button, Snackbar, Stack, TextField, Typography} from '@mui/material';
 import {Link, useNavigate} from 'react-router-dom';
 import FindIdPasswordModal from "./FindIdPasswordModal";
+import {useToken} from "../hook/useToken";
 
-function Login({memId}) {
+function Login() {
+
+    const [memId, setMemId] = useState(sessionStorage.getItem("memId")); // memId를 상태로 관리합니다.
+    const decodeAndSetToken = useToken();
     // 로그인 실패 횟수를 localStorage에서 가져옵니다.
     const storedFailedAttempts = localStorage.getItem('failedAttempts') || 0;
     const [failedAttempts, setFailedAttempts] = useState(parseInt(storedFailedAttempts, 10));
+
+    useEffect(() => {
+        setMemId(sessionStorage.getItem("memId")); // memId 값이 세션 스토리지에 변경될 때마다 상태를 업데이트합니다.
+    }, []);
 
     // 실패 횟수를 localStorage에 저장합니다.
     useEffect(() => {
@@ -68,7 +76,9 @@ function Login({memId}) {
                 if (jwtToken !== null) {
                     sessionStorage.setItem("jwt", jwtToken);
                     setAuth(true);
-                    navigate(-1);
+                    decodeAndSetToken(jwtToken);
+                    alert("로그인 되었습니다!");
+                    window.location.reload();
                     setFailedAttempts(0); // 로그인 성공 시 실패 횟수를 0으로 초기화
                     // 문제를 새로운 것으로 설정
                     setFirstNum(Math.floor(Math.random() * 90 + 10));

@@ -6,22 +6,37 @@ import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
 
 function InfoModal({ title, data, open, onClose }) {
-    if(!data) {
-
+    if (!data) {
         return null;
     }
+
+    const renderData = (data) => {
+        return Object.entries(data).map(([key, value]) => {
+            if (key === "pwd" || typeof value === 'object') return null;
+
+            // value가 객체인 경우
+            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                return (
+                    <div key={key}>
+                        <strong>{key}:</strong>
+                        <div style={{ marginLeft: '15px' }}>{renderData(value)}</div>
+                    </div>
+                );
+            }
+
+            return (
+                <div key={key}>
+                    <strong>{key}:</strong> {value}
+                </div>
+            );
+        });
+    }
+
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
-                {Object.entries(data).map(([key, value]) => {
-                    if (key === "pwd") return null; // key가 "pwd"이면 렌더링하지 않습니다.
-                    return (
-                        <div key={key}>
-                            <strong>{key}:</strong> {value}
-                        </div>
-                    );
-                })}
+                {renderData(data)}
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>닫기</Button>
