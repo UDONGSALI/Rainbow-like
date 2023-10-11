@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from '../../../css/component/Chat/Chat.module.css';
 import { SERVER_URL } from '../Common/constants';
 import {useNavigate} from "react-router-dom";
@@ -12,6 +12,8 @@ function ChatBot() {
     const navigate = useNavigate();
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const memNum = sessionStorage.getItem("memNum");
+    const scrollContainerRef = useRef(null);
+
 
 
     useEffect(() => {
@@ -28,11 +30,29 @@ function ChatBot() {
         fetchQnaData();
     }, []);
 
+    useEffect(() => {
+        scrollToBottom();
+    }, [chatHistory]);
+
+    useEffect(() => {
+        const newChatHistory = [...chatHistory, { text: "반갑습니다! 무엇을 도와드릴까요?", isUser: false }];
+        setChatHistory(newChatHistory);
+
+    }, []);
+
+    const scrollToBottom = () => {
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+        }
+    };
+
+
     const handleCategoryClick = (category) => {
         setSelectedCategory(category);
         setSelectedTitle(null); // 카테고리를 선택하면 선택한 타이틀 초기화
         const newChatHistory = [...chatHistory, { text: category, isUser: true }];
         setChatHistory(newChatHistory);
+
     };
 
     const handleTitleClick = (title, content) => {
@@ -47,12 +67,14 @@ function ChatBot() {
         }
 
         setChatHistory(newChatHistory);
+
     };
 
     const handleGoBack = () => {
         // '뒤로 가기' 버튼 클릭 시 선택한 카테고리와 타이틀 초기화
         setSelectedCategory(null);
         setSelectedTitle(null);
+
     };
 
     const handleGoRealTime = () => {
@@ -61,6 +83,7 @@ function ChatBot() {
         } else {
             navigate(`/chat/${memNum}`);
         }
+
     }
 
     const handleUserMessageSubmit = () => {
@@ -73,11 +96,23 @@ function ChatBot() {
 
         setUserMessage('');
         setChatHistory(newChatHistory);
+
+    };
+
+    const handleOnKeyPress = e => {
+        if (e.key === 'Enter') {
+            handleUserMessageSubmit();
+        }
     };
 
     return (
         <div className={styles.chatbotContainer}>
-            <div className={styles.chatHistory}>
+            <div className={styles.chatHistory}
+                 ref={scrollContainerRef}
+                 style={{
+                     overflowY: 'auto',
+                     height: '400px' // 스크롤이 필요한 높이로 설정
+                 }}>
                 {chatHistory.map((message, index) => (
                     <div
                         key={index}
@@ -96,11 +131,9 @@ function ChatBot() {
                         .map((qna) => (
                             <div
                                 key={qna.cbotResNum}
-                                onClick={() =>
-                                    handleTitleClick(qna.resTitle, qna.resContnet)
-                                }
-                                className={styles.qnaItem}
-                            >
+                                onClick={() => handleTitleClick(qna.resTitle, qna.resContnet)}
+
+                                className={styles.qnaItem} >
                                 {qna.resTitle}
                             </div>
                         ))
@@ -124,7 +157,7 @@ function ChatBot() {
                     onClick={handleGoRealTime}
                     className={`${styles.qnaItem}`}
                 >
-                    실시간 채팅 전환
+                    톡으로 문의
                 </div>
                 {selectedCategory && (
                     <div
@@ -144,6 +177,7 @@ function ChatBot() {
                     placeholder="메시지 입력..."
                     value={userMessage}
                     onChange={(e) => setUserMessage(e.target.value)}
+                    onKeyDown={handleOnKeyPress}
                 />
                 <button onClick={handleUserMessageSubmit}>보내기</button>
             </div>

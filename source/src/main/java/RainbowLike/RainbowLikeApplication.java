@@ -22,6 +22,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     private final FtalentController ftalentController;
     private final SmsController smsController;
     private final CbotController cbotController;
+    private final ChatController chatController;
 
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
@@ -48,6 +49,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
         smsController.createTestSms();
 
         cbotController.createQnA();
+        chatController.createTestChat();
     }
 }
 
