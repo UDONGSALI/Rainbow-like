@@ -1,22 +1,23 @@
 import FTCDtl from "../../../component/FT/FTC/FTCDtl";
 import styles from '../../../../css/pages/Club/ClubDtlPage.module.css';
-import FTWDtl from "../../../component/FT/FTW/FTWDtl";
-import { useParams, useNavigate } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
+import UrlComponent from "../../../layout/Header/UrlComponent";
+import {headerInfo, urlData} from "../../../layout/Header/Data/FtHeader";
+import React from "react";
 
 
-function FTCDtlPage(props){
+function FTCDtlPage(props) {
     const {memId} = props;
-    const { id } = useParams();
+    const {id} = useParams();
 
 
-
-
-
-    return(
-        <div className={styles.postDetailPage}>
-            <FTCDtl memId = {memId} />
-
-        </div>
+    return (
+        <>
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
+            <div className={styles.postDetailPage}>
+                <FTCDtl memId={memId}/>
+            </div>
+        </>
     );
 }
 
