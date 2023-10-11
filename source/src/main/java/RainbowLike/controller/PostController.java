@@ -7,6 +7,7 @@ import RainbowLike.entity.Board;
 import RainbowLike.entity.Member;
 import RainbowLike.entity.Post;
 import RainbowLike.repository.BoardRepository;
+import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
 import RainbowLike.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class PostController {
     private BoardRepository boardRepository;
     @Autowired
     private PostService postService;
+    @Autowired
+    private MemberRepository memberRepository;
 
     @RequestMapping("/posts")
     public Iterable<Post> getPosts() {
@@ -56,6 +59,15 @@ public class PostController {
         //게시판 번호로 게시글 요청
         Board clubNumBoard = boardRepository.findByBoardNum(10L);
         return postRepository.findByBoard(clubNumBoard);
+    }
+
+
+    // 회원 번호로 멤버별 클럽의 게시글 요청
+    @RequestMapping("/memberClub/{memNum}")
+    public Iterable<Post> getClubPostsByMember(@PathVariable Long memNum) {
+
+        Board clubNumBoard = boardRepository.findByBoardNum(9L);
+        return postRepository.findByBoardAndMemberMemNum(clubNumBoard, memNum);
     }
 
 
