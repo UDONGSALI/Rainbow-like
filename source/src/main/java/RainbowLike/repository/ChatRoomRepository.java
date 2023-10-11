@@ -1,11 +1,11 @@
 package RainbowLike.repository;
 
-import RainbowLike.entity.Chat;
 import RainbowLike.entity.ChatRoom;
+import RainbowLike.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ChatRepository extends JpaRepository <Chat,Long> {
-    Iterable<Chat> findByChatRoom(ChatRoom chatRoom);
+public interface ChatRoomRepository extends JpaRepository <ChatRoom,Long> {
+    Iterable<ChatRoom> findByMember(Member member);
 }
