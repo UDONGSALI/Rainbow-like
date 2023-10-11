@@ -2,17 +2,22 @@ import React from 'react';
 
 function StatusCell({ handleStatusChange, params }) {
     const handleChange = (event) => {
-        handleStatusChange(params.row.rentHistNum, event.target.value);
+        handleStatusChange(params.row.rentHistNum || params.row.postNum, event.target.value);
     };
 
+    const defaultOptions = [
+        { label: "대기", value: "WAIT" },
+        { label: "승인", value: "APPROVE" },
+        { label: "거부", value: "REJECT" }
+    ];
+
     return (
-        <select
-            defaultValue={params.value}
-            onChange={handleChange}
-        >
-            <option value="WAIT">대기</option>
-            <option value="APPROVE">승인</option>
-            <option value="REJECT">거부</option>
+        <select defaultValue={params.value} onChange={handleChange}>
+            {defaultOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                    {option.label}
+                </option>
+            ))}
         </select>
     );
 }

@@ -21,6 +21,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     private final DefaultFileService defaultFileService;
     private final FtalentController ftalentController;
     private final SmsController smsController;
+    private final CbotController cbotController;
 
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
@@ -45,6 +46,8 @@ public class RainbowLikeApplication implements CommandLineRunner {
         ftalentController.createTestFtm();
 
         smsController.createTestSms();
+
+        cbotController.createQnA();
     }
 }
 

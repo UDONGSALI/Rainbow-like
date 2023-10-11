@@ -2,25 +2,25 @@
 import React, {useEffect, useState} from "react";
 // 2. 외부 라이브러리 관련
 import {DataGrid} from "@mui/x-data-grid";
-import styled from '@emotion/styled';
 import {Pagination} from "@mui/material";
+import styled from '@emotion/styled';
 // 3. 프로젝트 내 공통 모듈 관련
-import {SERVER_URL} from "../Common/constants";
 import {useLocation, useNavigate} from "react-router-dom";
+import {SERVER_URL} from "../Common/constants";
 // 4. 컴포넌트 관련
 import SearchComponent from "../Common/SearchComponent";
 import Permit from "./RenderCell/Permit";
 // 5. 훅 관련
-import useSearch from "../hook/useSearch";
-import useFetch from "../hook/useFetch";
 import usePagination from "../hook/usePagination";
+import useSearch from "../hook/useSearch";
 import useDelete from "../hook/useDelete";
 import usePatch from "../hook/usePatch";
+import useFetch from "../hook/useFetch";
 // 6. Helper 함수나 Renderer 관련
-import StatusCell from "./RenderCell/StatusCell";
-import ApplyDateCell from "./RenderCell/ApplyDateCell";
-import InfoModal from "../Common/InfoModal";
 import PayStatusCell from "./RenderCell/PayStatusCell";
+import StatusCell from "./RenderCell/StatusCell";
+import InfoModal from "../Common/InfoModal";
+import DateCell from "../Common/DateCell";
 
 const ADMIN_ROLE = "ADMIN";
 
@@ -28,23 +28,11 @@ function RentHistList(props) {
     // 1. React Router 관련
     const navigate = useNavigate();
     const location = useLocation();
-// 2. 사용자 관련
+    // 2. 사용자 관련
     const {memId} = props;
     const userRole = sessionStorage.getItem("role");
     const isAdmin = userRole === ADMIN_ROLE;
-// 3. 로컬 상태 관리
-    const {activePage, setActivePage} = usePagination(1);
-    const [isPermitOpen, setIsPermitOpen] = useState(false);
-    const [currentPermitData, setCurrentPermitData] = useState({spaceName: "", getRentDate: "", getRentTime: ""});
-    const [rentHist, setRentHist] = useState([]);
-    const [infoData, setInfoData] = useState(null);
-    const [infoTitle, setInfoTitle] = useState("");
-    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-// 4. 커스텀 훅
-    const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}rent`, setRentHist, undefined, memId);
-    const deleteItem = useDelete(SERVER_URL);
-    const patchItem = usePatch(SERVER_URL);
-// 상수
+    // 3. 상수
     const itemsPerPage = 10;
     const SEARCH_OPTIONS = [
         {value: 'spaceName', label: '공간명', type: 'text'},
@@ -65,9 +53,20 @@ function RentHistList(props) {
             ]
         },
     ];
-
+    // 4. 로컬 상태 관리
+    const {activePage, setActivePage} = usePagination(1);
+    const [isPermitOpen, setIsPermitOpen] = useState(false);
+    const [currentPermitData, setCurrentPermitData] = useState({spaceName: "", getRentDate: "", getRentTime: ""});
+    const [rentHist, setRentHist] = useState([]);
+    const [infoData, setInfoData] = useState(null);
+    const [infoTitle, setInfoTitle] = useState("");
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    // 5. 커스텀 훅
+    const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}rent`, setRentHist, undefined, memId);
+    const deleteItem = useDelete(SERVER_URL);
+    const patchItem = usePatch(SERVER_URL);
+    // 6. 데이터 가져오기,
     const rentHistUrl = isAdmin ? SERVER_URL + 'rent' : SERVER_URL + `rent/search/memId/${memId}/${memId}`;
-
     const {data: rawRentHistData, loading: RentHistLoading} = useFetch(rentHistUrl, []);
 
     useEffect(() => {
@@ -208,7 +207,7 @@ function RentHistList(props) {
             field: 'applyDate',
             headerName: '신청 일시',
             width: 150,
-            renderCell: ApplyDateCell
+            renderCell: DateCell
         },
         {
             field: 'applyStatus',

@@ -1,5 +1,6 @@
 package RainbowLike.controller;
 
+import RainbowLike.constant.Status;
 import RainbowLike.dto.PostFormDto;
 import RainbowLike.dto.PostInfo;
 import RainbowLike.entity.Board;
@@ -14,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class PostController {
@@ -71,15 +74,13 @@ public class PostController {
         return ResponseEntity.ok(postInfo);
     }
 
-
-
-@PostMapping("/posts/new")
+    @PostMapping("/posts/new")
     public ResponseEntity<Post> createPost(@RequestBody PostFormDto postFormDto) {
         Post newPost = new Post();
         newPost.setTitle(postFormDto.getTitle());
         newPost.setContent(postFormDto.getContent());
         newPost.setPageView(postFormDto.getPageView());
-        newPost.setConsField(postFormDto.getConsField());
+        newPost.setConselStatus(postFormDto.getConselStatus());
         newPost.setParentsNum(postFormDto.getParentsNum());
         newPost.setClubAllowStatus(postFormDto.getClubAllowStatus());
         newPost.setClubRecuStatus(postFormDto.getClubRecuStatus());
@@ -105,7 +106,7 @@ public class PostController {
         editPost.setTitle(postFormDto.getTitle());
         editPost.setContent(postFormDto.getContent());
         editPost.setPageView(postFormDto.getPageView());
-        editPost.setConsField(postFormDto.getConsField());
+        editPost.setConselStatus(postFormDto.getConselStatus());
         editPost.setParentsNum(postFormDto.getParentsNum());
         editPost.setClubAllowStatus(postFormDto.getClubAllowStatus());
         editPost.setClubRecuStatus(postFormDto.getClubRecuStatus());
@@ -136,6 +137,43 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/post/status/{postNum}")
+    public ResponseEntity<?> updateClubAllowStatus(@PathVariable Long postNum, @RequestBody Map<String, String> body) {
+        try {
+            Status status = Status.valueOf(body.get("status").toUpperCase());
+            Optional<Post> updatedRentHist = postService.updateRentClubAllowStatus(postNum, status);
+            if (updatedRentHist.isPresent()) {
+                return ResponseEntity.ok(updatedRentHist.get());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid status value");
+        }
+    }
+    @PatchMapping("/post/labor/{postNum}")
+    public ResponseEntity<?> updateLabor(@PathVariable Long postNum, @RequestBody Map<String, String> body) {
+        try {
+            String memId = body.get("laborId");
+            Optional<Post> updatedPost = postService.updateLabor(postNum, memId);
+            if (updatedPost.isPresent()) {
+                return ResponseEntity.ok(updatedPost.get());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid status value");
+        }
+    }
+
+    @PatchMapping("/post/labor/cancel/{postNum}")
+    public ResponseEntity<?> cancelLabor(@PathVariable Long postNum) {
+        Post updatedPost = postService.cancelLabor(postNum);
+        if (updatedPost != null) {
+            return ResponseEntity.ok(updatedPost);
+        }
+        return ResponseEntity.notFound().build();
+    }
     @DeleteMapping("/post/{postNum}")
     public ResponseEntity<?> deletePost(@PathVariable Long postNum) {
         try {
@@ -146,9 +184,7 @@ public class PostController {
         }
     }
 
-
-
-    public void createPosts(){
+    public void createPosts() {
         ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();
         postService.createPosts(postDtoList);
     }
