@@ -39,26 +39,6 @@ public class PostFormDto {
 
     }
 
-<<<<<<< HEAD
-    public PostFormDto(String title, String content, LocalDateTime writeDate, LocalDateTime editDate, int pageView, String consField, Long parentsNum, String clubAllowStatus, String clubRecuStatus, Long memNum, Long boardNum){
-        Board board = new Board();
-        Member member = new Member();
-
-        this.title = title;
-        this.content = content;
-        this.writeDate = writeDate;
-        this.editDate = editDate;
-        this.pageView = pageView;
-        this.consField = consField;
-        this.parentsNum = parentsNum;
-        this.clubAllowStatus = clubAllowStatus;
-        this.clubRecuStatus = clubRecuStatus;
-        this.boardNum = boardNum;
-        this.memNum = memNum;
-    }
-
-=======
->>>>>>> origin/master
     static public ArrayList<PostFormDto> createTestPost() {
         ArrayList<PostFormDto> postList = new ArrayList<>();
         Board board1 = new Board();
@@ -166,7 +146,7 @@ public class PostFormDto {
         post8.setMember(member1);
         post8.setTitle("공지사항 세 번째 글 입니다.");
         post8.setContent("공지사항 테스트 글 세 번째에요.<br>" +
-              "본문의 길이를 늘려서 써본 테스트 글 입니다.<br> 오늘도 행복한 하루 되세요.<br>" );
+                "본문의 길이를 늘려서 써본 테스트 글 입니다.<br> 오늘도 행복한 하루 되세요.<br>" );
 
         post8.setWriteDate(LocalDateTime.now());
         post8.setPageView(0);
