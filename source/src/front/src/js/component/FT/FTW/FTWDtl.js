@@ -123,7 +123,7 @@ function FTWDtl({ftwNum}){
                     <button onClick={() => onEditClick()}>수정</button>
                     <button onClick={() => onDelClick(post.ftw)}>삭제</button>
                     {isAdmin?
-                    <button onClick={() => navigate("/ftw")}>리스트로</button>
+                    <button onClick={() => navigate("/admin/ftmain/ftw")}>리스트로</button>
                         :
                         null
                     }

@@ -23,6 +23,7 @@ public class RentHistService {
     private final RentHistRepository rentHistRepository;
     private final MemberRepository memberRepository;
     private final SpaceRepository spaceRepository;
+    private final SmsService smsService;
     private final ModelMapper modelMapper;
 
     public List<RentHist> getAllRentHists() {
@@ -73,8 +74,12 @@ public class RentHistService {
         }
     }
 
+    @Transactional
     public Optional<RentHist> updateRentHistApplyStatus(Long rentHistNum, Status status) {
         Optional<RentHist> optionalRentHist = rentHistRepository.findById(rentHistNum);
+        if (status == Status.APPROVE){
+            smsService.rentApplySms(rentHistNum);
+        }
         if (optionalRentHist.isPresent()) {
             RentHist rentHist = optionalRentHist.get();
             rentHist.setApplyStatus(status);

@@ -19,7 +19,7 @@ function ClubForm(props){
             content: '',
             pageView: 0,
             parentsNum: '',
-            clubAllowStatus: '승인대기',
+            clubAllowStatus: 'WAIT',
             clubRecuStatus: '',
             delYN : 'N'
             }

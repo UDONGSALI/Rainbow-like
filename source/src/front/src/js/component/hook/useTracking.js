@@ -23,7 +23,6 @@ export function useTracking(memId) {
             type: eventName,
             memId,
         };
-        console.log(`Logged: ${eventName}`, logData);
         await saveEventLogToServer(logData);
     };
 
