@@ -32,7 +32,7 @@ const menuData = [
     },
     {
         title: "직장맘 지원센터",
-        items: ["노무 상담 게시판", "온라인 상담 게시판", "채팅 삼담"]
+        items: [{name:"노무상담 게시판", url:"/csl/7"},{name:"소모임", url:"/clubs"},{name:"소모임", url:"/clubs"},{name:"소모임", url:"/clubs"},]
     },
     {
         title: "정보 나눔",

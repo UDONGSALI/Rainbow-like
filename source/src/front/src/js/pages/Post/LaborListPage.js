@@ -11,7 +11,7 @@ function LaborListPage() {
     const { boardNum } = useParams();
     const  memNum = sessionStorage.getItem("memNum")
 
-    let pageTitle = '노무상담게시판';
+    let pageTitle = '노무상담 게시판';
 
     return (
         <div>
