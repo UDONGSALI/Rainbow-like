@@ -1,12 +1,61 @@
-import { useEffect } from "react";
+import {useCallback, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import {SERVER_URL} from "../Common/constants";
 
 export function useToken() {
-    checkTokenStatus();
     const navigate = useNavigate();
 
+    const decodeToken = useCallback((token) => {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split('')
+                    .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join('')
+            );
+            const decoded = JSON.parse(jsonPayload);
+            if (decoded.exp) {
+                const expirationDate = new Date(decoded.exp * 1000);
+                const currentDate = new Date();
+                if (expirationDate <= currentDate) {
+                    return null;  // 만료된 경우 null 반환
+                }
+            }
+            return decoded;
+        } catch (error) {
+            console.error('토큰 디코딩 중 오류 발생:', error);
+            return null;
+        }
+    }, []);
+
+    const checkTokenStatus = useCallback(() => {
+        const jti = sessionStorage.getItem('jti');
+        if(jti) {
+            fetch(`${SERVER_URL}token/${jti}`)
+                .then(res => res.text())
+                .then(data => {
+                    if (data === "Y") {
+                        alert("다른 곳에서 로그인 되었습니다!");
+                        deleteTokenFromServer(jti);
+                        sessionStorage.clear();
+                        navigate("/login");
+                    }
+                    else if (!data){
+                        alert("서버에서 로그아웃 되었습니다. 관리자에게 문의 하세요.");
+                        sessionStorage.clear()
+                        navigate("/login");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+    }, [navigate]);
+
     useEffect(() => {
+        checkTokenStatus();
         const token = sessionStorage.getItem('jwt');
         if (token) {
             const decodedToken = decodeToken(token);
@@ -34,9 +83,9 @@ export function useToken() {
             }
             checkTokenStatus();
         }
-    }, [navigate]);
+    }, [navigate, decodeToken, checkTokenStatus]);
 
-    function getToken(credentials) {
+    const getToken = useCallback((credentials) => {
         return fetch(`${SERVER_URL}login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -56,9 +105,9 @@ export function useToken() {
                 console.error(err);
                 return { success: false, error: err };
             });
-    }
+    }, []);
 
-    function refreshToken() {
+    const refreshToken = useCallback(() => {
         const currentToken = sessionStorage.getItem('jwt');
         return fetch(`${SERVER_URL}token/refresh`, {
             method: 'GET',
@@ -80,58 +129,10 @@ export function useToken() {
                 console.error(err);
                 return { success: false, error: err };
             });
-    }
+    }, []);
 
-    function checkTokenStatus() {
-        const jti = sessionStorage.getItem('jti');
-        if(jti) {
-            fetch(`${SERVER_URL}token/${jti}`)
-                .then(res => res.text())
-                .then(data => {
-                    if (data === "Y") {
-                        alert("다른 곳에서 로그인 되었습니다!");
-                        deleteTokenFromServer(jti);
-                        sessionStorage.clear();
-                        navigate("/login");
-                    }
-                    else if (!data){
-                        alert("서버에서 로그아웃 되었습니다. 관리자에게 문의 하세요.");
-                        sessionStorage.clear()
-                        navigate("/login");
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                });
-        }
-    }
 
-    function decodeToken(token) {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(
-                atob(base64)
-                    .split('')
-                    .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                    .join('')
-            );
-            const decoded = JSON.parse(jsonPayload);
-            if (decoded.exp) {
-                const expirationDate = new Date(decoded.exp * 1000);
-                const currentDate = new Date();
-                if (expirationDate <= currentDate) {
-                    return null;  // 만료된 경우 null 반환
-                }
-            }
-            return decoded;
-        } catch (error) {
-            console.error('토큰 디코딩 중 오류 발생:', error);
-            return null;
-        }
-    }
-
-    function deleteTokenFromServer(jti) {
+    const deleteTokenFromServer = useCallback((jti) => {
         fetch(`${SERVER_URL}token?jti=${jti}`, {
             method: 'DELETE',
         })
@@ -140,7 +141,7 @@ export function useToken() {
                     console.error("Error deleting token");
                 }
             });
-    }
+    }, []);
 
     return { decodeToken, deleteTokenFromServer, getToken };
 }
