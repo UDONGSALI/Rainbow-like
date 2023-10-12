@@ -54,6 +54,8 @@ import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
 import Chating from "./js/component/Chat/Chating";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
+import PostForm from "./js/component/Post/PostForm";
+import {Navbar} from "react-bootstrap";
 
 
 
@@ -119,6 +121,7 @@ function App() {
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
+                <Route path="/post/new" element={<PostForm/>}/>
 
                 {/*공간대관페이지관련*/}
                 <Route path="/rent/process" element={<RentProcessPage/>}/>

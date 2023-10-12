@@ -10,6 +10,8 @@ import RainbowLike.repository.BoardRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
 import RainbowLike.service.PostService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ public class PostController {
     private BoardRepository boardRepository;
     @Autowired
     private PostService postService;
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
     @Autowired
     private MemberRepository memberRepository;
 
@@ -86,7 +89,9 @@ public class PostController {
         return ResponseEntity.ok(postInfo);
     }
 
-    @PostMapping("/posts/new")
+
+
+@PostMapping("/posts/new")
     public ResponseEntity<Post> createPost(@RequestBody PostFormDto postFormDto) {
         Post newPost = new Post();
         newPost.setTitle(postFormDto.getTitle());
@@ -196,7 +201,7 @@ public class PostController {
         }
     }
 
-    public void createPosts() {
+    public void createPosts(){
         ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();
         postService.createPosts(postDtoList);
     }
