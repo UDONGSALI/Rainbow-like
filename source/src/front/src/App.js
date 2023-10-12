@@ -18,6 +18,7 @@ import PostList from "./js/component/Post/PostList";
 import RentProcessPage from "./js/pages/Rent/RentProcessPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
 import RentApplyPage from "./js/pages/Rent/RentApplyPage";
+import RentReviewListPage from "./js/pages/Rent/RentReviewListPage";
 import FTMainPage from "./js/pages/FT/FTMainPage";
 import FTWListPage from "./js/pages/FT/FTW/FTWListPage";
 import FTWFormPage from "./js/pages/FT/FTW/FTWFormPage";
@@ -45,15 +46,17 @@ import LogListPage from "./js/pages/Log/LogListPage";
 import RentHistListPage from "./js/pages/Rent/RentHistListPage";
 import MyActivePage from "./js/pages/My/MyActivePage";
 import MyRentPage from "./js/pages/My/MyRentPage";
-import MyFTWPage from "./js/pages/My/MyFTWPage";
+import MyFTPage from "./js/pages/My/MyFTPage";
 import MyClubPage from "./js/pages/My/MyClubPage";
 import MyCounselPage from "./js/pages/My/MyCounselPage";
+import MyInfoEditPage from "./js/pages/My/MyInfoEditPage";
 import RentReviewPostPage from "./js/pages/Rent/RentReviewPostPage";
 import Pay from "./js/component/Pay/pay";
 import SMSPage from "./js/pages/SMS/SMSPage";
 import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
 import Chating from "./js/component/Chat/Chating";
+import MyEduPage from "./js/pages/My/MyEduPage";
 
 
 
@@ -120,15 +123,17 @@ function App() {
                 <Route path="/rent/process" element={<RentProcessPage/>}/>
                 <Route path="/rent/status" element={<RentStatusPage/>}/>
                 <Route path="/rent/apply" element={<RentApplyPage/>}/>
-                <Route path="/rent/review" element={<RentReviewPostPage/>}/>
+                <Route path="/rent/reviewEdit" element={<RentReviewPostPage/>}/>
+                <Route path="/rent/reviewList" element={<RentReviewListPage/>}/>
 
                 {/*마이페이지관련*/}
-                <Route path="/mypage/edu" element={memId ? <EduHistListPage memId={memId}/> : <Navigate to="/login" replace/>}/>
-                <Route path="/mypage/rent" element={<MyRentPage/>}/>
-                <Route path="/mypage/active" element={<MyActivePage/>}/>
-                <Route path="/mypage/ftw" element={<MyFTWPage/>}/>
-                <Route path="/mypage/club" element={<MyClubPage/>}/>
-                <Route path="/mypage/csl" element={<MyCounselPage/>}/>
+                <Route path="/mypage/edu" element={memId ? <MyEduPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/rent" element={memId ? <MyRentPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/active" element={memId ? <MyActivePage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/ftw" element={memId ? <MyFTPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/club" element={memId ? <MyClubPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/csl" element={memId ? <MyCounselPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/infoEdit" element={memId ? <MyInfoEditPage memId={memId}/> : <Navigate to="/login" replace/>}/>
 
                 {/*소모임*/}
                 <Route path="/clubs" element={<ClubPage />}/>

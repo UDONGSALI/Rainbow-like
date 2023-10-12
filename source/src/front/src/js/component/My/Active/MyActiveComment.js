@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {DataGrid} from "@mui/x-data-grid";
 import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../../../js/component/Common/constants";
-import styles from "../../../../css/component/Mypage/MyActivePost.module.css";
+import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
 
 
@@ -203,6 +203,13 @@ export default function MyActiveComment() {
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
+                        sortModel={[
+                            {
+                                field: "number",
+                                sort: "desc", // 내림차순 정렬
+                            },
+                        ]}
+
                     />
                 </div>
             </div>

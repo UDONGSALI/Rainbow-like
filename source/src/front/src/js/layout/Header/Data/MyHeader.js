@@ -7,4 +7,5 @@ export const urlData = [
     { name: '인재풀 신청내역', link: '/mypage/ftw' },
     { name: '소모임 신청내역', link: '/mypage/club' },
     { name: '상담 내역', link: '/mypage/csl' },
+    { name: '회원정보수정', link: '/mypage/infoEdit' },
 ];

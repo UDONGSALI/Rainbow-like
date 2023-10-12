@@ -3,15 +3,15 @@ import UrlComponent from "../../layout/Header/UrlComponent";
 import {headerInfo, urlData} from "../../layout/Header/Data/MyHeader";
 import React from "react";
 
-const MyFTWPage = () => {
+const MyInfoEditPage = () => {
     return (
 
         <div id={styles.container}>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'인재풀 신청내역'}/>
+            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'회원정보수정'}/>
 
         </div>
 
     );
 }
 
-export default MyFTWPage;
+export default MyInfoEditPage;
