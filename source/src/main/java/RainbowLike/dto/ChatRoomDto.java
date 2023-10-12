@@ -3,29 +3,43 @@ package RainbowLike.dto;
 import RainbowLike.constant.AnswerYN;
 import RainbowLike.entity.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 
 
+@Component
 @Getter
 @Setter
+@AllArgsConstructor
 public class ChatRoomDto {
 
     @JsonIgnore
     private Member member;
     private AnswerYN answerYN;
+    private Long memNum;
 
-    public ChatRoomDto(){
+    @Autowired
+    private EntityManager entityManager; // EntityManager 주입
 
+    public ChatRoomDto() {
     }
-    public ChatRoomDto(Member member, AnswerYN answerYN){
+
+    public ChatRoomDto(Member member, Long memNum, AnswerYN answerYN) {
         this.member = member;
+        this.memNum = memNum;
         this.answerYN = answerYN;
     }
 
-    static public ArrayList<ChatRoomDto> createTestChatRoom(){
+    public ChatRoomDto(Long memNum, AnswerYN answerYN) {
+    }
+
+    public ArrayList<ChatRoomDto> createTestChatRoom() {
         ArrayList<ChatRoomDto> chatRoomList = new ArrayList<>();
         Member member1 = new Member();
         Member member2 = new Member();
@@ -53,5 +67,4 @@ public class ChatRoomDto {
 
         return chatRoomList;
     }
-
 }
