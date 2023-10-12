@@ -49,16 +49,14 @@ import MyClubPage from "./js/pages/My/MyClubPage";
 import MyCounselPage from "./js/pages/My/MyCounselPage";
 import RentReviewPostPage from "./js/pages/Rent/RentReviewPostPage";
 import Pay from "./js/component/Pay/pay";
-<<<<<<< HEAD
-import PostForm from "./js/component/Post/PostForm";
-=======
 import SMSPage from "./js/pages/SMS/SMSPage";
 import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
 import Chating from "./js/component/Chat/Chating";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
+import PostForm from "./js/component/Post/PostForm";
+import {Navbar} from "react-bootstrap";
 
->>>>>>> origin/master
 
 
 function App() {
