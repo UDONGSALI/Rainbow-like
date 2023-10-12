@@ -1,59 +1,69 @@
+
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
+import useDelete from "../../hook/useDelete";
 
-export default function MyClubList() {
-        const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
-        const [clubs, setClubs] = useState([]); // 게시글 데이터 상태
-        const navigate = useNavigate();
+export default function MyFTWList() {
+    const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
+    const [ftWorkers, setFtWorkers] = useState([]);
+    const [ftConsumers, setFtConsumers] = useState([]);
+    // useState로 ftData 상태 추가
+    const [ftData, setFtData] = useState({ ftWorkers: [], ftConsumers: [] });
+    const navigate = useNavigate();
+    const deleteItem = useDelete(SERVER_URL);
 
+    useEffect(() => {
+        // 로그인한 사용자 정보를 가져오는 방법에 따라서 구현
+        const fetchedUserInfo = {memNum: sessionStorage.getItem("memNum")};
+        setMemNum(fetchedUserInfo.memNum); // memNum 상태 업데이트
+    }, []);
 
-        useEffect(() => {
-            // 로그인한 사용자 정보를 가져오는 방법에 따라서 구현
-            const fetchedUserInfo = {memNum: sessionStorage.getItem("memNum")};
-            setMemNum(fetchedUserInfo.memNum); // memNum 상태 업데이트
-        }, []);
-
-        useEffect(() => {
-            // memNum 상태가 변경될 때마다 fetchClubsByMember를 호출
-            if (memNum !== null) {
-                fetchClubsByMember();
-            }
-        }, [memNum]);
-
-        const fetchClubsByMember = () => {
-            if (memNum === null) {
-                return;
-            }
-
-            // memNum을 사용하여 해당 멤버의 모임정보만 가져오도록 수정
-            fetch(`${SERVER_URL}memberClub/${memNum}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    const clubWithNumbers = data.map((club, index) => ({
-                        ...club,
-                        id: club.postNum,
-                        number: index + 1, // 각 행에 번호를 순차적으로 할당
-                    }));
-
-                    setClubs(clubWithNumbers);
-                })
+    useEffect(() => {
+        fetchFTWByMember();
+    }, [memNum]);
 
 
-                .catch((error) => {
-                    console.error("API 호출 중 오류 발생:", error);
-                });
-        };
+    const fetchFTWByMember = () => {
+        if (memNum === null) {
+            return;
+        }
 
-    const onRowClick = (params) => {
-        const rowId = params.row.postNum;
+        // memNum을 사용하여 해당 멤버의 모임정보만 가져오도록 수정
+        fetch(`${SERVER_URL}ftw/member/${memNum}`)
+            .then((response) => response.json())
+            .then((ftwData) => {
+                console.log(ftwData);
+                const ftwWithNumbers = ftwData.map((ftWorker, index) => ({
+                    ...ftWorker,
+                    id: ftWorker.ftWorkerNum,
+                    number: index + 1, // 각 행에 번호를 순차적으로 할당
+                }));
 
-        console.log('rowId:', rowId);
-        navigate(`/clubs/${rowId}`);
+                setFtWorkers(ftwWithNumbers);
+            })
+
+
+
+            .catch((error) => {
+                console.error("API 호출 중 오류 발생:", error);
+            });
     };
+    // useEffect에서 호출
+
+// const onRowClick = (params) => {
+    //     const rowId = params.row.eduNum;
+    //
+    //     console.log('rowId:', rowId);
+    //     navigate(`/edu/list/detail/${rowId}`);
+    // };
+    //
+    // const handleTitleClick = (eduNum) => {
+    //     navigate(`/edu/list/detail/${eduNum}`);
+    // }
+
 
 
     function convertEnumToKorean(enumValue) {
@@ -63,6 +73,10 @@ export default function MyClubList() {
             return "거부";
         } else if (enumValue === "COMPLETE") {
             return "완료";
+        } else if (enumValue === "EDU") {
+            return "교육";
+        } else if (enumValue === "BUSINESS"){
+            return "사업";
         } else {
             return "대기";
         }
@@ -79,40 +93,30 @@ export default function MyClubList() {
             headerAlign: 'center',
         },
         {
-            field: "title",
-            headerName: "소모임 제목",
-            width: 350,
+            field: "speField",
+            headerName: "구분",
+            width: 80,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
 
-
-        },
-        
-        {
-            field: "clubAllowStatus",
-            headerName: "허가 상태",
-            width: 200,
-            headerClassName: styles.customHeader,
-            cellClassName: styles.customCell,
-            align: 'center',
-            headerAlign: 'center',
-            valueFormatter: (params) => convertEnumToKorean(params.value),
 
         },
         {
-            field: "clubRecuStatus",
-            headerName: "모집 상태",
-            width: 200,
+            field: "applyContent",
+            headerName: "내용",
+            width: 300,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
+
         },
+
         {
             field: "writeDate",
-            headerName: "신청 일시",
+            headerName: "신청일시",
             width: 150,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
@@ -128,34 +132,17 @@ export default function MyClubList() {
             },
         },
         {
-            field: "content",
-            headerName: "상세 내용",
-            width: 135,
+            field: "ftStatus",
+            headerName: "신청 상태",
+            width: 150,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
-            renderCell: (params) => {
-
-
-
-                return (
-                    <div
-                        style={{ cursor: "pointer" }}
-                        onClick={() => onRowClick(params)}
-                    >
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <img
-                                src="https://storage.googleapis.com/rainbow_like/img/search2.png"
-                                alt="소모임 상세 이미지"
-                                style={{ width: 30, height: 30 }}
-                            />
-                        </div>
-                    </div>
-                );
-            }
 
         },
+
+
     ];
 
     function CustomNoRowsOverlay() {
@@ -178,6 +165,7 @@ export default function MyClubList() {
     return (
         <div id={styles.active}>
             <div className={styles.main}>
+                <h3>인재등록 신청 관리</h3>
                 <div
                     className={styles.posts}
                     style={{
@@ -188,16 +176,16 @@ export default function MyClubList() {
                     <CustomDataGrid
                         className={styles.customDataGrid}
                         columns={columns}
-                        rows={clubs}
+                        rows={ftWorkers}
                         pageSize={5} // 페이지당 5개의 행을 보여줍니다.
-                        getRowId={(row) => row.postNum}
+                        getRowId={(row) => row.id}
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
                         sortModel={[
                             {
-                                field: "number",
+                                field: "postNum",
                                 sort: "desc", // 내림차순 정렬
                             },
                         ]}
@@ -206,4 +194,4 @@ export default function MyClubList() {
             </div>
         </div>
     );
-}
+};
