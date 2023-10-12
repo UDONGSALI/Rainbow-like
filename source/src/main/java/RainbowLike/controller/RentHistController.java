@@ -2,9 +2,15 @@ package RainbowLike.controller;
 
 
 import RainbowLike.constant.Status;
+import RainbowLike.entity.Board;
+import RainbowLike.entity.Member;
+import RainbowLike.entity.Post;
 import RainbowLike.entity.RentHist;
+import RainbowLike.repository.MemberRepository;
+import RainbowLike.repository.RentHistRepository;
 import RainbowLike.service.RentHistService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,17 +18,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rent")
 public class RentHistController {
 
-    private final RentHistService rentHistService;
+    @Autowired
+    private RentHistService rentHistService;
+    @Autowired
+    private RentHistRepository rentHistRepository;
 
     @GetMapping
     public List<RentHist> getAllRentHist() {
         return rentHistService.getAllRentHists();
     }
+
+
+
+    // 회원 번호로 멤버별 대관내역 요청
+
+    @RequestMapping("/memberRent/{memNum}")
+    public List<RentHist> getRentalsByMemNum(@PathVariable Long memNum) {
+        return rentHistRepository.findByMember_MemNum(memNum);
+    }
+
 
     @GetMapping("/search/{option}/{value}/{memId}")
     public ResponseEntity<Iterable<RentHist>> searchRentHist(@PathVariable String option, @PathVariable String value, @PathVariable String memId) {

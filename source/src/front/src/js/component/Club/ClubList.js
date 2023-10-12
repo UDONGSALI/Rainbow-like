@@ -42,6 +42,16 @@ function ClubList(props) {
             field: 'clubAllowStatus',
             headerName: '허가 현황',
             width: 100,
+            renderCell: (params) => {
+                switch (params.value) {
+                    case 'WAIT':
+                        return "대기";
+                    case 'APPROVE':
+                        return "허가";
+                    case 'REJECT':
+                        return "거부";
+                }
+            }
         },
         {
             field: 'clubRecuStatus',

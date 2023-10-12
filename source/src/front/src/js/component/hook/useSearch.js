@@ -11,7 +11,12 @@ function useSearch(apiBaseUrl, setData, initialValue = { term: '', value: '' }, 
             : `${apiBaseUrl}/search/${searchTerm.value}/${searchTerm.term}`;
 
         return fetch(apiUrl)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 const formattedData = data.map((item, index) => ({ id: index + 1, ...item }));
                 setData(formattedData.reverse());
@@ -23,10 +28,10 @@ function useSearch(apiBaseUrl, setData, initialValue = { term: '', value: '' }, 
                 return formattedData;
             })
             .catch(error => {
-                console.error("Error fetching search results:", error);
-                throw error;
+                alert("검색 조건을 확인해주세요!");  // 여기서 알림을 표시합니다.
             });
     };
+
 
     return {
         searchTerm,

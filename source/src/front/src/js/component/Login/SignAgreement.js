@@ -19,7 +19,8 @@ function Agreement({onAgreementChange}) {
     };
 
     return (
-        <div className={styles.signFormContainer}>
+        <div>
+        <div className={styles.signFormContainer} >
             <h4>개인정보 수집 및 이용 동의(<strong>필수</strong>)</h4>
             <div className={styles.signAgreement}>
                 <p>
@@ -60,6 +61,7 @@ function Agreement({onAgreementChange}) {
                     <label htmlFor="agree">약관에 동의합니다.</label>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

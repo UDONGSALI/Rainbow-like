@@ -25,9 +25,10 @@ import java.util.Optional;
 public class EduHistService {
 
     private final EduHistRepository eduHistRepository;
-    private final EduRepository eduRepository;
-    private final EduService eduService;
     private final MemberRepository memberRepository;
+    private final EduRepository eduRepository;
+    private final SmsService smsService;
+    private final EduService eduService;
     private final FileService fileService;
     private final ModelMapper mapper;
 
@@ -114,9 +115,12 @@ public class EduHistService {
         return eduHists.size() >= 1;
     }
 
-    public Optional<EduHist> updateEduHistStatus(Long id, Status status) {
-        Optional<EduHist> optionalEduHist = eduHistRepository.findById(id);
+    public Optional<EduHist> updateEduHistStatus(Long eduHistnum, Status status) {
+        Optional<EduHist> optionalEduHist = eduHistRepository.findById(eduHistnum);
 
+        if (status == Status.APPROVE){
+            smsService.eduApplySms(eduHistnum);
+        }
         if (optionalEduHist.isPresent()) {
             EduHist eduHist = optionalEduHist.get();
             eduHist.setStatus(status);
