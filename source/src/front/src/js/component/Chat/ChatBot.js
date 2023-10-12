@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from '../../../css/component/Chat/Chat.module.css';
 import { SERVER_URL } from '../Common/constants';
 import {useNavigate} from "react-router-dom";
+import Chatting from "./Chatting";
 
 function ChatBot() {
     const [qnaData, setQnaData] = useState([]);
