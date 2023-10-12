@@ -35,7 +35,7 @@ useEffect(() => {
     }, [boardNum, memNum]);
 
     useEffect(() => {
-        fetch(SERVER_URL + "files/post")
+        fetch(SERVER_URL + "files/table/post")
             .then(res => res.json())
             .then(data => {
                 setFiles(data);
@@ -201,7 +201,7 @@ useEffect(() => {
                 onClose={() => setOpen(false)}
                 message="게시글을 지웠습니다."
             />
-            <NewPost onClick={() => navigate('/clubs/new')}>
+            <NewPost onClick={() => navigate('/post/new', { state: { boardNum } })}>
                 등록
             </NewPost>
             <Pagination

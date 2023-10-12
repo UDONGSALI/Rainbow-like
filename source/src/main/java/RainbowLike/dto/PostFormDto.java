@@ -146,7 +146,7 @@ public class PostFormDto {
         post8.setMember(member1);
         post8.setTitle("공지사항 세 번째 글 입니다.");
         post8.setContent("공지사항 테스트 글 세 번째에요.<br>" +
-              "본문의 길이를 늘려서 써본 테스트 글 입니다.<br> 오늘도 행복한 하루 되세요.<br>" );
+                "본문의 길이를 늘려서 써본 테스트 글 입니다.<br> 오늘도 행복한 하루 되세요.<br>" );
 
         post8.setWriteDate(LocalDateTime.now());
         post8.setPageView(0);
