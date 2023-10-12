@@ -8,6 +8,7 @@ function FTCList(){
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
 
     useEffect(() => {
         fetchPosts();
@@ -67,12 +68,17 @@ function FTCList(){
     const onRowClick = (params) => {
         console.log(params.row.ftConsumerNum);
         const rowId = params.row.ftConsumerNum;
-        navigate(`/ftc/${rowId}`);
+        navigate(`/ftc/dtl/${rowId}`);
     };
 
     return(
         <div className={styles.List} style={{ height: 500, width: '100%' }}>
-            <button  onClick = {() => navigate('/ftmain')}>DB 메인</button>
+            <button onClick={() => {
+                const path = isAdmin ? '/admin/ftmain' : '/ftmain';
+                navigate(path);
+            }}>
+                DB 메인
+            </button>
 
             <DataGrid columns={columns}
                       rows={posts}

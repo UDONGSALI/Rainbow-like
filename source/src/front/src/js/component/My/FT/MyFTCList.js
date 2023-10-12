@@ -135,7 +135,7 @@ export default function MyFTCList() {
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
-           
+
         },
 
 
