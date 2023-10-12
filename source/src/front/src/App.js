@@ -1,7 +1,7 @@
 import {Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import './App.css';
 import LoginPage from "./js/pages/Login/LoginPage";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import MemManagePage from "./js/pages/Member/MemManagePage";
 import EduCalendarPage from "./js/pages/Edu/EduCalendarPage";
 import EduListPage from "./js/pages/Edu/EduListPage";
@@ -54,18 +54,22 @@ import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
 import Chating from "./js/component/Chat/Chating";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
+import NavBar from "./js/layout/Navbar/NavBar";
 
 
 
 function App() {
     const decodeToken = useToken();
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    const memId = sessionStorage.getItem("memId");
+    const [memId, setMemId] = useState(sessionStorage.getItem('memId'));
     const {trackButtonClick, trackPageView} = useTracking(memId);
     const location = useLocation();
     const isPaymentRoute = location.pathname.includes("/pay/"); // /pay/로 시작하는 경로인지 확인
     const isChatRoute = location.pathname.includes("/chat");
 
+    useEffect(() => {
+        setMemId(sessionStorage.getItem("memId"));
+    }, []);
 
     useEffect(() => {
         trackPageView();
@@ -75,13 +79,13 @@ function App() {
     return (
         <div className="App" onClick={trackButtonClick}>
 
-            {!isPaymentRoute && !isChatRoute &&  <Navbar/>}
+            {!isPaymentRoute && !isChatRoute &&  <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
             <Routes>
                 <Route path="/" element={<Main/>}/>
 
 
                 {/*로그인*/}
-                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/login" element={<LoginPage />}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
 
                 {/*관리자*/}
@@ -113,7 +117,6 @@ function App() {
                 {/*게시글*/}
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/posts" element={<PostList/>}/>
-                <Route path="/edu/apply/:eduNum" element={<EduApplyPage/>}/>
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
