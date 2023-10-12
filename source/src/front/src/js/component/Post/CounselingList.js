@@ -201,7 +201,7 @@ useEffect(() => {
                 onClose={() => setOpen(false)}
                 message="게시글을 지웠습니다."
             />
-            <NewPost onClick={() => navigate('/post/new')}>
+            <NewPost onClick={() => navigate('/post/new', { state: { boardNum } })}>
                 등록
             </NewPost>
             <Pagination
