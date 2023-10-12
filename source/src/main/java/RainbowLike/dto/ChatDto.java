@@ -17,14 +17,18 @@ import java.util.ArrayList;
 public class ChatDto {
     @JsonIgnore
     private ChatRoom chatRoom;
+    private Long chatRoomId;
     @JsonIgnore
     private Member member;
+    private Long memNum;
     private String content;
     private LocalDateTime writeDate;
 
-    public ChatDto(ChatRoom chatRoom, Member member, String content, LocalDateTime writeDate) {
+    public ChatDto(ChatRoom chatRoom, Long chatRoomId, Member member, Long memNum, String content, LocalDateTime writeDate) {
         this.chatRoom = chatRoom;
+        this.chatRoomId = chatRoomId;
         this.member = member;
+        this.memNum = memNum;
         this.content = content;
     }
 

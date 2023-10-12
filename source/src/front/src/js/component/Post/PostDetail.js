@@ -12,7 +12,6 @@ function PostDetail(props) {
     const [nextPostTitle, setNextPostTitle] = useState(null);
     const [lastPostNum, setLastPostNum] = useState(null);
     const navigate = useNavigate();
-
     // 이전 글과 다음 글의 postNum 계산
     const prevPostNum = parseInt(postNum) - 1;
     const nextPostNum = parseInt(postNum) + 1;
@@ -29,7 +28,12 @@ function PostDetail(props) {
     }, []);
 
     const filteredFiles = useMemo(
-        () => files.filter(file => file.post && file.post.postNum == postNum),
+        () => {
+            console.log("All Files:", files);  // 모든 파일 출력
+            const filtered = files.filter(file => file.post && file.post.postNum == postNum);
+            console.log(filtered)// 필터된 파일만 출력
+            return filtered;
+        },
         [files, postNum]
     );
 
@@ -58,16 +62,57 @@ function PostDetail(props) {
     }, [postNum]);
 
     const onDelClick = () => {
-        // 게시글 삭제 API 호출
-        fetch(`${SERVER_URL}api/posts/${postNum}`, { method: 'DELETE' })
-            .then(response => {
-                setOpen(true);
-            })
-            .catch(err => console.error(err));
+        const isConfirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
 
-        navigate('/posts');
+        if (isConfirmed) {
+            console.log("Filtered Files:", filteredFiles);  // filteredFiles 내용 확인
+
+            if (!filteredFiles.length) {
+                alert("삭제할 파일이 없습니다."); // 삭제할 파일이 없을 경우 알림
+                return;
+            }
+
+            // 1. 먼저 연결된 파일들을 서버에서 삭제
+            Promise.all(
+                filteredFiles.map(file => {
+                    const fileDeleteUrl = `${SERVER_URL}files/${file.id}`;
+                    console.log("Deleting file from URL:", fileDeleteUrl);
+
+                    return fetch(fileDeleteUrl, { method: 'DELETE' });
+                })
+            )
+                .then(responses => {
+                    // 모든 파일이 성공적으로 삭제되었는지 확인
+                    if(responses.every(response => response.ok)) {
+                        // 2. 게시글 삭제
+                        return fetch(`${SERVER_URL}api/posts/${postNum}`, { method: 'DELETE' });
+                    } else {
+                        throw new Error('Failed to delete some files');
+                    }
+                })
+                .then(response => {
+                    if(response.ok) {
+                        setOpen(true);
+                        // boardNum에 따른 이동 경로 설정
+                        if (post.board.boardNum <= 2) {
+                            navigate(`/post/${post.board.boardNum}`);
+                        } else if (post.board.boardNum >= 3 && post.board.boardNum <= 5) {
+                            navigate(`/imgPost/${post.board.boardNum}`);
+                        } else if (post.board.boardNum >= 7) {
+                            navigate(`/csl/${post.board.boardNum}`);
+                        } else {
+                            navigate('/posts');
+                        }
+                    } else {
+                        alert("게시글 삭제에 실패하였습니다.");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("오류가 발생했습니다. 다시 시도해주세요.");
+                });
+        }
     };
-
 
     useEffect(() => {
         fetch(SERVER_URL + "files/table/post")
@@ -118,7 +163,6 @@ function PostDetail(props) {
     const canGoToNextPost = nextPostTitle && nextPostTitle.board.boardNum == post.board.boardNum && lastPostNum > postNum;
 // 기존 코드에서 boardNum이 7보다 크거나 같은지 확인하는 변수
     const hidePrevNextButtons = post.board.boardNum >= 7 && lastPostNum == postNum;
-
 
     return (
         <div className={styles.postDetail}> {/* CSS 모듈 적용 */}

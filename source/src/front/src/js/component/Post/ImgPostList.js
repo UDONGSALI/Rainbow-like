@@ -3,7 +3,7 @@ import { useNavigate,Link } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
 import styles from '../../../css/component/Post/imgPostList.module.css';
 import Pagination from "../Common/Pagination";
-import {colors} from "@mui/material";
+
 
 function ImgPostList(props) {
     const { boardNum } = props;
@@ -17,8 +17,8 @@ function ImgPostList(props) {
         fetch(`${SERVER_URL}post/${boardNum}`)
             .then(response => response.json())
             .then(data => {
-                const filteredPosts = data.filter(post => post.board.boardNum === 3);
-                setPosts(filteredPosts);
+                const filteredPosts = data.filter(post => [3, 4, 5].includes(post.board.boardNum));
+                setPosts(filteredPosts.reverse()); // .reverse()를 추가하여 배열을 역순으로 만듭니다.
             })
             .catch(error => console.error(error));
 
@@ -90,7 +90,10 @@ function ImgPostList(props) {
                     </Link>
                 ))}
             </div>
-            <button className={styles.newPost}>등록</button>
+            <button className={styles.newPost}
+                    onClick={() => navigate('/post/new', { state: { boardNum } })}>
+                등록
+            </button>
             <Pagination
                 activePage={currentPage}
                 itemsCountPerPage={postsPerPage}
