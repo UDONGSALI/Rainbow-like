@@ -24,8 +24,8 @@ function FTMain(){
                   isAdmin?
                       <>
                           <br />
-                      <button onClick={() => navigate('/ftw')}>여성인재 리스트</button>
-                      <button onClick={() => navigate('/ftc')}>매칭 리스트</button>
+                      <button onClick={() => navigate('/admin/ftmain/ftw')}>여성인재 리스트</button>
+                      <button onClick={() => navigate('/admin/ftmain/ftc')}>매칭 리스트</button>
                       </>
                   :
                       <></>

@@ -2,12 +2,10 @@ package RainbowLike.entity;
 
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
-import RainbowLike.dto.MemberFormDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -95,6 +93,11 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @JsonBackReference(value="member-logs")
     private List<Log> logs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @JsonBackReference(value="member-chat")
+    private List<Chat> chat = new ArrayList<>();
+
 
     public Member(String memId, String pwd, Type type, String name, Gender gender, LocalDate bir, String tel, String email, String addr, String addrDtl, LocalDate jdate) {
         super();

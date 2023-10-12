@@ -2,7 +2,6 @@ import {useEffect, useState} from "react"
 import {loadPaymentWidget} from "@tosspayments/payment-widget-sdk"
 import {useParams} from "react-router-dom";
 import {SERVER_URL} from '../Common/constants'
-
 const clientKey = "test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq"
 const customerKey = "YbX2HuSlsC9uVJW6NMRMj"
 

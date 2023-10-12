@@ -4,14 +4,14 @@
         opacity: 1;
     }
     to {
-        transform: translateX(-100%);
+        transform: translateX(-130%);
         opacity: 0;
     }
 }
 
 @keyframes slideRightIn {
     from {
-        transform: translateX(100%);
+        transform: translateX(130%);
         opacity: 0;
     }
     to {

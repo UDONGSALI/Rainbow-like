@@ -19,21 +19,21 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long chatNum;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonManagedReference
-    @JoinColumn(name = "mem_num", nullable = false)
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom chatRoom;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @JoinColumn(name = "mem_num")
     private Member member;
 
-    @Column( nullable = false)
-    private LocalDateTime applyDate;
 
-    @Column( nullable = false)
-    private LocalDateTime resDate;
-
-    @Column( nullable = false, length = 50)
-    private String applyStatus;
-
-    @Column( nullable = false)
+    @Column
     @Lob
-    private String consContent;
+    private String content;
+
+    private LocalDateTime writeDate;
+
 }

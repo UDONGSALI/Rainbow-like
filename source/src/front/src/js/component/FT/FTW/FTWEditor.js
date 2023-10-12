@@ -79,7 +79,7 @@ function FTWEditor(props) {
                 alert('게시글을 수정했습니다.');
 
                 // 게시글 상세로 이동
-                navigate(`/ftw/${id}`);
+                navigate(`/ftw/dtl/${id}`);
             })
             .catch((error) => {
                 // 오류 처리
