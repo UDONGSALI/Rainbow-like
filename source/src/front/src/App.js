@@ -52,11 +52,9 @@ import Pay from "./js/component/Pay/pay";
 import SMSPage from "./js/pages/SMS/SMSPage";
 import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
-import Chating from "./js/component/Chat/Chating";
+import Chating from "./js/component/Chat/Chatting";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
-import NavBar from "./js/layout/Navbar/NavBar";
 import PostForm from "./js/component/Post/PostForm";
-import {Navbar} from "react-bootstrap";
 
 
 
