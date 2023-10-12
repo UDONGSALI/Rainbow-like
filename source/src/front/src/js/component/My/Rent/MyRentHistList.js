@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
-import styles from "../../../../css/component/Mypage/MyActivePost.module.css";
+import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
 import useDelete from "../../hook/useDelete";
 
@@ -40,13 +40,21 @@ export default function MyRentHistList() {
                     rentFee: item.space.rentFee,
                     rentStdt: item.rentStdt,
                     rentEddt: item.rentEddt,
+                    id: item.rentHistNum, // id를 rentHistNum으로 할당
                 }));
-                setRentHists(modifiedData);
+
+                const rentHistsWithNumbers = modifiedData.map((rentHist, index) => ({
+                    ...rentHist,
+                    id: rentHist.rentHistNum,
+                    number: index + 1, // 각 행에 번호를 순차적으로 할당
+                }));
+
+                setRentHists(rentHistsWithNumbers);
             })
             .catch((error) => {
                 console.error("API 호출 중 오류 발생:", error);
             });
-    };
+        }
 
     const onRowClick = (params) => {
         const rowId = params.row.rentHistNum;
@@ -79,7 +87,7 @@ export default function MyRentHistList() {
 
     const columns = [
         {
-            field: "rentHistNum",
+            field: "number",
             headerName: "번호",
             width: 80,
             headerClassName: styles.customHeader,
@@ -111,7 +119,7 @@ export default function MyRentHistList() {
         },
         {
             field: "rentPeriod",
-            headerName: "대관 기간",
+            headerName: "대관 일시",
             width: 250,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
@@ -131,7 +139,7 @@ export default function MyRentHistList() {
 
         {
             field: "applyDate",
-            headerName: "신청일자",
+            headerName: "신청 일시",
             width: 100,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
@@ -149,13 +157,39 @@ export default function MyRentHistList() {
         },
         {
             field: "applyStatus",
-            headerName: "신청현황",
+            headerName: "신청 상태",
             width: 150,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
             valueFormatter: (params) => convertEnumToKorean(params.value),
+        },
+        {
+            field: "pay",
+            headerName: "결제",
+            width:100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: (params) => (
+                <button
+                        style={{
+                            width: "50px",
+                            height: "25px",
+                            border:"1px solid #fff",
+                            backgroundColor: "#a38ced",
+                            color: "rgb(255,255,255)",
+                            borderRadius: '5px',
+                            fontSize: "13px",
+                            fontWeight: "bold",
+                        }}
+                >
+                    결제
+                </button>
+            ),
+
         },
         {
             field: "cancel",
@@ -168,14 +202,14 @@ export default function MyRentHistList() {
             renderCell: (params) => (
                 <button onClick={() => handleDelete(params.row.eduHistNum)}
                         style={{
-                    width: "60px",
-                    height: "30px",
-                    border:"1px solid #fff",
-                    backgroundColor: "#a38ced",
-                    color: "rgb(255,255,255)",
-                    borderRadius: '5px',
-                    fontSize: "15px",
-                    fontWeight: "bold",
+                            width: "50px",
+                            height: "25px",
+                            border:"1px solid #fff",
+                            backgroundColor: "#a38ced",
+                            color: "rgb(255,255,255)",
+                            borderRadius: '5px',
+                            fontSize: "13px",
+                            fontWeight: "bold",
                 }}
                 >
                     취소
@@ -186,13 +220,12 @@ export default function MyRentHistList() {
         {
             field: "writeDate",
             headerName: "상세내역",
-            width: 140,
+            width: 80,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => {
-                const postTitle = params.row.title;
 
 
                 return (
@@ -210,6 +243,22 @@ export default function MyRentHistList() {
                     </div>
                 );
             }
+        },
+        {
+            field: "allow",
+            headerName: "허가증",
+            width:100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+            // renderCell: (params) => (
+            //     <div
+            //         onClick={() => handleCertificatePrint(params.row.status, params.row.member?.name, params.row.rentHist?.renName)}>
+            //         🖨️
+            //     </div>
+            // ),
+
         },
 
     ];
@@ -253,7 +302,7 @@ export default function MyRentHistList() {
                         pagination={true}
                         sortModel={[
                             {
-                                field: "postNum",
+                                field: "number",
                                 sort: "desc", // 내림차순 정렬
                             },
                         ]}
