@@ -6,11 +6,11 @@ import {SERVER_URL} from "../Common/constants";
 import File from "../../../img/component/file.png";
 import styled from '@emotion/styled';
 import Pagination from "../Common/Pagination";
+import logList from "../Log/LogList";
 
 function CounselingList(props) {
-    const { boardNum,memNum } = props;
+    const {boardNum, memNum} = props;
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    const isLabor = sessionStorage.getItem("role") === "LABOR";
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
@@ -24,12 +24,23 @@ function CounselingList(props) {
         setActivePage(pageNumber);
         // 필요하면 추가적인 로직 구현
     };
-useEffect(() => {
+
+
+    useEffect(() => {
         fetch(SERVER_URL + `post/${boardNum}`)
             .then(res => res.json())
             .then(data => {
-                const reversedData = [...data].reverse();
-                setPosts(reversedData);
+                const primaryPosts = data.filter(post => !post.parentsNum).reverse();
+                const replies = data.filter(post => post.parentsNum).reverse();
+
+                const sortedData = primaryPosts.reduce((acc, post) => {
+                    acc.push(post);
+                    const relatedReplies = replies.filter(reply => reply.parentsNum === post.postNum);
+                    acc.push(...relatedReplies);
+                    return acc;
+                }, []);
+
+                setPosts(sortedData);
             })
             .catch(err => console.error(err));
     }, [boardNum, memNum]);
@@ -64,57 +75,56 @@ useEffect(() => {
         navigate(`/posts/edit/${rowId}`);
     };
 
-    const getRowId = (row) => {
-        return row.postNum.toString();
-    };
-
     const onRowClick = (params) => {
-        if (isAdmin || isLabor || params.row.member.memNum == memNum) {
-            const rowId = params.row.postNum;
-            const boardNumber = params.row.board.boardNum;
-
-            navigate(`/post/detail/${boardNum}/${rowId}`, {
-                state: {boardNum: boardNumber}
-            });
-        }
+        const rowId = params.row.postNum;
+        const boardNumber = params.row.board.boardNum;
+        navigate(`/post/detail/${boardNum}/${rowId}`, {
+            state: {boardNum: boardNumber}
+        });
     }
 
     const columns = [
-            {
-                field: 'postNum',
-                headerName: '번호',
-                headerAlign: 'center',
-                sortable: false,
-                filterable: false,
-                renderCell: (params) => (
-                    <CenteredData>
-                        <StyledCell>
-                            {params.row.postNum - 17}
-                        </StyledCell>
-                    </CenteredData>
-                ),
-                width: 80
-            },
-            {
-                field: 'title',
-                headerName: '제목',
-                headerAlign: 'center',
-                width: 400,
-                renderCell: (params) => (
+        {
+            field: 'postNum',
+            headerName: '번호',
+            headerAlign: 'center',
+            sortable: false,
+            filterable: false,
+            renderCell: (params) => (
+                <CenteredData>
+                    <StyledCell>
+                        {params.row.postNum - 17}
+                    </StyledCell>
+                </CenteredData>
+            ),
+            width: 80
+        },
+        {
+            field: 'title',
+            headerName: '제목',
+            headerAlign: 'center',
+            width: 400,
+            renderCell: (params) => {
+                const parentPost = params.row.parentsNum ? postsWithFiles.find(post => post.postNum === params.row.parentsNum) : null;
+
+                return (
                     <div
                         style={{
-                            cursor: (isAdmin || isLabor || params.row.member.memNum == memNum) ? 'pointer' : 'default'
+                            cursor: (isAdmin ||  params.row.labor?.memNum || params.row.member?.memNum == memNum || parentPost?.member?.memNum == memNum) ? 'pointer' : 'default'
                         }}
                         onClick={() => {
-                            if (isAdmin || isLabor || params.row.member.memNum == memNum) {
+                            if (isAdmin ||  params.row.labor?.memNum || params.row.member?.memNum == memNum || parentPost.member?.memNum == memNum) {
                                 onRowClick(params);
                             }
                         }}
                     >
-                        <StyledCell>{params.value}</StyledCell>
+                        <StyledCell>
+                            {params.row.parentsNum ? "ㄴ[답글] " : ""}{params.value}
+                        </StyledCell>
                     </div>
-                )
-            },
+                );
+            }
+        },
         {
             field: 'member',
             headerName: '작성자',
@@ -185,14 +195,16 @@ useEffect(() => {
     ];
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column',
-            alignItems: 'center',width:'100%' }}>
+        <div style={{
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', width: '100%'
+        }}>
             <DataGrid
                 columns={columns}
                 rows={postsWithFiles}
-                style={{ width: '900px', height: 400 }}
+                style={{width: '900px', height: 400}}
                 disableRowSelectionOnClick={true}
-                getRowId={getRowId}
+                getRowId={(row) => row.postNum}
                 hideFooter={true}
             />
             <Snackbar
@@ -201,7 +213,7 @@ useEffect(() => {
                 onClose={() => setOpen(false)}
                 message="게시글을 지웠습니다."
             />
-            <NewPost onClick={() => navigate('/post/new', { state: { boardNum } })}>
+            <NewPost onClick={() => navigate('/post/new', {state: {boardNum}})}>
                 등록
             </NewPost>
             <Pagination
@@ -259,6 +271,7 @@ const NewPost = styled.button`
   display: block;
   margin-top: 40px;
   font-size: 14px;
+
   &:hover {
     background-color: #53468b;
   }

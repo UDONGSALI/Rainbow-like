@@ -19,15 +19,42 @@ function PostDetailPage() {
         fetch(`${SERVER_URL}posts/${postNum}`)
             .then(response => response.json())
             .then(data => {
+                const parentsNum = data.post.parentsNum;
+
                 if (data.board.boardNum == 7 || data.board.boardNum == 8) {
-                    if (!isAdmin && !isLabor && memNum != data.post.member.memNum) {
-                        alert("이 페이지에 접근할 수 없습니다.");
-                        navigate('/error');
-                        return;
+                    if (parentsNum) {
+                        // 부모 게시물이 있을 경우, 부모 게시물 정보를 가져옴
+                        fetch(`${SERVER_URL}posts/${parentsNum}`)
+                            .then(response => response.json())
+                            .then(parentData => {
+                                if (!isAdmin &&
+                                    memNum != data.post.labor?.memNum &&
+                                    memNum != data.post.member.memNum &&
+                                    memNum != parentData.member.memNum) {
+                                    alert("이 페이지에 접근할 수 없습니다.");
+                                    navigate('/error');
+                                    return;
+                                }
+                                // 조건에 부합하면 게시글을 표시
+                                setShowPost(true);
+                            })
+                            .catch(error => {
+                                console.error(error);
+                                navigate('/error'); // 에러 발생 시 에러 페이지로 리다이렉트
+                            });
+                    } else {
+                        if (!isAdmin && memNum != data.post.labor.memNum && memNum != data.post.member.memNum) {
+                            alert("이 페이지에 접근할 수 없습니다.");
+                            navigate('/error');
+                            return;
+                        }
+                        // 조건에 부합하면 게시글을 표시
+                        setShowPost(true);
                     }
+                } else {
+                    // 조건에 부합하면 게시글을 표시
+                    setShowPost(true);
                 }
-                // 조건에 부합하면 게시글을 표시
-                setShowPost(true);
             })
             .catch(error => {
                 console.error(error);
