@@ -99,7 +99,6 @@ public class Member {
     private List<Chat> chat = new ArrayList<>();
 
 
-
     public Member(String memId, String pwd, Type type, String name, Gender gender, LocalDate bir, String tel, String email, String addr, String addrDtl, LocalDate jdate) {
         super();
         this.memId = memId;

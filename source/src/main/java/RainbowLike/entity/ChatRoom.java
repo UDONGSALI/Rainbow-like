@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import RainbowLike.constant.AnswerYN;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,5 +22,5 @@ public class ChatRoom {
     private Member member;
 
     @Column(name = "answer_yn")
-    private String answerYN;
+    private AnswerYN answerYN;
 }
