@@ -52,10 +52,11 @@ import Pay from "./js/component/Pay/pay";
 import SMSPage from "./js/pages/SMS/SMSPage";
 import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
-import Chatting from "./js/component/Chat/Chatting";
+import Chating from "./js/component/Chat/Chating";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
-import ChatList from "./js/component/Chat/ChatList";
-import NavBar from "./js/layout/Navbar/NavBar";
+import PostForm from "./js/component/Post/PostForm";
+import {Navbar} from "react-bootstrap";
+
 
 
 function App() {
@@ -76,7 +77,7 @@ function App() {
     return (
         <div className="App" onClick={trackButtonClick}>
 
-            {!isPaymentRoute && !isChatRoute &&  <NavBar/>}
+            {!isPaymentRoute && !isChatRoute &&  <Navbar/>}
             <Routes>
                 <Route path="/" element={<Main/>}/>
 
@@ -120,6 +121,7 @@ function App() {
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
+                <Route path="/post/new" element={<PostForm/>}/>
 
                 {/*공간대관페이지관련*/}
                 <Route path="/rent/process" element={<RentProcessPage/>}/>
@@ -159,8 +161,7 @@ function App() {
 
                 {/*챗봇 / 채팅*/}
                 <Route path="/chat" element={<ChatPage />} />
-                <Route path="/chat/:memNum" element={<Chatting />} />
-                <Route path="/chatlist" element={<ChatList />} />
+                <Route path="/chat/:memNum" element={<Chating />} />
 
             </Routes>
         </div>
