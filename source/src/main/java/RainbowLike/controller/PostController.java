@@ -8,6 +8,8 @@ import RainbowLike.entity.Post;
 import RainbowLike.repository.BoardRepository;
 import RainbowLike.repository.PostRepository;
 import RainbowLike.service.PostService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class PostController {
     private BoardRepository boardRepository;
     @Autowired
     private PostService postService;
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     @RequestMapping("/posts")
     public Iterable<Post> getPosts() {
@@ -145,8 +148,6 @@ public class PostController {
             return ResponseEntity.badRequest().body("Error occurred while deleting post: " + e.getMessage());
         }
     }
-
-
 
     public void createPosts(){
         ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();

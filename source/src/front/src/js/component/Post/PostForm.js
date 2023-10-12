@@ -1,19 +1,21 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import styles from '../../../css/component/Post/PostForm.module.css';
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import { SERVER_URL } from "../Common/constants";
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from "react-quill";
 
-function PostForm(props) {
-    const { boardNum } = props;
+function PostForm() {
+    const location = useLocation();
+    const boardNum = location.state?.boardNum;
     const navigate = useNavigate();
     const memId = sessionStorage.getItem("memId");
     const [member, setMember] = useState([]);
     const [content, setContent] = React.useState('');
+    const [tempVideos, setTempVideos] = useState([]); // 비디오 파일을 저장할 상태 추가
     const [formData, setFormData] = useState({
         memNum: '',
-        boardNum: '1',
+        boardNum: boardNum,
         title: '',
         content: '',
         pageView: 0,
@@ -23,6 +25,7 @@ function PostForm(props) {
         delYN: 'N'
     });
     const [file, setFile] = useState(null);
+    const [tempImages, setTempImages] = useState([]);
 
     useEffect(() => {
         fetch(SERVER_URL + `members/id/${memId}`)
@@ -31,7 +34,7 @@ function PostForm(props) {
                 setMember(data);
                 const formSet = {
                     memNum: data.memNum,
-                    boardNum: '1',
+                    boardNum: boardNum,
                     title: '',
                     content: '',
                     pageView: 0,
@@ -52,14 +55,11 @@ function PostForm(props) {
         setContent(contentValue);
         setFormData(prevState => ({ ...prevState, content: contentValue }));
     };
-
-
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         setFile(selectedFile);
     };
 
-    console.log(content)
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -76,22 +76,46 @@ function PostForm(props) {
             body: JSON.stringify(formData),
         })
             .then((response) => response.json())
-            .then((data) => {
+            .then(async (data) => {
                 alert('게시글을 작성했습니다.');
-                if (file) {
+
+                fetch(SERVER_URL + `posts/maxPostNum`)
+                    .then(response => response.json())
+                    .catch(error => {
+                        console.error('Error fetching max post number:', error);
+                    });
+
+                if (tempImages.length) {
                     const uploadFormData = new FormData();
-                    uploadFormData.append('files', file);
-                    fetch(SERVER_URL + "/files/table/post", {
+                    tempImages.forEach(file => {
+                        uploadFormData.append('files', file);
+                    });
+
+                    uploadFormData.append('number', data.postNum);
+
+                    await fetch(SERVER_URL + "files/table/post", {
                         method: 'POST',
                         body: uploadFormData,
                     });
                 }
-                navigate(``);
+
+                // boardNum 값에 따른 리디렉션
+                if (boardNum == 1 || boardNum == 2) {
+                    navigate(`/post/${boardNum}`);
+                } else if (boardNum >= 3 && boardNum <= 5) {
+                    navigate(`/imgPost/${boardNum}`);
+                } else if (boardNum >= 7) {
+                    navigate(`/csl/${boardNum}`);
+                } else {
+                    // 기타 경우에 대한 리디렉션 (필요에 따라 설정)
+                    navigate(`/`);
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
     };
+
 
     function imageHandler() {
         const input = document.createElement('input');
@@ -102,19 +126,20 @@ function PostForm(props) {
 
         input.onchange = async () => {
             const files = Array.from(input.files);
-            const formData = new FormData();
+            setTempImages(prev => [...prev, ...files]);
+
+            const imageFormData = new FormData();
 
             files.forEach(file => {
-                formData.append('file', file);
+                imageFormData.append('file', file);
             });
 
-            // 테이블 이름 및 번호에 따라 필요한 값을 설정해주세요.
-            formData.append('tableName', 'post');
-            formData.append('number', '0');
+            imageFormData.append('tableName', 'post');
+            imageFormData.append('number', '0');
 
             const response = await fetch(`${SERVER_URL}files/qill`, {
                 method: 'POST',
-                body: formData,
+                body: imageFormData,
             });
             const imageUrls = await response.json();
 
@@ -126,13 +151,57 @@ function PostForm(props) {
             });
         };
     }
+    function videoHandler() {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'video/*');
+        input.setAttribute('multiple', 'true');
+        input.click();
+
+        input.onchange = async () => {
+            const files = Array.from(input.files);
+            setTempVideos(prev => [...prev, ...files]);
+
+            const videoFormData = new FormData();
+
+            files.forEach(file => {
+                videoFormData.append('file', file);
+            });
+
+            videoFormData.append('tableName', 'post');
+            videoFormData.append('number', '0');
+
+            try {
+                const response = await fetch(`${SERVER_URL}files/qill`, {
+                    method: 'POST',
+                    body: videoFormData,
+                });
+
+                if (!response.ok) {
+                    throw new Error('Video upload failed.');
+                }
+
+                const videoUrls = await response.json();
+
+                const editor = quillRef.current.getEditor();
+                const range = editor.getSelection();
+
+                videoUrls.forEach((videoUrl, index) => {
+                    const value = { src: videoUrl, alt: 'Uploaded video' };
+                    editor.insertEmbed(range.index + index, 'video', value);
+                });
+            } catch (error) {
+                console.error('Error uploading video:', error);
+            }
+        };
+    }
     const modules = useMemo(() => {
         return {
             toolbar: {
                 container: [
                     [{ header: [1, 2, 3, false] }],
                     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                    ['image'],
+                    ['image','video'],
                 ],
                 handlers: {
                     // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
@@ -154,7 +223,6 @@ function PostForm(props) {
     const [value, setValue] = useState(''); // 에디터 속 콘텐츠를 저장하는 state
     const quillRef = useRef(); // 에디터 접근을 위한 ref return (
 
-console.log(content)
     return (
         <div className={styles.registrationFormContainer}>
             <h2>게시글 작성</h2>
