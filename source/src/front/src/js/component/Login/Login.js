@@ -83,7 +83,6 @@ function Login() {
 
     const logout = () => {
         const jti = sessionStorage.getItem('jti'); // 세션 스토리지에서 jti를 가져옴
-        console.log(jti);
         if (jti) {
             deleteTokenFromServer(jti);
         }
@@ -186,8 +185,8 @@ function Login() {
             borderRadius: '5px'
         }}>
             <Stack alignItems='flex-start' style={{
-                width: '50%',
-                padding: '20px',
+                width: '42%',
+                padding: '10px',
                 backgroundColor: '#ffffff',
                 boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',
                 borderRadius: '5px'
@@ -249,7 +248,7 @@ function Login() {
                     </Button>
                 </div>
                 <div style={{padding: '16px', borderRadius: '4px', width: '100%'}}>
-                    <Typography variant="body2">
+                    <Typography variant="body2" style={{fontSize: '14px'}}>
                         <span role="img" aria-label="Question mark in circle">😳</span>
                         아이디나 비밀번호를 잊어버리셨나요?
                         <Link
@@ -260,7 +259,7 @@ function Login() {
                         </Link>
                     </Typography>
                     <br/>
-                    <Typography variant="body2" style={{fontSize: '16px'}}>
+                    <Typography variant="body2" style={{fontSize: '14px'}}>
                         <span role="img" aria-label="Exclamation mark in circle">😖</span>
                         아직 세종여성플라자의 회원이 아니신가요?
                         <Link to="/signup" style={customLinkStyle}> <strong>회원가입</strong></Link>
