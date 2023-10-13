@@ -4,10 +4,7 @@ import RainbowLike.dto.FTInfo;
 import RainbowLike.dto.FtcDto;
 import RainbowLike.dto.FtmDto;
 import RainbowLike.dto.FtwDto;
-import RainbowLike.entity.FemaleTalentMatching;
-import RainbowLike.entity.FtConsumer;
-import RainbowLike.entity.FtWorker;
-import RainbowLike.entity.Member;
+import RainbowLike.entity.*;
 import RainbowLike.repository.FemaleTalentMatchingRepository;
 import RainbowLike.repository.FtConsumerRepository;
 import RainbowLike.repository.FtWorkerRepository;
@@ -250,6 +247,29 @@ public class FtalentController {
         String tel = telList.get(0);
         return tel;
     }
+
+
+    //멤버별 ftw, ftc, ftmatching 정보 가져오기
+
+    @GetMapping("/ftw/member/{memNum}")
+    public Iterable<FtWorker> getFtWorkersByMember(@PathVariable Long memNum) {
+        // 멤버 번호를 기준으로 FtWorker 조회
+        Member member = memRepository.findById(memNum)
+                .orElseThrow(() -> new ResourceNotFoundException(memNum + "은 존재하지 않는 회원입니다."));
+
+        return ftwRepository.findByMember(member);
+    }
+
+    @GetMapping("/ftc/member/{memNum}")
+    public Iterable<FtConsumer> getFtConsumersByMember(@PathVariable Long memNum) {
+        // 멤버 번호를 기준으로 FtConsumer 조회
+        Member member = memRepository.findById(memNum)
+                .orElseThrow(() -> new ResourceNotFoundException(memNum + "은 존재하지 않는 회원입니다."));
+
+        return ftcRepository.findByMember(member);
+    }
+
+
 
 
 }

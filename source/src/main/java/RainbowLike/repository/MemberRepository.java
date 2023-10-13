@@ -29,6 +29,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findTopByOrderByMemNumDesc();
 
 
+
     @Query("SELECT m.tel FROM Member m")
     List<String> findAllTels();
 }

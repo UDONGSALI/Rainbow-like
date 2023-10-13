@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
-import styles from "../../../../css/component/Mypage/MyActivePost.module.css";
+import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
 
 export default function MyClubList() {
@@ -33,8 +33,16 @@ export default function MyClubList() {
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data);
-                    setClubs(data);
+                    const clubWithNumbers = data.map((club, index) => ({
+                        ...club,
+                        id: club.postNum,
+                        number: index + 1, // 각 행에 번호를 순차적으로 할당
+                    }));
+
+                    setClubs(clubWithNumbers);
                 })
+
+
                 .catch((error) => {
                     console.error("API 호출 중 오류 발생:", error);
                 });
@@ -62,7 +70,7 @@ export default function MyClubList() {
 
     const columns = [
         {
-            field: "postNum",
+            field: "number",
             headerName: "번호",
             width: 80,
             headerClassName: styles.customHeader,
@@ -78,35 +86,27 @@ export default function MyClubList() {
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
+            renderCell: (params) => {
+
+                const postTitle = params.row.title
 
 
-        },
+                return (
+                    <div
+                        style={{cursor: "pointer"}}
+                        onClick={() => onRowClick(params)}
+                    >
+                        {postTitle}
+                    </div>
+                );
+            }
 
 
 
-        {
-            field: "clubAllowStatus",
-            headerName: "허가현황",
-            width: 200,
-            headerClassName: styles.customHeader,
-            cellClassName: styles.customCell,
-            align: 'center',
-            headerAlign: 'center',
-            valueFormatter: (params) => convertEnumToKorean(params.value),
-
-        },
-        {
-            field: "clubRecuStatus",
-            headerName: "모집현황",
-            width: 200,
-            headerClassName: styles.customHeader,
-            cellClassName: styles.customCell,
-            align: 'center',
-            headerAlign: 'center',
         },
         {
             field: "writeDate",
-            headerName: "신청일자",
+            headerName: "신청 일시",
             width: 150,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
@@ -121,6 +121,28 @@ export default function MyClubList() {
                 return formattedDate;
             },
         },
+        
+        {
+            field: "clubAllowStatus",
+            headerName: "허가 상태",
+            width: 200,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+            valueFormatter: (params) => convertEnumToKorean(params.value),
+
+        },
+        {
+            field: "clubRecuStatus",
+            headerName: "모집 상태",
+            width: 200,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+        },
+
         {
             field: "content",
             headerName: "상세 내용",
@@ -130,8 +152,6 @@ export default function MyClubList() {
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => {
-                const postTitle = params.row.title;
-
 
                 return (
                     <div
@@ -191,7 +211,7 @@ export default function MyClubList() {
                         pagination={true}
                         sortModel={[
                             {
-                                field: "postNum",
+                                field: "number",
                                 sort: "desc", // 내림차순 정렬
                             },
                         ]}

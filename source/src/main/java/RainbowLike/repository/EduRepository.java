@@ -22,4 +22,5 @@ public interface EduRepository extends JpaRepository<Edu, Long> {
 
     Edu findTopByOrderByEduNumDesc();
 
+
 }

@@ -38,4 +38,13 @@
     src: url('https://fonts.googleapis.com/css2?family=Prompt&display=swap') format('ttf')
 }
 
+/*Noto Sans Korean*/
+
+@font-face {
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+Korean=swap') format('ttf')
+}
+
 
