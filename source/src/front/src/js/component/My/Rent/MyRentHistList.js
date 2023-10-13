@@ -1,13 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
-import styles from "../../../../css/component/Mypage/MyActivePost.module.css";
+import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
 import useDelete from "../../hook/useDelete";
+import PayStatusCell from "../../Rent/RenderCell/PayStatusCell";
 
 export default function MyRentHistList() {
-    const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
-    const [rentHists, setRentHists] = useState([]); // 게시글 데이터 상태
+    const [memNum, setMemNum] = useState(null);
+    const [rentHists, setRentHists] = useState([]);
+    const [infoData, setInfoData] = useState(null);
+    const [infoTitle, setInfoTitle] = useState("");
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [isPermitOpen, setIsPermitOpen] = useState(false);
+    const [currentPermitData, setCurrentPermitData] = useState({spaceName: "", getRentDate: "", getRentTime: ""});
     const navigate = useNavigate();
     const deleteItem = useDelete(SERVER_URL);
 
@@ -20,16 +26,16 @@ export default function MyRentHistList() {
     useEffect(() => {
         // memNum 상태가 변경될 때마다 fetchClubsByMember를 호출
         if (memNum !== null) {
-            fetchClubsByMember();
+            fetchRentHistsByMember();
         }
     }, [memNum]);
 
-    const fetchClubsByMember = () => {
+    const fetchRentHistsByMember = () => {
         if (memNum === null) {
             return;
         }
 
-        // memNum을 사용하여 해당 멤버의 모임정보만 가져오도록 수정
+        // memNum을 사용하여 해당 멤버의 정보만 가져오도록 수정
         fetch(`${SERVER_URL}rent/memberRent/${memNum}`)
             .then((response) => response.json())
             .then((data) => {
@@ -38,22 +44,39 @@ export default function MyRentHistList() {
                     ...item,
                     spaceName: item.space.spaceName,
                     rentFee: item.space.rentFee,
-                    rentStdt: item.rentStdt,
-                    rentEddt: item.rentEddt,
+                    payStatus: item.payStatus, // Add payStatus to each rentHist object
                 }));
-                setRentHists(modifiedData);
+
+                const rentHistsWithNumbers = modifiedData.map((rentHist, index) => ({
+                    ...rentHist,
+                    id: rentHist.rentHistNum,
+                    number: index + 1, // 각 행에 번호를 순차적으로 할당
+                }));
+
+                setRentHists(rentHistsWithNumbers);
             })
             .catch((error) => {
                 console.error("API 호출 중 오류 발생:", error);
             });
     };
 
-    const onRowClick = (params) => {
-        const rowId = params.row.rentHistNum;
-
-        console.log('rowId:', rowId);
-        navigate(`/clubs/${rowId}`);
+    const handleSpaceClick = (space) => {
+        setInfoTitle("공간 정보");
+        setInfoData(space);
+        setIsInfoModalOpen(true);
     };
+
+    function getRentDate(params) {
+        const date = new Date(params.row.rentStdt); // 대여 시작일을 기준으로 합니다.
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    }
+
+    function getRentTime(params) {
+        const startTime = new Date(params.row.rentStdt);
+        const endTime = new Date(params.row.rentEddt);
+        return `${String(startTime.getHours()).padStart(2, '0')}:${String(startTime.getMinutes()).padStart(2, '0')} - ${String(endTime.getHours()).padStart(2, '0')}:${String(endTime.getMinutes()).padStart(2, '0')}`;
+    }
+
 
     const handleDelete = async (rentHistNum) => {
         const isSuccess = await deleteItem('rent/' + rentHistNum, "취소");
@@ -63,6 +86,39 @@ export default function MyRentHistList() {
             setRentHists(updatedRows);
         }
     };
+
+    function handleOpenPaymentPopup(rentHist) {
+        const totalAmount = calculateTotalAmount(rentHist.space.rentFee, rentHist.rentStdt, rentHist.rentEddt);
+        const width = 500;
+        const height = 650;
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
+        const popupOptions = `scrollbars=no, width=${width}, height=${height}, top=${top}, left=${left}`;
+
+        // rentHistNum와 fee 값을 URL에 포함시키기
+        window.open(`/pay/${rentHist.id}/${totalAmount}`, 'PaymentPopup', popupOptions);
+    }
+    const handlePermitPrint = (applyStatus, payStatus, spaceName, getRentDate, getRentTime) => {
+        if (applyStatus === 'APPROVE' && payStatus === 'COMPLETE') {
+            setCurrentPermitData({spaceName, getRentDate, getRentTime});
+            setIsPermitOpen(true);
+        } else {
+            alert('대여 승인 및 결제 완료 후 출력이 가능합니다!');
+        }
+    };
+
+    function calculateRentDuration(rentStdt, rentEddt) {
+        const startTime = new Date(rentStdt);
+        const endTime = new Date(rentEddt);
+        const duration = endTime - startTime;
+        return duration / (60 * 60 * 1000);  // 시간으로 변환
+    }
+
+    function calculateTotalAmount(rentFee, rentStdt, rentEddt) {
+        const cleanFee = parseInt(rentFee.replace('원', '').replace(/,/g, ''), 10);
+        const duration = calculateRentDuration(rentStdt, rentEddt);
+        return cleanFee * duration;
+    }
 
     function convertEnumToKorean(enumValue) {
         if (enumValue === "APPROVE") {
@@ -79,24 +135,31 @@ export default function MyRentHistList() {
 
     const columns = [
         {
-            field: "rentHistNum",
+            field: "number",
             headerName: "번호",
-            width: 80,
+            width: 60,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
+
         },
         {
             field: "spaceName",
             headerName: "공간명",
-            width: 200,
+            width: 300,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
-
-
+            renderCell: (row) => (
+                <span
+                    onClick={() => handleSpaceClick(row.row.space)}
+                    style={{cursor: "pointer"}}
+                >
+                {row.row.space?.spaceName || ''}
+            </span>
+            )
         },
         {
             field: "rentFee",
@@ -107,32 +170,32 @@ export default function MyRentHistList() {
             align: 'center',
             headerAlign: 'center',
 
-
         },
         {
-            field: "rentPeriod",
-            headerName: "대관 기간",
-            width: 250,
+            field: "rentDate",
+            headerName: "대관일",
+            width: 150,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
-            valueFormatter: (params) => {
-                const startDate = params.row && params.row.rentStdt ? new Date(params.row.rentStdt) : null;
-                const endDate = params.row && params.row.rentEddt ? new Date(params.row.rentEddt) : null;
-
-
-                console.log(startDate);
-                console.log(endDate);
-
-            }
+            renderCell: getRentDate
         },
-
+        {
+            field: "rentTime",
+            headerName: "대관 시간",
+            width: 150,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: getRentTime
+        },
 
         {
             field: "applyDate",
-            headerName: "신청일자",
-            width: 100,
+            headerName: "신청 일시",
+            width: 150,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -149,8 +212,8 @@ export default function MyRentHistList() {
         },
         {
             field: "applyStatus",
-            headerName: "신청현황",
-            width: 150,
+            headerName: "신청 상태",
+            width: 100,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -158,9 +221,20 @@ export default function MyRentHistList() {
             valueFormatter: (params) => convertEnumToKorean(params.value),
         },
         {
+            field: "payStatus",
+            headerName: "결제 상태",
+            width: 100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+            valueFormatter: (params) => convertEnumToKorean(params.value),
+            renderCell: (params) => <PayStatusCell {...params} onPayment={handleOpenPaymentPopup} setRentHist={setRentHists}/>,
+        },
+        {
             field: "cancel",
             headerName: "취소",
-            width:100,
+            width:130,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -168,14 +242,14 @@ export default function MyRentHistList() {
             renderCell: (params) => (
                 <button onClick={() => handleDelete(params.row.eduHistNum)}
                         style={{
-                    width: "60px",
-                    height: "30px",
-                    border:"1px solid #fff",
-                    backgroundColor: "#a38ced",
-                    color: "rgb(255,255,255)",
-                    borderRadius: '5px',
-                    fontSize: "15px",
-                    fontWeight: "bold",
+                            width: "50px",
+                            height: "25px",
+                            border:"1px solid #fff",
+                            backgroundColor: "#a38ced",
+                            color: "rgb(255,255,255)",
+                            borderRadius: '5px',
+                            fontSize: "13px",
+                            fontWeight: "bold",
                 }}
                 >
                     취소
@@ -183,33 +257,27 @@ export default function MyRentHistList() {
             ),
 
         },
+
         {
-            field: "writeDate",
-            headerName: "상세내역",
-            width: 140,
+            field: 'permit',
+            headerName: '허가증',
+            width: 70,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
-            renderCell: (params) => {
-                const postTitle = params.row.title;
-
-
-                return (
-                    <div
-                        style={{cursor: "pointer"}}
-                        onClick={() => onRowClick(params)}
-                    >
-                        <div style={{display: "flex", alignItems: "center"}}>
-                            <img
-                                src="https://storage.googleapis.com/rainbow_like/img/search2.png"
-                                alt="소모임 상세 이미지"
-                                style={{width: 30, height: 30}}
-                            />
-                        </div>
-                    </div>
-                );
-            }
+            renderCell: (params) => (
+                <div
+                    onClick={() => handlePermitPrint(
+                        params.row.applyStatus,
+                        params.row.payStatus,  // 여기에 payStatus를 추가합니다.
+                        params.row.space?.spaceName,
+                        getRentDate(params),
+                        getRentTime(params)
+                    )}>
+                    🖨️
+                </div>
+            ),
         },
 
     ];
@@ -239,6 +307,8 @@ export default function MyRentHistList() {
                     style={{
                         height: 500,
                         width: "100%",
+
+
                     }}
                 >
                     <CustomDataGrid
@@ -251,12 +321,7 @@ export default function MyRentHistList() {
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
-                        sortModel={[
-                            {
-                                field: "postNum",
-                                sort: "desc", // 내림차순 정렬
-                            },
-                        ]}
+
                     />
                 </div>
             </div>

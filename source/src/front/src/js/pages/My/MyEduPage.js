@@ -1,8 +1,7 @@
 import UrlComponent from "../../layout/Header/UrlComponent";
 import {headerInfo, urlData} from "../../layout/Header/Data/MyHeader";
 import React from 'react';
-
-import EduHistList from "../../component/Edu/EduHistList";
+import MyEduList from "../../component/My/Edu/MyEduList";
 
 const MyEduPage = (props) => {
     const { memId, type } = props;
@@ -11,7 +10,7 @@ const MyEduPage = (props) => {
     return (
         <div>
             <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
-            <EduHistList memId={memId}/>
+            <MyEduList/>
         </div>
     );
 }

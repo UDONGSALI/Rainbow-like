@@ -11,10 +11,10 @@ import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -32,6 +32,10 @@ public class ChatController {
     @Autowired
     ChatService chatService;
 
+    @Autowired
+    private ChatRoomDto chatRoomDto;
+
+
     @GetMapping("/chatroom")
     public Iterable<ChatRoom> getChatRooms(){
        return chatRoomRepository.findAll();
@@ -40,9 +44,9 @@ public class ChatController {
     @GetMapping("/chat")
     public Iterable<Chat> getChats(){return chatRepository.findAll();}
 
-    @GetMapping("chatroom/{id}")
-    public Iterable<ChatRoom> getChatRoom(@PathVariable Long id){
-        Member member = memberRepository.findByMemNum(id);
+    @GetMapping("chatroom/{memNum}")
+    public Iterable<ChatRoom> findRoomByMemNum(@PathVariable Long memNum){
+        Member member = memberRepository.findByMemNum(memNum);
         return chatRoomRepository.findByMember(member);
     }
     @GetMapping("chat/{id}")
@@ -50,18 +54,54 @@ public class ChatController {
         return chatRepository.findById(id);
     }
 
-    @GetMapping("findchatbyroom/{memNum}")
-    public Iterable<Chat> getChatByRoomNum(@PathVariable Long memNum){
-        Member member = memberRepository.findByMemNum(memNum);
+    @GetMapping("findchatbyroom/{roomNum}")
+    public Iterable<Chat> getChatByRoomNum(@PathVariable Long roomNum){
         ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setMember(member);
+        chatRoom.setChatRoomId(roomNum);
         return chatRepository.findByChatRoom(chatRoom);
+    }
+    @GetMapping("findchatbyMem/{memNum}")
+    public Iterable<Chat> getChatBymemNum(@PathVariable Long memNum){
+        return chatRepository.findByMemNum(memNum);
+    }
+
+    @RequestMapping("chatroom/new")
+    public ResponseEntity<ChatRoom> createChatRoom(@RequestBody ChatRoomDto roomDto) {
+        ChatRoom room = new ChatRoom();
+
+        Member member = new Member();
+        member.setMemNum(roomDto.getMemNum());
+        room.setMember(member);
+        room.setAnswerYN(roomDto.getAnswerYN());
+
+        ChatRoom savedRoom = chatRoomRepository.save(room);
+
+        return ResponseEntity.ok(savedRoom);
+    }
+
+    @RequestMapping("chat/new")
+    public ResponseEntity<Chat> createChatRoom(@RequestBody ChatDto chatDto) {
+        Chat newChat = new Chat();
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom.setChatRoomId(chatDto.getChatRoomId());
+        newChat.setChatRoom(chatRoom);
+        Member member = new Member();
+        member.setMemNum(chatDto.getMemNum());
+        newChat.setMember(member);
+        newChat.setContent(chatDto.getContent());
+        newChat.setWriteDate(LocalDateTime.now());
+
+        Chat savedChat = chatRepository.save(newChat);
+
+        return ResponseEntity.ok(savedChat);
     }
 
     public void createTestChat () {
-        ArrayList<ChatRoomDto> chatRoomList = ChatRoomDto.createTestChatRoom();
+        ArrayList<ChatRoomDto> chatRoomList = chatRoomDto.createTestChatRoom();
         chatService.createTestChatRoom(chatRoomList);
         ArrayList<ChatDto> chatList = ChatDto.createTestChat();
         chatService.createTestChat(chatList);
+
+
     }
 }

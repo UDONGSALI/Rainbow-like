@@ -267,7 +267,7 @@ public class PostFormDto {
 
         PostFormDto post20 = new PostFormDto();
         post20.setBoard(board5);
-        post20.setMember(member2);
+        post20.setMember(member3);
         post20.setParentsNum(18L);
         post20.setTitle("노무사 게시판  답글.");
         post20.setContent("노무사 게시판  답글 입니다.");

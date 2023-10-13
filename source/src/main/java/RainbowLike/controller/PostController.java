@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -71,6 +72,14 @@ public class PostController {
 
         Board clubNumBoard = boardRepository.findByBoardNum(9L);
         return postRepository.findByBoardAndMemberMemNum(clubNumBoard, memNum);
+    }
+    
+    // 회원 번호로 멤버별 상담(온라인상담,노무상담게시판)의 게시글 요청
+    @RequestMapping("/memberCounsel/{memNum}")
+    public Iterable<Post> getCounselByMember(@PathVariable Long memNum) {
+
+        List<Board> councelBoard = boardRepository.findByBoardNameContaining("상담");
+        return postRepository.findByBoardInAndMemberMemNum(councelBoard, memNum);
     }
 
 

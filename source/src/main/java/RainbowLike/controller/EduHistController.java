@@ -1,7 +1,12 @@
 package RainbowLike.controller;
 
 import RainbowLike.constant.Status;
+import RainbowLike.entity.Board;
 import RainbowLike.entity.EduHist;
+import RainbowLike.entity.Member;
+import RainbowLike.entity.Post;
+import RainbowLike.repository.EduHistRepository;
+import RainbowLike.repository.EduRepository;
 import RainbowLike.service.EduHistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +22,7 @@ import java.util.Optional;
 @RequestMapping("/eduHist")
 public class EduHistController {
     private final EduHistService eduHistService;
+    private final EduHistRepository eduHistRepository;
 
     @GetMapping
     public ResponseEntity<Iterable<EduHist>> getEduHists() {
@@ -34,6 +40,13 @@ public class EduHistController {
     public ResponseEntity<Boolean> eduHistCheck(@PathVariable Long memNum, @PathVariable Long eduNum) {
         return ResponseEntity.ok(eduHistService.eduHistCheck(memNum, eduNum));
     }
+
+    // 회원 번호로 멤버별 교육신청내역 요청
+    @RequestMapping("/memberEduHist/{memNum}")
+    public List<EduHist> getEduHistByMember(@PathVariable Long memNum) {
+        return eduHistRepository.findByMember_MemNum(memNum);
+    }
+
 
     @PatchMapping("/{eduHistnum}")
     public ResponseEntity<?> updateEduHistStatus(@PathVariable Long eduHistnum, @RequestBody Map<String, String> body) {
@@ -72,5 +85,7 @@ public class EduHistController {
             return ResponseEntity.badRequest().body("요청 처리 중 에러 발생");
         }
     }
+
+
 
 }

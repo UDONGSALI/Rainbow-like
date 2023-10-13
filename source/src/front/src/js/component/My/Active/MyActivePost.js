@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {SERVER_URL} from "../../../../js/component/Common/constants";
 import {useNavigate} from "react-router-dom";
-import styles from "../../../../css/component/Mypage/MyActivePost.module.css";
+import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
 
 

@@ -45,30 +45,36 @@ function BoardPostList({ boardNum }) {
 
     useEffect(() => {
         if (!loading) {
-            const primaryPosts = fetchedPosts.filter(post => !post.parentsNum).sort((a, b) => b.postNum - a.postNum);
+            if (boardNum === 7 || boardNum === 8) {
+                // boardNum이 7 또는 8일 때의 로직
+                const primaryPosts = fetchedPosts.filter(post => !post.parentsNum).sort((a, b) => b.postNum - a.postNum);
 
-            const replyMap = fetchedPosts.reduce((acc, post) => {
-                if (post.parentsNum) {
-                    if (!acc[post.parentsNum]) {
-                        acc[post.parentsNum] = [];
+                const replyMap = fetchedPosts.reduce((acc, post) => {
+                    if (post.parentsNum) {
+                        if (!acc[post.parentsNum]) {
+                            acc[post.parentsNum] = [];
+                        }
+                        acc[post.parentsNum].push(post);
                     }
-                    acc[post.parentsNum].push(post);
-                }
-                return acc;
-            }, {});
+                    return acc;
+                }, {});
 
-            const sortedPosts = [];
+                const sortedPosts = [];
 
-            primaryPosts.forEach(primaryPost => {
-                sortedPosts.push(primaryPost);
-                if (replyMap[primaryPost.postNum]) {
-                    sortedPosts.push(...replyMap[primaryPost.postNum]);
-                }
-            });
+                primaryPosts.forEach(primaryPost => {
+                    sortedPosts.push(primaryPost);
+                    if (replyMap[primaryPost.postNum]) {
+                        sortedPosts.push(...replyMap[primaryPost.postNum]);
+                    }
+                });
 
-            setPosts(sortedPosts);
+                setPosts(sortedPosts);
+            } else {
+                // boardNum이 7 또는 8이 아닐 때의 로직
+                setPosts(fetchedPosts);
+            }
         }
-    }, [loading, fetchedPosts]);
+    }, [loading, fetchedPosts, boardNum]);
 
     const handleDelete = (postNum) => {
         if (!window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
