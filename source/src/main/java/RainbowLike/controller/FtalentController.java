@@ -269,14 +269,6 @@ public class FtalentController {
         return ftcRepository.findByMember(member);
     }
 
-//    @GetMapping("/ftm/member/{memNum}")
-//    public Iterable<FemaleTalentMatching> getFtmsByMember(@PathVariable Long memNum) {
-//        // 멤버 번호를 기준으로 FemaleTalentMatching 조회
-//        Member member = memRepository.findById(memNum)
-//                .orElseThrow(() -> new ResourceNotFoundException(memNum + "은 존재하지 않는 회원입니다."));
-//
-//        return ftmRepository.findByMember(member);
-//    }
 
 
 
