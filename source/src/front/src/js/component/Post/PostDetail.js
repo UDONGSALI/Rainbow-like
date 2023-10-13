@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {useNavigate} from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
 import styles from '../../../css/component/Post/PostDetail.module.css';
 
 function PostDetail(props) {
     const { postNum,boardNum } = props;
     const [post, setPost] = useState(null);
-    const [open, setOpen] = useState(false);
     const [files, setFiles] = useState([]);
     const [prevPostTitle, setPrevPostTitle] = useState(null);
     const [nextPostTitle, setNextPostTitle] = useState(null);
@@ -17,7 +16,7 @@ function PostDetail(props) {
     const nextPostNum = parseInt(postNum) + 1;
 
     useEffect(() => {
-        fetch(SERVER_URL + "files/table/post")
+        fetch(SERVER_URL + `files/postNum/${postNum}`)
             .then((response) => response.json())
             .then((data) => {
                 setFiles(data);
@@ -26,16 +25,6 @@ function PostDetail(props) {
                 console.error(error);
             });
     }, []);
-
-    const filteredFiles = useMemo(
-        () => {
-            console.log("All Files:", files);  // 모든 파일 출력
-            const filtered = files.filter(file => file.post && file.post.postNum == postNum);
-            console.log(filtered)// 필터된 파일만 출력
-            return filtered;
-        },
-        [files, postNum]
-    );
 
     useEffect(() => {
         // 게시글 조회수 증가 API 호출
@@ -65,16 +54,16 @@ function PostDetail(props) {
         const isConfirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
 
         if (isConfirmed) {
-            console.log("Filtered Files:", filteredFiles);  // filteredFiles 내용 확인
+            console.log("Filtered Files:", files);  // filteredFiles 내용 확인
 
-            if (!filteredFiles.length) {
+            if (!files.length) {
                 alert("삭제할 파일이 없습니다."); // 삭제할 파일이 없을 경우 알림
                 return;
             }
 
             // 1. 먼저 연결된 파일들을 서버에서 삭제
             Promise.all(
-                filteredFiles.map(file => {
+                files.map(file => {
                     const fileDeleteUrl = `${SERVER_URL}files/${file.id}`;
                     console.log("Deleting file from URL:", fileDeleteUrl);
 
@@ -92,7 +81,6 @@ function PostDetail(props) {
                 })
                 .then(response => {
                     if(response.ok) {
-                        setOpen(true);
                         // boardNum에 따른 이동 경로 설정
                         if (post.board.boardNum <= 2) {
                             navigate(`/post/${post.board.boardNum}`);
@@ -176,7 +164,7 @@ function PostDetail(props) {
                 </p>
                 <div className={styles.postMenuTitle}> - 공지사항 입니다.</div>
                 <div className={styles.leftTop}>
-                    {filteredFiles.map((file, index) => (
+                    {files.map((file, index) => (
                         <img
                             key={index}
                             src={file.fileUri}
@@ -193,7 +181,7 @@ function PostDetail(props) {
                     <li className={styles.postFileLabel}>첨부파일</li>
                     <li className={styles.postFileDivider}></li>
                     <li className={styles.postFileNames}>
-                        {filteredFiles.map((file, index) => (
+                        {files.map((file, index) => (
                             <a
                                 key={index}
                                 className={styles.postFileName}
