@@ -44,28 +44,30 @@ public class ChatController {
     @GetMapping("/chat")
     public Iterable<Chat> getChats(){return chatRepository.findAll();}
 
-    @GetMapping("chatroom/{memNum}")
+    @GetMapping("/chatroom/{memNum}")
     public Iterable<ChatRoom> findRoomByMemNum(@PathVariable Long memNum){
         Member member = memberRepository.findByMemNum(memNum);
         return chatRoomRepository.findByMember(member);
     }
-    @GetMapping("chat/{id}")
+    @GetMapping("/chat/{id}")
     public Optional<Chat> getChat(@PathVariable Long id){
         return chatRepository.findById(id);
     }
 
-    @GetMapping("findchatbyroom/{roomNum}")
+    @GetMapping("/findchatbyroom/{roomNum}")
     public Iterable<Chat> getChatByRoomNum(@PathVariable Long roomNum){
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setChatRoomId(roomNum);
         return chatRepository.findByChatRoom(chatRoom);
     }
-    @GetMapping("findchatbyMem/{memNum}")
-    public Iterable<Chat> getChatBymemNum(@PathVariable Long memNum){
-        return chatRepository.findByMemNum(memNum);
+    @GetMapping("/findchatbymem/{memNum}")
+    public Iterable<Chat> getChatByMemNum(@PathVariable Long memNum){
+
+//        return chatRepository.findByMemNum(memNum);
+        return chatRepository.findByChatRoomMemberMemNumOrderByChatNumAsc(memNum);
     }
 
-    @RequestMapping("chatroom/new")
+    @RequestMapping("/chatroom/new")
     public ResponseEntity<ChatRoom> createChatRoom(@RequestBody ChatRoomDto roomDto) {
         ChatRoom room = new ChatRoom();
 
@@ -79,7 +81,22 @@ public class ChatController {
         return ResponseEntity.ok(savedRoom);
     }
 
-    @RequestMapping("chat/new")
+    @RequestMapping("/chatroom/edit/{roomId}")
+    public ResponseEntity<ChatRoom> editChatRoom (@PathVariable Long roomId, @RequestBody ChatRoomDto roomDto) {
+        ChatRoom editRoom = new ChatRoom();
+        editRoom.setChatRoomId(roomId);
+
+        Member member = new Member();
+        member.setMemNum(roomDto.getMemNum());
+        editRoom.setMember(member);
+        editRoom.setAnswerYN(roomDto.getAnswerYN());
+
+        ChatRoom savedRoom = chatRoomRepository.save(editRoom);
+
+        return ResponseEntity.ok(savedRoom);
+    }
+
+    @RequestMapping("/chat/new")
     public ResponseEntity<Chat> createChatRoom(@RequestBody ChatDto chatDto) {
         Chat newChat = new Chat();
         ChatRoom chatRoom = new ChatRoom();

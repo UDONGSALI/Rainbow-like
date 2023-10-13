@@ -106,8 +106,8 @@ function ChatList(){
     };
 
     const onRowClick = (params) => {
-        const rowId = params.row.chatRoom.chatRoomId;
-        navigate(`/chatting/${rowId}`);
+        const rowId = params.row.chatRoom.member.memNum;
+        navigate(`/chat/${rowId}`);
         // <Chatting  />
     };
 
