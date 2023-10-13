@@ -57,6 +57,7 @@ import ChatPage from "./js/pages/Chat/ChatPage";
 import Chating from "./js/component/Chat/Chatting";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import PostForm from "./js/component/Post/PostForm";
+import SearchPage from "./js/pages/Search/SearchPage";
 
 
 
@@ -90,6 +91,8 @@ function App() {
                 {/*로그인*/}
                 <Route path="/login" element={<LoginPage />}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
+
+                <Route path="/search" element={<SearchPage/>}/>
 
                 {/*관리자*/}
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>

@@ -9,6 +9,7 @@ import sns_04 from "../../../img/layout/sns_04.png";
 import magnifier from "../../../img/layout/magnifier.png";
 import {useToken} from "../../component/hook/useToken";
 
+
 const menuData = [
     {
         title: "기관 소개",
@@ -32,7 +33,7 @@ const menuData = [
     },
     {
         title: "직장맘 지원센터",
-        items: [{name:"노무상담 게시판", url:"/csl/7"},{name:"소모임", url:"/clubs"},{name:"소모임", url:"/clubs"},{name:"소모임", url:"/clubs"},]
+        items: [{name:"노무상담 게시판", url:"/csl/7"},]
     },
     {
         title: "정보 나눔",
@@ -64,9 +65,6 @@ function CustomNavbar({memId, isAdmin}) {
             <Link to="/">
                 <img src={logo1} alt="로고1" className={styles.logo} />
             </Link>
-            {searchMode ? (
-                <SearchBar setSearchMode={setSearchMode} />
-            ) : (
                 <>
                 <div className={styles.menuContainer}>
                     {menuData.map(menu => (
@@ -87,7 +85,7 @@ function CustomNavbar({memId, isAdmin}) {
                 </div>
                     <div className={styles.buttonContainer}>
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfwvf8_L_l7QdSGrFkDpvtMn1ut974Dk28aTSQqMSlJ5ngCcA/viewform" target="_blank" rel="noopener noreferrer">
-                            <button style={{border:'1px solid black', borderColor:'#c9c9c9', borderRadius:'15px', padding: '0 15px', fontSize:'14px'}}>Newsletter</button>
+                            <button style={{border:'1px solid black', borderColor:'#c9c9c9', borderRadius:'15px', padding: '3px 15px', fontSize:'14px'}}>Newsletter</button>
                         </a>
                         <div className={styles.snsContainer}>
                         <a href="https://blog.naver.com/sjwplaza" target="_blank" rel="noopener noreferrer">
@@ -105,35 +103,27 @@ function CustomNavbar({memId, isAdmin}) {
                         </div>
                         {memId ? (
                             <>
-                                <button onClick={logout}>로그아웃</button>
+                                <button onClick={logout} style={{marginLeft:'30px'}}>로그아웃</button>
                                 {isAdmin ? (
                                     <Link to="/admin/member">
-                                        <button>관리자 페이지</button>
+                                        <button style={{marginLeft:'30px'}}>관리자 페이지</button>
                                     </Link>
                                 ) : (
                                     <Link to="/mypage/edu">
-                                        <button>마이 페이지</button>
+                                        <button style={{marginLeft:'30px'}}>마이 페이지</button>
                                     </Link>
                                 )}
                             </>
                         ) : (
                             <Link to="/login">
-                                <button>로그인</button>
+                                <button style={{marginLeft:'30px'}}>로그인</button>
                             </Link>
                         )}
-                            <button onClick={() => setSearchMode(true)}><img src={magnifier}  alt="magnifier"  className={styles.magnifier} /></button>
+                        <Link to="/search">
+                            <button style={{marginLeft:'20px'}}><img src={magnifier}  alt="magnifier"  className={styles.magnifier} /></button>
+                        </Link>
                     </div>
                 </>
-            )}
-        </div>
-    );
-}
-
-function SearchBar({ setSearchMode }) {
-    return (
-        <div className={styles.searchBar}>
-            <input placeholder="검색어를 입력하세요." />
-            <button onClick={() => setSearchMode(false)}>X</button>
         </div>
     );
 }
@@ -157,14 +147,14 @@ function ItemArea({ activeMenu, setActiveMenu }) {
 
     return (
         <div className={styles.itemArea}>
-            {/* 아래 부분이 새롭게 추가된 타이틀 영역입니다. */}
             <div className={styles.titleArea}>
                 <span className={styles.titleText}>{activeMenu}</span>  {/* 이 부분 수정 */}
             </div>
-
+            <div style={{display:"flex", flexWrap:"wrap", width:'84%',boxSizing:"border-box", marginLeft:'25px'}}>
             {activeMenuData && activeMenuData.items.map(item => (
                 <Item key={item} item={item} />
             ))}
+            </div>
         </div>
     );
 }
