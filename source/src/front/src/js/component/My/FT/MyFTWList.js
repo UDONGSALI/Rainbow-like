@@ -13,7 +13,7 @@ export default function MyFTWList() {
     // useState로 ftData 상태 추가
     const [ftData, setFtData] = useState({ ftWorkers: [], ftConsumers: [] });
     const navigate = useNavigate();
-    const deleteItem = useDelete(SERVER_URL);
+
 
     useEffect(() => {
         // 로그인한 사용자 정보를 가져오는 방법에 따라서 구현
@@ -51,35 +51,13 @@ export default function MyFTWList() {
                 console.error("API 호출 중 오류 발생:", error);
             });
     };
-    // useEffect에서 호출
-
-// const onRowClick = (params) => {
-    //     const rowId = params.row.eduNum;
-    //
-    //     console.log('rowId:', rowId);
-    //     navigate(`/edu/list/detail/${rowId}`);
-    // };
-    //
-    // const handleTitleClick = (eduNum) => {
-    //     navigate(`/edu/list/detail/${eduNum}`);
-    // }
 
 
+const onRowClick = (params) => {
+        const rowId = params.row.eduNum;
 
-    function convertEnumToKorean(enumValue) {
-        if (enumValue === "APPROVE") {
-            return "승인";
-        } else if (enumValue === "REJECT") {
-            return "거부";
-        } else if (enumValue === "COMPLETE") {
-            return "완료";
-        } else if (enumValue === "EDU") {
-            return "교육";
-        } else if (enumValue === "BUSINESS"){
-            return "사업";
-        } else {
-            return "대기";
-        }
+        console.log('rowId:', rowId);
+        navigate(`/edu/list/detail/${rowId}`);
     };
 
     const columns = [
@@ -94,30 +72,21 @@ export default function MyFTWList() {
         },
         {
             field: "speField",
-            headerName: "구분",
-            width: 80,
+            headerName: "분야",
+            width: 200,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
 
 
-        },
-        {
-            field: "applyContent",
-            headerName: "내용",
-            width: 300,
-            headerClassName: styles.customHeader,
-            cellClassName: styles.customCell,
-            align: 'center',
-            headerAlign: 'center',
 
         },
 
         {
             field: "writeDate",
             headerName: "신청일시",
-            width: 150,
+            width: 200,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -131,16 +100,31 @@ export default function MyFTWList() {
                 return formattedDate;
             },
         },
+
+
         {
             field: "ftStatus",
-            headerName: "신청 상태",
-            width: 150,
+            headerName: "승인 여부",
+            width: 200,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
 
         },
+
+        {
+            field: "statusDtl",
+            headerName: "상세 내용",
+            width: 500,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+
+        },
+
+
 
 
     ];
@@ -165,12 +149,12 @@ export default function MyFTWList() {
     return (
         <div id={styles.active}>
             <div className={styles.main}>
-                <h3>인재등록 신청 관리</h3>
+                <h3>인재 등록 신청 관리<b>(개인)</b></h3>
                 <div
                     className={styles.posts}
                     style={{
                         height: 500,
-                        width: "100%",
+                        width: '100%',
                     }}
                 >
                     <CustomDataGrid

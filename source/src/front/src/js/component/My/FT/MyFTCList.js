@@ -9,8 +9,6 @@ import useDelete from "../../hook/useDelete";
 export default function MyFTCList() {
     const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
     const [ftConsumers, setFtConsumers] = useState([]);
-    // // useState로 ftData 상태 추가
-    // const [ftData, setFtData] = useState({ ftWorkers: [], ftConsumers: [] });
     const navigate = useNavigate();
     const deleteItem = useDelete(SERVER_URL);
 
@@ -34,47 +32,34 @@ export default function MyFTCList() {
             .then((ftcData) => {
                 console.log(ftcData);
 
-                // ftConsumerNum이 실제 데이터에 있는지 확인 후 사용
                 const ftcWithNumbers = ftcData.map((ftConsumer, index) => ({
                     ...ftConsumer,
                     id: ftConsumer.ftConsumerNum,  // ftConsumerNum이 실제로 데이터에 있는지 확인해야 함
-                    number: index + 1, // 각 행에 번호를 순차적으로 할당
+                    number: ftcData.length - index, // 내림차순으로 번호를 부여
                 }));
 
                 setFtConsumers(ftcWithNumbers);
             })
+
             .catch((error) => {
                 console.error("API 호출 중 오류 발생:", error);
             });
     };
-    // useEffect에서 호출
 
-// const onRowClick = (params) => {
-    //     const rowId = params.row.eduNum;
-    //
-    //     console.log('rowId:', rowId);
-    //     navigate(`/edu/list/detail/${rowId}`);
-    // };
-    //
-    // const handleTitleClick = (eduNum) => {
-    //     navigate(`/edu/list/detail/${eduNum}`);
-    // }
+const onRowClick = (params) => {
+        const rowId = params.row.eduNum;
+
+        console.log('rowId:', rowId);
+        navigate(`/edu/list/detail/${rowId}`);
+    };
 
 
 
     function convertEnumToKorean(enumValue) {
-        if (enumValue === "APPROVE") {
-            return "승인";
-        } else if (enumValue === "REJECT") {
-            return "거부";
-        } else if (enumValue === "COMPLETE") {
-            return "완료";
-        } else if (enumValue === "EDU") {
-            return "교육";
-        } else if (enumValue === "BUSINESS"){
-            return "사업";
+        if (enumValue === "Y") {
+            return "해결";
         } else {
-            return "대기";
+            return "미해결";
         }
     };
 
@@ -90,23 +75,13 @@ export default function MyFTCList() {
         },
         {
             field: "speField",
-            headerName: "구분",
-            width: 80,
+            headerName: "분야",
+            width: 200,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
 
-
-        },
-        {
-            field: "applyContent",
-            headerName: "내용",
-            width: 300,
-            headerClassName: styles.customHeader,
-            cellClassName: styles.customCell,
-            align: 'center',
-            headerAlign: 'center',
 
         },
 
@@ -128,9 +103,20 @@ export default function MyFTCList() {
             },
         },
         {
+            field: "ftmYN",
+            headerName: "매칭 여부",
+            width: 100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+            valueFormatter: (params) => convertEnumToKorean(params.value),
+
+        },
+        {
             field: "statusDtl",
-            headerName: "신청 상태",
-            width: 150,
+            headerName: "상세 내용",
+            width: 750,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -161,12 +147,12 @@ export default function MyFTCList() {
     return (
         <div id={styles.active}>
             <div className={styles.main}>
-                <h3>인재요청 신청 관리<b>(기업)</b></h3>
+                <h3>인재 매칭 신청 관리<b>(기업)</b></h3>
                 <div
                     className={styles.posts}
                     style={{
                         height: 500,
-                        width: "100%",
+                        width: '100%',
                     }}
                 >
                     <CustomDataGrid
@@ -179,12 +165,7 @@ export default function MyFTCList() {
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
-                        sortModel={[
-                            {
-                                field: "number",
-                                sort: "desc", // 내림차순 정렬
-                            },
-                        ]}
+
                     />
                 </div>
             </div>
