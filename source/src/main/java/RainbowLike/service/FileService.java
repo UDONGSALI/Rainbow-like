@@ -18,9 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 
 @Service
@@ -90,8 +87,17 @@ public class FileService {
         return "파일 업로드 성공";
     }
 
+    public List<Long> uploadFilesAndGetFileNums(List<MultipartFile> files, String tableName, Long number) throws IOException {
+        return uploadToCloudAndGetFileNums(files, tableName, number);
+    }
+
     public List<String> uploadFilesForQuill(List<MultipartFile> files, String tableName, Long number) throws IOException {
         return uploadToCloud(files, tableName, number);
+    }
+    public void updatePostNumForImage(String imageUrl, Long postNum) {
+        // Fetch the image record using imageUrl
+        // Update its postNum with the provided postNum
+        // Save the updated image record
     }
 
     private List<String> uploadToCloud(List<MultipartFile> files, String tableName, Long number) throws IOException {
@@ -129,6 +135,44 @@ public class FileService {
             uploadedFileUrls.add(fileUrl);
         }
         return uploadedFileUrls;
+    }
+
+    private List<Long> uploadToCloudAndGetFileNums(List<MultipartFile> files, String tableName, Long number) throws IOException {
+        PathAndEntities pathAndEntities = determineMidPath(tableName, number);
+
+        // Set up Google Cloud Storage
+        ClassPathResource resource = new ClassPathResource("rainbow-like-6e3171ac1695.json");
+        GoogleCredentials credentials = GoogleCredentials.fromStream(resource.getInputStream());
+        String projectId = "rainbow-like";
+        Storage storage = StorageOptions.newBuilder()
+                .setProjectId(projectId)
+                .setCredentials(credentials)
+                .build()
+                .getService();
+
+        List<Long> uploadedFileNums = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            String newFileName = pathAndEntities.getMidPath() + file.getOriginalFilename();
+            String fileUrl = "https://storage.googleapis.com/" + bucketName + "/" + newFileName;
+            BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, newFileName).build();
+            Blob blob = storage.create(blobInfo, file.getBytes());
+
+            File createfile = new File();
+            createfile.setFileOriName(file.getOriginalFilename());
+            createfile.setFileName(newFileName);
+            createfile.setFileUri(fileUrl);
+            createfile.setMember(pathAndEntities.getMember());
+            createfile.setSpace(pathAndEntities.getSpace());
+            createfile.setEdu(pathAndEntities.getEdu());
+            createfile.setPost(pathAndEntities.getPost());
+            createfile.setEduHist(pathAndEntities.getEduHist());
+
+            File savedFile = fileRepository.save(createfile);
+            uploadedFileNums.add(savedFile.getFileNum());
+        }
+
+        return uploadedFileNums;
     }
 
     private PathAndEntities determineMidPath(String tableName, Long number) {
@@ -210,5 +254,16 @@ public class FileService {
         result.setPost(post);
 
         return result;
+    }
+
+    public void updatePostNumForFiles(List<Long> fileNumsExcludingPostNum, Long postNum) {
+        for (Long fileNum : fileNumsExcludingPostNum) {
+            File file = fileRepository.findById(fileNum)
+                    .orElseThrow(() -> new RuntimeException("File not found with id: " + fileNum));
+            Post post = postRepository.findById(postNum)
+                    .orElseThrow(() -> new RuntimeException("Post not found with id: " + postNum));
+            file.setPost(post);
+            fileRepository.save(file);
+        }
     }
 }
