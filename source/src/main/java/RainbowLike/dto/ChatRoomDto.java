@@ -59,12 +59,6 @@ public class ChatRoomDto {
         chatRoom2.setAnswerYN(AnswerYN.Y);
         chatRoomList.add(chatRoom2);
 
-
-        ChatRoomDto chatRoom3 = new ChatRoomDto();
-        chatRoom3.setMember(member3);
-        chatRoom3.setAnswerYN(AnswerYN.N);
-        chatRoomList.add(chatRoom3);
-
         return chatRoomList;
     }
 }
