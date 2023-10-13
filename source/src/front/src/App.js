@@ -54,12 +54,14 @@ import Pay from "./js/component/Pay/pay";
 import SMSPage from "./js/pages/SMS/SMSPage";
 import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
-import Chating from "./js/component/Chat/Chatting";
+import Chatting from "./js/component/Chat/Chatting";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import PostForm from "./js/component/Post/PostForm";
+import ChatList from "./js/component/Chat/ChatList";
+import Chattest from "./js/component/Chat/Chattest";
+import ChatTestPage from "./js/component/Chat/ChatTestPage";
 import SearchPage from "./js/pages/Search/SearchPage";
 import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
-
 
 
 
@@ -92,8 +94,6 @@ function App() {
                 {/*로그인*/}
                 <Route path="/login" element={<LoginPage />}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
-
-                <Route path="/search" element={<SearchPage/>}/>
 
                 {/*관리자*/}
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
@@ -171,7 +171,10 @@ function App() {
 
                 {/*챗봇 / 채팅*/}
                 <Route path="/chat" element={<ChatPage />} />
-                <Route path="/chat/:memNum" element={<Chating />} />
+                <Route path="/chat/:memNum" element={<Chatting />} />
+                {/*<Route path="/chatlist" element={<ChatList />} />*/}
+                {/*<Route path="/chattest" element={<Chattest />} />*/}
+                <Route path="/chattest" element={<ChatTestPage />} />
 
             </Routes>
         </div>
