@@ -4,16 +4,12 @@ import RainbowLike.constant.Status;
 import RainbowLike.dto.PostFormDto;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Post;
-import RainbowLike.entity.RentHist;
 import RainbowLike.repository.BoardRepository;
-import RainbowLike.repository.ClubRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,7 +83,6 @@ public class PostService {
         }
         return null;
     }
-
 
     public void deletePost(Long postNum) {
         if (postRepository.existsById(postNum)) {
