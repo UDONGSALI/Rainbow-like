@@ -119,7 +119,6 @@ export default function MyActiveComment() {
             cellClassName: styles.customCell,
 
             renderCell: (params) => {
-                console.log(params.row);
                 const postTitle = params.row.post && params.row.post.title;
                 const displayTitle = postTitle || 'N/A';
 

@@ -2,17 +2,17 @@ import styles from "../../../css/pages/mypage/MyActivePage.module.css";
 import UrlComponent from "../../layout/Header/UrlComponent";
 import {headerInfo, urlData} from "../../layout/Header/Data/MyHeader";
 import React from "react";
-import MemberInfoEdit from "../../component/My/MemberEdit/MemberInfoEdit";
+import EditSuccess from "../../component/My/MemberEdit/EditSuccess";
 
-const MyInfoEditPage = () => {
+const MyInfoEditSuccessPage = () => {
     return (
 
         <div id={styles.container}>
             <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'회원정보수정'}/>
-            <MemberInfoEdit/>
+            <EditSuccess/>
         </div>
 
     );
 }
 
-export default MyInfoEditPage;
+export default MyInfoEditSuccessPage;

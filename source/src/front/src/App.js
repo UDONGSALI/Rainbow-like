@@ -58,6 +58,7 @@ import Chating from "./js/component/Chat/Chatting";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import PostForm from "./js/component/Post/PostForm";
 import {Navbar} from "react-bootstrap";
+import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
 
 
 
@@ -140,6 +141,7 @@ function App() {
                 <Route path="/mypage/club" element={memId ? <MyClubPage memId={memId}/> : <Navigate to="/login" replace/>}/>
                 <Route path="/mypage/csl" element={memId ? <MyCounselPage memId={memId}/> : <Navigate to="/login" replace/>}/>
                 <Route path="/mypage/infoEdit" element={memId ? <MyInfoEditPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/infoEditSuccess" element={memId ? <MyInfoEditSuccessPage memId={memId}/> : <Navigate to="/login" replace/>}/>
 
                 {/*소모임*/}
                 <Route path="/clubs" element={<ClubPage />}/>

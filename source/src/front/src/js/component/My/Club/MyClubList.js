@@ -86,8 +86,40 @@ export default function MyClubList() {
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
+            renderCell: (params) => {
+
+                const postTitle = params.row.title
 
 
+                return (
+                    <div
+                        style={{cursor: "pointer"}}
+                        onClick={() => onRowClick(params)}
+                    >
+                        {postTitle}
+                    </div>
+                );
+            }
+
+
+
+        },
+        {
+            field: "writeDate",
+            headerName: "신청 일시",
+            width: 150,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+            valueFormatter: (params) => {
+                //작성일을 JS Date 객체로 파싱
+                const writeDate = new Date(params.value);
+                //원하는 형식으로 날짜 포맷
+                const formattedDate = `${writeDate.getFullYear()}-${String(writeDate.getMonth() + 1).padStart(2, '0')}-${String(writeDate.getDate()).padStart(2, '0')}`;
+
+                return formattedDate;
+            },
         },
         
         {
@@ -110,23 +142,7 @@ export default function MyClubList() {
             align: 'center',
             headerAlign: 'center',
         },
-        {
-            field: "writeDate",
-            headerName: "신청 일시",
-            width: 150,
-            headerClassName: styles.customHeader,
-            cellClassName: styles.customCell,
-            align: 'center',
-            headerAlign: 'center',
-            valueFormatter: (params) => {
-                //작성일을 JS Date 객체로 파싱
-                const writeDate = new Date(params.value);
-                //원하는 형식으로 날짜 포맷
-                const formattedDate = `${writeDate.getFullYear()}-${String(writeDate.getMonth() + 1).padStart(2, '0')}-${String(writeDate.getDate()).padStart(2, '0')}`;
 
-                return formattedDate;
-            },
-        },
         {
             field: "content",
             headerName: "상세 내용",
@@ -136,8 +152,6 @@ export default function MyClubList() {
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => {
-
-
 
                 return (
                     <div
