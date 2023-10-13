@@ -29,8 +29,8 @@ function PostDetailPage() {
                             .then(parentData => {
                                 if (!isAdmin &&
                                     memNum != data.post.labor?.memNum &&
-                                    memNum != data.post.member.memNum &&
-                                    memNum != parentData.member.memNum) {
+                                    memNum != data.post.member?.memNum &&
+                                    memNum != parentData.member?.memNum) {
                                     alert("이 페이지에 접근할 수 없습니다.");
                                     navigate('/error');
                                     return;
@@ -40,10 +40,10 @@ function PostDetailPage() {
                             })
                             .catch(error => {
                                 console.error(error);
-                                navigate('/error'); // 에러 발생 시 에러 페이지로 리다이렉트
+                                // navigate('/error'); // 에러 발생 시 에러 페이지로 리다이렉트
                             });
                     } else {
-                        if (!isAdmin && memNum != data.post.labor.memNum && memNum != data.post.member.memNum) {
+                        if (!isAdmin && memNum != data.post.labor?.memNum && memNum != data.post.member?.memNum) {
                             alert("이 페이지에 접근할 수 없습니다.");
                             navigate('/error');
                             return;
@@ -58,7 +58,7 @@ function PostDetailPage() {
             })
             .catch(error => {
                 console.error(error);
-                navigate('/error'); // 에러 발생 시 에러 페이지로 리다이렉트
+                // navigate('/error'); // 에러 발생 시 에러 페이지로 리다이렉트
             });
     }, [postNum, navigate, isAdmin, isLabor, memNum]);
 

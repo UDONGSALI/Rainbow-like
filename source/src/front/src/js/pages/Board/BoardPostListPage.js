@@ -49,6 +49,7 @@ function BoardPostListPage() {
                 navigation
                 loop={true}
                 onSlideChange={handleSlideChange}  // 슬라이드 변경 시 호출될 핸들러 함수
+                initialSlide={parseInt(boardNum) - 1}  // 초기 슬라이드 설정
                 style={{
                     width: '70%',
                     display: 'flex',

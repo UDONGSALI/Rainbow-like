@@ -78,9 +78,13 @@ function CounselingList(props) {
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
         const boardNumber = params.row.board.boardNum;
-        navigate(`/post/detail/${boardNum}/${rowId}`, {
-            state: {boardNum: boardNumber}
-        });
+        const parentPost = params.row.parentsNum ? postsWithFiles.find(post => post.postNum === params.row.parentsNum) : null;
+
+        if (isAdmin || params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || (parentPost && parentPost?.member?.memNum == memNum)) {
+            navigate(`/post/detail/${boardNum}/${rowId}`, {
+                state: {boardNum: boardNumber}
+            });
+        }
     }
 
     const columns = [
@@ -110,11 +114,15 @@ function CounselingList(props) {
                 return (
                     <div
                         style={{
-                            cursor: (isAdmin ||  params.row.labor?.memNum || params.row.member?.memNum == memNum || parentPost?.member?.memNum == memNum) ? 'pointer' : 'default'
+                            cursor: (isAdmin ||  params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || parentPost?.member?.memNum == memNum) ? 'pointer' : 'default'
                         }}
                         onClick={() => {
-                            if (isAdmin ||  params.row.labor?.memNum || params.row.member?.memNum == memNum || parentPost.member?.memNum == memNum) {
-                                onRowClick(params);
+                            try {
+                                if (isAdmin ||  params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || parentPost?.member?.memNum == memNum) {
+                                    onRowClick(params);
+                                }
+                            } catch (error) {
+                                console.log('열람 권한이 없습니다.')
                             }
                         }}
                     >
