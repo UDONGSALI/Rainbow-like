@@ -58,6 +58,7 @@ import Chating from "./js/component/Chat/Chatting";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import PostForm from "./js/component/Post/PostForm";
 import SearchPage from "./js/pages/Search/SearchPage";
+import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
 
 
 
