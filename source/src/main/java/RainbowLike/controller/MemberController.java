@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -97,6 +99,11 @@ public class MemberController {
         } else {
             return ResponseEntity.status(401).build();
         }
+    }
+
+    @RequestMapping("/memInfo/{memNum}")
+    public Member getMemberByMemNum(@PathVariable Long memNum){
+        return memberRepository.findByMemNum(memNum);
     }
 
 }

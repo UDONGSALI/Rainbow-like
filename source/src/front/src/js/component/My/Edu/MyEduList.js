@@ -38,6 +38,7 @@ export default function MyEduList() {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+
                 const modifiedData = data.map(item => ({
                     ...item,
                     type: item.edu.type,
@@ -127,11 +128,12 @@ export default function MyEduList() {
         {
             field: "eduName",
             headerName: "교육명",
-            width: 300,
+            width: 450,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
-            align: 'center',
             headerAlign: 'center',
+
+
 
         },
         {
