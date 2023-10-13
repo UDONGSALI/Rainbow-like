@@ -1,10 +1,12 @@
 package RainbowLike.repository;
 
 import RainbowLike.entity.*;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,4 +25,9 @@ public interface FileRepository extends JpaRepository <File,Long> {
     Void deleteAllByMember(Member member);
     Void deleteAllBySpace(Space space);
     Void deleteAllByPost(Post post);
+
+    @Transactional
+    @Modifying
+    @Query("update File f set f.post = :post where f.fileNum = :fileNum")
+    int setPostForFile(@Param("fileNum") Long fileNum, @Param("post") Post post);
 }
