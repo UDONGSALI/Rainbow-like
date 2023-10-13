@@ -40,7 +40,7 @@ function ImgPostList(props) {
     };
 
     const getPostImage = (postNum) => {
-        const matchingFile = files.find(file => file.post && file.post.postNum === postNum);
+        const matchingFile = files.find(file => file.post && file.post.postNum == postNum);
         return matchingFile ? matchingFile.fileUri : '';
     };
 
