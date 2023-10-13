@@ -36,10 +36,8 @@ public class ChatDto {
         ArrayList<ChatDto> chatList = new ArrayList<>();
         ChatRoom room1 = new ChatRoom();
         ChatRoom room2 = new ChatRoom();
-        ChatRoom room3 = new ChatRoom();
         room1.setChatRoomId(1L);
         room2.setChatRoomId(2L);
-        room3.setChatRoomId(3L);
         Member member1 = new Member();
         Member member2 = new Member();
         Member member3 = new Member();
@@ -104,12 +102,6 @@ public class ChatDto {
         chatList.add(chat7);
 
 
-        ChatDto chat8 = new ChatDto();
-        chat8.setChatRoom(room3);
-        chat8.setMember(member4);
-        chat8.setContent("지금 문의 가능할까요?");
-        chat8.setWriteDate(LocalDateTime.now());
-        chatList.add(chat8);
 
         return chatList;
     }
