@@ -36,7 +36,6 @@ public class PostFormDto {
 
 
     public PostFormDto(){
-
     }
 
     static public ArrayList<PostFormDto> createTestPost() {

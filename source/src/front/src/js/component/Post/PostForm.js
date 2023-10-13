@@ -4,28 +4,31 @@ import {useLocation, useNavigate} from "react-router-dom";
 import { SERVER_URL } from "../Common/constants";
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from "react-quill";
+import useFetch from "../hook/useFetch";
 
-function PostForm() {
+function PostForm({postNum}) {
     const location = useLocation();
     const boardNum = location.state?.boardNum;
     const navigate = useNavigate();
     const memId = sessionStorage.getItem("memId");
     const [member, setMember] = useState([]);
     const [content, setContent] = React.useState('');
-    const [tempVideos, setTempVideos] = useState([]); // 비디오 파일을 저장할 상태 추가
     const [formData, setFormData] = useState({
         memNum: '',
         boardNum: boardNum,
         title: '',
         content: '',
         pageView: 0,
+        conselStatus: 'WAIT',
         parentsNum: '',
-        clubAllowStatus: '',
+        clubAllowStatus: 'WAIT',
         clubRecuStatus: '',
         delYN: 'N'
     });
-    const [file, setFile] = useState(null);
-    const [tempImages, setTempImages] = useState([]);
+    const [filesNumbers, setFilesNumbers] = useState([]);
+
+    const [previewImages, setPreviewImages] = useState([]);
+
 
     useEffect(() => {
         fetch(SERVER_URL + `members/id/${memId}`)
@@ -38,8 +41,9 @@ function PostForm() {
                     title: '',
                     content: '',
                     pageView: 0,
+                    conselStatus: 'WAIT',
                     parentsNum: '',
-                    clubAllowStatus: '',
+                    clubAllowStatus: 'WAIT',
                     clubRecuStatus: '',
                     delYN: 'N'
                 }
@@ -53,11 +57,8 @@ function PostForm() {
 
     const handleQuillChange = (contentValue) => {
         setContent(contentValue);
+        console.log(contentValue)
         setFormData(prevState => ({ ...prevState, content: contentValue }));
-    };
-    const handleFileChange = (e) => {
-        const selectedFile = e.target.files[0];
-        setFile(selectedFile);
     };
 
     const handleChange = (e) => {
@@ -67,8 +68,7 @@ function PostForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        fetch('http://localhost:8090/posts/new', {
+        fetch(`${SERVER_URL}posts/new`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,46 +76,44 @@ function PostForm() {
             body: JSON.stringify(formData),
         })
             .then((response) => response.json())
-            .then(async (data) => {
+            .then((data) => {
                 alert('게시글을 작성했습니다.');
-
-                fetch(SERVER_URL + `posts/maxPostNum`)
-                    .then(response => response.json())
-                    .catch(error => {
-                        console.error('Error fetching max post number:', error);
-                    });
-
-                if (tempImages.length) {
-                    const uploadFormData = new FormData();
-                    tempImages.forEach(file => {
-                        uploadFormData.append('files', file);
-                    });
-
-                    uploadFormData.append('number', data.postNum);
-
-                    await fetch(SERVER_URL + "files/table/post", {
-                        method: 'POST',
-                        body: uploadFormData,
-                    });
+                if (filesNumbers && filesNumbers.length > 0) {
+                    filesNumbers.push(postNum+1);
+                    fetch(SERVER_URL + "files/edit", {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(filesNumbers),  // JSON 형식으로 변환
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // 처리 로직 (예: 성공 메시지 출력)
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                        });
                 }
-
-                // boardNum 값에 따른 리디렉션
-                if (boardNum == 1 || boardNum == 2) {
-                    navigate(`/post/${boardNum}`);
-                } else if (boardNum >= 3 && boardNum <= 5) {
-                    navigate(`/imgPost/${boardNum}`);
-                } else if (boardNum >= 7) {
-                    navigate(`/csl/${boardNum}`);
-                } else {
-                    // 기타 경우에 대한 리디렉션 (필요에 따라 설정)
-                    navigate(`/`);
-                }
+            })
+            .then(() => {
+                handleRedirect();
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
     };
-
+    const handleRedirect = () => {
+        if (boardNum == 1 || boardNum == 2) {
+            navigate(`/post/${boardNum}`);
+        } else if (boardNum >= 3 && boardNum <= 5) {
+            navigate(`/imgPost/${boardNum}`);
+        } else if (boardNum >= 7) {
+            navigate(`/csl/${boardNum}`);
+        } else {
+            navigate(`/`);
+        }
+    };
 
     function imageHandler() {
         const input = document.createElement('input');
@@ -124,84 +122,68 @@ function PostForm() {
         input.setAttribute('multiple', 'true');
         input.click();
 
-        input.onchange = async () => {
+        input.onchange = () => {
             const files = Array.from(input.files);
-            setTempImages(prev => [...prev, ...files]);
-
-            const imageFormData = new FormData();
+            const formData = new FormData();
 
             files.forEach(file => {
-                imageFormData.append('file', file);
+                formData.append('file', file);
             });
 
-            imageFormData.append('tableName', 'post');
-            imageFormData.append('number', '0');
+            formData.append('tableName', 'post');
+            formData.append('number', postNum+1);
+            console.log(formData)
 
-            const response = await fetch(`${SERVER_URL}files/qill`, {
+            fetch(`${SERVER_URL}files/FileNums`, {
                 method: 'POST',
-                body: imageFormData,
+                body: formData,
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    setFilesNumbers(prevFilesNumbers => [...prevFilesNumbers, ...data]);
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error("There was a problem with the fetch operation:", error.message);
+                });
+
+            if (!files.length) return;
+
+
+            const storageBaseUrl = "https://storage.googleapis.com/rainbow_like/";
+
+
+
+            const urlsForFiles = files.map(file => {
+                const postUrlPath = `post/${postNum+1}/${file.name}`;
+                return storageBaseUrl + postUrlPath;
             });
-            const imageUrls = await response.json();
 
             const editor = quillRef.current.getEditor();
             const range = editor.getSelection();
 
-            imageUrls.forEach((imageUrl, index) => {
-                editor.insertEmbed(range.index + index, 'image', imageUrl);
-            });
-        };
-    }
-    function videoHandler() {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'video/*');
-        input.setAttribute('multiple', 'true');
-        input.click();
-
-        input.onchange = async () => {
-            const files = Array.from(input.files);
-            setTempVideos(prev => [...prev, ...files]);
-
-            const videoFormData = new FormData();
-
-            files.forEach(file => {
-                videoFormData.append('file', file);
-            });
-
-            videoFormData.append('tableName', 'post');
-            videoFormData.append('number', '0');
-
-            try {
-                const response = await fetch(`${SERVER_URL}files/qill`, {
-                    method: 'POST',
-                    body: videoFormData,
+            if (range) {
+                urlsForFiles.forEach((url, index) => {
+                    editor.insertEmbed(range.index + index, 'image', url);
                 });
-
-                if (!response.ok) {
-                    throw new Error('Video upload failed.');
-                }
-
-                const videoUrls = await response.json();
-
-                const editor = quillRef.current.getEditor();
-                const range = editor.getSelection();
-
-                videoUrls.forEach((videoUrl, index) => {
-                    const value = { src: videoUrl, alt: 'Uploaded video' };
-                    editor.insertEmbed(range.index + index, 'video', value);
-                });
-            } catch (error) {
-                console.error('Error uploading video:', error);
             }
         };
     }
+
+
+
     const modules = useMemo(() => {
         return {
             toolbar: {
                 container: [
                     [{ header: [1, 2, 3, false] }],
                     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                    ['image','video'],
+                    ['image'],
                 ],
                 handlers: {
                     // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
@@ -222,7 +204,6 @@ function PostForm() {
     ];
     const [value, setValue] = useState(''); // 에디터 속 콘텐츠를 저장하는 state
     const quillRef = useRef(); // 에디터 접근을 위한 ref return (
-
     return (
         <div className={styles.registrationFormContainer}>
             <h2>게시글 작성</h2>
@@ -254,14 +235,6 @@ function PostForm() {
                         onChange={handleQuillChange}
                         modules={modules}
                         formats={formats}
-                    />
-                </div>
-                <div className={styles.inputGroup}>
-                    <label>첨부파일:</label>
-                    <input
-                        type="file"
-                        name="attachment"
-                        onChange={handleFileChange}
                     />
                 </div>
                 <button type="submit">게시글 작성</button>
