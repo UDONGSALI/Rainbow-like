@@ -56,6 +56,7 @@ import Chating from "./js/component/Chat/Chating";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import PostForm from "./js/component/Post/PostForm";
 import {Navbar} from "react-bootstrap";
+import PostFormPage from "./js/pages/Post/PostFormPage";
 
 
 
@@ -121,7 +122,7 @@ function App() {
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
-                <Route path="/post/new" element={<PostForm/>}/>
+                <Route path="/post/new" element={<PostFormPage/>}/>
 
                 {/*공간대관페이지관련*/}
                 <Route path="/rent/process" element={<RentProcessPage/>}/>

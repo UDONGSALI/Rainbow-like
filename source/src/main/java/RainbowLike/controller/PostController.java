@@ -205,5 +205,14 @@ public class PostController {
         ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();
         postService.createPosts(postDtoList);
     }
-
+    @GetMapping("/post/lastPostNum")
+    public ResponseEntity<Long> getLastPostNum() {
+        Post lastPost = postRepository.findTopByOrderByPostNumDesc();
+        System.out.println("마지막 포스트넘" + lastPost.getPostNum());
+        logger.info("Last Post: " + lastPost);
+        if (lastPost != null) {
+            return ResponseEntity.ok().body(lastPost.getPostNum());
+        }
+        return ResponseEntity.ok().body(0L);  // 0을 반환하거나 다른 기본값을 반환할 수 있습니다.
+    }
 }
