@@ -21,7 +21,7 @@ const menuData = [
     },
     {
         title: "공간 대관",
-        items: [{name:"절차 및 이용기준", url:"/rent/process"}, {name:"대관 현황 및 신청", url:"/rent/status"},{name:"절차 및 이용기준", url:"/rent/review"}]
+        items: [{name:"절차 및 이용기준", url:"/rent/process"}, {name:"대관 현황 및 신청", url:"/rent/status"},{name:"대관 이용 후기", url:"/rent/review"}]
     },
     {
         title: "여성인재풀",
@@ -145,18 +145,18 @@ function ItemArea({ activeMenu, setActiveMenu }) {
 
     const activeMenuData = menuData.find(menu => menu.title === activeMenu);
 
-    return (
-        <div className={styles.itemArea}>
-            <div className={styles.titleArea}>
-                <span className={styles.titleText}>{activeMenu}</span>  {/* 이 부분 수정 */}
+        return (
+            <div className={styles.itemArea}>
+                <div className={styles.titleArea}>
+                    <span className={styles.titleText}>{activeMenu}</span>  {/* 이 부분 수정 */}
+                </div>
+                <div className={styles.itemContent}>
+                    {activeMenuData && activeMenuData.items.map(item => (
+                        <Item key={item.name} item={item} />
+                    ))}
+                </div>
             </div>
-            <div style={{display:"flex", flexWrap:"wrap", width:'84%',boxSizing:"border-box", marginLeft:'25px'}}>
-            {activeMenuData && activeMenuData.items.map(item => (
-                <Item key={item} item={item} />
-            ))}
-            </div>
-        </div>
-    );
+        );
 }
 function Item({ item }) {
     return (
