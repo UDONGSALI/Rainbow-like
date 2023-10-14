@@ -1,12 +1,9 @@
-/* SearchContainer.module.css */
-
 .searchContainer {
     width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin: 20px auto;
-    border: 1px solid #e0e0e0;
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -18,10 +15,10 @@
     align-items: center;
     padding: 30px;
     border-radius: 10px;
-    background-color:  #F9F8F9;
+    background-color: #F9F8F9;
 }
 
-.inputGroup{
+.inputGroup {
     width: 60%;
     height: 50px;
     display: flex;
@@ -56,11 +53,7 @@
 }
 
 .searchBox button:hover {
-    background-color:  #53468b;
-}
-
-.searchResults {
-    margin-top: 20px;
+    background-color: #53468b;
 }
 
 .menu {
@@ -78,6 +71,7 @@
     cursor: pointer;
     transition: background-color 0.3s;
     background-color: white;
+    font-size: 18px;
 }
 
 .menu button:hover {
@@ -88,8 +82,20 @@
     outline: none;
 }
 
-/* 선택된 메뉴 버튼 스타일링 */
 .menu button[data-selected="true"] {
     background-color: #a38ced;
     color: white;
+}
+
+.result {
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    min-height: 50px;
+    border-radius: 3px;
+}
+
+.title {
+    padding: 15px;
+    font-size: 20px;
+    color: #6e14a1;
 }

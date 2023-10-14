@@ -32,6 +32,20 @@ public class PostService {
         postRepository.save(post);
     }
 
+    public Iterable<Post> searchPostsByOptionAndValue(String option, String value) {
+
+        switch (option.toLowerCase()) {
+            case "title":
+                return postRepository.findByTitleContaining(value);
+            case "content":
+                return postRepository.findByContentContaining(value);
+            case "member":
+                return postRepository.findByMemberIn(memberRepository.findByMemIdContaining(value));
+            default:
+                return Collections.emptyList();
+        }
+    }
+
     public Iterable<Post> searchPostsByBoardNumAndOptionAndValue(Long boardNum, String option, String value) {
 
         Board board = boardRepository.findByBoardNum(boardNum);
