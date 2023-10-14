@@ -45,8 +45,8 @@ public class FileController {
         System.out.println(number);
         System.out.println("파일 확인");
         try {
-            String result = fileService.uploadFiles(files, tableName, number);
-            return ResponseEntity.ok(result);
+            fileService.uploadFilesAndGetFileNums(files, tableName, number);
+            return ResponseEntity.ok("파일 업로드 성공");
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(e.getMessage());
@@ -61,21 +61,6 @@ public class FileController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(null);
-        }
-    }
-
-    @PostMapping("/qill")
-    public ResponseEntity<List<String>> uploadQillFiles(@RequestParam("file") List<MultipartFile> files, @RequestParam("tableName") String tableName, @RequestParam("number") Long number) {
-        try {
-            List<String> fileUrls = fileService.uploadFilesForQuill(files, tableName, number);
-            // 이미지 업로드 후, 이미지의 postNum을 업데이트
-            for (String imageUrl : fileUrls) {
-                fileService.updatePostNumForImage(imageUrl, number);
-            }
-            return ResponseEntity.ok(fileUrls);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(Collections.emptyList());
         }
     }
 

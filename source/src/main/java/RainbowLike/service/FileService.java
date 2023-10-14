@@ -82,59 +82,13 @@ public class FileService {
         }
     }
 
-    public String uploadFiles(List<MultipartFile> files, String tableName, Long number) throws IOException {
-        uploadToCloud(files, tableName, number);
-        return "파일 업로드 성공";
-    }
-
     public List<Long> uploadFilesAndGetFileNums(List<MultipartFile> files, String tableName, Long number) throws IOException {
         return uploadToCloudAndGetFileNums(files, tableName, number);
-    }
-
-    public List<String> uploadFilesForQuill(List<MultipartFile> files, String tableName, Long number) throws IOException {
-        return uploadToCloud(files, tableName, number);
     }
     public void updatePostNumForImage(String imageUrl, Long postNum) {
         // Fetch the image record using imageUrl
         // Update its postNum with the provided postNum
         // Save the updated image record
-    }
-
-    private List<String> uploadToCloud(List<MultipartFile> files, String tableName, Long number) throws IOException {
-        PathAndEntities pathAndEntities = determineMidPath(tableName, number);
-
-        // Set up Google Cloud Storage
-        ClassPathResource resource = new ClassPathResource("rainbow-like-6e3171ac1695.json");
-        GoogleCredentials credentials = GoogleCredentials.fromStream(resource.getInputStream());
-        String projectId = "rainbow-like";
-        Storage storage = StorageOptions.newBuilder()
-                .setProjectId(projectId)
-                .setCredentials(credentials)
-                .build()
-                .getService();
-
-        List<String> uploadedFileUrls = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            String newFileName = pathAndEntities.getMidPath() + file.getOriginalFilename();
-            String fileUrl = "https://storage.googleapis.com/" + bucketName + "/" + newFileName;
-            BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, newFileName).build();
-            Blob blob = storage.create(blobInfo, file.getBytes());
-
-            File createfile = new File();
-            createfile.setFileOriName(file.getOriginalFilename());
-            createfile.setFileName(newFileName);
-            createfile.setFileUri(fileUrl);
-            createfile.setMember(pathAndEntities.getMember());
-            createfile.setSpace(pathAndEntities.getSpace());
-            createfile.setEdu(pathAndEntities.getEdu());
-            createfile.setPost(pathAndEntities.getPost());
-            createfile.setEduHist(pathAndEntities.getEduHist());
-            fileRepository.save(createfile);
-
-            uploadedFileUrls.add(fileUrl);
-        }
-        return uploadedFileUrls;
     }
 
     private List<Long> uploadToCloudAndGetFileNums(List<MultipartFile> files, String tableName, Long number) throws IOException {
@@ -238,9 +192,7 @@ public class FileService {
                     break;
                 case "post":
                     post = postRepository.findByPostNum(number);
-                    if (post != null) {
-                        midPath = tableName + "/" + post.getPostNum() + "/";
-                    }
+                        midPath = tableName + "/" + number + "/";
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid table name: " + tableName);
