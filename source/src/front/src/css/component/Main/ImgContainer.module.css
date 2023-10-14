@@ -1,0 +1,68 @@
+.fullscreenImage {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center;
+}
+
+.textArea {
+    position: absolute;
+    top: 23%;
+    left: 12%;
+    z-index: 1000;
+    font-size: 60px;
+    font-weight: bold;
+    letter-spacing: 25px;
+    color: white;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade1, .fade2, .fade3 {
+    opacity: 0;
+}
+
+.fade1 {
+    animation: fade 0.8s forwards;
+    animation-delay: 0s;
+}
+
+.fade2 {
+    animation: fade 0.8s forwards;
+    animation-delay: 1s;
+}
+
+.fade3 {
+    animation: fade 0.5s forwards;
+    animation-delay: 2s;
+}
+
+.gotoText {
+    margin-top: 40px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: 15px 30px;
+    font-size: 20px;
+    border: 2px solid white;
+    border-radius: 40px;
+    letter-spacing: 2px;
+
+}
+
+.index{
+    position: absolute;
+    top: 80.8%;
+    left: 15.5%;
+    z-index: 1000;
+    font-size: 20px;
+    color: white;
+}
