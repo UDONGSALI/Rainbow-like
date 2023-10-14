@@ -11,7 +11,6 @@ import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 import PostDetailPage from './js/pages/Post/PostDetailPage';
 import NoticeListPage from './js/pages/Post/NoticeListPage';
-import Main from "./js/component/screens/Main";
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import PostList from "./js/component/Post/PostList";
 import RentProcessPage from "./js/pages/Rent/RentProcessPage";
@@ -63,6 +62,7 @@ import ChatTestPage from "./js/component/Chat/ChatTestPage";
 import PostFormPage from "./js/pages/Post/PostFormPage";
 import SearchPage from "./js/pages/Search/SearchPage";
 import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
+import MainPage from "./js/pages/Main/MainPage";
 
 
 
@@ -89,12 +89,13 @@ function App() {
 
             {!isPaymentRoute && !isChatRoute &&  <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
             <Routes>
-                <Route path="/" element={<Main/>}/>
+                <Route path="/" element={<MainPage/>}/>
 
 
                 {/*로그인*/}
                 <Route path="/login" element={<LoginPage />}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
+                <Route path="/search" element={<SearchPage/>}/>
 
                 {/*관리자*/}
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
