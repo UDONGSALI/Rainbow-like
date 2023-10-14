@@ -63,6 +63,7 @@ import PostFormPage from "./js/pages/Post/PostFormPage";
 import SearchPage from "./js/pages/Search/SearchPage";
 import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
 import MainPage from "./js/pages/Main/MainPage";
+import ImgContainer from "./js/component/Main/ImgContainer";
 
 
 
@@ -90,6 +91,7 @@ function App() {
             {!isPaymentRoute && !isChatRoute &&  <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
             <Routes>
                 <Route path="/" element={<MainPage/>}/>
+                <Route path="/test" element={<ImgContainer/>}/>
 
 
                 {/*로그인*/}

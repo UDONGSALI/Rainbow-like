@@ -57,7 +57,7 @@ function CustomNavbar({memId, isAdmin}) {
 
     return (
         <div
-            className={`${styles.navbar} ${activeMenu ? styles.active : ""}`}
+            className={`${styles.navbar} ${activeMenu ? styles.activeMenuBackground : ""}`}
             onMouseLeave={() => {
                 setActiveMenu(null);
             }}
@@ -85,7 +85,7 @@ function CustomNavbar({memId, isAdmin}) {
                 </div>
                     <div className={styles.buttonContainer}>
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfwvf8_L_l7QdSGrFkDpvtMn1ut974Dk28aTSQqMSlJ5ngCcA/viewform" target="_blank" rel="noopener noreferrer">
-                            <button style={{border:'1px solid black', borderColor:'#c9c9c9', borderRadius:'15px', padding: '3px 15px', fontSize:'14px'}}>Newsletter</button>
+                            <button style={{border:'2px solid#c9c9c9', borderRadius:'15px', padding: '2px 15px', fontSize:'14px'}}>Newsletter</button>
                         </a>
                         <div className={styles.snsContainer}>
                         <a href="https://blog.naver.com/sjwplaza" target="_blank" rel="noopener noreferrer">
@@ -103,20 +103,20 @@ function CustomNavbar({memId, isAdmin}) {
                         </div>
                         {memId ? (
                             <>
-                                <button onClick={logout} style={{marginLeft:'30px'}}>로그아웃</button>
+                                <button onClick={logout} style={{marginLeft:'30px' , fontWeight:"bold"}}>로그아웃</button>
                                 {isAdmin ? (
                                     <Link to="/admin/member">
-                                        <button style={{marginLeft:'30px'}}>관리자 페이지</button>
+                                        <button style={{marginLeft:'30px', fontWeight:"bold"}}>관리자 페이지</button>
                                     </Link>
                                 ) : (
                                     <Link to="/mypage/edu">
-                                        <button style={{marginLeft:'30px'}}>마이 페이지</button>
+                                        <button style={{marginLeft:'30px', fontWeight:"bold"    }}>마이 페이지</button>
                                     </Link>
                                 )}
                             </>
                         ) : (
                             <Link to="/login">
-                                <button style={{marginLeft:'30px'}}>로그인</button>
+                                <button style={{marginLeft:'30px' , fontWeight:"bold"}}>로그인</button>
                             </Link>
                         )}
                         <Link to="/search">

@@ -1,8 +1,10 @@
-import Main from "../../component/screens/Main";
+import Main from "../../component/Main/Main";
 
 function MainPage() {
     return (
-        <Main/>
+        <div>
+            <Main/>
+        </div>
     )
 }
 
