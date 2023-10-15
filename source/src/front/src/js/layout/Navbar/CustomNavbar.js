@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import styles from '../../../css/layout/Navbar/CustomNavbar.module.css';
 import logo1 from "../../../img/layout/logo1.png";
 import sns_01 from "../../../img/layout/sns_01.png";
@@ -13,7 +13,7 @@ import {useToken} from "../../component/hook/useToken";
 const menuData = [
     {
         title: "기관 소개",
-        items: ["인사말", "목적 및 비전", "연혁","조직도","CI소개","공간소개","오시는 길"]
+        items: [{name:"인사말", url:"/"}, {name:"목적 및 비전", url:"/"}, {name:"연혁", url:"/"}, {name:"조직도", url:"/"}, {name:"CI소개", url:"/"}, {name:"공간소개", url:"/"}, {name:"오시는 길", url:"/"}]
     },
     {
         title: "신청 · 접수",
@@ -37,13 +37,15 @@ const menuData = [
     },
     {
         title: "정보 나눔",
-        items: ["공지사항", "자주 뭍는 질문", "언론 보도", "세종시 기관 및 단체 소식", "여플소식", "뉴스레터"]
+        items: [{name:"공지사항", url:"/"}, {name:"자주 뭍는 질문", url:"/"}, {name:"언론 보도", url:"/"}, {name:"세종시 기관 및 단체 소식", url:"/"}, {name:"여플소식", url:"/"}, {name:"뉴스레터", url:"/"}]
+
     },
 ];
 
 function CustomNavbar({memId, isAdmin}) {
-    const [searchMode, setSearchMode] = useState(false);
     const [activeMenu, setActiveMenu] = useState(null);
+    const location = useLocation();
+    const isMainPage = location.pathname === "/";
 
     const { decodeToken: decodeAndSetToken, deleteTokenFromServer, getToken } = useToken();
     const logout = () => {
@@ -57,7 +59,12 @@ function CustomNavbar({memId, isAdmin}) {
 
     return (
         <div
-            className={`${styles.navbar} ${activeMenu ? styles.activeMenuBackground : ""}`}
+            className={`${styles.navbar}`}
+            style={{
+                backgroundColor: activeMenu
+                    ? '#ffffff'
+                    : (isMainPage ? 'rgba(255, 255, 255, 0.5)' : '#ffffff')
+            }}
             onMouseLeave={() => {
                 setActiveMenu(null);
             }}

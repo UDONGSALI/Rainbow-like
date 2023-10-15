@@ -1,10 +1,14 @@
-import React, {useEffect, useRef} from 'react';
-import MapComponent from "./MapComponent";
+import React, {useEffect, useRef, useState} from 'react';
+import MapComponent from "./Map/MapComponent";
 import styles from '../../../css/component/Main/Main.module.css';
 import ImgContainer from "./ImgContainer";
+import EduContainer from "./Edu/EduContainer";
 
-const Main = () => {
-    const mapRef = useRef(null);
+function Main() {
+    const imgContainerRef = useRef(null);
+    const eduContainerRef = useRef(null);
+    const mapComponentRef = useRef(null);
+    const [activeSlide, setActiveSlide] = useState(0);  // 현재 활성화된 슬라이드를 추적하는 상태
 
     useEffect(() => {
         const mainDiv = document.querySelector(`.${styles.Main}`);
@@ -20,22 +24,38 @@ const Main = () => {
 
         const direction = (e.deltaY > 0) ? 'down' : 'up';
         if (direction === 'down') {
-            mapRef.current.scrollIntoView({ behavior: 'smooth' });
-
+            if (activeSlide === 0) {
+                eduContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+                setActiveSlide(1);
+            } else if (activeSlide === 1) {
+                mapComponentRef.current.scrollIntoView({ behavior: 'smooth' });
+                setActiveSlide(2);
+            }
         } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (activeSlide === 2) {
+                eduContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+                setActiveSlide(1);
+            } else if (activeSlide === 1) {
+                imgContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+                setActiveSlide(0);
+            }
         }
     };
 
     return (
         <div className={styles.Main} onWheel={handleScroll}>
-            <ImgContainer/>
-            <div className={styles.slide} ref={mapRef}>
+            <div ref={imgContainerRef}>
+                <ImgContainer />
+            </div>
+            <div className={styles.slide} ref={eduContainerRef}>
+                <EduContainer />
+            </div>
+            <div className={styles.slide} ref={mapComponentRef}>
                 <MapComponent />
             </div>
-            {/* 추가적인 슬라이드 아이템을 여기에 추가 */}
         </div>
     );
 };
+
 
 export default Main;

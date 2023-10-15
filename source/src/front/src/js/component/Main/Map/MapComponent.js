@@ -1,8 +1,8 @@
 import Map from './Map'
 import React, {useEffect, useState} from "react";
-import useFetch from "../hook/useFetch";
-import {SERVER_URL} from "../Common/constants";
-import styles from '../../../css/component/Main/MapComponent.module.css'
+import useFetch from "../../hook/useFetch";
+import {SERVER_URL} from "../../Common/constants";
+import styles from '../../../../css/component/Main/MapComponent.module.css'
 
 function MapComponent() {
 
