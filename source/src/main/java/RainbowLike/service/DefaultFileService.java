@@ -122,6 +122,38 @@ public class DefaultFileService {
 
         fileList.add(edu5File2);
 
+        File edu6File1 = new File();
+        edu6File1.setEdu(eduRepository.findByEduNum(6L));
+        edu6File1.setFileName("edu/6/edu6_1.png");
+        edu6File1.setFileOriName("edu6_1.png");
+        edu6File1.setFileUri("https://storage.googleapis.com/rainbow_like/edu/6/edu6_1.png");
+
+        fileList.add(edu6File1);
+
+        File edu6File2 = new File();
+        edu6File2.setEdu(eduRepository.findByEduNum(6L));
+        edu6File2.setFileName("edu/6/edu6_2.png");
+        edu6File2.setFileOriName("edu6_2.png");
+        edu6File2.setFileUri("https://storage.googleapis.com/rainbow_like/edu/6/edu6_2.png");
+
+        fileList.add(edu6File2);
+
+        File edu7File1 = new File();
+        edu7File1.setEdu(eduRepository.findByEduNum(7L));
+        edu7File1.setFileName("edu/7/edu7_1.jpg");
+        edu7File1.setFileOriName("edu7_1.jpg");
+        edu7File1.setFileUri("https://storage.googleapis.com/rainbow_like/edu/7/edu7_1.jpg");
+
+        fileList.add(edu7File1);
+
+        File edu7File2 = new File();
+        edu7File2.setEdu(eduRepository.findByEduNum(7L));
+        edu7File2.setFileName("edu/7/edu7_2.jpg");
+        edu7File2.setFileOriName("edu7_2.jpg");
+        edu7File2.setFileUri("https://storage.googleapis.com/rainbow_like/edu/7/edu7_2.jpg");
+
+        fileList.add(edu7File2);
+
         // 게시글 관련
 
         File post10File1 = new File();

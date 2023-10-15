@@ -1,0 +1,11 @@
+.Main {
+    width: 100%;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.slide {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
