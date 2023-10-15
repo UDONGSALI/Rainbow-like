@@ -90,7 +90,7 @@ function ImgContainer() {
                               key={`text1-${activeIndex}`}/><br/>
                 <AnimatedText text={SLIDE_CONTENTS[activeIndex].text[1]} className={styles.fade2}
                               key={`text2-${activeIndex}`}/><br/>
-                <AnimatedText style={{letterSpacing: '3.2px'}} text={SLIDE_CONTENTS[activeIndex].text[2]}
+                <AnimatedText style={{letterSpacing: '2.4px'}} text={SLIDE_CONTENTS[activeIndex].text[2]}
                               className={styles.fade3} key={`text3-${activeIndex}`}/>
                 <div className={styles.gotoText}>
                     <span
