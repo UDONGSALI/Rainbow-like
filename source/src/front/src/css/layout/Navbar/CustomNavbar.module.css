@@ -8,9 +8,11 @@
     z-index: 1000;
     display: flex;
     align-items: center;
-    padding: 20px 3.5%;
+    padding: 20px 1.5%;
+    border: 1.5px solid #b4b4b4;
     background-color: rgba(255, 255, 255, 0.5);
     font-family: 'Noto Sans KR', sans-serif;
+
 }
 
 .activeMenuBackground {
@@ -18,7 +20,7 @@
 }
 
 .logo {
-    width: 140px;
+    width: 100% ;
     object-fit: contain;
 }
 
@@ -37,7 +39,7 @@
     flex-wrap: wrap;
     position: absolute;
     z-index: 5;
-    align-items: center;
+    align-items: stretch;
     top: 100%;
     left: 0;
     right: 0;
@@ -46,8 +48,8 @@
 }
 
 .menuContainer {
-    width: 51%;
-    margin-left: 6%;
+    width: 48%;
+    margin-left: 4%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -99,18 +101,18 @@
     flex-wrap: wrap;
     width: 84%;
     box-sizing: border-box;
-    margin-left: 2%;
+    padding: 20px 5px;
 }
 
 .item {
     display: inline;
-    width: 170px;
+    min-width: 170px;
     padding: 5px;
-    margin: 20px;
+    margin: 15px 20px;
     color: #a38ced;
     cursor: pointer;
     border-bottom: 1.5px solid #cecece;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     text-decoration: none;
     animation: slideDown 0.6s ease-out;
@@ -121,7 +123,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 120px;
     width: 13.5%;
     font-weight: bold;
     background-color: #53468b;
