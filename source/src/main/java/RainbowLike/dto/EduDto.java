@@ -280,24 +280,125 @@ public class EduDto {
         Edu5.setTel("세종여성플라자 기획운영팀 ☎044-850-8179");
         eduList.add(Edu5);
 
+        EduDto Edu6 = new EduDto();
+        Edu6.setType(EduType.EDU);
+        Edu6.setEduName("직장맘힐링프로그램-내마음사용법");
+        Edu6.setContent("직장맘힐링프로그램-내마음사용법\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "1.일시: 1부- 10.21.(토) 13:00~15:00\n" +
+                "\n" +
+                "           2부- 10.28.(토) 13:00~15:00\n" +
+                "\n" +
+                "    1부•2부는 주제가 다른 강좌로 연속 또는 개별신청 모두 가능합니다.\n" +
+                "\n" +
+                "2.장소: 세종여성플라자 혜윰\n" +
+                "\n" +
+                "(세종시 새롬로 14, 새롬종합복지센터 4층)\n" +
+                "\n" +
+                "3.대상: 세종시거주 직장맘 15명(동반자녀 만4~9세)\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "4.내용 \n" +
+                "\n" +
+                "♦직장맘프로그램: 내마음사용법\n" +
+                "\n" +
+                "1부: 나의 첫번째 친구는 나\n" +
+                "\n" +
+                " - 놀면서 만나는 나의 생각과 감정\n" +
+                "\n" +
+                " - 부정 감정을 다루는 나만의 언어 찾기 \n" +
+                "\n" +
+                " - 나의 강점으로 회복탄력성 UP하는 법\n" +
+                "\n" +
+                " - 자녀와의 의사소통 기술\n" +
+                "\n" +
+                "2부: 알아차림의 기술\n" +
+                "\n" +
+                "- 감정카드와 욕구카드로 만나는 내 마음\n" +
+                "\n" +
+                "- 감정과 생각의 순환고리 이해하기\n" +
+                "\n" +
+                "- 새로운 질문으로 만나는 내 마음\n" +
+                "\n" +
+                "- 직장에서의 의사소통 기술 \n" +
+                "\n" +
+                "♦ 동반자녀프로그램: 마음 연극 놀이\n" +
+                "\n" +
+                "별도의 강의실에서 프로그램을 운영하오니 충분히 재충전의 시간되세요.\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "5.신청기간: 23.10.6(금)~10.19(목)\n" +
+                "\n" +
+                "※ 세종시 직장맘이면 누구나 신청(기존 참여 및 추후신청자 중복참여 제한없이 신청되세요~)\n" +
+                "\n" +
+                "6.신청방법: 세종여성플라자 회원 가입후 신청하기(필수) 및 아래URL 입력(필수)\n" +
+                "\n" +
+                "https://forms.gle/rpyeAPPVGuuwQkZv6\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "문의 044) 866-0179");
+        Edu6.setEduStdt(LocalDateTime.of(2023,10,21,13,00,00,000));
+        Edu6.setEduEddt(LocalDateTime.of(2023,10,21,15,00,00,000));
+        Edu6.setEduAddr("세종여성플라자 혜윰");
+        Edu6.setTarget("세종시거주 직장맘 15명");
+        Edu6.setRecuStdt(LocalDate.of(2023,10,6));
+        Edu6.setRecuEddt(LocalDate.of(2023,10,19));
+        Edu6.setCapacity(15);
+        Edu6.setRecuPerson(0);
+        Edu6.setRecuMethod(RecuMethod.FIRST_COME);
+        Edu6.setTel("044) 866-0179");
+        eduList.add(Edu6);
 
-        for (int i = 0; i < 100; i++) {
-            EduDto eduDto = new EduDto();
-            eduDto.setType(EduType.EDU);
-            eduDto.setEduName("페이징 테스트"+i);
-            eduDto.setContent("페이징 테스트" + i);
-            eduDto.setEduStdt(LocalDateTime.of(2023,9,15,11,30,00,000));
-            eduDto.setEduEddt(LocalDateTime.of(2023,9,15,13,30,00,000));
-            eduDto.setEduAddr("새롬종합복지센터 2층 강의실 1");
-            eduDto.setTarget("직장맘, 예비직장맘, 사업주 및 인사담당자");
-            eduDto.setRecuStdt(LocalDate.of(2023,8,10));
-            eduDto.setRecuEddt(LocalDate.of(2023,9,13));
-            eduDto.setCapacity(50);
-            eduDto.setRecuPerson(0);
-            eduDto.setRecuMethod(RecuMethod.FIRST_COME);
-            eduDto.setTel("세종시직장맘지원센터 044) 866-0179");
-            eduList.add(eduDto);
-        }
+        EduDto Edu7 = new EduDto();
+        Edu7.setType(EduType.EDU);
+        Edu7.setEduName("점심 책모임 '여성잇수다' 10월 참여자 모집");
+        Edu7.setContent("세종여성플라자 점심 책모임 '여성잇수다' 10월 참여자 모집\n" +
+                " \n" +
+                "10월의 책 '프랑켄슈타인'\n" +
+                " \n" +
+                "- 길잡이 : 박민정 (성평등 책마당 활동위원)\n" +
+                "- 신청 기간 : 2023.10.13.(금) ~ 10.27.(금) 18:00까지\n" +
+                "- 모임 일시 : 2023.10.30.(월) 11:30~13:30\n" +
+                "- 장소 : 세종여성플라자 강의실 혜윰(새롬종합복지센터 4층)\n" +
+                "- 모집 인원 : 9명 (선착순)\n" +
+                "- 문의 : 세종여성플라자 교육사업팀 (044-850-8128)\n" +
+                " \n" +
+                "* 점심식사로 김밥 제공");
+        Edu7.setEduStdt(LocalDateTime.of(2023,10,30,11,30,00,000));
+        Edu7.setEduEddt(LocalDateTime.of(2023,10,30,13,30,00,000));
+        Edu7.setEduAddr("세종여성플라자 혜윰");
+        Edu7.setTarget("세종시거주 여성 9명");
+        Edu7.setRecuStdt(LocalDate.of(2023,10,13));
+        Edu7.setRecuEddt(LocalDate.of(2023,10,27));
+        Edu7.setCapacity(9);
+        Edu7.setRecuPerson(0);
+        Edu7.setRecuMethod(RecuMethod.FIRST_COME);
+        Edu7.setTel("044-850-8128");
+        eduList.add(Edu7);
+
+
+//        for (int i = 0; i < 100; i++) {
+//            EduDto eduDto = new EduDto();
+//            eduDto.setType(EduType.EDU);
+//            eduDto.setEduName("페이징 테스트"+i);
+//            eduDto.setContent("페이징 테스트" + i);
+//            eduDto.setEduStdt(LocalDateTime.of(2023,9,15,11,30,00,000));
+//            eduDto.setEduEddt(LocalDateTime.of(2023,9,15,13,30,00,000));
+//            eduDto.setEduAddr("새롬종합복지센터 2층 강의실 1");
+//            eduDto.setTarget("직장맘, 예비직장맘, 사업주 및 인사담당자");
+//            eduDto.setRecuStdt(LocalDate.of(2023,8,10));
+//            eduDto.setRecuEddt(LocalDate.of(2023,9,13));
+//            eduDto.setCapacity(50);
+//            eduDto.setRecuPerson(0);
+//            eduDto.setRecuMethod(RecuMethod.FIRST_COME);
+//            eduDto.setTel("세종시직장맘지원센터 044) 866-0179");
+//            eduList.add(eduDto);
+//        }
         return eduList;
     }
 }

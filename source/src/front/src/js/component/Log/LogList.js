@@ -47,8 +47,6 @@ function LogList() {
     const location = useLocation();
     // 3. 로컬 상태 관리
     const [logs, setLogs] = useState([]);
-    const [totalPages, setTotalPages] = useState(0);
-    const [totalCount, setTotalCount] = useState(0);
     // 4. 커스텀 훅 사용
     const {activePage, setActivePage} = usePagination(1);
     const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}log`, setLogs);
@@ -57,7 +55,6 @@ function LogList() {
     useEffect(() => {
         if (!loading) {
             setLogs(fetchedLogs.reverse());
-            setTotalPages(Math.ceil(fetchedLogs.length / itemsPerPage));
         }
     }, [loading, fetchedLogs]);
 

@@ -47,4 +47,13 @@
     src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+Korean=swap') format('ttf')
 }
 
+/*Roboto Mono*/
+
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap') format('ttf')
+}
+
 
