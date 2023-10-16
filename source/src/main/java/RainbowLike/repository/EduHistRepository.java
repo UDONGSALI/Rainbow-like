@@ -18,7 +18,6 @@ public interface EduHistRepository extends JpaRepository <EduHist, Long> {
     List<EduHist> findByMember(Member member);
     List<EduHist> findByMemberAndEdu(Member member,Edu edu);
     List<EduHist> findByMemberIn(List<Member> members);
-    List<EduHist> findByEdu(Edu edu);
     List<EduHist> findByEduIn(List<Edu> edus);
     List<EduHist> findByStatus(Status status);
 
@@ -28,10 +27,4 @@ public interface EduHistRepository extends JpaRepository <EduHist, Long> {
     Long countByEduAndStatus(Long eduNum, Status status1, Status status2);
 
     List<EduHist> findByMember_MemNum(Long memNum);
-    @Transactional
-    @Modifying
-    @Query("delete from EduHist p where p.member.memId = :memId")
-    void deleteByMember_MemId(@Param("memId") String memId);
-
-    boolean existsByMember_MemId(String memId);
 }

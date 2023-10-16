@@ -130,7 +130,7 @@ function Comment(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch('http://localhost:8090/comments/new', {
+        fetch(SERVER_URL + 'comments/new', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ function Comment(props) {
     };
 
     const onPostReply = (comment) => {
-        fetch('http://localhost:8090/comments/new', {
+        fetch(SERVER_URL + 'comments/new', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

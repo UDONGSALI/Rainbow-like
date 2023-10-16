@@ -9,15 +9,9 @@ import java.util.List;
 @Repository
 public interface SpaceRepository extends JpaRepository<Space, Long> {
 
-
-
     Space findBySpaceNum(Long sapceNum);
 
     List<Space> findBySpaceNameContaining(String name);
 
     Space findTopByOrderBySpaceNumDesc();
-
-
-
-
 }
