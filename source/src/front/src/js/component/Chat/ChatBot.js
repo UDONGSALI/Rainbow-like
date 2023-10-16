@@ -14,6 +14,7 @@ function ChatBot() {
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const memNum = sessionStorage.getItem("memNum");
     const scrollContainerRef = useRef(null);
+    const [room, setRoom] = useState([]);
 
 
 
@@ -82,6 +83,41 @@ function ChatBot() {
         if (memNum === null) {
             alert('로그인 후 사용 가능합니다.');
         } else {
+            //개인채팅방이 있는지 확인
+            fetch(SERVER_URL + "chatroom/" + memNum)
+                .then(response =>
+                    response.json())
+                .then(data => {
+                    if(Array.isArray(data) && data.length !== 0){
+                        navigate(`/chat/${memNum}`);
+                    }else{
+                        const roomData = {
+                            memNum : memNum,
+                            answerYN : 'N'
+                        }
+                        fetch(SERVER_URL + 'chatroom/new', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(roomData),
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                navigate(`/chat/${memNum}`);
+
+                            })
+                            .catch((error) => {
+                                // 오류 처리
+                                console.error('Error:', error);
+                            });
+                    }
+
+
+                }, [])
+                .catch(err => console.error(err));
+
+
             navigate(`/chat/${memNum}`);
         }
 

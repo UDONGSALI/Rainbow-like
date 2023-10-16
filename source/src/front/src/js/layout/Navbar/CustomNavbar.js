@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import styles from './CustomNavbar.module.css';
+import {Link, useLocation} from 'react-router-dom';
+import styles from '../../../css/layout/Navbar/CustomNavbar.module.css';
 import logo1 from "../../../img/layout/logo1.png";
 import sns_01 from "../../../img/layout/sns_01.png";
 import sns_02 from "../../../img/layout/sns_02.png";
@@ -13,7 +13,7 @@ import {useToken} from "../../component/hook/useToken";
 const menuData = [
     {
         title: "기관 소개",
-        items: ["인사말", "목적 및 비전", "연혁","조직도","CI소개","공간소개","오시는 길"]
+        items: [{name:"인사말", url:"/"}, {name:"목적 및 비전", url:"/"}, {name:"연혁", url:"/"}, {name:"조직도", url:"/"}, {name:"CI소개", url:"/"}, {name:"공간소개", url:"/"}, {name:"오시는 길", url:"/"}]
     },
     {
         title: "신청 · 접수",
@@ -37,13 +37,15 @@ const menuData = [
     },
     {
         title: "정보 나눔",
-        items: ["공지사항", "자주 뭍는 질문", "언론 보도", "세종시 기관 및 단체 소식", "여플소식", "뉴스레터"]
+        items: [{name:"공지사항", url:"/"}, {name:"자주 뭍는 질문", url:"/"}, {name:"언론 보도", url:"/"}, {name:"세종시 기관 및 단체 소식", url:"/"}, {name:"여플소식", url:"/"}, {name:"뉴스레터", url:"/"}]
+
     },
 ];
 
 function CustomNavbar({memId, isAdmin}) {
-    const [searchMode, setSearchMode] = useState(false);
     const [activeMenu, setActiveMenu] = useState(null);
+    const location = useLocation();
+    const isMainPage = location.pathname === "/";
 
     const { decodeToken: decodeAndSetToken, deleteTokenFromServer, getToken } = useToken();
     const logout = () => {
@@ -57,7 +59,12 @@ function CustomNavbar({memId, isAdmin}) {
 
     return (
         <div
-            className={`${styles.navbar} ${activeMenu ? styles.active : ""}`}
+            className={`${styles.navbar}`}
+            style={{
+                backgroundColor: activeMenu
+                    ? '#ffffff'
+                    : (isMainPage ? 'rgba(255, 255, 255, 0.5)' : '#ffffff')
+            }}
             onMouseLeave={() => {
                 setActiveMenu(null);
             }}
@@ -85,7 +92,7 @@ function CustomNavbar({memId, isAdmin}) {
                 </div>
                     <div className={styles.buttonContainer}>
                         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfwvf8_L_l7QdSGrFkDpvtMn1ut974Dk28aTSQqMSlJ5ngCcA/viewform" target="_blank" rel="noopener noreferrer">
-                            <button style={{border:'1px solid black', borderColor:'#c9c9c9', borderRadius:'15px', padding: '3px 15px', fontSize:'14px'}}>Newsletter</button>
+                            <button style={{border:'2px solid#c9c9c9', borderRadius:'15px', padding: '2px 15px', fontSize:'14px'}}>Newsletter</button>
                         </a>
                         <div className={styles.snsContainer}>
                         <a href="https://blog.naver.com/sjwplaza" target="_blank" rel="noopener noreferrer">
@@ -103,20 +110,20 @@ function CustomNavbar({memId, isAdmin}) {
                         </div>
                         {memId ? (
                             <>
-                                <button onClick={logout} style={{marginLeft:'30px'}}>로그아웃</button>
+                                <button onClick={logout} style={{marginLeft:'30px' , fontWeight:"bold"}}>로그아웃</button>
                                 {isAdmin ? (
                                     <Link to="/admin/member">
-                                        <button style={{marginLeft:'30px'}}>관리자 페이지</button>
+                                        <button style={{marginLeft:'30px', fontWeight:"bold"}}>관리자 페이지</button>
                                     </Link>
                                 ) : (
                                     <Link to="/mypage/edu">
-                                        <button style={{marginLeft:'30px'}}>마이 페이지</button>
+                                        <button style={{marginLeft:'30px', fontWeight:"bold"    }}>마이 페이지</button>
                                     </Link>
                                 )}
                             </>
                         ) : (
                             <Link to="/login">
-                                <button style={{marginLeft:'30px'}}>로그인</button>
+                                <button style={{marginLeft:'30px' , fontWeight:"bold"}}>로그인</button>
                             </Link>
                         )}
                         <Link to="/search">
@@ -145,18 +152,18 @@ function ItemArea({ activeMenu, setActiveMenu }) {
 
     const activeMenuData = menuData.find(menu => menu.title === activeMenu);
 
-    return (
-        <div className={styles.itemArea}>
-            <div className={styles.titleArea}>
-                <span className={styles.titleText}>{activeMenu}</span>  {/* 이 부분 수정 */}
+        return (
+            <div className={styles.itemArea}>
+                <div className={styles.titleArea}>
+                    <span className={styles.titleText}>{activeMenu}</span>  {/* 이 부분 수정 */}
+                </div>
+                <div className={styles.itemContent}>
+                    {activeMenuData && activeMenuData.items.map(item => (
+                        <Item key={item.name} item={item} />
+                    ))}
+                </div>
             </div>
-            <div style={{display:"flex", flexWrap:"wrap", width:'84%',boxSizing:"border-box", marginLeft:'25px'}}>
-            {activeMenuData && activeMenuData.items.map(item => (
-                <Item key={item} item={item} />
-            ))}
-            </div>
-        </div>
-    );
+        );
 }
 function Item({ item }) {
     return (

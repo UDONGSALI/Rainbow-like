@@ -74,7 +74,7 @@ public class CommentController {
     }
 
     @RequestMapping("/comm/{commId}")
-    public ResponseEntity<Comment> commentsTEST (@PathVariable Long commId, @RequestBody CommentFormDto commentFormDto) {
+    public ResponseEntity<Comment> editComm (@PathVariable Long commId, @RequestBody CommentFormDto commentFormDto) {
         Comment editComm = new Comment();
         editComm.setCommNum(commId);
 

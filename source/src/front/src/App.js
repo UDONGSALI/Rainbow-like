@@ -11,7 +11,6 @@ import EduEditPage from "./js/pages/Edu/EduEditPage";
 import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 import PostDetailPage from './js/pages/Post/PostDetailPage';
 import NoticeListPage from './js/pages/Post/NoticeListPage';
-import Main from "./js/component/screens/Main";
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import PostList from "./js/component/Post/PostList";
 import RentProcessPage from "./js/pages/Rent/RentProcessPage";
@@ -54,12 +53,17 @@ import Pay from "./js/component/Pay/pay";
 import SMSPage from "./js/pages/SMS/SMSPage";
 import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
-import Chating from "./js/component/Chat/Chatting";
+import Chatting from "./js/component/Chat/Chatting";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import PostForm from "./js/component/Post/PostForm";
+import ChatList from "./js/component/Chat/ChatList";
+import Chattest from "./js/component/Chat/Chattest";
+import ChatTestPage from "./js/component/Chat/ChatTestPage";
+import PostFormPage from "./js/pages/Post/PostFormPage";
 import SearchPage from "./js/pages/Search/SearchPage";
 import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
-
+import MainPage from "./js/pages/Main/MainPage";
+import ImgContainer from "./js/component/Main/ImgContainer";
 
 
 
@@ -86,13 +90,13 @@ function App() {
 
             {!isPaymentRoute && !isChatRoute &&  <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
             <Routes>
-                <Route path="/" element={<Main/>}/>
+                <Route path="/" element={<MainPage/>}/>
+                <Route path="/test" element={<ImgContainer/>}/>
 
 
                 {/*로그인*/}
                 <Route path="/login" element={<LoginPage />}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
-
                 <Route path="/search" element={<SearchPage/>}/>
 
                 {/*관리자*/}
@@ -129,7 +133,7 @@ function App() {
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
-                <Route path="/post/new" element={<PostForm/>}/>
+                <Route path="/post/new" element={<PostFormPage/>}/>
 
                 {/*공간대관페이지관련*/}
                 <Route path="/rent/process" element={<RentProcessPage/>}/>
@@ -171,7 +175,10 @@ function App() {
 
                 {/*챗봇 / 채팅*/}
                 <Route path="/chat" element={<ChatPage />} />
-                <Route path="/chat/:memNum" element={<Chating />} />
+                <Route path="/chat/:memNum" element={<Chatting />} />
+                {/*<Route path="/chatlist" element={<ChatList />} />*/}
+                {/*<Route path="/chattest" element={<Chattest />} />*/}
+                <Route path="/chattest" element={<ChatTestPage />} />
 
             </Routes>
         </div>

@@ -4,16 +4,12 @@ import RainbowLike.constant.Status;
 import RainbowLike.dto.PostFormDto;
 import RainbowLike.entity.Board;
 import RainbowLike.entity.Post;
-import RainbowLike.entity.RentHist;
 import RainbowLike.repository.BoardRepository;
-import RainbowLike.repository.ClubRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +30,20 @@ public class PostService {
     public void savePost(Post post) {
 
         postRepository.save(post);
+    }
+
+    public Iterable<Post> searchPostsByOptionAndValue(String option, String value) {
+
+        switch (option.toLowerCase()) {
+            case "title":
+                return postRepository.findByTitleContaining(value);
+            case "content":
+                return postRepository.findByContentContaining(value);
+            case "member":
+                return postRepository.findByMemberIn(memberRepository.findByMemIdContaining(value));
+            default:
+                return Collections.emptyList();
+        }
     }
 
     public Iterable<Post> searchPostsByBoardNumAndOptionAndValue(Long boardNum, String option, String value) {
@@ -87,7 +97,6 @@ public class PostService {
         }
         return null;
     }
-
 
     public void deletePost(Long postNum) {
         if (postRepository.existsById(postNum)) {
