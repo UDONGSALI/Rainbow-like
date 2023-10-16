@@ -268,8 +268,4 @@ public class FtalentController {
 
         return ftcRepository.findByMember(member);
     }
-
-
-
-
 }

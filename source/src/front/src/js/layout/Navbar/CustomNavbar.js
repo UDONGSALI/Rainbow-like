@@ -47,7 +47,7 @@ function CustomNavbar({memId, isAdmin}) {
     const location = useLocation();
     const isMainPage = location.pathname === "/";
 
-    const { decodeToken: decodeAndSetToken, deleteTokenFromServer, getToken } = useToken();
+    const { decodeToken:  deleteTokenFromServer } = useToken();
     const logout = () => {
         const jti = sessionStorage.getItem('jti'); // 세션 스토리지에서 jti를 가져옴
         if (jti) {
