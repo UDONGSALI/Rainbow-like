@@ -1,5 +1,5 @@
 import FTCForm from "../../../component/FT/FTC/FTCForm";
-import UrlComponent from "../../../layout/Header/UrlComponent";
+import Header from "../../../layout/Header/Header";
 import {headerInfo, urlData} from "../../../layout/Header/Data/FtHeader";
 import React from "react";
 
@@ -8,7 +8,7 @@ function FTCFormPage(props){
 
     return(
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
             <FTCForm memId={memId}/>
         </div>
     );

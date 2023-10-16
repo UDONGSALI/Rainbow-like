@@ -30,20 +30,7 @@ public class ChatRoom {
     @Column(name = "answer_yn")
     private AnswerYN answerYN;
 
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
     @JsonBackReference(value="chatRoom-chats")
     private List<Chat> chats = new ArrayList<>();
-
-    @PreRemove
-    public void leaveChatRoomBeforeMemberRemoval() {
-        if (member != null) {
-            Iterator<ChatRoom> iterator = member.getChatRooms().iterator();
-            while (iterator.hasNext()) {
-                ChatRoom chatRoom = iterator.next();
-                if (chatRoom.equals(this)) {
-                    iterator.remove();
-                }
-            }
-        }
-    }
 }

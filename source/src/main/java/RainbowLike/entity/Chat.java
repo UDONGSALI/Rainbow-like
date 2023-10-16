@@ -32,11 +32,9 @@ public class Chat {
     @JoinColumn(name = "mem_num")
     private Member member;
 
-
     @Column
     @Lob
     private String content;
 
     private LocalDateTime writeDate;
-
 }

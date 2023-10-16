@@ -24,9 +24,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByEmail(String email);
     Member findByTel(String tel);
 
-    Member findByName(String name);
-
-
     Member findByMemNum(Long memNum);
 
     Member findTopByOrderByMemNumDesc();
@@ -35,22 +32,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT m.tel FROM Member m")
     List<String> findAllTels();
-
-
-
-    //회원탈퇴 관련
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Member m WHERE m.memId = :memId")
-    void deleteByMember_MemId(@Param("memId") String memId);
-
-
-
-
-
-
-
-
 }
 
 
