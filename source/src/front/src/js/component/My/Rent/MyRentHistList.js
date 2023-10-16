@@ -14,6 +14,8 @@ export default function MyRentHistList() {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [isPermitOpen, setIsPermitOpen] = useState(false);
     const [currentPermitData, setCurrentPermitData] = useState({spaceName: "", getRentDate: "", getRentTime: ""});
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedSpace, setSelectedSpace] = useState(null);
     const navigate = useNavigate();
     const deleteItem = useDelete(SERVER_URL);
 
@@ -50,7 +52,7 @@ export default function MyRentHistList() {
                 const rentHistsWithNumbers = modifiedData.map((rentHist, index) => ({
                     ...rentHist,
                     id: rentHist.rentHistNum,
-                    number: index + 1, // 각 행에 번호를 순차적으로 할당
+                    number: index -1, // 각 행에 번호를 순차적으로 할당
                 }));
 
                 setRentHists(rentHistsWithNumbers);
@@ -132,6 +134,18 @@ export default function MyRentHistList() {
         }
     };
 
+    // 모달을 열기 위한 함수
+    const handleSpaceInfoClick = (space) => {
+        setSelectedSpace(space);
+        setModalOpen(true);
+    };
+
+   // 모달을 닫기 위한 함수
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
+
+
 
     const columns = [
         {
@@ -147,7 +161,7 @@ export default function MyRentHistList() {
         {
             field: "spaceName",
             headerName: "공간명",
-            width: 300,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -164,7 +178,7 @@ export default function MyRentHistList() {
         {
             field: "rentFee",
             headerName: "대관료",
-            width: 100,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -174,7 +188,7 @@ export default function MyRentHistList() {
         {
             field: "rentDate",
             headerName: "대관일",
-            width: 150,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -184,7 +198,7 @@ export default function MyRentHistList() {
         {
             field: "rentTime",
             headerName: "대관 시간",
-            width: 150,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -195,7 +209,7 @@ export default function MyRentHistList() {
         {
             field: "applyDate",
             headerName: "신청 일시",
-            width: 150,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -213,7 +227,7 @@ export default function MyRentHistList() {
         {
             field: "applyStatus",
             headerName: "신청 상태",
-            width: 100,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -223,7 +237,7 @@ export default function MyRentHistList() {
         {
             field: "payStatus",
             headerName: "결제 상태",
-            width: 100,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -240,7 +254,7 @@ export default function MyRentHistList() {
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => (
-                <button onClick={() => handleDelete(params.row.eduHistNum)}
+                <button onClick={() => handleDelete(params.row.rentHistNum)}
                         style={{
                             width: "50px",
                             height: "25px",
@@ -261,7 +275,7 @@ export default function MyRentHistList() {
         {
             field: 'permit',
             headerName: '허가증',
-            width: 70,
+            width: 100,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',

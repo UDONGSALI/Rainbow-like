@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 public class Organization {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long orgNum;

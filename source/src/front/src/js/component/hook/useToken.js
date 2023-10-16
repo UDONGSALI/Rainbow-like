@@ -95,18 +95,23 @@ export function useToken() {
             body: JSON.stringify(credentials),
         })
             .then((res) => {
+                if (!res.ok) {
+                    return res.text().then((text) => {
+                        throw new Error(text); // 에러 메시지를 throw
+                    });
+                }
                 const jwtToken = res.headers.get('Authorization');
                 if (jwtToken) {
                     sessionStorage.setItem('jwt', jwtToken);
                     decodeToken(jwtToken); // Decode and set token info in session storage
                     return { success: true, token: jwtToken };
                 } else {
-                    return { success: false };
+                    throw new Error('로그인에 실패했습니다.'); // Generic error message
                 }
             })
             .catch((err) => {
                 console.error(err);
-                return { success: false, error: err };
+                return { success: false, error: err.message };
             });
     }, []);
 

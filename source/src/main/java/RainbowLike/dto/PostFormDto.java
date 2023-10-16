@@ -46,6 +46,8 @@ public class PostFormDto {
         Board board4 = new Board();
         Board board5 = new Board();
         Board board6 = new Board();
+        Board board7 = new Board();
+
 
         board1.setBoardNum(9L);
         board2.setBoardNum(8L);
@@ -53,6 +55,8 @@ public class PostFormDto {
         board4.setBoardNum(3L);
         board5.setBoardNum(7L);
         board6.setBoardNum(2L);
+        board7.setBoardNum(6L);
+
 
 
         Member member1 = new Member();
@@ -289,6 +293,49 @@ public class PostFormDto {
             post.setPageView(0);
             postList.add(post);
         }
+
+        PostFormDto post21 = new PostFormDto();
+        post21.setBoard(board7);
+        post21.setMember(member2);
+        post21.setTitle("[반짝]스터디카페가 갈 필요 있나요?");
+        post21.setContent("제곧내 진짜 스터디 카페가지 말고 여기로 오세요. 무료인데 시간도 널널해서 공부하기 딱입니다");
+        post21.setWriteDate(LocalDateTime.now());
+        post21.setPageView(0);
+
+        postList.add(post21);
+
+        PostFormDto post22 = new PostFormDto();
+        post22.setBoard(board7);
+        post22.setMember(member2);
+        post22.setTitle("[혜윰]정말 잘 이용했습니다.");
+        post22.setContent("장비들이 너무 잘 구비되어 있어서 강의할 때 정말 유용했습니다. 다음번에도 또 부탁드립니다.");
+        post22.setWriteDate(LocalDateTime.now());
+        post22.setPageView(0);
+
+        postList.add(post22);
+
+        PostFormDto post23 = new PostFormDto();
+        post23.setBoard(board7);
+        post23.setMember(member2);
+        post23.setTitle("[활짝]스터디모임하기 딱입니다.");
+        post23.setContent("스터디모임할 때는 역시 여기가 최고임.");
+        post23.setWriteDate(LocalDateTime.now());
+        post23.setPageView(0);
+
+        postList.add(post23);
+
+        for (int i = 1; i <= 11; i++) {
+            PostFormDto post = new PostFormDto();
+            post.setBoard(board6);
+            post.setMember(member1);
+            post.setTitle("언론보도 테스트 글" + i);
+            post.setContent("언론보도 테스트 글 입니다." + i);
+            post.setWriteDate(LocalDateTime.now());
+            post.setPageView(0);
+            postList.add(post);
+        }
+
+
 
         return postList;
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import EduList from "../../component/Edu/EduList";
 import NavigationButton from "../../component/Common/NavigationButton";
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 
 
 function EduListPage({type}) {
@@ -16,7 +16,7 @@ function EduListPage({type}) {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             <EduList/>
             {isAdmin && <NavigationButton name="추가하기" url="/admin/edu/add" fontSize={"10px"}/>}
         </div>

@@ -1,5 +1,6 @@
 package RainbowLike.entity;
 
+import RainbowLike.constant.DelYN;
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -58,7 +59,8 @@ public class Member {
     @Column(nullable = false)
     private LocalDate jdate;
 
-
+    @Enumerated(EnumType.STRING)
+    private DelYN delYN;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-files")
@@ -71,10 +73,6 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-comments")
     private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JsonBackReference(value="member-chats")
-    private List<Chat> chats = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-eduHists")
@@ -100,21 +98,15 @@ public class Member {
     @JsonBackReference(value="member-chatRooms")
     private List<ChatRoom> chatRooms = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonBackReference(value="member-chats")
+    private List<Chat> chats = new ArrayList<>();
 
-    public Member(String memId, String pwd, Type type, String name, Gender gender, LocalDate bir, String tel, String email, String addr, String addrDtl, LocalDate jdate) {
-        super();
-        this.memId = memId;
-        this.pwd = pwd;
-        this.type = type;
-        this.name = name;
-        this.gender = gender;
-        this.bir = bir;
-        this.email = email;
-        this.tel = tel ;
-        this.addr = addr;
-        this.addrDtl =addrDtl;
-        this.jdate = jdate;
+    @PrePersist
+    public void setDefaultDelYN() {
+        if (this.delYN == null) {
+            this.delYN = DelYN.N;
+        }
     }
-
 
 }

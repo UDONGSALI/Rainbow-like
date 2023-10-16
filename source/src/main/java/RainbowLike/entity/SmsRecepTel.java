@@ -17,7 +17,7 @@ public class SmsRecepTel {
     private Long smsRecepTelNum;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="smsHist-smsRecepTels")
     @JoinColumn(name = "sms_hist_num", nullable = false)
     private SmsHist smsHist;
 

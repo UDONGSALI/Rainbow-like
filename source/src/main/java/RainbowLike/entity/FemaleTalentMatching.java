@@ -18,13 +18,13 @@ public class FemaleTalentMatching extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ftmNum;
 
-    @ManyToOne
-    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference(value="ftWorker-femaleTalentMatchings")
     @JoinColumn(name = "ft_worker_num")
     private FtWorker ftWorker;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="ftConsumer-femaleTalentMatchings")
     @JoinColumn(name = "ft_consumer_num")
     private FtConsumer ftConsumer;
 

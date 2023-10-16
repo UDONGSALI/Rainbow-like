@@ -1,6 +1,6 @@
 import React from 'react';
 import EduHistList from "../../component/Edu/EduHistList";
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/AdminHeader";
 
 function EduHistListPage(props) {
@@ -22,7 +22,7 @@ function EduHistListPage(props) {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             <EduHistList memId={memId}/>
         </div>
     );

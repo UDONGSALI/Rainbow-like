@@ -23,9 +23,9 @@ public class FtWorker extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ftWorkerNum;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonManagedReference(value="member-ftWorkers")
-    @JoinColumn(name = "mem_num", nullable = false)
+    @JoinColumn(name = "mem_num")
     private Member member;
 
     @Column(length = 50, nullable = false)
@@ -56,3 +56,4 @@ public class FtWorker extends BaseEntity{
     private List<FemaleTalentMatching> femaleTalentMatchings = new ArrayList<>();
 
 }
+

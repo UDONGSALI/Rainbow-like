@@ -53,11 +53,11 @@
     overflow: auto;
 }
 
-.appContainer > .wrap > .chatBox .chat li.me {
+.appContainer > .wrap > .chatBox .chat li.other {
     text-align: left;
 }
 
-.appContainer > .wrap > .chatBox .chat li.other {
+.appContainer > .wrap > .chatBox .chat li.me {
     text-align: right;
     cursor: pointer;
 }
@@ -84,7 +84,7 @@
     background-color: #cecece;
 }
 
-.appContainer > .wrap > .chatBox .chat div.me {
+.appContainer > .wrap > .chatBox .chat div.other {
     padding: 5px;
     display: inline-block;
     border-top-right-radius: 20px;
@@ -93,7 +93,7 @@
     background-color: #cecece;
 }
 
-.appContainer > .wrap > .chatBox .chat div.other {
+.appContainer > .wrap > .chatBox .chat div.me {
     padding: 5px;
     display: inline-block;
     border-top-left-radius: 20px;
@@ -154,4 +154,9 @@
     padding: 5px;
     color: green;
     font-weight: bold;
+}
+
+.appContainer > .wrap > .loginBox > .loginForm select {
+    border: 0;
+    cursor: pointer;
 }
