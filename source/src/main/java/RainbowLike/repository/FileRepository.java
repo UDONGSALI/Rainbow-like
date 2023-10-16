@@ -30,4 +30,12 @@ public interface FileRepository extends JpaRepository <File,Long> {
     @Modifying
     @Query("update File f set f.post = :post where f.fileNum = :fileNum")
     int setPostForFile(@Param("fileNum") Long fileNum, @Param("post") Post post);
+
+
+    boolean existsByMember_MemId(String memId);
+
+    @Transactional
+    @Modifying
+    @Query("delete from Chat p where p.member.memId = :memId")
+    void deleteByMember_MemId(@Param("memId") String memId);
 }
