@@ -49,11 +49,9 @@ const menuData = [
     },
     {
         title: "정보 나눔",
-        items: [{name: "공지사항", url: "/"}, {name: "자주 뭍는 질문", url: "/"}, {
-            name: "언론 보도",
-            url: "/"
-        }, {name: "세종시 기관 및 단체 소식", url: "/"}, {name: "여플소식", url: "/"}, {name: "뉴스레터", url: "/"}]
-
+        items: [{name:"공지사항", url:"/post/1"}, {name:"자주 뭍는 질문", url:"/"},
+            {name:"언론 보도", url:"/post/2"}, {name:"세종시 기관 및 단체 소식", url:"/imgPost/3"},
+            {name:"여플소식", url:"/imgPost/4"}, {name:"뉴스레터", url:"/imgPost/5"}]
     },
 ];
 
