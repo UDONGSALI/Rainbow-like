@@ -28,7 +28,7 @@ public class EduHist {
     private Edu edu;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="member-eduHists")
     @JoinColumn(name = "mem_num", nullable = false)
     private Member member;
 

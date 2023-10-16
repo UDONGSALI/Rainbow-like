@@ -25,7 +25,7 @@ public class Chat {
     private ChatRoom chatRoom;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference(value="member-chats")
     @JoinColumn(name = "mem_num")
     private Member member;
 
