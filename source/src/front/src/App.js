@@ -57,15 +57,17 @@ import Chatting from "./js/component/Chat/Chatting";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import PostForm from "./js/component/Post/PostForm";
 import ChatList from "./js/component/Chat/ChatList";
-import Chattest from "./js/component/Chat/Chattest";
-import ChatTestPage from "./js/component/Chat/ChatTestPage";
-import CslFormPage from "./js/pages/Post/CslFormPage";
+// import ChatTestPage from "./js/component/Chat/ChatTestPage";
 import SearchPage from "./js/pages/Search/SearchPage";
 import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
 import MainPage from "./js/pages/Main/MainPage";
 import ImgContainer from "./js/component/Main/ImgContainer";
+import CslFormPage from "./js/pages/Post/CslFormPage";
+import PostFormPage from "./js/pages/Post/PostFormPage";
+import EditPost from "./js/component/Post/EditPost";
 import RentReviewListPage from "./js/pages/Rent/RentReviewListPage";
 import RentReviewEditPage from "./js/pages/Rent/RentReviewEditPage";
+
 
 
 
@@ -90,14 +92,14 @@ function App() {
     return (
         <div className="App" onClick={trackButtonClick}>
 
-            {!isPaymentRoute && !isChatRoute &&  <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
+            {!isPaymentRoute && !isChatRoute && <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
             <Routes>
                 <Route path="/" element={<MainPage/>}/>
                 <Route path="/test" element={<ImgContainer/>}/>
 
 
                 {/*로그인*/}
-                <Route path="/login" element={<LoginPage />}/>
+                <Route path="/login" element={<LoginPage/>}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
                 <Route path="/search" element={<SearchPage/>}/>
 
@@ -108,34 +110,42 @@ function App() {
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
                 <Route path="/admin/eduHist" element={isAdmin ? <EduHistListPage memId={memId} type="admin"/> : null}/>
-                <Route path="/admin/rentHist" element={isAdmin ? <RentHistListPage memId={memId} type="admin"/> : null}/>
+                <Route path="/admin/rentHist"
+                       element={isAdmin ? <RentHistListPage memId={memId} type="admin"/> : null}/>
                 <Route path="/admin/org" element={isAdmin ? <OrgListPage/> : null}/>
                 <Route path="/admin/board" element={isAdmin ? <BoardListPage/> : null}/>
                 <Route path="/admin/board/post/:boardNum" element={isAdmin ? <BoardPostListPage/> : null}/>
                 <Route path="/admin/log" element={isAdmin ? <LogListPage/> : null}/>
                 <Route path="/admin/pay" element={isAdmin ? <PayListPage/> : null}/>
-                <Route path="admin/ftmain" element={<FTMainPage  type="admin" />} />
-                <Route path="admin/ftmain/ftw/:id" element={<FTWDtlPage type="admin" />} />
+                <Route path="admin/ftmain" element={<FTMainPage type="admin"/>}/>
+                <Route path="admin/ftmain/ftw/:id" element={<FTWDtlPage type="admin"/>}/>
 
 
                 {/*교육*/}
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
                 <Route path="/edu/list" element={<EduListPage/>}/>
                 <Route path="/edu/list/detail/:eduNum" element={<EduDetailPage/>}/>
-                <Route path="/edu/list/apply/:eduNum" element={memId ? <EduApplyPage/> : <Navigate to="/login" replace/>}/>
-                <Route path="/edu/applylist" element={memId ? <EduHistListPage memId={memId} type="edu"/> : <Navigate to="/login" replace/>}/>
+                <Route path="/edu/list/apply/:eduNum"
+                       element={memId ? <EduApplyPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/edu/applylist"
+                       element={memId ? <EduHistListPage memId={memId} type="edu"/> : <Navigate to="/login" replace/>}/>
 
                 {/*결제*/}
                 <Route path="/pay/:rentHistNum/:fee" element={<Pay/>}/>
 
                 {/*게시글*/}
+                <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/posts" element={<PostList/>}/>
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
-                <Route path="/post/new" element={<CslFormPage/>}/>
+                <Route path="/csl/new" element={<CslFormPage/>}/>
+                <Route path="/post/new" element={<PostFormPage/>}/>
+                <Route path="/post/edit/:postNum" element={<PostForm/>}/>
+
+
 
                 {/*공간대관페이지관련*/}
                 <Route path="/rent/process" element={<RentProcessPage/>}/>
@@ -146,47 +156,63 @@ function App() {
                 <Route path="/rent/reviewEdit/:postNum" element={<RentReviewEditPage/>}/>
 
                 {/*마이페이지관련*/}
-                <Route path="/mypage/edu" element={memId ? <MyEduPage memId={memId}/> : <Navigate to="/login" replace/>}/>
-                <Route path="/mypage/rent" element={memId ? <MyRentPage memId={memId}/> : <Navigate to="/login" replace/>}/>
-                <Route path="/mypage/active" element={memId ? <MyActivePage memId={memId}/> : <Navigate to="/login" replace/>}/>
-                <Route path="/mypage/ftw" element={memId ? <MyFTPage memId={memId}/> : <Navigate to="/login" replace/>}/>
-                <Route path="/mypage/club" element={memId ? <MyClubPage memId={memId}/> : <Navigate to="/login" replace/>}/>
-                <Route path="/mypage/csl" element={memId ? <MyCounselPage memId={memId}/> : <Navigate to="/login" replace/>}/>
-                <Route path="/mypage/infoEdit" element={memId ? <MyInfoEditPage memId={memId}/> : <Navigate to="/login" replace/>}/>
-                <Route path="/mypage/infoEditSuccess" element={memId ? <MyInfoEditSuccessPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/edu"
+                       element={memId ? <MyEduPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/rent"
+                       element={memId ? <MyRentPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/active"
+                       element={memId ? <MyActivePage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/ftw"
+                       element={memId ? <MyFTPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/club"
+                       element={memId ? <MyClubPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/csl"
+                       element={memId ? <MyCounselPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/infoEdit"
+                       element={memId ? <MyInfoEditPage memId={memId}/> : <Navigate to="/login" replace/>}/>
+                <Route path="/mypage/infoEditSuccess"
+                       element={memId ? <MyInfoEditSuccessPage memId={memId}/> : <Navigate to="/login" replace/>}/>
 
                 {/*소모임*/}
-                <Route path="/clubs" element={<ClubPage />}/>
-                <Route path="/clubs/new" element={memId? <ClubFormPage /> : <Navigate to ="/login" replace/> }/>
-                <Route path="/clubs/:id" element={<ClubDtlPage />}/>
-                <Route path="/clubs/edit/:id" element={<ClubEditorPage />}/>
+                <Route path="/clubs" element={<ClubPage/>}/>
+                <Route path="/clubs/new" element={memId ? <ClubFormPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/clubs/:id" element={<ClubDtlPage/>}/>
+                <Route path="/clubs/edit/:id" element={<ClubEditorPage/>}/>
 
                 {/*인재풀*/}
-                <Route path="/ftmain" element={<FTMainPage/>} />
-                <Route path="/ftw/new" element={memId? <FTWFormPage /> : <Navigate to ="/login" replace/> } />
-                <Route path="/ftw/dtl/:id" element={<FTWDtlPage />} />
+                <Route path="/ftmain" element={<FTMainPage/>}/>
+                <Route path="/ftw/new" element={memId ? <FTWFormPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/ftw/dtl/:id" element={<FTWDtlPage/>}/>
                 <Route path="/ftw/edit/:id" element={<FTWEditPage/>}/>
-                <Route path="/ftc/new" element={memId? <FTCFormPage /> : <Navigate to ="/login" replace/> }/>
-                <Route path="/ftc/dtl/:id" element={<FTCDtlPage />} />
+                <Route path="/ftc/new" element={memId ? <FTCFormPage/> : <Navigate to="/login" replace/>}/>
+                <Route path="/ftc/dtl/:id" element={<FTCDtlPage/>}/>
                 <Route path="/ftc/edit/:id" element={<FTCEditPage/>}/>
-                <Route path="/admin/ftmain/ftw" element={isAdmin? <FTWListPage /> : null } />
-                <Route path="/admin/ftmain/ftc" element={isAdmin? <FTCListPage/> : null}/>
-                <Route path="/ftmpop/:ftcNum" element={isAdmin? <MatchingPopup /> : null}/>
+                <Route path="/admin/ftmain/ftw" element={isAdmin ? <FTWListPage/> : null}/>
+                <Route path="/admin/ftmain/ftc" element={isAdmin ? <FTCListPage/> : null}/>
+                <Route path="/ftmpop/:ftcNum" element={isAdmin ? <MatchingPopup/> : null}/>
 
                 {/*SMS*/}
-                <Route path="/sms" element={isAdmin? <SMSPage /> : null}/>
+                <Route path="/sms" element={isAdmin ? <SMSPage/> : null}/>
                 {/*<Route path="/sms" element={<SMSPage />}  />*/}
 
                 {/*챗봇 / 채팅*/}
+
+                <Route path="/chat" element={<ChatPage/>}/>
+                <Route path="/chat/:memNum" element={<Chatting/>}/>
+                {/*<Route path="/chatlist" element={<ChatList />} />*/}
+                {/*<Route path="/chattest" element={<Chattest />} />*/}
+                {/*<Route path="/chattest" element={<ChatTestPage/>}/>*/}
+
                 <Route path="/chat" element={<ChatPage />} />
                 <Route path="/chat/:memNum" element={<Chatting />} />
                 <Route path="/chatlist" element={<ChatList />} />
                 {/*/!*<Route path="/chattest" element={<Chattest />} />*!/*/}
                 {/*<Route path="/chattest" element={<ChatTestPage />} />*/}
 
+
             </Routes>
         </div>
-    )
+    );
 }
 
 export default App;

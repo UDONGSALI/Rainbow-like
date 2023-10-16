@@ -53,7 +53,7 @@ function CounselingList(props) {
             })
             .catch(err => console.error(err));
     }, [posts]);
-
+console.log(posts)
     const postsWithFiles = posts.map((post) => {
         const postFiles = files.filter((file) => file.post && file.post.postNum === post.postNum);
         return {
@@ -230,7 +230,7 @@ function CounselingList(props) {
                 onClose={() => setOpen(false)}
                 message="게시글을 지웠습니다."
             />
-            <NewPost onClick={() => navigate('/post/new', {state: {boardNum}})}>
+            <NewPost onClick={() => navigate('/csl/new', {state: {boardNum}})}>
                 등록
             </NewPost>
             <Pagination

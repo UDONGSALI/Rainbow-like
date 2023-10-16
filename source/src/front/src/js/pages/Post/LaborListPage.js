@@ -5,17 +5,18 @@ import LaborImg from "../../../img/pages/laborBorad1.png";
 import styles from '../../../css/pages/Labor/LaborListPage.module.css';
 import '../../../css/font.css';
 import {useParams} from "react-router-dom";
+import {headerInfo, urlData} from "../../layout/Header/Data/CslHeader";
+import Header from "../../layout/Header/Header";
 
 
 function LaborListPage() {
     const { boardNum } = useParams();
     const  memNum = sessionStorage.getItem("memNum")
 
-    let pageTitle = '노무상담 게시판';
 
     return (
         <div>
-            <h2 style={{ textAlign: 'center',marginTop:'20px' ,marginBottom:'20px'}}>{pageTitle}</h2>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={'노무상담게시판'}/>
             <div className={styles.laborTop}>
                 <div className={styles.laborImg}  >
                 <img src={LaborImg}  alt={"imgFalse"}/>

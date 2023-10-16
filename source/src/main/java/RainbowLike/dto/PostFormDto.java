@@ -48,6 +48,7 @@ public class PostFormDto {
         Board board6 = new Board();
         Board board7 = new Board();
 
+
         board1.setBoardNum(9L);
         board2.setBoardNum(8L);
         board3.setBoardNum(1L);
@@ -55,6 +56,7 @@ public class PostFormDto {
         board5.setBoardNum(7L);
         board6.setBoardNum(2L);
         board7.setBoardNum(6L);
+
 
 
         Member member1 = new Member();
@@ -281,6 +283,16 @@ public class PostFormDto {
 
         postList.add(post20);
 
+        for (int i = 1; i <= 11; i++) {
+            PostFormDto post = new PostFormDto();
+            post.setBoard(board6);
+            post.setMember(member1);
+            post.setTitle("언론보도 테스트 글" + i);
+            post.setContent("언론보도 테스트 글 입니다." + i);
+            post.setWriteDate(LocalDateTime.now());
+            post.setPageView(0);
+            postList.add(post);
+        }
 
         PostFormDto post21 = new PostFormDto();
         post21.setBoard(board7);
