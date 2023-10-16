@@ -54,7 +54,7 @@ public class PostFormDto {
         board4.setBoardNum(3L);
         board5.setBoardNum(7L);
         board6.setBoardNum(2L);
-        board6.setBoardNum(6L);
+        board7.setBoardNum(6L);
 
 
         Member member1 = new Member();

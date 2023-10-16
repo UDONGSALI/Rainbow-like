@@ -98,7 +98,7 @@ public class PostController {
     @GetMapping("/rentReview/{postNum}")
     public ResponseEntity<Post> getPostByPostNumAndBoardNum(
             @PathVariable Long postNum) {
-        Post post = postRepository.findByPostNumAndBoard_BoardNum(postNum, 6L);
+        Post post = postRepository.findByPostNumAndBoard_BoardNum(postNum, 6L); // 6L은 고정된 값
         return ResponseEntity.ok(post);
     }
 
