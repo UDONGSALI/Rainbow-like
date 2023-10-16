@@ -26,6 +26,8 @@ public interface PostRepository extends JpaRepository <Post,Long> {
     Iterable<Post> findByContentContaining( String content);
     Iterable<Post> findByBoardAndMemberIn(Board board, List<Member> members);
     Iterable<Post> findByMemberIn(List<Member> members);
+    List<Post> findByParentsNum(Long parentsNum);
+
 
 //    List<Post> findByIdAndContent(Long id, String content);
 
@@ -48,5 +50,9 @@ public interface PostRepository extends JpaRepository <Post,Long> {
 
     boolean existsByMember_MemId(String memId);
 
+    @Transactional
+    @Modifying //데이터베이스에서 연관된 게시글들을 찾아 삭제하는 기능
+    @Query("delete from Post p where p.parentsNum = ?1")
+    void deleteByParentsNum(Long parentsNum);
 
 }

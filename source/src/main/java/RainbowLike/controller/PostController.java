@@ -105,7 +105,6 @@ public class PostController {
     }
 
 
-
 @PostMapping("/posts/new")
     public ResponseEntity<Post> createPost(@RequestBody PostFormDto postFormDto) {
         Post newPost = new Post();
@@ -210,9 +209,9 @@ public class PostController {
     public ResponseEntity<?> deletePost(@PathVariable Long postNum) {
         try {
             postService.deletePost(postNum);
-            return ResponseEntity.ok("Post deleted successfully.");
+            return ResponseEntity.ok("Post and related posts deleted successfully.");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error occurred while deleting post: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Error occurred while deleting post and related posts: " + e.getMessage());
         }
     }
 
@@ -229,5 +228,35 @@ public class PostController {
             return ResponseEntity.ok().body(lastPost.getPostNum());
         }
         return ResponseEntity.ok().body(0L);  // 0을 반환하거나 다른 기본값을 반환할 수 있습니다.
+    }
+
+    @PutMapping("/posts/update/{postNum}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long postNum, @RequestBody PostFormDto postFormDto) {
+        Optional<Post> existingPost = postRepository.findById(postNum);
+        Board board = existingPost.get().getBoard();
+
+        if (!existingPost.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Post postToUpdate = existingPost.get();
+        postToUpdate.setTitle(postFormDto.getTitle());
+        postToUpdate.setContent(postFormDto.getContent());
+        postToUpdate.setPageView(postFormDto.getPageView());
+        postToUpdate.setConselStatus(postFormDto.getConselStatus());
+        postToUpdate.setParentsNum(postFormDto.getParentsNum());
+        postToUpdate.setClubAllowStatus(postFormDto.getClubAllowStatus());
+        postToUpdate.setClubRecuStatus(postFormDto.getClubRecuStatus());
+        postToUpdate.setDelYN(postFormDto.getDelYN());
+
+        postToUpdate.setBoard(board);
+
+        Member member = new Member();
+        member.setMemNum(postFormDto.getMemNum());
+        postToUpdate.setMember(member);
+
+        Post updatedPost = postRepository.save(postToUpdate);
+
+        return ResponseEntity.ok(updatedPost);
     }
 }
