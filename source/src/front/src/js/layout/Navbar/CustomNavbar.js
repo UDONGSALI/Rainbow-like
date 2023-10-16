@@ -69,7 +69,7 @@ function CustomNavbar({memId, isAdmin}) {
                 setActiveMenu(null);
             }}
         >
-            <Link to="/">
+            <Link to="/" style={{width:'9%'}}>
                 <img src={logo1} alt="로고1" className={styles.logo} />
             </Link>
                 <>
