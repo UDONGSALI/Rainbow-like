@@ -18,7 +18,7 @@ public class Comment extends BaseEntity{
     private Long commNum;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value = "post-comments")
     @JoinColumn(name = "post_num", nullable = false)
     private Post post;
 

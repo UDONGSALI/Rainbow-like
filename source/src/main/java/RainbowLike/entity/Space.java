@@ -54,8 +54,6 @@ public class Space {
         this.rentTime=rentTime;
         this.rentFee=rentFee;
         this.facilities=facilities;
-
     }
-
 
 }

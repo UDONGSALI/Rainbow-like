@@ -25,7 +25,7 @@ public class FtConsumer extends BaseEntity{
 
     @ManyToOne
     @JsonManagedReference(value="member-ftConsumers")
-    @JoinColumn(name = "mem_num", nullable = false)
+    @JoinColumn(name = "mem_num")
     private Member member;
 
     @Column(length = 50, nullable = false)

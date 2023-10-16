@@ -2,6 +2,7 @@ package RainbowLike.service;
 
 
 import RainbowLike.config.AccountCredentials;
+import RainbowLike.constant.DelYN;
 import RainbowLike.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,15 +22,15 @@ public class LoginService {
 
     public String generateToken(AccountCredentials credentials) {
         Member member = memberRepository.findByMemId(credentials.getUsername());
-
         if (member == null) {
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }
-
+        if (member.getDelYN() == DelYN.Y){
+            throw new BadCredentialsException("탈퇴한 사용자 입니다.");
+        }
         if (!passwordEncoder.matches(credentials.getPassword(), member.getPwd())) {
             throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
-
         return jwtService.getToken(member.getMemId(), member.getType().toString(), member.getMemNum());
     }
 }

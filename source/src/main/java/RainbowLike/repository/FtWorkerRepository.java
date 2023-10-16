@@ -15,7 +15,6 @@ import java.util.Optional;
 @Repository
 public interface FtWorkerRepository extends JpaRepository<FtWorker, Long> {
     List<FtWorker> findByMember(Member member);
-
     @Modifying
     @Query("delete from FtWorker p where p.member.memId = :memId")
     void deleteByMember_MemId(@Param("memId") String memId);
