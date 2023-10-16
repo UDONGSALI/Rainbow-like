@@ -175,7 +175,7 @@ function App() {
                 {/*챗봇 / 채팅*/}
                 <Route path="/chat" element={<ChatPage />} />
                 <Route path="/chat/:memNum" element={<Chatting />} />
-                {/*/!*<Route path="/chatlist" element={<ChatList />} />*!/*/}
+                <Route path="/chatlist" element={<ChatList />} />
                 {/*/!*<Route path="/chattest" element={<Chattest />} />*!/*/}
                 {/*<Route path="/chattest" element={<ChatTestPage />} />*/}
 
