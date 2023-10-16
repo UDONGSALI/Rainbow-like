@@ -50,9 +50,18 @@ function PostDetail(props) {
             .catch(error => console.error(error));
     }, [postNum]);
 
+    useEffect(() => {
+        // 마지막 postNum 가져오기.
+        fetch(`${SERVER_URL}post/lastPostNum`)
+            .then(response => response.json())
+            .then(data => {
+                setLastPostNum(data);
+            })
+            .catch(error => console.error(error));
+    }, []);
+
     const onDelClick = () => {
         const isConfirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
-
         if (isConfirmed) {
             console.log("Filtered Files:", files);  // filteredFiles 내용 확인
 
@@ -103,22 +112,6 @@ function PostDetail(props) {
     };
 
     useEffect(() => {
-        fetch(SERVER_URL + "files/table/post")
-            .then((response) => response.json())
-            .then((data) => {
-                setFiles(data);
-
-                // files[].post.postNum 중 가장 큰 값을 찾아 lastPostNum 상태로 설정
-                const maxPostNum = Math.max(...data.map(file => file.post.postNum));
-                setLastPostNum(maxPostNum);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
-
-
-    useEffect(() => {
         // post 상태가 있고, post.board.boardNum이 7보다 작을 때만 이전 글의 제목을 가져옴
         if (post && post.board.boardNum < 7) {
             // 이전 글의 제목 가져오기
@@ -137,7 +130,6 @@ function PostDetail(props) {
         }
     }, [prevPostNum, lastPostNum, post]); // post도 의존성 배열에 추가했습니다.
 
-
     const onEditClick = () => {
         navigate(`/posts/edit/${postNum}`);
     };
@@ -146,11 +138,12 @@ function PostDetail(props) {
         return <div>Loading...</div>;
     }
 
+    const isLastPost = postNum == lastPostNum;
 //이전 글과 다음 글 게시판이 같다면 이동
     const canGoToPrevPost = prevPostTitle && prevPostTitle.board.boardNum == post.board.boardNum;
-    const canGoToNextPost = nextPostTitle && nextPostTitle.board.boardNum == post.board.boardNum && lastPostNum > postNum;
+    const canGoToNextPost = nextPostTitle && nextPostTitle.board.boardNum == post.board.boardNum && !isLastPost;
 // 기존 코드에서 boardNum이 7보다 크거나 같은지 확인하는 변수
-    const hidePrevNextButtons = post.board.boardNum >= 7 && lastPostNum == postNum;
+    const hidePrevNextButtons = post.board.boardNum > 7 && (!canGoToPrevPost || !canGoToNextPost);
 
     return (
         <div className={styles.postDetail}> {/* CSS 모듈 적용 */}
@@ -162,19 +155,18 @@ function PostDetail(props) {
                     작성일: {post.post.writeDate.slice(0, 10)}{' '}
                     조회수: {post.post.pageView}
                 </p>
-                <div className={styles.postMenuTitle}> - 공지사항 입니다.</div>
-                <div className={styles.leftTop}>
-                    {files.map((file, index) => (
-                        <img
-                            key={index}
-                            src={file.fileUri}
-                            alt={`Image ${index + 1}`}
-                            className={styles.postImage}
-                        />
-                    ))}
+                {/*<div className={styles.leftTop}>*/}
+                {/*    {files.map((file, index) => (*/}
+                {/*        <img*/}
+                {/*            key={index}*/}
+                {/*            src={file.fileUri}*/}
+                {/*            alt={`Image ${index + 1}`}*/}
+                {/*            className={styles.postImage}*/}
+                {/*        />*/}
+                {/*    ))}*/}
+                {/*</div>*/}
+                <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.post.content }}>
                 </div>
-
-                <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.post.content }}></div>
             </div>
             <div className={styles.postFileList}>
                 <ul className={styles.postFileBox}>
@@ -209,31 +201,29 @@ function PostDetail(props) {
                 </button>
             </div>
             <div className={styles.prevNextButtons}>
-                {/* boardNum이 7보다 작을 때만 이전 글 버튼 표시 */}
-                {!hidePrevNextButtons && canGoToPrevPost && (
-                    <div className={styles.prevButton}>
-                        &nbsp;&nbsp;∧ 이전 글 -&nbsp;
-                        <button
-                            onClick={() => {
-                                navigate(`/post/detail/${boardNum}/${prevPostNum}`);
-                            }}
-                            className={styles.prevButtonStyle}
-                        >
-                            {prevPostTitle.title}
-                        </button>
-                    </div>
-                )}
-                {/* boardNum이 7보다 작을 때만 다음 글 버튼 표시 */}
                 {!hidePrevNextButtons && canGoToNextPost && (
-                    <div className={styles.nextButton}>
-                        &nbsp;&nbsp;∨ 다음 글 -&nbsp;
+                    <div className={styles.prevButton}>
+                        &nbsp;&nbsp;∧ 다음 글 -&nbsp;
                         <button
                             onClick={() => {
                                 navigate(`/post/detail/${boardNum}/${nextPostNum}`);
                             }}
-                            className={styles.nextButtonStyle}
+                            className={styles.prevButtonStyle}
                         >
                             {nextPostTitle.title}
+                        </button>
+                    </div>
+                )}
+                {!hidePrevNextButtons && canGoToPrevPost && (
+                    <div className={styles.nextButton}>
+                        &nbsp;&nbsp;∨ 이전 글 -&nbsp;
+                        <button
+                            onClick={() => {
+                                navigate(`/post/detail/${boardNum}/${prevPostNum}`);
+                            }}
+                            className={styles.nextButtonStyle}
+                        >
+                            {prevPostTitle.title}
                         </button>
                     </div>
                 )}
