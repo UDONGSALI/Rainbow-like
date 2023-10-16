@@ -60,7 +60,7 @@ import PostForm from "./js/component/Post/PostForm";
 import ChatList from "./js/component/Chat/ChatList";
 import Chattest from "./js/component/Chat/Chattest";
 import ChatTestPage from "./js/component/Chat/ChatTestPage";
-import PostFormPage from "./js/pages/Post/PostFormPage";
+import CslFormPage from "./js/pages/Post/CslFormPage";
 import SearchPage from "./js/pages/Search/SearchPage";
 import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
 
@@ -123,14 +123,13 @@ function App() {
                 <Route path="/pay/:rentHistNum/:fee" element={<Pay/>}/>
 
                 {/*게시글*/}
-                <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/posts" element={<PostList/>}/>
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
                 <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
-                <Route path="/post/new" element={<PostFormPage/>}/>
+                <Route path="/post/new" element={<CslFormPage/>}/>
 
                 {/*공간대관페이지관련*/}
                 <Route path="/rent/process" element={<RentProcessPage/>}/>
@@ -173,9 +172,9 @@ function App() {
                 {/*챗봇 / 채팅*/}
                 <Route path="/chat" element={<ChatPage />} />
                 <Route path="/chat/:memNum" element={<Chatting />} />
-                {/*<Route path="/chatlist" element={<ChatList />} />*/}
-                {/*<Route path="/chattest" element={<Chattest />} />*/}
-                <Route path="/chattest" element={<ChatTestPage />} />
+                {/*/!*<Route path="/chatlist" element={<ChatList />} />*!/*/}
+                {/*/!*<Route path="/chattest" element={<Chattest />} />*!/*/}
+                {/*<Route path="/chattest" element={<ChatTestPage />} />*/}
 
             </Routes>
         </div>
