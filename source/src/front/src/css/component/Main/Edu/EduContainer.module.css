@@ -1,9 +1,9 @@
 .EduContainer{
-    width: 79%;
+    width: 70%;
     height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 55px;
+    margin-top: 2.5%;
 }

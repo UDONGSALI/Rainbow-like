@@ -8,6 +8,7 @@ import Modal from '@mui/material/Modal';
 import {useDaumPostcodePopup} from "react-daum-postcode";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import {useToken} from "../../hook/useToken";
 
 
 const style = {
@@ -58,6 +59,16 @@ export default function MemberInfoEdit() {
     const [openModal, setOpenModal] = useState(false);
     const [errors, setErrors] = useState({});
     const open = useDaumPostcodePopup();
+
+    const { decodeToken:  deleteTokenFromServer } = useToken();
+    const logout = () => {
+        const jti = sessionStorage.getItem('jti'); // 세션 스토리지에서 jti를 가져옴
+        if (jti) {
+            deleteTokenFromServer(jti);
+        }
+        sessionStorage.clear();
+        window.location.reload();
+    };
 
 
     const toggleShowPassword = () => {
@@ -273,40 +284,27 @@ export default function MemberInfoEdit() {
 
     const deleteMember = async () => {
         const memId = memberInfo.memId;
-        console.log(memId);
-
         // 서버에 회원 삭제 요청
         try {
-            const response = await fetch(`http://localhost:8090/members/delete/${memId}`, {
-                method: 'DELETE',
+            const response = await fetch(`${SERVER_URL}members/Withdrawal/${memId}`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-
-            console.log('Response Status:', response.status);
-
             if (response.ok) {
                 let text;
-                // 회원 삭제 성공
                 text = await response.text();
-                console.log('서버 응답 데이터:', text);
-                alert('회원 탈퇴에 성공 했습니다!');
-                // 로그인 페이지로 이동
+                logout();
                 window.location.href = "http://localhost:3000/login";
             } else {
-                // 회원 삭제 실패
-                console.log('Response Status:', response.status);
-                console.log('회원 삭제 실패:', response.statusText);
                 const text = await response.text();
-                console.log('서버 응답 데이터:', text);
                 alert('회원 탈퇴 중 오류가 발생했습니다. 다시 시도해 주세요.');
             }
         } catch (error) {
             console.error('에러:', error);
             alert('회원 삭제 중 에러가 발생했습니다. 다시 시도해 주세요. 에러 상세: ' + error.message);
         }
-        console.log('deleteMemberInfo');
     }
 
 
@@ -726,7 +724,7 @@ export default function MemberInfoEdit() {
                                                 fontSize: "15px",
                                                 fontWeight: "bold",
                                             }}
-                                        >최소</Button>
+                                        >취소</Button>
                                         <Button
                                             className={styles.modalButton}
                                             onClick={() => {

@@ -30,7 +30,7 @@ public class RentHist {
     private Member member;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="space-rentHists")
     @JoinColumn(name = "space_num", nullable = false)
     private Space space;
 

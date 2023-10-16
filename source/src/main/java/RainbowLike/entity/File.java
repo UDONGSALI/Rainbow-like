@@ -18,22 +18,22 @@ public class File {
     private Long fileNum;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value = "post-files")
     @JoinColumn(name = "post_num", nullable=true)
     private Post post;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="edu-files")
     @JoinColumn(name = "edu_num")
     private Edu edu;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="eduHist-files")
     @JoinColumn(name = "eduHist_num")
     private EduHist eduHist;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="space-files")
     @JoinColumn(name = "space_num")
     private Space space;
 
