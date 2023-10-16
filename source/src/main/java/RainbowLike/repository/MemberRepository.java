@@ -42,9 +42,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Transactional
     @Modifying
     @Query("DELETE FROM Member m WHERE m.memId = :memId")
-    void deleteByMember_MemId(@Param("memId") String memId);
+    void deleteByMemId(@Param("memId") String memId);
 
-
+    boolean existsByMemId(String memId);
 
 
 

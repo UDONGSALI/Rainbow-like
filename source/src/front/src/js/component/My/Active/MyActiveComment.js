@@ -57,8 +57,6 @@ export default function MyActiveComment() {
         const rowId = params.row.post.postNum;
         const boardName = params.row.post.board.boardName; // 게시글의 유형에 따른 필드 (예: type 필드)
 
-        console.log('rowId:', rowId);
-        console.log('boardName:', boardName);
 
         let targetPath = ""; // 이동할 경로 초기화
 
@@ -70,8 +68,6 @@ export default function MyActiveComment() {
         } else if (boardName === '세종시 기관 및 단체 소식') {
             targetPath = `/post/detail/${rowId}`;
         } else if (boardName === '대관 이용 후기') {
-            targetPath = `/rent/review/${rowId}`;
-        } else if (boardName === '온라인 상담') {
             targetPath = `/rent/review/${rowId}`;
         } else {
             targetPath = `/post/detail/${rowId}`;
@@ -95,7 +91,7 @@ export default function MyActiveComment() {
         {
             field: "boardName", // 게시판 구분을 "boardName"으로 변경
             headerName: "구분",
-            width: 250,
+            width: 150,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -114,9 +110,11 @@ export default function MyActiveComment() {
         {
             field: "title",
             headerName: "게시글",
-            width: 280,
+            width: 200,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
 
             renderCell: (params) => {
                 const postTitle = params.row.post && params.row.post.title;
@@ -135,9 +133,11 @@ export default function MyActiveComment() {
         {
             field: "content",
             headerName: "댓글 내용",
-            width: 300,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
 
 
 
@@ -145,7 +145,7 @@ export default function MyActiveComment() {
         {
             field: "writeDate",
             headerName: "작성일",
-            width: 200,
+            width: 150,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -189,6 +189,7 @@ export default function MyActiveComment() {
                     style={{
                         height: 500,
                         width: "100%",
+
 
                     }}
                 >

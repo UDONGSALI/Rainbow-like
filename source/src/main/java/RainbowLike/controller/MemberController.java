@@ -156,18 +156,19 @@ public class MemberController {
     //회원탈퇴에 따른 해당멤버 정보삭제
     @DeleteMapping("/delete/{memId}")
     public ResponseEntity<String> deleteMember(@PathVariable String memId) {
+        if (!memberService.memberExists(memId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원이 존재하지 않습니다.");
+        }
+
         try {
             memberService.deleteMember(memId);
             return ResponseEntity.ok("회원 탈퇴에 성공했습니다!");
-        } catch (MemberNotFoundException e) {
-            logger.error("회원이 존재하지 않습니다.", e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원이 존재하지 않습니다.");
         } catch (Exception e) {
             logger.error("회원 탈퇴 중 오류가 발생했습니다.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 탈퇴 중 오류가 발생했습니다.");
         }
+
     }
 }
-
 
 

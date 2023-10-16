@@ -88,6 +88,21 @@ public class PostController {
         return postRepository.findByBoardInAndMemberMemNum(councelBoard, memNum);
     }
 
+    // boardNum으로 대관이용후기 게시글 요청
+    @RequestMapping("/rentReview")
+    public Iterable<Post> getRentReviewPosts() {
+        Board rentReviewNumBoard = boardRepository.findByBoardNum(6L);
+        return postRepository.findByBoard(rentReviewNumBoard);
+    }
+    // 게시글 번호와 게시판 번호로 게시글 찾기
+    @GetMapping("/rentReview/{postNum}")
+    public ResponseEntity<Post> getPostByPostNumAndBoardNum(
+            @PathVariable Long postNum) {
+        Post post = postRepository.findByPostNumAndBoard_BoardNum(postNum, 6L);
+        return ResponseEntity.ok(post);
+    }
+
+    
 
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostInfo> getPostInfo(@PathVariable Long id) {
