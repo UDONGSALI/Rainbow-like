@@ -115,4 +115,10 @@ public class PostService {
         }
     }
 
+    public void deletePostAndRelated(Long postNum) {
+        // 현재 게시글을 삭제하기 전에 parentsNum과 일치하는 게시글들을 삭제
+        postRepository.deleteByParentsNum(postNum);
+        postRepository.deleteById(postNum);
+    }
+
 }

@@ -42,9 +42,6 @@ public class FileController {
 
     @PostMapping
     public ResponseEntity<String> uploadFiles(@RequestParam("file") List<MultipartFile> files, @RequestParam("tableName") String tableName, @RequestParam("number") Long number) {
-        System.out.println(tableName);
-        System.out.println(number);
-        System.out.println("파일 확인");
         try {
             fileService.uploadFilesAndGetFileNums(files, tableName, number);
             return ResponseEntity.ok("파일 업로드 성공");
@@ -89,6 +86,14 @@ public class FileController {
             return ResponseEntity.status(500).body(response);
         }
     }
-
-
+    // 게시글 번호에 따른 파일들 삭제
+    @DeleteMapping("/post/{postNum}")
+    public ResponseEntity<?> deleteFilesByPostNum(@PathVariable Long postNum) {
+        try {
+            fileService.deleteFilesByPostNum(postNum); // 여기서 Long 타입 변환을 제거했습니다.
+            return ResponseEntity.ok("Files deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error occurred while deleting files: " + e.getMessage());
+        }
+    }
 }
