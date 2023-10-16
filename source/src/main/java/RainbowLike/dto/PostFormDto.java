@@ -46,12 +46,14 @@ public class PostFormDto {
         Board board4 = new Board();
         Board board5 = new Board();
         Board board6 = new Board();
+        Board board7 = new Board();
 
         board1.setBoardNum(9L);
         board2.setBoardNum(8L);
         board3.setBoardNum(1L);
         board4.setBoardNum(3L);
         board5.setBoardNum(7L);
+        board6.setBoardNum(2L);
         board6.setBoardNum(6L);
 
 
@@ -61,6 +63,7 @@ public class PostFormDto {
         member1.setMemNum(1L);
         member2.setMemNum(2L);
         member3.setMemNum(3L);
+
 
 
         PostFormDto post1 = new PostFormDto();
@@ -168,7 +171,7 @@ public class PostFormDto {
         post10.setBoard(board3);
         post10.setMember(member1);
         post10.setTitle("공지사항 다섯 번째 글 입니다.");
-        post10.setContent("공지사항 테스트 글 다섯 번째에요. 글 목록을 늘려보려고 합니다.");
+        post10.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/10/notice2.png\"></p><p><img src=\"https://storage.googleapis.com/rainbow_like/post/10/notice3.png\"></p><p><br></p><p>공지사항 테스트 글 다섯 번째에요. </p><p><br></p><p>글 목록을 늘려보려고 합니다.</p><p><br></p>");
         post10.setWriteDate(LocalDateTime.now());
         post10.setPageView(0);
 
@@ -178,7 +181,7 @@ public class PostFormDto {
         post11.setBoard(board4);
         post11.setMember(member1);
         post11.setTitle("썸네일 게시판 첫 글");
-        post11.setContent("썸네일 게시판 입니다.");
+        post11.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/11/notice4.png\"></p><p><br></p><p>썸네일 게시판 입니다.</p><p><br></p>");
         post11.setWriteDate(LocalDateTime.now());
         post11.setPageView(0);
 
@@ -188,7 +191,7 @@ public class PostFormDto {
         post12.setBoard(board4);
         post12.setMember(member1);
         post12.setTitle("썸네일 게시판 두 번째 글");
-        post12.setContent("썸네일 게시판 입니다222.");
+        post12.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/12/notice1.jpg\"></p><p><br></p><p>썸네일 게시판 두 번째 글 입니다.</p><p><br></p>");
         post12.setWriteDate(LocalDateTime.now());
         post12.setPageView(0);
 
@@ -198,7 +201,7 @@ public class PostFormDto {
         post13.setBoard(board4);
         post13.setMember(member1);
         post13.setTitle("썸네일 게시판 세 번쨰 글");
-        post13.setContent("썸네일 게시판 입니다333.");
+        post13.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/13/sj2.png\"></p><p><br></p><p>썸네일 게시판 세 번째 글 입니다.333</p><p><br></p>");
         post13.setWriteDate(LocalDateTime.now());
         post13.setPageView(0);
 
@@ -208,7 +211,7 @@ public class PostFormDto {
         post14.setBoard(board4);
         post14.setMember(member1);
         post14.setTitle("썸네일 게시판 네 번째에뇸");
-        post14.setContent("썸네일 게시판 입니다.<br>444<br>444<br>");
+        post14.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/14/sj3.jpg\"></p><p><br></p>썸네일 게시판 입니다.<p><br></p><p>444</p>");
         post14.setWriteDate(LocalDateTime.now());
         post14.setPageView(0);
 
@@ -218,7 +221,7 @@ public class PostFormDto {
         post15.setBoard(board4);
         post15.setMember(member1);
         post15.setTitle("썸네일 게시판 다섯 번째 글");
-        post15.setContent("썸네일<br> 게시판<br> 입니다.<br>555<br>");
+        post15.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/15/sj4.jpg\"></p><p><br></p><p>썸네일 게시판 다섯 번째 글 입니다.</p><p><br></p>");
         post15.setWriteDate(LocalDateTime.now());
         post15.setPageView(0);
 
@@ -228,7 +231,7 @@ public class PostFormDto {
         post16.setBoard(board4);
         post16.setMember(member1);
         post16.setTitle("썸네일 게시판 여섯 번째 글");
-        post16.setContent("썸네일 게시판 입니다.666");
+        post16.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/16/sj5_1.jpg\"></p><p><img src=\"https://storage.googleapis.com/rainbow_like/post/16/sj5_2.jpg\"></p><p><img src=\"https://storage.googleapis.com/rainbow_like/post/16/sj5_3.jpg\"></p><p><br></p><p>썸네일 게시판 여섯 번째 글 입니당구리 6</p><p><br></p>");
         post16.setWriteDate(LocalDateTime.now());
         post16.setPageView(0);
 
@@ -238,7 +241,7 @@ public class PostFormDto {
         post17.setBoard(board4);
         post17.setMember(member1);
         post17.setTitle("썸네일 게시판 일곱 번째 글");
-        post17.setContent("썸네일 게시판 입니다.7777");
+        post17.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/17/sj6.jpg\"></p><p><br></p><p>썸네일 게시판 일곱 번째글 입니다.</p><p><br></p>");
         post17.setWriteDate(LocalDateTime.now());
         post17.setPageView(0);
 
@@ -278,8 +281,9 @@ public class PostFormDto {
 
         postList.add(post20);
 
+
         PostFormDto post21 = new PostFormDto();
-        post21.setBoard(board6);
+        post21.setBoard(board7);
         post21.setMember(member2);
         post21.setTitle("[반짝]스터디카페가 갈 필요 있나요?");
         post21.setContent("제곧내 진짜 스터디 카페가지 말고 여기로 오세요. 무료인데 시간도 널널해서 공부하기 딱입니다");
@@ -289,7 +293,7 @@ public class PostFormDto {
         postList.add(post21);
 
         PostFormDto post22 = new PostFormDto();
-        post22.setBoard(board6);
+        post22.setBoard(board7);
         post22.setMember(member2);
         post22.setTitle("[혜윰]정말 잘 이용했습니다.");
         post22.setContent("장비들이 너무 잘 구비되어 있어서 강의할 때 정말 유용했습니다. 다음번에도 또 부탁드립니다.");
@@ -299,7 +303,7 @@ public class PostFormDto {
         postList.add(post22);
 
         PostFormDto post23 = new PostFormDto();
-        post23.setBoard(board6);
+        post23.setBoard(board7);
         post23.setMember(member2);
         post23.setTitle("[활짝]스터디모임하기 딱입니다.");
         post23.setContent("스터디모임할 때는 역시 여기가 최고임.");
@@ -307,6 +311,18 @@ public class PostFormDto {
         post23.setPageView(0);
 
         postList.add(post23);
+
+        for (int i = 1; i <= 11; i++) {
+            PostFormDto post = new PostFormDto();
+            post.setBoard(board6);
+            post.setMember(member1);
+            post.setTitle("언론보도 테스트 글" + i);
+            post.setContent("언론보도 테스트 글 입니다." + i);
+            post.setWriteDate(LocalDateTime.now());
+            post.setPageView(0);
+            postList.add(post);
+        }
+
 
 
         return postList;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { SERVER_URL } from '../Common/constants';
 import {Button,Snackbar,Stack,TextField,Typography,} from '@mui/material';
 import { Link } from 'react-router-dom';
 import FindIdPasswordModal from './FindIdPasswordModal';
@@ -8,6 +7,7 @@ import { useToken } from '../hook/useToken';
 function Login() {
     // 상태 변수 정의
     const [memId, setMemId] = useState(sessionStorage.getItem('memId'));
+    const [snackbarMessage, setSnackbarMessage] = useState(null);
     const { decodeToken: decodeAndSetToken, deleteTokenFromServer, getToken } = useToken();
     const storedFailedAttempts = localStorage.getItem('failedAttempts') || 0;
     const [failedAttempts, setFailedAttempts] = useState(
@@ -74,9 +74,8 @@ function Login() {
 
                 window.location.reload();
             } else {
-                // 로그인 실패 처리
-                setFailedAttempts(failedAttempts + 1); // 실패 횟수 1 증가
                 setOpen(true);  // 로그인 실패 알림 표시
+                setSnackbarMessage(response.error); // 스낵바에 에러 메시지 설정
             }
         });
     };
@@ -270,7 +269,7 @@ function Login() {
                 open={open}
                 autoHideDuration={2000}
                 onClose={() => setOpen(false)}
-                message="로그인에 실패했습니다."
+                message={snackbarMessage}  // 여기에 에러 메시지를 전달
             />
             <FindIdPasswordModal isOpen={isModalOpen} handleClose={handleCloseModal}/>
         </div>

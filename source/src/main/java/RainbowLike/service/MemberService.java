@@ -1,9 +1,10 @@
 package RainbowLike.service;
 
+import RainbowLike.constant.DelYN;
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
 import RainbowLike.dto.MemberFormDto;
-import RainbowLike.entity.Member;
+import RainbowLike.entity.*;
 import RainbowLike.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,16 +30,12 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper mapper;
-    private final FileRepository fileRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-    private final ChatRepository chatRepository;
     private final ChatRoomRepository chatRoomRepository;
-    private final EduHistRepository eduHistRepository;
     private final RentHistRepository rentHistRepository;
     private final FtWorkerRepository ftWorkerRepository;
     private final FtConsumerRepository ftConsumerRepository;
-    private final LogRepository logRepository;
 
     @PostConstruct
     private void createDefaultMembers() {
@@ -128,26 +126,23 @@ public class MemberService implements UserDetailsService {
         return null;
     }
 
-
-    public boolean checkIdDuplicate(String memId) {
-        Member findMember = memberRepository.findByMemId(memId);
-        if (findMember != null)
-            return true;
-        return false;
+    //회원탈퇴
+    public void withdrawal(String memId) {
+        Member member = memberRepository.findByMemId(memId);
+        member.setDelYN(DelYN.Y);
+        memberRepository.save(member);
     }
 
-    //회원탈퇴에 따른 멤버삭제
-
+    //멤버삭제
     public void deleteMember(String memId) {
-
-        // 멤버 삭제
-        memberRepository.deleteByMemId(memId);
-
-    }
-
-    public boolean memberExists(String memId) {
-        return memberRepository.existsByMemId(memId);
+        Member member = memberRepository.findByMemId(memId);
+        chatRoomRepository.deleteByMember(member);
+        postRepository.deleteByMember(member);
+        postRepository.deleteByLabor(member);
+        commentRepository.deleteByMember(member);
+        rentHistRepository.deleteByMember(member);
+        ftWorkerRepository.deleteByMember(member);
+        ftConsumerRepository.deleteByMember(member);
+        memberRepository.delete(member);
     }
 }
-
-

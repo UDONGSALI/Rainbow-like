@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/AdminHeader";
 import LogList from "../../component/Log/LogList";
 import Chart from "../../component/Stats/Chart";
@@ -24,7 +24,7 @@ function LogListPage() {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle} />
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle} />
             <Swiper
                 spaceBetween={50}
                 slidesPerView={1}

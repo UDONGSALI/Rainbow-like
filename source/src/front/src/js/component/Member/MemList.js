@@ -208,6 +208,7 @@ function MemList() {
                 );
             },
         },
+        {field: 'delYN', headerName: '탈퇴 여부', width: 100},
         {
             field: 'detail',
             headerName: '정보 수정',

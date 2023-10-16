@@ -1,5 +1,5 @@
 import FTMain from "../../component/FT/FTMain";
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/AdminHeader";
 import React from "react";
 
@@ -21,7 +21,7 @@ function FTMainPage({type}){
 
     return(
         <div>
-        <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
+        <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
         <FTMain />
         </div>
     )

@@ -18,7 +18,7 @@ public interface CommentRepository extends JpaRepository <Comment, Long> {
     Comment findByCommNum(Long commNum);
 
     Comment findTopByOrderByCommNumDesc();
-
+    void deleteByMember(Member member);
     Iterable<Comment> findByPost(Post postNum);
      Iterable<Comment> findByMember(Member MemberNum);
 

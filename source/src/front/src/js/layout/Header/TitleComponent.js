@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from "../../../css/layout/Header/UrlHeader.module.css";
 
-function UrlHeader({title}) {
+function TitleComponent({title}) {
     return (
         <div className={styles.urlHeader}>
             <h1><strong>{title}</strong></h1>
@@ -9,4 +9,4 @@ function UrlHeader({title}) {
     );
 }
 
-export default UrlHeader;
+export default TitleComponent;
