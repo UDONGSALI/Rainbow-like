@@ -12,6 +12,8 @@ function ChatTestPage() {
     const [msg, setMsg] = useState("");
     const [msgList, setMsgList] = useState([]);
     const [privateTarget, setPrivateTarget] = useState("");
+    const [roomNumber, setRoomNumber] = useState("1");
+
     useEffect(() => {
         if (!webSocket) return;
         function sMessageCallback(msg) {
@@ -37,7 +39,7 @@ function ChatTestPage() {
             setMsgList((prev) => [
                 ...prev,
                 {
-                    msg: `${msg} joins the chat`,
+                    msg: `${msg.userId} joins the chat`,
                     type: styles.welcome,
                     id: "",
                 },
@@ -59,7 +61,7 @@ function ChatTestPage() {
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        webSocket.emit("login", userId);
+        webSocket.emit("login", { userId: userId, roomNumber: roomNumber });
         setIsLogin(true);
     };
 
@@ -69,14 +71,16 @@ function ChatTestPage() {
 
     const onSendSubmitHandler = (e) => {
         e.preventDefault();
+
         // 3
         const sendData = {
             data: msg,
             id: userId,
             target: privateTarget,
-        };
+            roomNumber: roomNumber
+    };
         webSocket.emit("message", sendData);
-        setMsgList((prev) => [...prev, { msg: msg, type: styles.me, id: userId }]);
+        setMsgList((prev) => [...prev, { msg: msg, type: styles.me, id: userId}]);
         setMsg('');
     };
 
@@ -90,12 +94,16 @@ function ChatTestPage() {
         setPrivateTarget((prev) => (prev === id ? "" : id));
     };
 
+    const onRoomChangeHandler = (e) => {
+        setRoomNumber(e.target.value);
+    };
+
     return (
         <div className={styles.appContainer}>
             <div className={styles.wrap}>
                 {isLogin ? (
                     <div className={styles.chatBox}>
-                        <h3>Login as a "{userId}"</h3>
+                        <h3>Login as a "{userId}" in Room {roomNumber}</h3>
                         <ul className={styles.chat}>
                             {msgList.map((v, i) =>
                                 v.type === styles.welcome ? (
@@ -147,9 +155,14 @@ function ChatTestPage() {
                             <div>IOChat</div>
                         </div>
                         <form className={styles.loginForm} onSubmit={onSubmitHandler}>
+                            <select onChange={onRoomChangeHandler}>
+                                <option value="1">Room 1</option>
+                                <option value="2">Room 2</option>
+                            </select>
                             <input
                                 placeholder="Enter your ID"
                                 onChange={onChangeUserIdHandler}
+
                                 value={userId}
                             />
                             <button type="submit">Login</button>
