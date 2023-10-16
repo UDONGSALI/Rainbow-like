@@ -4,9 +4,12 @@ import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
 import RainbowLike.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -32,4 +35,22 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT m.tel FROM Member m")
     List<String> findAllTels();
+
+
+
+    //회원탈퇴 관련
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Member m WHERE m.memId = :memId")
+    void deleteByMember_MemId(@Param("memId") String memId);
+
+
+
+
+
+
+
+
 }
+
+

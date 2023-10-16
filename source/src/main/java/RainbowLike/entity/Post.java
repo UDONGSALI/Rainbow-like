@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.repository.Modifying;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,17 +24,17 @@ public class Post extends BaseEntity {
     private Long postNum;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference(value="member-posts")
     @JoinColumn(name = "mem_num")
     private Member member;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference(value="member-posts")
     @JoinColumn(name = "mem_id")
     private Member labor;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference(value="board-posts")
     @JoinColumn(name = "board_num")
     private Board board;
 
@@ -72,5 +73,7 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @JsonBackReference(value = "post-comments")
     private List<Comment> comments = new ArrayList<>();
+
+
 
 }

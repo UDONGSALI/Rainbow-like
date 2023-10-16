@@ -29,7 +29,7 @@ function MemManagePage() {
                 navigation
                 loop={true}
                 onSlideChange={handleSlideChange}
-                style={{width:'70%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+                style={{width:'80%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
             >
                 <SwiperSlide><MemList/></SwiperSlide>
                 <SwiperSlide><AccessingMemberList/></SwiperSlide>

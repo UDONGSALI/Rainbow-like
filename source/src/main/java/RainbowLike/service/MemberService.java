@@ -1,10 +1,11 @@
 package RainbowLike.service;
 
+import RainbowLike.constant.DelYN;
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
 import RainbowLike.dto.MemberFormDto;
-import RainbowLike.entity.Member;
-import RainbowLike.repository.MemberRepository;
+import RainbowLike.entity.*;
+import RainbowLike.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.User;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,11 +30,22 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper mapper;
+    private final FileRepository fileRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final ChatRepository chatRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final EduHistRepository eduHistRepository;
+    private final RentHistRepository rentHistRepository;
+    private final FtWorkerRepository ftWorkerRepository;
+    private final FtConsumerRepository ftConsumerRepository;
+    private final LogRepository logRepository;
+    private final FemaleTalentMatchingRepository femaleTalentMatchingRepository;
 
     @PostConstruct
     private void createDefaultMembers() {
         List<MemberFormDto> memberFormDtoList = MemberFormDto.createtestMember();
-        for (MemberFormDto memberFormDto: memberFormDtoList) {
+        for (MemberFormDto memberFormDto : memberFormDtoList) {
             saveMember(memberFormDto);
         }
     }
@@ -126,4 +139,10 @@ public class MemberService implements UserDetailsService {
         return false;
     }
 
+    //회원탈퇴에 따른 멤버삭제
+    public void deleteMember(String memId) {
+        Member member = memberRepository.findByMemId(memId);
+        member.setDelYN(DelYN.Y);
+        memberRepository.save(member);
+    }
 }

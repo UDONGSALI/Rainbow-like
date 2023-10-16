@@ -11,6 +11,7 @@ import logList from "../Log/LogList";
 function CounselingList(props) {
     const {boardNum, memNum} = props;
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    const isUser = sessionStorage.getItem("role") === "USER";
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
@@ -24,7 +25,6 @@ function CounselingList(props) {
         setActivePage(pageNumber);
         // 필요하면 추가적인 로직 구현
     };
-
 
     useEffect(() => {
         fetch(SERVER_URL + `post/${boardNum}`)
@@ -87,6 +87,15 @@ function CounselingList(props) {
         }
     }
 
+    // USER의 작성자 이름은 첫 글자만 가져오게
+    const maskName = (name, type) => {
+        if (type === "USER" && name && name.length > 1) {
+            return name[0] + '*'.repeat(name.length - 1);
+        }
+        return name;
+    }
+
+
     const columns = [
         {
             field: 'postNum',
@@ -140,7 +149,7 @@ function CounselingList(props) {
             width: 100,
             valueGetter: (params) => {
                 const members = Array.isArray(params.row.member) ? params.row.member : [params.row.member];
-                return members.map((m) => m.name).join(', ');
+                return members.map((m) => maskName(m.name, m.type)).join(', ');
             },
             renderCell: (params) => (
                 <CenteredData>
