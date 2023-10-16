@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -66,20 +67,26 @@ public class FileController {
 
     @Transactional
     @PatchMapping("/edit")
-    public ResponseEntity<String> editFiles(@RequestBody List<Long> fileNumbersWithPostNum) {
+    public ResponseEntity<Map<String, String>> editFiles(@RequestBody List<Long> fileNumbersWithPostNum) {
         if (fileNumbersWithPostNum.isEmpty()) {
-            return ResponseEntity.badRequest().body("File numbers list is empty");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "File numbers list is empty");
+            return ResponseEntity.badRequest().body(response);
         }
 
-        Long postNum = fileNumbersWithPostNum.get(fileNumbersWithPostNum.size() - 1); // 마지막 번호를 postNum으로 가져옵니다.
-        List<Long> fileNumsExcludingPostNum = fileNumbersWithPostNum.subList(0, fileNumbersWithPostNum.size() - 1); // 나머지는 파일 번호로 취급합니다.
+        Long postNum = fileNumbersWithPostNum.get(fileNumbersWithPostNum.size() - 1);
+        List<Long> fileNumsExcludingPostNum = fileNumbersWithPostNum.subList(0, fileNumbersWithPostNum.size() - 1);
 
         try {
             fileService.updatePostNumForFiles(fileNumsExcludingPostNum, postNum);
-            return ResponseEntity.ok("Files updated successfully");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Files updated successfully");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(e.getMessage());
+            Map<String, String> response = new HashMap<>();
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(500).body(response);
         }
     }
 
