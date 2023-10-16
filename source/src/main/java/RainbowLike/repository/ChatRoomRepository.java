@@ -16,11 +16,5 @@ import java.util.List;
 public interface
 ChatRoomRepository extends JpaRepository <ChatRoom,Long> {
     Iterable<ChatRoom> findByMember(Member member);
-
-    @Transactional
-    @Modifying
-    @Query("delete from ChatRoom p where p.member.memId = :memId")
-    void deleteByMember_MemId(@Param("memId") String memId);
-
-    boolean existsByMember_MemId(String memId);
+    void deleteByMember(Member member);
 }

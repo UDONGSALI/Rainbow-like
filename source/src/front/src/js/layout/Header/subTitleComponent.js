@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from "../../../css/layout/Header/UrlFooter.module.css";
 
-function UrlFooter({title}) {
+function SubTitleComponent({title}) {
     return (
         <div className={styles.urlFooter}>
             <h1><strong>{title}</strong></h1>
@@ -9,4 +9,4 @@ function UrlFooter({title}) {
     );
 }
 
-export default UrlFooter;
+export default SubTitleComponent;

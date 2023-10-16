@@ -1,14 +1,14 @@
 import React from "react";
 
 
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/RentHeader";
 
 
 function RentReviewPostPage() {
     return (
         <div id="rentBody">
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'대관 이용 후기'}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={'대관 이용 후기'}/>
 
         </div>
     )
