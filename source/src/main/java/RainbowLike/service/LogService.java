@@ -60,6 +60,8 @@ public class LogService {
         return log;
     }
 
-
+    public void deleteLogByMemIdAndMemberId(String memId, Long memNum) {
+        logRepository.deleteByMember_MemIdAndMember_MemNum(memId,memNum);
+    }
 
 }

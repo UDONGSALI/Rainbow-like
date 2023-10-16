@@ -35,4 +35,11 @@ public class LogController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedLog);
     }
 
+    //회원탈퇴시 해당멤버로그삭제
+    @DeleteMapping("delete/{memId}/{memNum}")
+    public ResponseEntity<String> deleteLog(@PathVariable String memId, @PathVariable Long memNum ){
+        logService.deleteLogByMemIdAndMemberId(memId, memNum);
+        return ResponseEntity.ok("Log deleted successfully");
+    }
+
 }

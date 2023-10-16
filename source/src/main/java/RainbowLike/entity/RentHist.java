@@ -25,7 +25,7 @@ public class RentHist {
     private Long rentHistNum;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="member-rentHists")
     @JoinColumn(name = "mem_num", nullable = false)
     private Member member;
 
