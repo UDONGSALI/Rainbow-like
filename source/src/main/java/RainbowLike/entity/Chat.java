@@ -1,6 +1,7 @@
 package RainbowLike.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,7 +23,7 @@ public class Chat {
     private Long chatNum;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference(value="chatRoom-chats")
     @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
 
@@ -29,11 +32,9 @@ public class Chat {
     @JoinColumn(name = "mem_num")
     private Member member;
 
-
     @Column
     @Lob
     private String content;
 
     private LocalDateTime writeDate;
-
 }

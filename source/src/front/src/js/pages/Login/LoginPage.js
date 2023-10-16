@@ -1,13 +1,13 @@
 import React from 'react';
 import Login from "../../component/Login/Login";
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/LoginHeader";
 
 const LoginPage = () => {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'Login'}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={'Login'}/>
             <Login/>
         </div>
     );

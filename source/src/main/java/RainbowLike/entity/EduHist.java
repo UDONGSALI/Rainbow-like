@@ -23,13 +23,13 @@ public class EduHist {
     private Long eduHistNum;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="edu-eduHists")
     @JoinColumn(name = "edu_num", nullable = false)
     private Edu edu;
 
     @ManyToOne
     @JsonManagedReference(value="member-eduHists")
-    @JoinColumn(name = "mem_num", nullable = false)
+    @JoinColumn(name = "mem_num")
     private Member member;
 
     private boolean portraitRights;
@@ -44,5 +44,4 @@ public class EduHist {
     @OneToMany(mappedBy = "eduHist", cascade = CascadeType.REMOVE)
     @JsonBackReference(value="eduHist-files")
     private List<File> files = new ArrayList<>();
-
 }

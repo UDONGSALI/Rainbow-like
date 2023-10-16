@@ -65,6 +65,9 @@ import ImgContainer from "./js/component/Main/ImgContainer";
 import CslFormPage from "./js/pages/Post/CslFormPage";
 import PostFormPage from "./js/pages/Post/PostFormPage";
 import EditPost from "./js/component/Post/EditPost";
+import RentReviewListPage from "./js/pages/Rent/RentReviewListPage";
+import RentReviewEditPage from "./js/pages/Rent/RentReviewEditPage";
+
 
 
 
@@ -101,7 +104,8 @@ function App() {
                 <Route path="/search" element={<SearchPage/>}/>
 
                 {/*관리자*/}
-                <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
+                {/*<Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>*/}
+                <Route path="/admin/member" element={<MemManagePage/>} />
                 <Route path="/admin/edu" element={isAdmin ? <EduListPage type="admin"/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
@@ -147,7 +151,9 @@ function App() {
                 <Route path="/rent/process" element={<RentProcessPage/>}/>
                 <Route path="/rent/status" element={<RentStatusPage/>}/>
                 <Route path="/rent/apply" element={<RentApplyPage/>}/>
-                <Route path="/rent/review" element={<RentReviewPostPage/>}/>
+                <Route path="/rent/review" element={<RentReviewListPage/>}/>
+                <Route path="/rent/reviewPost/:postNum" element={<RentReviewPostPage/>}/>
+                <Route path="/rent/reviewEdit/:postNum" element={<RentReviewEditPage/>}/>
 
                 {/*마이페이지관련*/}
                 <Route path="/mypage/edu"
@@ -190,11 +196,20 @@ function App() {
                 {/*<Route path="/sms" element={<SMSPage />}  />*/}
 
                 {/*챗봇 / 채팅*/}
+
                 <Route path="/chat" element={<ChatPage/>}/>
                 <Route path="/chat/:memNum" element={<Chatting/>}/>
                 {/*<Route path="/chatlist" element={<ChatList />} />*/}
                 {/*<Route path="/chattest" element={<Chattest />} />*/}
                 {/*<Route path="/chattest" element={<ChatTestPage/>}/>*/}
+
+                <Route path="/chat" element={<ChatPage />} />
+                <Route path="/chat/:memNum" element={<Chatting />} />
+                <Route path="/chatlist" element={<ChatList />} />
+                {/*/!*<Route path="/chattest" element={<Chattest />} />*!/*/}
+                {/*<Route path="/chattest" element={<ChatTestPage />} />*/}
+
+
             </Routes>
         </div>
     );

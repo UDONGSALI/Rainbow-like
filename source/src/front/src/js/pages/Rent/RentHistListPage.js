@@ -1,5 +1,5 @@
 import React from 'react';
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/AdminHeader";
 import RentHistList from "../../component/Rent/RentHistList";
 
@@ -12,7 +12,7 @@ function RentHistListPage(props) {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             <RentHistList memId={memId}/>
         </div>
     );

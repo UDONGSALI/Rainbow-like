@@ -6,7 +6,7 @@ import styles from '../../../css/pages/Labor/LaborListPage.module.css';
 import '../../../css/font.css';
 import {useParams} from "react-router-dom";
 import {headerInfo, urlData} from "../../layout/Header/Data/CslHeader";
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 
 
 function LaborListPage() {
@@ -16,7 +16,7 @@ function LaborListPage() {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'노무상담게시판'}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={'노무상담게시판'}/>
             <div className={styles.laborTop}>
                 <div className={styles.laborImg}  >
                 <img src={LaborImg}  alt={"imgFalse"}/>

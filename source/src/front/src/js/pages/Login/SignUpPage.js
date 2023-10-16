@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SignUp from "../../component/Login/SignUp";
 import SignAgreement from "../../component/Login/SignAgreement";
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import { headerInfo, urlData } from "../../layout/Header/Data/LoginHeader";
 import styles from '../../../css/pages/Login/SignUpPage.module.css';
 
@@ -22,7 +22,7 @@ function SignUpPage() {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={'회원가입'} />
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={'회원가입'} />
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',

@@ -1,7 +1,7 @@
 import PostForm from "../../component/Post/PostForm";
 import useFetch from "../../component/hook/useFetch";
 import {SERVER_URL} from "../../component/Common/constants";
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/InfoShareHeader";
 import { useLocation } from "react-router-dom";
 import React from "react";
@@ -33,7 +33,7 @@ function PostFormPage() {
     // 로딩이 끝나면 PostForm 컴포넌트를 렌더링
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             <PostForm />
             <Footer/>
         </div>
