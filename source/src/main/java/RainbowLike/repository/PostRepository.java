@@ -34,10 +34,14 @@ public interface PostRepository extends JpaRepository <Post,Long> {
     @Query("update Post p set p.pageView = p.pageView + 1 where p.postNum = :id")
     int updateView(Long id);
 
+
    //멤버별 게시글 찾기
     List<Post> findByMember(Member member);
 
     List<Post> findByBoardAndMemberMemNum(Board board, Long memNum);
+
+    // 게시글 번호와 게시판 번호로 게시글 찾기
+    Post findByPostNumAndBoard_BoardNum(Long postNum, Long boardNum);
 
     // 게시판과 멤버를 이용하여 게시글 찾기
     List<Post> findByBoardInAndMemberMemNum(List<Board> boards, Long memNum);

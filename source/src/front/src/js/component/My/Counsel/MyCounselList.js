@@ -8,7 +8,7 @@ import useDelete from "../../hook/useDelete";
 
 export default function MyCounselList() {
     const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
-    const [counsels, setCounsels] = useState([]); // 게시글 데이터 상태
+    const [counsels, setCounsels] = useState([]);
     const navigate = useNavigate();
     const deleteItem = useDelete(SERVER_URL);
 
@@ -54,21 +54,15 @@ export default function MyCounselList() {
             });
     };
 
+    const onRowClick = (params) => {
+        const rowId = params.row.postNum;
+        const boardNum = params.row.board.boardNum;
 
-
-    const handleTitleClick = (eduNum) => {
-        navigate(`/edu/list/detail/${eduNum}`);
-    }
-
-
-    const handleDelete = async (postNum) => {
-        const isSuccess = await deleteItem('rent/' + postNum, "취소");
-
-        if (isSuccess) {
-            const updatedRows = counsels.filter(row => row.postNum !== postNum);
-            setCounsels(updatedRows);
-        }
+        console.log('rowId:', rowId);
+        navigate(`/post/detail/${boardNum}/${rowId}`);
     };
+
+
 
 
     function convertEnumToKorean(enumValue) {
@@ -110,11 +104,24 @@ export default function MyCounselList() {
         {
             field: "title",
             headerName: "제목",
-            width: 600,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
-
             headerAlign: 'center',
+            renderCell: (params) => {
+
+                const postTitle = params.row.title
+
+
+                return (
+                    <div
+                        style={{cursor: "pointer"}}
+                        onClick={() => onRowClick(params)}
+                    >
+                        {postTitle}
+                    </div>
+                );
+            }
 
         },
         {

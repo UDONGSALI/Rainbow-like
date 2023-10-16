@@ -81,7 +81,7 @@ export default function MyClubList() {
         {
             field: "title",
             headerName: "소모임 제목",
-            width: 350,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -143,33 +143,6 @@ export default function MyClubList() {
             headerAlign: 'center',
         },
 
-        {
-            field: "content",
-            headerName: "상세 내용",
-            width: 135,
-            headerClassName: styles.customHeader,
-            cellClassName: styles.customCell,
-            align: 'center',
-            headerAlign: 'center',
-            renderCell: (params) => {
-
-                return (
-                    <div
-                        style={{ cursor: "pointer" }}
-                        onClick={() => onRowClick(params)}
-                    >
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <img
-                                src="https://storage.googleapis.com/rainbow_like/img/search2.png"
-                                alt="소모임 상세 이미지"
-                                style={{ width: 30, height: 30 }}
-                            />
-                        </div>
-                    </div>
-                );
-            }
-
-        },
     ];
 
     function CustomNoRowsOverlay() {

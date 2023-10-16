@@ -59,26 +59,30 @@ export default function MyEduList() {
             });
     };
 
+    function getEduDate(params) {
+        const date = new Date(params.row.edu.eduStdt); // 대여 시작일을 기준으로 합니다.
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    }
+
+
     const onRowClick = (params) => {
-        const rowId = params.row.eduNum;
+        const rowId = params.row.edu.eduNum;
 
         console.log('rowId:', rowId);
         navigate(`/edu/list/detail/${rowId}`);
     };
 
-    const handleTitleClick = (eduNum) => {
-        navigate(`/edu/list/detail/${eduNum}`);
-    }
-
 
     const handleDelete = async (eduHistNum) => {
-        const isSuccess = await deleteItem('rent/' + eduHistNum, "취소");
+        const isSuccess = await deleteItem('eduHist/' + eduHistNum, "취소");
 
         if (isSuccess) {
             const updatedRows = eduHists.filter(row => row.eduHistNum !== eduHistNum);
             setEduHists(updatedRows);
         }
+        console.log(isSuccess);
     };
+
     const handleCertificatePrint = (status, name, eduName) => {
         if (status === 'COMPLETE') {
             setCurrentCertificateData({name, eduName});
@@ -86,6 +90,7 @@ export default function MyEduList() {
         } else {
             alert('교육 수료 후 출력이 가능합니다!');
         }
+
     };
 
     function convertEnumToKorean(enumValue) {
@@ -117,7 +122,7 @@ export default function MyEduList() {
         {
             field: "type",
             headerName: "구분",
-            width: 80,
+            width: 130,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -128,10 +133,24 @@ export default function MyEduList() {
         {
             field: "eduName",
             headerName: "교육명",
-            width: 450,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
-            headerAlign: 'center',
+            headerAlign: 'center', renderCell: (params) => {
+
+                const postTitle = params.row.edu.eduName
+
+
+                return (
+                    <div
+                        style={{cursor: "pointer"}}
+                        onClick={() => onRowClick(params)}
+                    >
+                        {postTitle}
+                    </div>
+                );
+            }
+
 
 
 
@@ -139,17 +158,19 @@ export default function MyEduList() {
         {
             field: "eduPeriod",
             headerName: "교육일시",
-            width: 200,
+            width: 130,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
+            renderCell: getEduDate
+
            
         },
         {
             field: "applyDate",
             headerName: "신청일시",
-            width: 150,
+            width: 130,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -166,7 +187,7 @@ export default function MyEduList() {
         {
             field: "status",
             headerName: "신청 상태",
-            width: 80,
+            width: 100,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -200,29 +221,9 @@ export default function MyEduList() {
 
         },
         {
-            field: "content",
-            headerName: "상세 내용",
-            width: 100,
-            headerClassName: styles.customHeader,
-            cellClassName: styles.customCell,
-            align: 'center',
-            headerAlign: 'center',
-            renderCell: (params) => (
-                <div style={{cursor: "pointer"}}
-                     onClick={() => handleTitleClick(params.row.edu.eduNum)}
-                     className="eduNameCell">
-                    <img
-                        src="https://storage.googleapis.com/rainbow_like/img/search2.png"
-                        alt="상세내역"
-                        style={{width: 30, height: 30}}
-                    />
-                </div>
-            ),
-        },
-        {
             field: 'printCertificate',
             headerName: '수료증',
-            width: 70,
+            width: 100,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',

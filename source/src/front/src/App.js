@@ -64,6 +64,8 @@ import SearchPage from "./js/pages/Search/SearchPage";
 import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
 import MainPage from "./js/pages/Main/MainPage";
 import ImgContainer from "./js/component/Main/ImgContainer";
+import RentReviewListPage from "./js/pages/Rent/RentReviewListPage";
+import RentReviewEditPage from "./js/pages/Rent/RentReviewEditPage";
 
 
 
@@ -139,7 +141,9 @@ function App() {
                 <Route path="/rent/process" element={<RentProcessPage/>}/>
                 <Route path="/rent/status" element={<RentStatusPage/>}/>
                 <Route path="/rent/apply" element={<RentApplyPage/>}/>
-                <Route path="/rent/review" element={<RentReviewPostPage/>}/>
+                <Route path="/rent/review" element={<RentReviewListPage/>}/>
+                <Route path="/rent/reviewPost/:postNum" element={<RentReviewPostPage/>}/>
+                <Route path="/rent/reviewEdit/:postNum" element={<RentReviewEditPage/>}/>
 
                 {/*마이페이지관련*/}
                 <Route path="/mypage/edu" element={memId ? <MyEduPage memId={memId}/> : <Navigate to="/login" replace/>}/>

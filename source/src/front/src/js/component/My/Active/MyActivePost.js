@@ -74,10 +74,8 @@ export default function MyActivePost(props) {
             targetPath =`/post/detail/${boardNum}/${rowId}`
         } else if (boardName === '대관 이용 후기') {
             targetPath = `/rent/review/${rowId}`;
-        } else if (boardName === '온라인 상담') {
-            targetPath = `/rent/review/${rowId}`;
-        } else {
-            targetPath = `/post/detail/${rowId}`;
+     } else {
+            targetPath = `/post/detail/${boardNum}/${rowId}`;
         }
 
         // 실제로 경로 이동
@@ -111,7 +109,7 @@ export default function MyActivePost(props) {
         {
             field: "title",
             headerName: "제목",
-            width:580,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
 
@@ -127,7 +125,7 @@ export default function MyActivePost(props) {
         {
             field: "writeDate",
             headerName: "작성일",
-            width: 200,
+            width: 150,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
