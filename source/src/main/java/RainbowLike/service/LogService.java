@@ -59,9 +59,4 @@ public class LogService {
         logRepository.save(log);
         return log;
     }
-
-    public void deleteLogByMemIdAndMemberId(String memId, Long memNum) {
-        logRepository.deleteByMember_MemIdAndMember_MemNum(memId,memNum);
-    }
-
 }

@@ -13,18 +13,24 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface PostRepository extends JpaRepository <Post,Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
     Post findByPostNum(Long postNum);
 
     Post findTopByOrderByPostNumDesc();
 
     Iterable<Post> findByBoard(Board clubBoard);
+
     Iterable<Post> findByBoardAndTitleContaining(Board board, String title);
+
     Iterable<Post> findByTitleContaining(String title);
+
     Iterable<Post> findByBoardAndContentContaining(Board board, String content);
-    Iterable<Post> findByContentContaining( String content);
+
+    Iterable<Post> findByContentContaining(String content);
+
     Iterable<Post> findByBoardAndMemberIn(Board board, List<Member> members);
+
     Iterable<Post> findByMemberIn(List<Member> members);
 
 //    List<Post> findByIdAndContent(Long id, String content);
@@ -34,19 +40,15 @@ public interface PostRepository extends JpaRepository <Post,Long> {
     @Query("update Post p set p.pageView = p.pageView + 1 where p.postNum = :id")
     int updateView(Long id);
 
-   //멤버별 게시글 찾기
+    //멤버별 게시글 찾기
     List<Post> findByMember(Member member);
 
     List<Post> findByBoardAndMemberMemNum(Board board, Long memNum);
 
     // 게시판과 멤버를 이용하여 게시글 찾기
     List<Post> findByBoardInAndMemberMemNum(List<Board> boards, Long memNum);
-    @Transactional
-    @Modifying
-    @Query("delete from Post p where p.member.memId = :memId")
-    void deleteByMember_MemId(@Param("memId") String memId);
 
-    boolean existsByMember_MemId(String memId);
+    void deleteByMember(Member member);
 
-
+    void deleteByLabor(Member member);
 }

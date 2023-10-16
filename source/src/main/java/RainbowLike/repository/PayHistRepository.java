@@ -8,8 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PayHistRepository extends JpaRepository <PayHist, Long>{
-
+public interface PayHistRepository extends JpaRepository<PayHist, Long> {
 
     Iterable<PayHist> findByRentHist(RentHist rentHist);
 

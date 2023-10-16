@@ -30,17 +30,12 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper mapper;
-    private final FileRepository fileRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-    private final ChatRepository chatRepository;
     private final ChatRoomRepository chatRoomRepository;
-    private final EduHistRepository eduHistRepository;
     private final RentHistRepository rentHistRepository;
     private final FtWorkerRepository ftWorkerRepository;
     private final FtConsumerRepository ftConsumerRepository;
-    private final LogRepository logRepository;
-    private final FemaleTalentMatchingRepository femaleTalentMatchingRepository;
 
     @PostConstruct
     private void createDefaultMembers() {
@@ -131,18 +126,23 @@ public class MemberService implements UserDetailsService {
         return null;
     }
 
-
-    public boolean checkIdDuplicate(String memId) {
-        Member findMember = memberRepository.findByMemId(memId);
-        if (findMember != null)
-            return true;
-        return false;
-    }
-
-    //회원탈퇴에 따른 멤버삭제
-    public void deleteMember(String memId) {
+    //회원탈퇴
+    public void withdrawal(String memId) {
         Member member = memberRepository.findByMemId(memId);
         member.setDelYN(DelYN.Y);
         memberRepository.save(member);
+    }
+
+    //멤버삭제
+    public void deleteMember(String memId) {
+        Member member = memberRepository.findByMemId(memId);
+        chatRoomRepository.deleteByMember(member);
+        postRepository.deleteByMember(member);
+        postRepository.deleteByLabor(member);
+        commentRepository.deleteByMember(member);
+        rentHistRepository.deleteByMember(member);
+        ftWorkerRepository.deleteByMember(member);
+        ftConsumerRepository.deleteByMember(member);
+        memberRepository.delete(member);
     }
 }
