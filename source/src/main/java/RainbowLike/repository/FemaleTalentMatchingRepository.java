@@ -24,5 +24,4 @@ public interface FemaleTalentMatchingRepository extends JpaRepository<FemaleTale
     @Query("SELECT m.tel FROM FemaleTalentMatching f JOIN f.ftConsumer c JOIN c.member m WHERE f.ftConsumer.ftConsumerNum = :ftcNum")
     List<String> findConsumerTelByConsumerNum(Long ftcNum);
 
-
 }
