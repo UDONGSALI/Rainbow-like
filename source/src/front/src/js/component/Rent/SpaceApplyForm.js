@@ -2,8 +2,6 @@ import React, {useEffect, useState} from "react";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {SERVER_URL} from "../Common/constants";
-
-import dayjs from 'dayjs';
 import CustomDataGrid from "../Common/CustomDataGrid";
 import SpaceModal from "./SpaceModal";
 

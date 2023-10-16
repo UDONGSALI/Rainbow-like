@@ -21,7 +21,7 @@ const menuData = [
     },
     {
         title: "공간 대관",
-        items: [{name:"절차 및 이용기준", url:"/rent/process"}, {name:"대관 현황 및 신청", url:"/rent/status"},{name:"절차 및 이용기준", url:"/rent/review"}]
+        items: [{name:"절차 및 이용기준", url:"/rent/process"}, {name:"대관 현황 및 신청", url:"/rent/status"},{name:"대관 이용 후기", url:"/rent/review"}]
     },
     {
         title: "여성인재풀",

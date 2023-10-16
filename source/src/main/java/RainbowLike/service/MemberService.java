@@ -3,8 +3,10 @@ package RainbowLike.service;
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
 import RainbowLike.dto.MemberFormDto;
+import RainbowLike.entity.FtConsumer;
 import RainbowLike.entity.Member;
-import RainbowLike.repository.MemberRepository;
+import RainbowLike.entity.Post;
+import RainbowLike.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.User;
@@ -28,11 +30,21 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper mapper;
+    private final FileRepository fileRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final ChatRepository chatRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final EduHistRepository eduHistRepository;
+    private final RentHistRepository rentHistRepository;
+    private final FtWorkerRepository ftWorkerRepository;
+    private final FtConsumerRepository ftConsumerRepository;
+    private final LogRepository logRepository;
 
     @PostConstruct
     private void createDefaultMembers() {
         List<MemberFormDto> memberFormDtoList = MemberFormDto.createtestMember();
-        for (MemberFormDto memberFormDto: memberFormDtoList) {
+        for (MemberFormDto memberFormDto : memberFormDtoList) {
             saveMember(memberFormDto);
         }
     }
@@ -124,6 +136,56 @@ public class MemberService implements UserDetailsService {
         if (findMember != null)
             return true;
         return false;
+    }
+
+    //회원탈퇴에 따른 멤버삭제
+
+    public void deleteMember(String memId) {
+        Member member = memberRepository.findByMemId(memId);
+
+        if (member != null) {
+
+            // 파일 레포지토리
+            if (fileRepository.existsByMember_MemId(memId)) {
+                fileRepository.deleteByMember_MemId(memId);
+            }
+            // 게시물 레포지토리
+            if (postRepository.existsByMember_MemId(memId)) {
+                postRepository.deleteByMember_MemId(memId);
+            }
+            // 채팅 레포지토리
+            if (chatRepository.existsByMember_MemId(memId)) {
+                chatRepository.deleteByMember_MemId(memId);
+            }
+            // 채팅방 레포지토리
+            if (chatRoomRepository.existsByMember_MemId(memId)) {
+                chatRoomRepository.deleteByMember_MemId(memId);
+            }
+            // 교육 이력 레포지토리
+            if (eduHistRepository.existsByMember_MemId(memId)) {
+                eduHistRepository.deleteByMember_MemId(memId);
+            }
+            // 대여 이력 레포지토리
+            if (rentHistRepository.existsByMember_MemId(memId)) {
+                rentHistRepository.deleteByMember_MemId(memId);
+            }
+            // 전문가(Worker) 레포지토리
+            if (ftWorkerRepository.existsByMember_MemId(memId)) {
+                ftWorkerRepository.deleteByMember_MemId(memId);
+            }
+            // 소비자(Consumer) 레포지토리
+            if (ftConsumerRepository.existsByMember_MemId(memId)) {
+                ftConsumerRepository.deleteByMember_MemId(memId);
+            }
+            // 로그 레포지토리
+            if (logRepository.existsByMember_MemId(memId)) {
+                logRepository.deleteByMember_MemId(memId);
+            }
+
+            // 멤버 삭제
+            memberRepository.deleteByMember_MemId(memId);
+
+        }
     }
 
 }

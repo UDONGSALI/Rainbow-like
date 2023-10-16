@@ -58,45 +58,47 @@ public class Member {
     @Column(nullable = false)
     private LocalDate jdate;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-files")
     private List<File> files = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-posts")
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-comments")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-chats")
     private List<Chat> chats = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-eduHists")
     private List<EduHist> eduHists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-rentHists")
     private List<RentHist> rentHists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-ftWorkers")
     private List<FtWorker> ftWorkers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-ftConsumers")
     private List<FtConsumer> ftConsumers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference(value="member-logs")
     private List<Log> logs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @JsonBackReference(value="member-chat")
-    private List<Chat> chat = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonBackReference(value="member-chatRooms")
+    private List<ChatRoom> chatRooms = new ArrayList<>();
 
 
     public Member(String memId, String pwd, Type type, String name, Gender gender, LocalDate bir, String tel, String email, String addr, String addrDtl, LocalDate jdate) {
