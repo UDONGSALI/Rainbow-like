@@ -1,15 +1,15 @@
 import React from 'react';
-import UrlHeader from './UrlHeader';
+import TitleComponent from './TitleComponent';
 import UrlItem from './UrlItem';
 import styles from '../../../css/layout/Header/UrlComponent.module.css'
-import UrlFooter from "./UrlFooter";
+import SubTitleComponent from "./subTitleComponent";
 
-function UrlComponent({headerTitle, urlItems, footerTitle}) {
+function Header({headerTitle, urlItems, footerTitle}) {
     return (
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginBottom:'15px'}}>
             <div className={styles.container}>
                 <div className={styles.header}>
-                    <UrlHeader title={headerTitle}/>
+                    <TitleComponent title={headerTitle}/>
                 </div>
                 <div className={styles.list}>
                     {urlItems.map((item, index) => (
@@ -18,10 +18,10 @@ function UrlComponent({headerTitle, urlItems, footerTitle}) {
                 </div>
             </div>
             <div>
-                <UrlFooter title={footerTitle}/>
+                <SubTitleComponent title={footerTitle}/>
             </div>
         </div>
     );
 }
 
-export default UrlComponent;
+export default Header;

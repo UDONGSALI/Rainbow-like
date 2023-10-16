@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import MemList from "../../component/Member/MemList";
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from '../../layout/Header/Data/AdminHeader';
 import AccessingMemberList from "../../component/Member/AccessingMemberList";
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
@@ -22,7 +22,7 @@ function MemManagePage() {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             <Swiper
                 spaceBetween={50}
                 slidesPerView={1}

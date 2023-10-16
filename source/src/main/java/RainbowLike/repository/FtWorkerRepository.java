@@ -2,21 +2,14 @@ package RainbowLike.repository;
 
 import RainbowLike.entity.FtWorker;
 import RainbowLike.entity.Member;
-import RainbowLike.entity.RentHist;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface FtWorkerRepository extends JpaRepository<FtWorker, Long> {
     List<FtWorker> findByMember(Member member);
-    @Modifying
-    @Query("delete from FtWorker p where p.member.memId = :memId")
-    void deleteByMember_MemId(@Param("memId") String memId);
-    boolean existsByMember_MemId(String memId);
+
+    void deleteByMember(Member member);
 }
