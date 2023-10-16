@@ -76,7 +76,7 @@ const onRowClick = (params) => {
         {
             field: "speField",
             headerName: "분야",
-            width: 200,
+            width: 300,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
@@ -116,7 +116,7 @@ const onRowClick = (params) => {
         {
             field: "statusDtl",
             headerName: "상세 내용",
-            width: 750,
+            flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
