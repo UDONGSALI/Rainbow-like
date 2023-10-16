@@ -1,54 +1,103 @@
-import {useNavigate, useParams} from "react-router-dom";
-import styles from "../../../css/component/Chat/Chat.module.css"
-import React, {useEffect, useRef, useState} from "react";
-import {SERVER_URL} from "../Common/constants";
+import { useNavigate, useParams } from "react-router-dom";
+import styles from "../../../css/component/Chat/Chat.module.css";
+import React, { useEffect, useRef, useState } from "react";
+import { SERVER_URL } from "../Common/constants";
+import { io } from "socket.io-client";
 
-function Chatting({param}){
+const webSocket = io("http://localhost:5000");
+
+function Chatting({ param }) {
     const [chatData, setChatData] = useState([]);
+    const [roomData, setRoomData] = useState([]);
     const [chatHistory, setChatHistory] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedTitle, setSelectedTitle] = useState(null);
     const [userMessage, setUserMessage] = useState('');
     const navigate = useNavigate();
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    const {memNum} = useParams();
+    const { memNum } = useParams();
     const isMemNum = sessionStorage.getItem("memNum");
     const memId = sessionStorage.getItem("memId");
     const scrollContainerRef = useRef(null);
+    const [chatRoomId, setChatRoomId] = useState('');
 
-
+    const [chatForm, setChatForm] = useState({
+        chatRoomId: chatRoomId,
+        memNum: isMemNum,
+        content: '',
+    });
 
     useEffect(() => {
         fetchChatData();
-    }, []);
+        fetchRoomData();
+        setChatForm({
+            chatRoomId: chatRoomId,
+            memNum: isMemNum,
+            content: '',
+        });
+        webSocket.emit("login", { userId: isMemNum, roomNumber: memNum });
+        scrollToBottom();
+
+        console.log(chatRoomId);
+    }, [chatRoomId]);
 
     const fetchChatData = () => {
         fetch(SERVER_URL + "findchatbymem/" + memNum)
-            .then(response =>
-                response.json())
-            .then(data =>{
+            .then(response => response.json())
+            .then(data => {
                 setChatData(data);
+                scrollToBottom();
                 hello(data);
-
             })
             .catch(err => console.error(err));
     };
 
+    const fetchRoomData = () => {
+        fetch(SERVER_URL + "chatroom/" + memNum)
+            .then(response => response.json())
+            .then(data => {
+                setRoomData(data[0]);
+                setChatRoomId(data[0].chatRoomId);
+                scrollToBottom();
+            })
+            .catch(err => console.error(err));
+    };
 
+    useEffect(() => {
+        if (!webSocket) return;
+        function sMessageCallback(msg) {
+            const { data, id, target } = msg;
+            setChatHistory((prev) => [
+                ...prev,
+                {
+                    msg: data,
+                    id: id,
+                },
+            ]);
+        }
+        webSocket.on("sMessage", sMessageCallback);
+        return () => {
+            webSocket.off("sMessage", sMessageCallback);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!webSocket) return;
+        function sLoginCallback(msg) {}
+        webSocket.on("sLogin", sLoginCallback);
+        return () => {
+            webSocket.off("sLogin", sLoginCallback);
+        };
+    }, []);
 
     useEffect(() => {
         scrollToBottom();
     }, [chatHistory]);
 
-
     const hello = (chatData) => {
-        console.log(chatData)
-            if(Array.isArray(chatData) && chatData.length === 0){
-                // console.log(Array.isArray(chatData));
-                const newChatHistory = [...chatHistory, { text: `반갑습니다, ${memId}님! 무엇이 궁금하신가요?`, isUser: false }];
-                setChatHistory(newChatHistory);
-            }
-        };
+        if (Array.isArray(chatData) && chatData.length === 0 || roomData.answerYN === 'Y') {
+            const newChatHistory = [...chatHistory, { msg: `반갑습니다, ${memId}님! 무엇이 궁금하신가요?`, isUser: false }];
+            setChatHistory(newChatHistory);
+        }
+    };
 
     const scrollToBottom = () => {
         if (scrollContainerRef.current) {
@@ -56,37 +105,68 @@ function Chatting({param}){
         }
     };
 
-    const handleUserMessageSubmit = () => {
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setChatForm({ ...chatForm, [name]: value });
+    };
+
+    const handleUserMessageSubmit = (e) => {
+        // e.preventDefault();
+
+        fetch(SERVER_URL + 'chat/new', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(chatForm),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setChatForm({
+                    chatRoomId: chatRoomId,
+                    memNum: isMemNum,
+                    content: '',
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
         if (userMessage.trim() === '') return;
 
         const newChatHistory = [
             ...chatHistory,
-            { text: userMessage, isUser: true },
+            { msg: userMessage, isUser: true },
         ];
-
+        const sendData = {
+            data: userMessage,
+            id: isMemNum,
+            roomNumber: memNum
+        };
+        webSocket.emit("message", sendData);
+        setChatHistory((prev) => [...prev, { msg: userMessage, type: styles.user, id: isMemNum }]);
         setUserMessage('');
         setChatHistory(newChatHistory);
-
     };
 
-    const handleOnKeyPress = e => {
+    const handleOnKeyPress = (e) => {
         if (e.key === 'Enter') {
             handleUserMessageSubmit();
         }
     };
 
 
-    if(memNum === isMemNum || isAdmin){
+    if (memNum === isMemNum || isAdmin) {
         return (
             <div className={styles.chatbotContainer}>
                 <div className={styles.chatHistory}
                      ref={scrollContainerRef}
                      style={{
                          overflowY: 'auto',
-                         height: '600px' 
+                         height: '600px'
                      }}>
                     {chatData.map((message, index) => {
-                        console.log("message.member.memNum:", message.member.memNum + " 지금 isMemNum꼬라지 : " + isMemNum);
                         return (
                             <div
                                 key={index}
@@ -106,7 +186,7 @@ function Chatting({param}){
                                 message.isUser ? styles.user : styles.bot
                             }`}
                         >
-                            {message.text}
+                            {message.msg}
                         </div>
                     ))}
                 </div>
@@ -115,8 +195,11 @@ function Chatting({param}){
                     <input
                         type="text"
                         placeholder="메시지 입력..."
-                        value={userMessage}
-                        onChange={(e) => setUserMessage(e.target.value)}
+                        value={userMessage && chatForm.content}
+                        onChange={(e) => {
+                            setUserMessage(e.target.value);
+                            setChatForm({ ...chatForm, content: e.target.value });
+                        }}
                         onKeyDown={handleOnKeyPress}
                     />
                     <button onClick={handleUserMessageSubmit}>보내기</button>
@@ -124,11 +207,7 @@ function Chatting({param}){
             </div>
         );
     }
-        return(<div><h1>잘못된 접근입니다.</h1></div>)
-
-
-
+    return (<div><h1>잘못된 접근입니다.</h1></div>);
 }
-
 
 export default Chatting;
