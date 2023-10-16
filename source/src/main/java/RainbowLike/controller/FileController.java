@@ -4,6 +4,7 @@ import RainbowLike.entity.File;
 import RainbowLike.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,23 +41,47 @@ public class FileController {
 
     @PostMapping
     public ResponseEntity<String> uploadFiles(@RequestParam("file") List<MultipartFile> files, @RequestParam("tableName") String tableName, @RequestParam("number") Long number) {
+        System.out.println(tableName);
+        System.out.println(number);
+        System.out.println("파일 확인");
         try {
-            String result = fileService.uploadFiles(files, tableName, number);
-            return ResponseEntity.ok(result);
+            fileService.uploadFilesAndGetFileNums(files, tableName, number);
+            return ResponseEntity.ok("파일 업로드 성공");
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
-    @PostMapping("/qill")
-    public ResponseEntity<List<String>> uploadQillFiles(@RequestParam("file") List<MultipartFile> files, @RequestParam("tableName") String tableName, @RequestParam("number") Long number) {
+    @PostMapping("/FileNums")
+    public ResponseEntity<List<Long>> uploadAndGetFileNums(@RequestParam("file") List<MultipartFile> files, @RequestParam("tableName") String tableName, @RequestParam("number") Long number) {
         try {
-            List<String> fileUrls = fileService.uploadFilesForQuill(files, tableName, number);
-            return ResponseEntity.ok(fileUrls);
+            List<Long> fileNums = fileService.uploadFilesAndGetFileNums(files, tableName, number);
+            return ResponseEntity.ok(fileNums);
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Collections.emptyList());
+            return ResponseEntity.status(500).body(null);
         }
     }
+
+    @Transactional
+    @PatchMapping("/edit")
+    public ResponseEntity<String> editFiles(@RequestBody List<Long> fileNumbersWithPostNum) {
+        if (fileNumbersWithPostNum.isEmpty()) {
+            return ResponseEntity.badRequest().body("File numbers list is empty");
+        }
+
+        Long postNum = fileNumbersWithPostNum.get(fileNumbersWithPostNum.size() - 1); // 마지막 번호를 postNum으로 가져옵니다.
+        List<Long> fileNumsExcludingPostNum = fileNumbersWithPostNum.subList(0, fileNumbersWithPostNum.size() - 1); // 나머지는 파일 번호로 취급합니다.
+
+        try {
+            fileService.updatePostNumForFiles(fileNumsExcludingPostNum, postNum);
+            return ResponseEntity.ok("Files updated successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+
 }

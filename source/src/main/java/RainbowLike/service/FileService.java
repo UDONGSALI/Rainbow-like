@@ -18,9 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 
 @Service
@@ -85,16 +82,16 @@ public class FileService {
         }
     }
 
-    public String uploadFiles(List<MultipartFile> files, String tableName, Long number) throws IOException {
-        uploadToCloud(files, tableName, number);
-        return "파일 업로드 성공";
+    public List<Long> uploadFilesAndGetFileNums(List<MultipartFile> files, String tableName, Long number) throws IOException {
+        return uploadToCloudAndGetFileNums(files, tableName, number);
+    }
+    public void updatePostNumForImage(String imageUrl, Long postNum) {
+        // Fetch the image record using imageUrl
+        // Update its postNum with the provided postNum
+        // Save the updated image record
     }
 
-    public List<String> uploadFilesForQuill(List<MultipartFile> files, String tableName, Long number) throws IOException {
-        return uploadToCloud(files, tableName, number);
-    }
-
-    private List<String> uploadToCloud(List<MultipartFile> files, String tableName, Long number) throws IOException {
+    private List<Long> uploadToCloudAndGetFileNums(List<MultipartFile> files, String tableName, Long number) throws IOException {
         PathAndEntities pathAndEntities = determineMidPath(tableName, number);
 
         // Set up Google Cloud Storage
@@ -107,7 +104,7 @@ public class FileService {
                 .build()
                 .getService();
 
-        List<String> uploadedFileUrls = new ArrayList<>();
+        List<Long> uploadedFileNums = new ArrayList<>();
 
         for (MultipartFile file : files) {
             String newFileName = pathAndEntities.getMidPath() + file.getOriginalFilename();
@@ -124,11 +121,12 @@ public class FileService {
             createfile.setEdu(pathAndEntities.getEdu());
             createfile.setPost(pathAndEntities.getPost());
             createfile.setEduHist(pathAndEntities.getEduHist());
-            fileRepository.save(createfile);
 
-            uploadedFileUrls.add(fileUrl);
+            File savedFile = fileRepository.save(createfile);
+            uploadedFileNums.add(savedFile.getFileNum());
         }
-        return uploadedFileUrls;
+
+        return uploadedFileNums;
     }
 
     private PathAndEntities determineMidPath(String tableName, Long number) {
@@ -194,9 +192,7 @@ public class FileService {
                     break;
                 case "post":
                     post = postRepository.findByPostNum(number);
-                    if (post != null) {
-                        midPath = tableName + "/" + post.getPostNum() + "/";
-                    }
+                        midPath = tableName + "/" + number + "/";
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid table name: " + tableName);
@@ -210,5 +206,16 @@ public class FileService {
         result.setPost(post);
 
         return result;
+    }
+
+    public void updatePostNumForFiles(List<Long> fileNumsExcludingPostNum, Long postNum) {
+        for (Long fileNum : fileNumsExcludingPostNum) {
+            File file = fileRepository.findById(fileNum)
+                    .orElseThrow(() -> new RuntimeException("File not found with id: " + fileNum));
+            Post post = postRepository.findById(postNum)
+                    .orElseThrow(() -> new RuntimeException("Post not found with id: " + postNum));
+            file.setPost(post);
+            fileRepository.save(file);
+        }
     }
 }

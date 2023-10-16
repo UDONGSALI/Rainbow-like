@@ -1,15 +1,11 @@
 package RainbowLike.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
-import java.nio.file.Path;
 
 @Entity
 @Getter
@@ -23,7 +19,7 @@ public class File {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "post_num")
+    @JoinColumn(name = "post_num", nullable=true)
     private Post post;
 
     @ManyToOne

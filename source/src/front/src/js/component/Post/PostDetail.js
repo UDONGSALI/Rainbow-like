@@ -102,21 +102,6 @@ function PostDetail(props) {
         }
     };
 
-    useEffect(() => {
-        fetch(SERVER_URL + "files/table/post")
-            .then((response) => response.json())
-            .then((data) => {
-                setFiles(data);
-
-                // files[].post.postNum 중 가장 큰 값을 찾아 lastPostNum 상태로 설정
-                const maxPostNum = Math.max(...data.map(file => file.post.postNum));
-                setLastPostNum(maxPostNum);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, []);
-
 
     useEffect(() => {
         // post 상태가 있고, post.board.boardNum이 7보다 작을 때만 이전 글의 제목을 가져옴

@@ -23,11 +23,13 @@ function Chatting({param}){
     }, []);
 
     const fetchChatData = () => {
-        fetch(SERVER_URL + "findchatbyroom/" + memNum)
+        fetch(SERVER_URL + "findchatbymem/" + memNum)
             .then(response =>
                 response.json())
             .then(data =>{
                 setChatData(data);
+                hello(data);
+
             })
             .catch(err => console.error(err));
     };
@@ -38,11 +40,15 @@ function Chatting({param}){
         scrollToBottom();
     }, [chatHistory]);
 
-    useEffect(() => {
-        const newChatHistory = [...chatHistory, { text: `반갑습니다, ${memId}님! 무엇이 궁금하신가요?`, isUser: false }];
-        setChatHistory(newChatHistory);
 
-    }, []);
+    const hello = (chatData) => {
+        console.log(chatData)
+            if(Array.isArray(chatData) && chatData.length === 0){
+                // console.log(Array.isArray(chatData));
+                const newChatHistory = [...chatHistory, { text: `반갑습니다, ${memId}님! 무엇이 궁금하신가요?`, isUser: false }];
+                setChatHistory(newChatHistory);
+            }
+        };
 
     const scrollToBottom = () => {
         if (scrollContainerRef.current) {
@@ -77,8 +83,22 @@ function Chatting({param}){
                      ref={scrollContainerRef}
                      style={{
                          overflowY: 'auto',
-                         height: '600px' // 스크롤이 필요한 높이로 설정
+                         height: '600px' 
                      }}>
+                    {chatData.map((message, index) => {
+                        console.log("message.member.memNum:", message.member.memNum + " 지금 isMemNum꼬라지 : " + isMemNum);
+                        return (
+                            <div
+                                key={index}
+                                className={`${styles.message} ${
+                                    message.member.memNum.toString() === isMemNum ? styles.user : styles.bot
+                                }`}
+                            >
+                                {message.content}
+                            </div>
+                        );
+                    })}
+
                     {chatHistory.map((message, index) => (
                         <div
                             key={index}

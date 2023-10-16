@@ -45,6 +45,12 @@ public class PostController {
         return postRepository.findByBoard(boardRepository.findByBoardNum(boardNum));
     }
 
+    @GetMapping("/post/search/{option}/{value}")
+    public ResponseEntity<Iterable<Post>> searchPost(@PathVariable String option, @PathVariable String value) {
+        Iterable<Post> postInfo = postService.searchPostsByOptionAndValue(option, value);
+        return ResponseEntity.ok(postInfo);
+    }
+
     @GetMapping("/post/{boardNum}/search/{option}/{value}")
     public ResponseEntity<Iterable<Post>> searchBoardPost(@PathVariable Long boardNum, @PathVariable String option, @PathVariable String value) {
         Iterable<Post> postInfo = postService.searchPostsByBoardNumAndOptionAndValue(boardNum, option, value);
@@ -214,5 +220,14 @@ public class PostController {
         ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();
         postService.createPosts(postDtoList);
     }
-
+    @GetMapping("/post/lastPostNum")
+    public ResponseEntity<Long> getLastPostNum() {
+        Post lastPost = postRepository.findTopByOrderByPostNumDesc();
+        System.out.println("마지막 포스트넘" + lastPost.getPostNum());
+        logger.info("Last Post: " + lastPost);
+        if (lastPost != null) {
+            return ResponseEntity.ok().body(lastPost.getPostNum());
+        }
+        return ResponseEntity.ok().body(0L);  // 0을 반환하거나 다른 기본값을 반환할 수 있습니다.
+    }
 }
