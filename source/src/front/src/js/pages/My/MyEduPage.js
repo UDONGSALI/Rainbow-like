@@ -1,4 +1,4 @@
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/MyHeader";
 import React from 'react';
 import MyEduList from "../../component/My/Edu/MyEduList";
@@ -9,7 +9,7 @@ const MyEduPage = (props) => {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             <MyEduList/>
         </div>
     );

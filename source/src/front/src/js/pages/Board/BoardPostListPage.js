@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import UrlComponent from "../../layout/Header/UrlComponent";
+import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/AdminHeader";
 import {useParams} from "react-router-dom";
 import BoardPostList from "../../component/Board/BoardPostList";
@@ -41,7 +41,7 @@ function BoardPostListPage() {
 
     return (
         <div>
-            <UrlComponent headerTitle={headerInfo} urlItems={urlData} footerTitle={boardName}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={boardName}/>
 
             <Swiper
                 spaceBetween={50}
