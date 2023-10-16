@@ -130,6 +130,9 @@ public class MemberFormDto {
         memberFormDto4.setJdate(LocalDate.now());
         memberFormDtoList.add(memberFormDto4);
 
+
+
+
         for (int i = 0; i < 20; i++) {
             MemberFormDto memberFormDto = new MemberFormDto();
             memberFormDto.setMemId("user" + i);
