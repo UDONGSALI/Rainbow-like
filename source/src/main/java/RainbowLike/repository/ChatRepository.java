@@ -5,7 +5,9 @@ import RainbowLike.entity.ChatRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface ChatRepository extends JpaRepository <Chat,Long> {
@@ -16,5 +18,12 @@ public interface ChatRepository extends JpaRepository <Chat,Long> {
     Iterable<Chat> findByMemNum(Long memNum);
 
     Iterable<Chat> findByChatRoomMemberMemNumOrderByChatNumAsc(Long memNum);
+
+    boolean existsByMember_MemId(String memId);
+
+    @Transactional
+    @Modifying
+    @Query("delete from Chat p where p.member.memId = :memId")
+    void deleteByMember_MemId(@Param("memId") String memId);
 
 }
