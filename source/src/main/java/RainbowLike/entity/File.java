@@ -38,7 +38,7 @@ public class File {
     private Space space;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="member-files")
     @JoinColumn(name = "mem_num")
     private Member member;
 
