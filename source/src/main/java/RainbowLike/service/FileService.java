@@ -69,6 +69,8 @@ public class FileService {
                 return fileRepository.findByEduHistIsNotNull();
             case "member":
                 return fileRepository.findByMemberIsNotNull();
+            case "space":
+                return fileRepository.findBySpaceIsNotNull();
             default:
                 throw new IllegalArgumentException("Invalid table name: " + name);
         }
