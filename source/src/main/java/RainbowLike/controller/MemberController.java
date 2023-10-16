@@ -153,8 +153,10 @@ public class MemberController {
     }
 
 
+
+
     //회원탈퇴에 따른 해당멤버 정보삭제
-    @DeleteMapping("/delete/{memId}")
+    @PatchMapping("/Withdrawal/{memId}")
     public ResponseEntity<String> deleteMember(@PathVariable String memId) {
         try {
             memberService.deleteMember(memId);

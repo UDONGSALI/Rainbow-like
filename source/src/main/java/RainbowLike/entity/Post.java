@@ -29,12 +29,12 @@ public class Post extends BaseEntity {
     private Member member;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference(value="member-posts")
     @JoinColumn(name = "mem_id")
     private Member labor;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference(value="board-posts")
     @JoinColumn(name = "board_num")
     private Board board;
 
