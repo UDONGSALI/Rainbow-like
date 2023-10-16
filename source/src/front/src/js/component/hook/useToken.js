@@ -55,34 +55,37 @@ export function useToken() {
     }, [navigate]);
 
     useEffect(() => {
-        checkTokenStatus();
         const token = sessionStorage.getItem('jwt');
+
+        // 토큰이 세션 스토리지에 있다면
         if (token) {
             const decodedToken = decodeToken(token);
+
+            // 만료된 토큰인 경우
             if (!decodedToken) {
                 alert("로그아웃 되었습니다!");
                 const jti = sessionStorage.getItem('jti');
                 deleteTokenFromServer(jti);
-                sessionStorage.clear()
+                sessionStorage.clear();
                 navigate("/login");
             } else {
-                // 유형을 세션 스토리지에 저장
+                // 유효한 토큰인 경우 세션 스토리지에 정보 저장
                 sessionStorage.setItem("role", decodedToken.role);
-                // 멤넙을 세션 스토리지에 저장
                 sessionStorage.setItem("memNum", decodedToken.memNum);
-                // username을 세션 스토리지에 저장
                 sessionStorage.setItem("memId", decodedToken.sub);
-                // 여기에 재발급 로직 추가 가능
                 sessionStorage.setItem("jti", decodedToken.jti);
 
                 const expirationDate = new Date(decodedToken.exp * 1000);
                 const oneHourFromNow = new Date().getTime() + 60 * 60 * 1000;
+
+                // 토큰이 1시간 이내로 만료되는 경우 재발급
                 if (expirationDate.getTime() <= oneHourFromNow) {
                     refreshToken();
                 }
             }
-            checkTokenStatus();
         }
+        // 토큰 상태 체크
+        checkTokenStatus();
     }, [navigate, decodeToken, checkTokenStatus]);
 
     const getToken = useCallback((credentials) => {

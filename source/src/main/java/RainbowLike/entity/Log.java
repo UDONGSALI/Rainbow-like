@@ -35,7 +35,7 @@ public class Log {
     private String label;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="member-logs")
     @JoinColumn(name = "mem_num")
     private Member member;
 

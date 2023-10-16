@@ -45,6 +45,12 @@ public class PostController {
         return postRepository.findByBoard(boardRepository.findByBoardNum(boardNum));
     }
 
+    @GetMapping("/post/search/{option}/{value}")
+    public ResponseEntity<Iterable<Post>> searchPost(@PathVariable String option, @PathVariable String value) {
+        Iterable<Post> postInfo = postService.searchPostsByOptionAndValue(option, value);
+        return ResponseEntity.ok(postInfo);
+    }
+
     @GetMapping("/post/{boardNum}/search/{option}/{value}")
     public ResponseEntity<Iterable<Post>> searchBoardPost(@PathVariable Long boardNum, @PathVariable String option, @PathVariable String value) {
         Iterable<Post> postInfo = postService.searchPostsByBoardNumAndOptionAndValue(boardNum, option, value);

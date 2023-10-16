@@ -41,3 +41,7 @@ nav{width:80%;overflow:hidden;height:80px;background-color:#1b2035;margin:50px a
 
 
 }
+
+body::-webkit-scrollbar {
+  display: none;
+}

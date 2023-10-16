@@ -51,8 +51,8 @@
     margin-right: 5px; /* *과 텍스트 사이의 간격을 조절합니다. */
 }
 
-input[type="text"],
-input[type="email"] {
+.parentContainer input[type="text"],
+.parentContainer input[type="email"] {
     width: 25%;
     padding: 5px;
     border: 1px solid #ccc;
@@ -65,14 +65,14 @@ input[type="email"] {
     margin-bottom: 50px;
 }
 
-.buttonGroup {
+.parentContainer .buttonGroup {
     display: flex;
     justify-content: center;
     margin-top: 20px;
     margin-bottom: 50px;
 }
 
-button[type="submit"], button[type="button"] {
+.parentContainer button[type="submit"], button[type="button"] {
     background-color: #a38ced;
     border: 1px solid #99959e;
     border-radius: 5px;
@@ -83,7 +83,7 @@ button[type="submit"], button[type="button"] {
     font-size: 16px;
 }
 
-button[type="submit"]:hover,
-button[type="button"]:hover {
+.parentContainer button[type="submit"]:hover,
+.parentContainer button[type="button"]:hover {
     background-color: #53468b;
 }

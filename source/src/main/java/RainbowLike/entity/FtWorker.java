@@ -24,7 +24,7 @@ public class FtWorker extends BaseEntity{
     private Long ftWorkerNum;
 
     @ManyToOne
-    @JsonManagedReference
+    @JsonManagedReference(value="member-ftWorkers")
     @JoinColumn(name = "mem_num", nullable = false)
     private Member member;
 
