@@ -6,6 +6,7 @@ import RainbowLike.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,6 +37,12 @@ public interface PostRepository extends JpaRepository <Post,Long> {
 
     // 게시판과 멤버를 이용하여 게시글 찾기
     List<Post> findByBoardInAndMemberMemNum(List<Board> boards, Long memNum);
+
+    @Modifying
+    @Query("delete from Post p where p.member.memId = :memId")
+    void deleteByMember_MemId(@Param("memId") String memId);
+
+    boolean existsByMember_MemId(String memId);
 
 
 }

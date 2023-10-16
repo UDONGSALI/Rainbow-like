@@ -1,19 +1,23 @@
 package RainbowLike.controller;
 
 
+import RainbowLike.component.MemberNotFoundException;
+import RainbowLike.component.UpdateMemberException;
 import RainbowLike.dto.MemberFormDto;
 import RainbowLike.entity.Member;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.MemberService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @RestController
@@ -24,6 +28,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+
     @GetMapping
     public ResponseEntity<Iterable<Member>> getMembers() {
         return ResponseEntity.ok(memberService.findAllMembers());
@@ -101,9 +107,67 @@ public class MemberController {
         }
     }
 
+    //멤버번호로 회원정보 가져오기
     @RequestMapping("/memInfo/{memNum}")
-    public Member getMemberByMemNum(@PathVariable Long memNum){
-        return memberRepository.findByMemNum(memNum);
+    public ResponseEntity<Member> getMemberByMemNum(@PathVariable Long memNum) {
+        Member member = memberRepository.findByMemNum(memNum);
+        if (member != null) {
+            return ResponseEntity.ok(member);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
+
+    //회원정보수정에 따른 업데이트
+    @PatchMapping("/update/{memId}")
+    public ResponseEntity<String> updateMember(@PathVariable String memId, @RequestBody MemberFormDto updatedInfo) {
+        try {
+            Member existingMember = memberRepository.findByMemId(memId);
+
+            if (existingMember == null) {
+                return ResponseEntity.badRequest().body("Member not found");
+            }
+            if (updatedInfo.getGender() != null) {
+                existingMember.setGender(updatedInfo.getGender());
+            }
+            if (updatedInfo.getEmail() != null) {
+                existingMember.setEmail(updatedInfo.getEmail());
+            }
+            existingMember.setName(updatedInfo.getName());
+            if (updatedInfo.getPwd() != null) {
+                existingMember.setPwd(updatedInfo.getPwd());
+            }
+            existingMember.setAddrPost(updatedInfo.getAddrPost());
+            existingMember.setAddr(updatedInfo.getAddr());
+            if (updatedInfo.getAddrDtl() != null) {
+                existingMember.setAddrDtl(updatedInfo.getAddrDtl());
+            }
+
+            // 업데이트된 멤버를 저장하고 반환
+            memberRepository.save(existingMember);
+            return ResponseEntity.ok("Member updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update member: " + e.getMessage());
+        }
+    }
+
+
+    //회원탈퇴에 따른 해당멤버 정보삭제
+    @DeleteMapping("/delete/{memId}")
+    public ResponseEntity<String> deleteMember(@PathVariable String memId) {
+        try {
+            memberService.deleteMember(memId);
+            return ResponseEntity.ok("회원 탈퇴에 성공했습니다!");
+        } catch (MemberNotFoundException e) {
+            logger.error("회원이 존재하지 않습니다.", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원이 존재하지 않습니다.");
+        } catch (Exception e) {
+            logger.error("회원 탈퇴 중 오류가 발생했습니다.", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 탈퇴 중 오류가 발생했습니다.");
+        }
+    }
 }
+
+
+
