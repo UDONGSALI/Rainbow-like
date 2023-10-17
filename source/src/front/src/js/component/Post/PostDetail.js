@@ -28,7 +28,7 @@ function PostDetail(props) {
 
     useEffect(() => {
         // 게시글 조회수 증가 API 호출
-        fetch(`${SERVER_URL}posts/${postNum}/increase-view`, {
+        fetch(`${SERVER_URL}post/${postNum}/increase-view`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ function PostDetail(props) {
             });
 
         // 게시글 정보를 가져와서 post 상태를 업데이트합니다.
-        fetch(`${SERVER_URL}posts/${postNum}`)
+        fetch(`${SERVER_URL}post/${postNum}`)
             .then(response => response.json())
             .then(data => setPost(data))
             .catch(error => console.error(error));
@@ -63,14 +63,11 @@ function PostDetail(props) {
     const onDelClick = () => {
         const isConfirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
         if (isConfirmed) {
-            console.log("Filtered Files:", files);
-
             // 연결된 파일들이 있을 경우에만 삭제 로직을 수행
             const fileDeletePromises = files.length ?
                 files.filter(file => file.post.postNum === post.postNum) // 해당 게시글 번호와 일치하는 파일만 필터링
                     .map(file => {
                         const fileDeleteUrl = `${SERVER_URL}files/post/${post.postNum}`; // 게시글 번호로 URL 구성
-                        console.log("Deleting file from URL:", fileDeleteUrl);
                         return fetch(fileDeleteUrl, { method: 'DELETE' });
                     }) : [];
 
@@ -111,7 +108,7 @@ function PostDetail(props) {
         // post 상태가 있고, post.board.boardNum이 7보다 작을 때만 이전 글의 제목을 가져옴
         if (post && post.board.boardNum < 7) {
             // 이전 글의 제목 가져오기
-            fetch(`${SERVER_URL}posts/${prevPostNum}`)
+            fetch(`${SERVER_URL}post/${prevPostNum}`)
                 .then(response => response.json())
                 .then(data => setPrevPostTitle(data.post))
                 .catch(error => console.error(error));
@@ -119,7 +116,7 @@ function PostDetail(props) {
 
         // 현재 postNum이 마지막 글이 아니고, boardNum이 7보다 작을 때만 다음 글의 제목 가져오기
         if (postNum < lastPostNum && post && post.board.boardNum < 7) {
-            fetch(`${SERVER_URL}posts/${nextPostNum}`)
+            fetch(`${SERVER_URL}post/${nextPostNum}`)
                 .then(response => response.json())
                 .then(data => setNextPostTitle(data.post))
                 .catch(error => console.error(error));
@@ -129,7 +126,6 @@ function PostDetail(props) {
     const onEditClick = () => {
         navigate(`/post/edit/${postNum}`);
     };
-console.log(postNum)
     if (!post) {
         return <div>Loading...</div>;
     }
@@ -144,24 +140,14 @@ console.log(postNum)
     return (
         <div className={styles.postDetail}> {/* CSS 모듈 적용 */}
             <div className={styles.titleDivider}></div>
-            <h2 className={styles.title}>{post.post.title}</h2>
+            <h2 className={styles.title}>{post.title}</h2>
             <div className={styles.postMeta}>
                 <p className={styles.postData}>
                     작성자: {post.member.name}{' '}
-                    작성일: {post.post.writeDate.slice(0, 10)}{' '}
-                    조회수: {post.post.pageView}
+                    작성일: {post.writeDate.slice(0, 10)}{' '}
+                    조회수: {post.pageView}
                 </p>
-                {/*<div className={styles.leftTop}>*/}
-                {/*    {files.map((file, index) => (*/}
-                {/*        <img*/}
-                {/*            key={index}*/}
-                {/*            src={file.fileUri}*/}
-                {/*            alt={`Image ${index + 1}`}*/}
-                {/*            className={styles.postImage}*/}
-                {/*        />*/}
-                {/*    ))}*/}
-                {/*</div>*/}
-                <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.post.content }}>
+                <div className={styles.postContent} dangerouslySetInnerHTML={{ __html: post.content }}>
                 </div>
             </div>
             <div className={styles.postFileList}>

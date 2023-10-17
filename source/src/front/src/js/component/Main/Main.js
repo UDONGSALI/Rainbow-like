@@ -1,68 +1,100 @@
-import React, {useEffect, useRef, useState} from 'react';
-import MapComponent from "./Map/MapComponent";
+import React, { useEffect, useState } from 'react';
 import styles from '../../../css/component/Main/Main.module.css';
-import ImgContainer from "./ImgContainer";
+import ImgContainer from "./Img/ImgContainer";
 import EduContainer from "./Edu/EduContainer";
 import RentContainer from "./Rent/RentContainer";
+import TalentContainer from "./Talent/TalentContainer";
+import { Element, scroller } from 'react-scroll';
 
 function Main() {
-    const imgContainerRef = useRef(null);
-    const eduContainerRef = useRef(null);
-    const rentContainerRef = useRef(null);
-    const mapComponentRef = useRef(null);
-    const [activeSlide, setActiveSlide] = useState(0);
+    const [currentSlide, setCurrentSlide] = useState('imgContainer');
 
-    useEffect(() => {
-        const mainDiv = document.querySelector(`.${styles.Main}`);
-        mainDiv.addEventListener('wheel', handleScroll, { passive: false });
-
-        return () => {
-            mainDiv.removeEventListener('wheel', handleScroll);
-        };
-    }, []);
+    const scrollToElement = (elementName) => {
+        scroller.scrollTo(elementName, {
+            duration: 50,
+            delay: 0,
+            smooth: 'easeInOutQuart'
+        });
+    };
 
     const handleScroll = (e) => {
         e.preventDefault();
 
         const direction = (e.deltaY > 0) ? 'down' : 'up';
+        const currentId = e.currentTarget.id;
+
         if (direction === 'down') {
-            if (activeSlide === 0) {
-                eduContainerRef.current.scrollIntoView({ behavior: 'smooth' });
-                setActiveSlide(1);
-            } else if (activeSlide === 1) {
-                rentContainerRef.current.scrollIntoView({ behavior: 'smooth' });
-                setActiveSlide(2);
-            } else if (activeSlide === 2) {
-                mapComponentRef.current.scrollIntoView({ behavior: 'smooth' });
-                setActiveSlide(3);
+            switch (currentId) {
+                case 'imgContainer':
+                    setCurrentSlide('eduContainer');
+                    scrollToElement('eduContainer');
+                    break;
+                case 'eduContainer':
+                    setCurrentSlide('rentContainer');
+                    scrollToElement('rentContainer');
+                    break;
+                case 'rentContainer':
+                    setCurrentSlide('talentContainer');
+                    scrollToElement('talentContainer');
+                    break;
+                default:
+                    break;
             }
         } else {
-            if (activeSlide === 3) {
-                rentContainerRef.current.scrollIntoView({ behavior: 'smooth' });
-                setActiveSlide(2);
-            } else if (activeSlide === 2) {
-                eduContainerRef.current.scrollIntoView({ behavior: 'smooth' });
-                setActiveSlide(1);
-            } else if (activeSlide === 1) {
-                imgContainerRef.current.scrollIntoView({ behavior: 'smooth' });
-                setActiveSlide(0);
+            switch (currentId) {
+                case 'talentContainer':
+                    setCurrentSlide('rentContainer');
+                    scrollToElement('rentContainer');
+                    break;
+                case 'rentContainer':
+                    setCurrentSlide('eduContainer');
+                    scrollToElement('eduContainer');
+                    break;
+                case 'eduContainer':
+                    setCurrentSlide('imgContainer');
+                    scrollToElement('imgContainer');
+                    break;
+                default:
+                    break;
             }
         }
     };
 
+    const preventDrag = (e) => {
+        e.preventDefault();
+    };
+
+    useEffect(() => {
+        const mainDiv = document.querySelector(`.${styles.Main}`);
+        mainDiv.addEventListener('wheel', handleScroll, { passive: false });
+        mainDiv.addEventListener('mousedown', preventDrag, { passive: false });
+
+        return () => {
+            mainDiv.removeEventListener('wheel', handleScroll);
+            mainDiv.removeEventListener('mousedown', preventDrag);
+        };
+    }, []);
+
     return (
-        <div className={styles.Main} onWheel={handleScroll}>
-            <div ref={imgContainerRef}>
+        <div className={styles.Main}>  {/* 이 부분에 position: 'relative' 추가 */}
+            <Element name="imgContainer" id="imgContainer" onWheel={handleScroll}>
                 <ImgContainer />
-            </div>
-            <div className={styles.slide} ref={eduContainerRef}>
+            </Element>
+            <Element name="eduContainer" id="eduContainer" className={styles.slide} onWheel={handleScroll}>
                 <EduContainer />
-            </div>
-            <div className={styles.slide} ref={rentContainerRef}>
+            </Element>
+            <Element name="rentContainer" id="rentContainer" className={styles.slide} onWheel={handleScroll}>
                 <RentContainer />
-            </div>
-            <div className={styles.slide} ref={mapComponentRef}>
-                <MapComponent />
+            </Element>
+            <Element name="talentContainer" id="talentContainer" className={styles.slide} onWheel={handleScroll}>
+                <TalentContainer />
+            </Element>
+
+            <div className={styles.dotIndicator}>
+                <div className={`${styles.dot} ${currentSlide === 'imgContainer' ? styles.dotActive : styles.dotImgContainer}`}></div>
+                <div className={`${styles.dot} ${currentSlide === 'eduContainer' ? styles.dotActive : styles.dotEduContainer}`}></div>
+                <div className={`${styles.dot} ${currentSlide === 'rentContainer' ? styles.dotActive : styles.dotRentContainer}`}></div>
+                <div className={`${styles.dot} ${currentSlide === 'talentContainer' ? styles.dotActive : styles.dotTalentContainer}`}></div>
             </div>
         </div>
     );
