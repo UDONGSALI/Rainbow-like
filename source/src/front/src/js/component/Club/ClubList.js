@@ -104,7 +104,7 @@ function ClubList(props) {
     }, []);
 
     const fetchPosts = () =>{
-        fetch(SERVER_URL + "post/9")
+        fetch(`${SERVER_URL}post/board/9`)
             .then(response =>
                 response.json())
             .then((data) => {
@@ -133,7 +133,7 @@ function ClubList(props) {
         };
 
         // PUT 요청 보내기
-        fetch(SERVER_URL + "posts/edit/" + post.postNum, {
+        fetch(SERVER_URL + "post/edit/" + post.postNum, {
             method: 'PUT', // PUT 요청을 사용
             headers: {
                 'Content-Type': 'application/json',

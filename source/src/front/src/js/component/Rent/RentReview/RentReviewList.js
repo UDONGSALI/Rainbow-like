@@ -16,7 +16,7 @@ export default function RentReviewList() {
     }, []);
 
     const fetchRentReviewPosts = () => {
-        fetch(SERVER_URL + "rentReview/")
+        fetch(SERVER_URL + "post/board/6")
             .then(response => response.json())
             .then((data) => {
                 console.log(data);
