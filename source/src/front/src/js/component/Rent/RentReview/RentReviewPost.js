@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import styles from "../../../../css/component/Rent/RentReviewPost.module.css";
+import Comment from "../../Comment/Comment";
 
 const RentReviewDetails = () => {
     const {postNum} = useParams();
@@ -16,8 +17,8 @@ const RentReviewDetails = () => {
     const fetchPostDetails = async () => {
         try {
             const [detailsResponse, postResponse] = await Promise.all([
-                fetch(SERVER_URL + `rentReview/${postNum}`),
-                fetch(`${SERVER_URL}posts/${postNum}/increase-view`, {
+                fetch(SERVER_URL + `post/${postNum}`),
+                fetch(`${SERVER_URL}post/${postNum}/increase-view`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -170,10 +171,9 @@ const RentReviewDetails = () => {
                     </div>
                 </div>
             </div>
-
             <div className={styles.button2} style={{display: 'flex', justifyContent: 'center'}}>
 
-                <button onClick={() => navigate('/rent/reviewEdit')}
+                <button onClick={() => navigate('/rent/reviewWrite')}
                         style={{
                             width: "100px",
                             height: "40px",
@@ -185,7 +185,7 @@ const RentReviewDetails = () => {
                             fontWeight: "bold",
                             marginTop: "5%",
                             marginBottom: "15%"
-                        }}>글쓰기
+                        }}>새글쓰기
                 </button>
 
                 <button onClick={() => navigate('/rent/review')}
@@ -204,8 +204,6 @@ const RentReviewDetails = () => {
                 </button>
 
             </div>
-
-
         </div>
     );
 };

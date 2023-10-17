@@ -28,7 +28,7 @@ function PostNoticeList(props) {
 
     // 게시물 목록을 불러오는 로직을 함수로 분리
     const fetchPosts = () => {
-        fetch(SERVER_URL + `post/${boardNum}`)
+        fetch(SERVER_URL + `post/board/${boardNum}`)
             .then(res => res.json())
             .then(data => {
                 const reversedData = [...data].reverse();

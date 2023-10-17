@@ -28,7 +28,7 @@ function CounselingList(props) {
     };
 
     useEffect(() => {
-        fetch(SERVER_URL + `post/${boardNum}`)
+        fetch(SERVER_URL + `post/board/${boardNum}`)
             .then(res => res.json())
             .then(data => {
                 const primaryPosts = data.filter(post => !post.parentsNum).reverse();

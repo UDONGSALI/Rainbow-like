@@ -2,12 +2,12 @@ import React, {useRef, useState} from 'react';
 import SwiperCore, {Autoplay, EffectFade, Navigation, Pagination} from 'swiper'; // EffectFade 추가
 import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-import styles from '../../../css/component/Main/ImgContainer.module.css';
-import heart from '../../../img/component/Main/heart.jpg';
-import club from '../../../img/component/Main/club.jpg';
-import edu from '../../../img/component/Main/edu.jpg';
-import office from '../../../img/component/Main/office.jpg';
-import rent from '../../../img/component/Main/rent.png';
+import styles from '../../../../css/component/Main/Img/ImgContainer.module.css';
+import heart from '../../../../img/component/Main/heart.jpg';
+import club from '../../../../img/component/Main/club.jpg';
+import edu from '../../../../img/component/Main/edu.jpg';
+import office from '../../../../img/component/Main/office.jpg';
+import rent from '../../../../img/component/Main/rent.png';
 import styled from "@emotion/styled";
 
 SwiperCore.use([Navigation, Pagination, Autoplay, EffectFade]);

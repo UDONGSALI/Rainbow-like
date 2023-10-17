@@ -2,7 +2,7 @@ import * as React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import styles from '../../../css/component/Rent/RentApplicationForm.module.css';
+import styles from '../../../../css/component/Rent/RentApplicationForm.module.css';
 
 
 export default function RentAgreeForm() {

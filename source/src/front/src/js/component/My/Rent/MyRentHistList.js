@@ -52,7 +52,7 @@ export default function MyRentHistList() {
                 const rentHistsWithNumbers = modifiedData.map((rentHist, index) => ({
                     ...rentHist,
                     id: rentHist.rentHistNum,
-                    number: index -1, // 각 행에 번호를 순차적으로 할당
+                    number: index +1, // 각 행에 번호를 순차적으로 할당
                 }));
 
                 setRentHists(rentHistsWithNumbers);
