@@ -127,7 +127,7 @@ function PostList() {
         };
 
         // PUT 요청 보내기
-        fetch(SERVER_URL + "posts/edit/" + post.postNum, {
+        fetch(SERVER_URL + "post/edit/" + post.postNum, {
             method: 'PUT', // PUT 요청을 사용
             headers: {
                 'Content-Type': 'application/json',

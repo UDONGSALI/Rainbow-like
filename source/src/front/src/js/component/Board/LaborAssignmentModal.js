@@ -13,7 +13,7 @@ function LaborAssignmentModal({ open, onClose, postNum, onAssignSuccess }) {
     const handleAssignLabor = async (memId) => {
         if (!window.confirm("이 노무사를 배정 하시겠습니까?")) return;
 
-        const isSuccess = await patchItem(`post/update/`+postNum, { action: "labor", laborId: memId },'배정');
+        const isSuccess = await patchItem(`post/patch/`+postNum, { action: "labor", laborId: memId },'배정');
         if (isSuccess) {
             onAssignSuccess(postNum, memId);
             onClose();

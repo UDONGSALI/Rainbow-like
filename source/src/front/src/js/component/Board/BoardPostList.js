@@ -112,7 +112,7 @@ function BoardPostList({ boardNum }) {
     };
 
     const handleStatusChange = async (postNum, newStatus) => {
-        const isSuccess = await patchItem('post/update/' + postNum, { action: "status", status: newStatus }, "신청");
+        const isSuccess = await patchItem('post/patch/' + postNum, { action: "status", status: newStatus }, "신청");
         if (isSuccess) {
             const updatedRows = posts.map(row =>
                 row.postNum === postNum ? { ...row, status: newStatus } : row
@@ -144,7 +144,7 @@ function BoardPostList({ boardNum }) {
             action: "cancelLabor"
         };
 
-        const isSuccess = await patchItem(`post/update/` + postNum, bodyData, '배정');
+        const isSuccess = await patchItem(`post/patch/` + postNum, bodyData, '배정');
         if (isSuccess) {
             const updatedRows = posts.map(row =>
                 row.postNum === postNum ? { ...row, labor: null, conselStatus: "WAIT" } : row
