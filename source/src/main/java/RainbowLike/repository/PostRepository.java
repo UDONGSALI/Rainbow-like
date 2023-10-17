@@ -10,7 +10,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -43,6 +46,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     //멤버별 게시글 찾기
     List<Post> findByMember(Member member);
 
+    //게시판과 멤버번호로 게시글찾기
     List<Post> findByBoardAndMemberMemNum(Board board, Long memNum);
 
     // 게시글 번호와 게시판 번호로 게시글 찾기
@@ -50,6 +54,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     // 게시판과 멤버를 이용하여 게시글 찾기
     List<Post> findByBoardInAndMemberMemNum(List<Board> boards, Long memNum);
+
+
 
     void deleteByMember(Member member);
 

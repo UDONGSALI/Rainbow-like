@@ -66,6 +66,7 @@ import MainPage from "./js/pages/Main/MainPage";
 import ImgContainer from "./js/component/Main/ImgContainer";
 import RentReviewListPage from "./js/pages/Rent/RentReviewListPage";
 import RentReviewEditPage from "./js/pages/Rent/RentReviewEditPage";
+import RentReviewWritePage from "./js/pages/Rent/RentReviewWritePage";
 
 
 
@@ -143,6 +144,7 @@ function App() {
                 <Route path="/rent/apply" element={<RentApplyPage/>}/>
                 <Route path="/rent/review" element={<RentReviewListPage/>}/>
                 <Route path="/rent/reviewPost/:postNum" element={<RentReviewPostPage/>}/>
+                <Route path="/rent/reviewWrite/" element={<RentReviewWritePage/>}/>
                 <Route path="/rent/reviewEdit/:postNum" element={<RentReviewEditPage/>}/>
 
                 {/*마이페이지관련*/}
