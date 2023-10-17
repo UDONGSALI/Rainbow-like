@@ -84,6 +84,8 @@ public class RentHistDto {
 
         rentHistList.add(rent2);
 
+
+
         return rentHistList;
 
     }

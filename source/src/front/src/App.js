@@ -67,6 +67,7 @@ import PostFormPage from "./js/pages/Post/PostFormPage";
 import EditPost from "./js/component/Post/EditPost";
 import RentReviewListPage from "./js/pages/Rent/RentReviewListPage";
 import RentReviewEditPage from "./js/pages/Rent/RentReviewEditPage";
+import RentReviewWritePage from "./js/pages/Rent/RentReviewWritePage";
 import QuickMenu from "./js/layout/QuickMenu/QuickMenu";
 
 
@@ -154,6 +155,7 @@ function App() {
                 <Route path="/rent/review" element={<RentReviewListPage/>}/>
                 <Route path="/rent/reviewPost/:postNum" element={<RentReviewPostPage/>}/>
                 <Route path="/rent/reviewEdit/:postNum" element={<RentReviewEditPage/>}/>
+                <Route path="/rent/reviewWrite" element={<RentReviewWritePage/>}/>
 
                 {/*마이페이지관련*/}
                 <Route path="/mypage/edu"
