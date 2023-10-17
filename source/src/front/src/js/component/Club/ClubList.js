@@ -104,7 +104,7 @@ function ClubList(props) {
     }, []);
 
     const fetchPosts = () =>{
-        fetch(SERVER_URL + "post/9")
+        fetch(`${SERVER_URL}post/board/9`)
             .then(response =>
                 response.json())
             .then((data) => {

@@ -3,6 +3,7 @@ package RainbowLike;
 import RainbowLike.controller.*;
 import RainbowLike.service.DefaultFileService;
 import RainbowLike.service.EduHistService;
+import RainbowLike.service.PostService;
 import RainbowLike.service.RentHistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -13,8 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @RequiredArgsConstructor
 public class RainbowLikeApplication implements CommandLineRunner {
 
-
-    private final PostController postController;
+    private final PostService postService;
     private final CommentController commentController;
     private final RentHistService rentHistService;
     private final EduHistService eduHistService;
@@ -34,7 +34,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
         rentHistService.createBasicRent();
 
-        postController.createPosts();
+        postService.createPosts();
 
         commentController.createComms();
 

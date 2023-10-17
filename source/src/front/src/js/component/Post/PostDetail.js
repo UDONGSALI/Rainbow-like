@@ -28,7 +28,7 @@ function PostDetail(props) {
 
     useEffect(() => {
         // 게시글 조회수 증가 API 호출
-        fetch(`${SERVER_URL}posts/${postNum}/increase-view`, {
+        fetch(`${SERVER_URL}post/${postNum}/increase-view`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ function PostDetail(props) {
             });
 
         // 게시글 정보를 가져와서 post 상태를 업데이트합니다.
-        fetch(`${SERVER_URL}posts/${postNum}`)
+        fetch(`${SERVER_URL}post/${postNum}`)
             .then(response => response.json())
             .then(data => setPost(data))
             .catch(error => console.error(error));

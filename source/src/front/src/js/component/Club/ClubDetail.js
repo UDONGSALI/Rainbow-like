@@ -16,7 +16,7 @@ console.log(memId);
 
     useEffect(() => {
         // 조회수 증가 API 호출
-        fetch(`${SERVER_URL}posts/${id}/increase-view`, {
+        fetch(`${SERVER_URL}post/${id}/increase-view`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ console.log(memId);
     }, []);
 
     const fetchPost = () =>{
-        fetch(SERVER_URL + "posts/" + id)
+        fetch(`${SERVER_URL}post/${id}`)
             .then(response =>
                 response.json())
             .then(data =>

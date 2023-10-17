@@ -10,9 +10,9 @@ import RainbowLike.repository.BoardRepository;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
 import RainbowLike.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,52 +23,58 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/post")
 public class PostController {
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private BoardRepository boardRepository;
-    @Autowired
-    private PostService postService;
-    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
-    @Autowired
-    private MemberRepository memberRepository;
 
-    @RequestMapping("/posts")
+
+    private final PostRepository postRepository;
+    private final BoardRepository boardRepository;
+    private final PostService postService;
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
+    private final MemberRepository memberRepository;
+
+    @GetMapping
     public Iterable<Post> getPosts() {
         return postRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PostInfo> getPostInfo(@PathVariable Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + id));
+        Board board = post.getBoard();
+        Member member = post.getMember();
+        PostInfo postInfo = new PostInfo(post, board, member);
+        return ResponseEntity.ok(postInfo);
+    }
+
     // 게시판 넘버로 게시물을 검색
-    @RequestMapping("/post/{boardNum}")
+    @GetMapping("/board/{boardNum}")
     public Iterable<Post> getPostsByBoardNum(@PathVariable Long boardNum) {
         return postRepository.findByBoard(boardRepository.findByBoardNum(boardNum));
     }
 
-    @GetMapping("/post/search/{option}/{value}")
+    @GetMapping("/search/{option}/{value}")
     public ResponseEntity<Iterable<Post>> searchPost(@PathVariable String option, @PathVariable String value) {
         Iterable<Post> postInfo = postService.searchPostsByOptionAndValue(option, value);
         return ResponseEntity.ok(postInfo);
     }
 
-    @GetMapping("/post/{boardNum}/search/{option}/{value}")
+    @GetMapping("/{boardNum}/search/{option}/{value}")
     public ResponseEntity<Iterable<Post>> searchBoardPost(@PathVariable Long boardNum, @PathVariable String option, @PathVariable String value) {
         Iterable<Post> postInfo = postService.searchPostsByBoardNumAndOptionAndValue(boardNum, option, value);
         return ResponseEntity.ok(postInfo);
     }
 
-    @RequestMapping("/clubs")
-    public Iterable<Post> getClubPosts() {
-        //게시판 이름으로 게시글 요청
-        Board clubBoard = boardRepository.findByBoardName("club");
-        return postRepository.findByBoard(clubBoard);
-    }
-
-    @RequestMapping("/clubnum")
-    public Iterable<Post> getClulbPostNum() {
-        //게시판 번호로 게시글 요청
-        Board clubNumBoard = boardRepository.findByBoardNum(10L);
-        return postRepository.findByBoard(clubNumBoard);
+    @GetMapping("/lastPostNum")
+    public ResponseEntity<Long> getLastPostNum() {
+        Post lastPost = postRepository.findTopByOrderByPostNumDesc();
+        logger.info("Last Post: " + lastPost);
+        if (lastPost != null) {
+            return ResponseEntity.ok().body(lastPost.getPostNum());
+        }
+        return ResponseEntity.ok().body(0L);  // 0을 반환하거나 다른 기본값을 반환할 수 있습니다.
     }
 
 
@@ -101,24 +107,6 @@ public class PostController {
         Post post = postRepository.findByPostNumAndBoard_BoardNum(postNum, 6L); // 6L은 고정된 값
         return ResponseEntity.ok(post);
     }
-
-    
-
-    @GetMapping("/posts/{id}")
-    public ResponseEntity<PostInfo> getPostInfo(@PathVariable Long id) {
-
-//         포스트 id를 요청하면 해당 id에 대한 post, board, member 정보를 하나의 배열로 반환받을 수 있습니다.
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + id));
-
-        Board board = post.getBoard();
-        Member member = post.getMember();
-
-        PostInfo postInfo = new PostInfo(post, board, member);
-
-        return ResponseEntity.ok(postInfo);
-    }
-
 
 @PostMapping("/posts/new")
     public ResponseEntity<Post> createPost(@RequestBody PostFormDto postFormDto) {
@@ -164,14 +152,12 @@ public class PostController {
         Member member = new Member();
         member.setMemNum(postFormDto.getMemNum());
         editPost.setMember(member);
-
         Post savedPost = postRepository.save(editPost);
-
         // 저장한 게시글을 반환
         return ResponseEntity.ok(savedPost);
     }
 
-    @PostMapping("posts/{id}/increase-view")
+    @PostMapping("/{id}/increase-view")
     public ResponseEntity<Void> increasePageView(@PathVariable Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + id));
@@ -183,44 +169,38 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/post/status/{postNum}")
-    public ResponseEntity<?> updateClubAllowStatus(@PathVariable Long postNum, @RequestBody Map<String, String> body) {
+    @PatchMapping("/update/{postNum}")
+    public ResponseEntity<?> updatePost(@PathVariable Long postNum, @RequestBody Map<String, String> body) {
+        String action = body.get("action");
+
         try {
-            Status status = Status.valueOf(body.get("status").toUpperCase());
-            Optional<Post> updatedRentHist = postService.updateRentClubAllowStatus(postNum, status);
-            if (updatedRentHist.isPresent()) {
-                return ResponseEntity.ok(updatedRentHist.get());
-            } else {
-                return ResponseEntity.notFound().build();
+            Optional<Post> updatedPost;
+            switch (action) {
+                case "status":
+                    Status status = Status.valueOf(body.get("status").toUpperCase());
+                    updatedPost = postService.updateStatus(postNum, status);
+                    break;
+                case "labor":
+                    String memId = body.get("laborId");
+                    updatedPost = postService.updateLabor(postNum, memId);
+                    break;
+                case "cancelLabor":
+                    updatedPost = Optional.ofNullable(postService.cancelLabor(postNum));
+                    break;
+                default:
+                    return ResponseEntity.badRequest().body("Invalid action");
             }
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Invalid status value");
-        }
-    }
-    @PatchMapping("/post/labor/{postNum}")
-    public ResponseEntity<?> updateLabor(@PathVariable Long postNum, @RequestBody Map<String, String> body) {
-        try {
-            String memId = body.get("laborId");
-            Optional<Post> updatedPost = postService.updateLabor(postNum, memId);
             if (updatedPost.isPresent()) {
                 return ResponseEntity.ok(updatedPost.get());
             } else {
                 return ResponseEntity.notFound().build();
             }
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Invalid status value");
+            return ResponseEntity.badRequest().body("Invalid input value");
         }
     }
 
-    @PatchMapping("/post/labor/cancel/{postNum}")
-    public ResponseEntity<?> cancelLabor(@PathVariable Long postNum) {
-        Post updatedPost = postService.cancelLabor(postNum);
-        if (updatedPost != null) {
-            return ResponseEntity.ok(updatedPost);
-        }
-        return ResponseEntity.notFound().build();
-    }
-    @DeleteMapping("/post/{postNum}")
+    @DeleteMapping("/{postNum}")
     public ResponseEntity<?> deletePost(@PathVariable Long postNum) {
         try {
             postService.deletePost(postNum);
@@ -228,21 +208,6 @@ public class PostController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error occurred while deleting post and related posts: " + e.getMessage());
         }
-    }
-
-    public void createPosts(){
-        ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();
-        postService.createPosts(postDtoList);
-    }
-    @GetMapping("/post/lastPostNum")
-    public ResponseEntity<Long> getLastPostNum() {
-        Post lastPost = postRepository.findTopByOrderByPostNumDesc();
-        System.out.println("마지막 포스트넘" + lastPost.getPostNum());
-        logger.info("Last Post: " + lastPost);
-        if (lastPost != null) {
-            return ResponseEntity.ok().body(lastPost.getPostNum());
-        }
-        return ResponseEntity.ok().body(0L);  // 0을 반환하거나 다른 기본값을 반환할 수 있습니다.
     }
 
     @PutMapping("/posts/update/{postNum}")
