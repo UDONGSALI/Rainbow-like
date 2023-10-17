@@ -1,4 +1,4 @@
-import Error from '../../img/component/error.jpg'
+import Error from '../../img/component/Error/error.jpg'
 import styled from 'styled-components';
 
 function ErrorPage() {

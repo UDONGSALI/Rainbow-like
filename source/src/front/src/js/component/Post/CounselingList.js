@@ -6,20 +6,21 @@ import {SERVER_URL} from "../Common/constants";
 import File from "../../../img/component/file.png";
 import styled from '@emotion/styled';
 import Pagination from "../Common/Pagination";
-import logList from "../Log/LogList";
+
 
 function CounselingList(props) {
     const {boardNum, memNum} = props;
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    const isUser = sessionStorage.getItem("role") === "USER";
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    //페이지관련
     const [activePage, setActivePage] = useState(1);
-    const itemsCountPerPage = 10;  // 원하는 페이지당 항목 수를 설정하세요.
+    const itemsCountPerPage = 10;
     const totalItemsCount = posts.length;
-    const pageRangeDisplayed = 5;  // 원하는 범위대로 설정하세요.
+    const pageRangeDisplayed = 5;
+
 
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
@@ -27,7 +28,7 @@ function CounselingList(props) {
     };
 
     useEffect(() => {
-        fetch(SERVER_URL + `post/${boardNum}`)
+        fetch(SERVER_URL + `post/board/${boardNum}`)
             .then(res => res.json())
             .then(data => {
                 const primaryPosts = data.filter(post => !post.parentsNum).reverse();
@@ -53,7 +54,7 @@ function CounselingList(props) {
             })
             .catch(err => console.error(err));
     }, [posts]);
-console.log(posts)
+
     const postsWithFiles = posts.map((post) => {
         const postFiles = files.filter((file) => file.post && file.post.postNum === post.postNum);
         return {
@@ -61,7 +62,25 @@ console.log(posts)
             postFiles,
         };
     });
+    const indexOfLastPost = activePage * itemsCountPerPage;
+    const indexOfFirstPost = indexOfLastPost - itemsCountPerPage;
+    const currentPagePosts = postsWithFiles.slice(indexOfFirstPost, indexOfLastPost);
 
+    // boardNum 기준으로 게시글들을 그룹화
+    const groupedByBoardNum = postsWithFiles.reduce((acc, post) => {
+        if (!acc[post.board.boardNum]) {
+            acc[post.board.boardNum] = [];
+        }
+        acc[post.board.boardNum].push(post);
+        return acc;
+    }, {});
+
+    Object.keys(groupedByBoardNum).forEach(board => {
+        const totalPosts = groupedByBoardNum[board].length; // 해당 게시판의 총 게시글 수
+        groupedByBoardNum[board].forEach((post, index) => {
+            post.orderNumber = totalPosts - index; // 역순으로 순서 번호 부여
+        });
+    });
     const onDelClick = (url) => {
         fetch(url, {method: 'DELETE'})
             .then(response => {
@@ -72,7 +91,7 @@ console.log(posts)
 
     const onEditClick = (params) => {
         const rowId = params.row.postNum;
-        navigate(`/posts/edit/${rowId}`);
+        navigate(`/posts/edit/${rowId}`,{ state: { mode: "edit" } });
     };
 
     const onRowClick = (params) => {
@@ -94,11 +113,13 @@ console.log(posts)
         }
         return name;
     }
-
-
+    const currentStart = totalItemsCount - (activePage - 1) * itemsCountPerPage;
+    console.log('totalItemsCount:', totalItemsCount);
+    console.log('activePage:', activePage);
+    console.log('itemsCountPerPage:', itemsCountPerPage);
     const columns = [
         {
-            field: 'postNum',
+            field: 'orderNumber',
             headerName: '번호',
             headerAlign: 'center',
             sortable: false,
@@ -106,11 +127,11 @@ console.log(posts)
             renderCell: (params) => (
                 <CenteredData>
                     <StyledCell>
-                        {params.row.postNum - 17}
+                        {params.value}
                     </StyledCell>
                 </CenteredData>
             ),
-            width: 80
+            width: 50
         },
         {
             field: 'title',
@@ -218,7 +239,7 @@ console.log(posts)
         }}>
             <DataGrid
                 columns={columns}
-                rows={postsWithFiles}
+                rows={currentPagePosts}
                 style={{width: '900px', height: 400}}
                 disableRowSelectionOnClick={true}
                 getRowId={(row) => row.postNum}
@@ -230,7 +251,7 @@ console.log(posts)
                 onClose={() => setOpen(false)}
                 message="게시글을 지웠습니다."
             />
-            <NewPost onClick={() => navigate('/csl/new', {state: {boardNum}})}>
+            <NewPost onClick={() => navigate('/csl/new', {state: { mode: "create", boardNum}})}>
                 등록
             </NewPost>
             <Pagination
