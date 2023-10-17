@@ -61,7 +61,7 @@ import ChatList from "./js/component/Chat/ChatList";
 import SearchPage from "./js/pages/Search/SearchPage";
 import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
 import MainPage from "./js/pages/Main/MainPage";
-import ImgContainer from "./js/component/Main/ImgContainer";
+import ImgContainer from "./js/component/Main/Img/ImgContainer";
 import CslFormPage from "./js/pages/Post/CslFormPage";
 import PostFormPage from "./js/pages/Post/PostFormPage";
 import EditPost from "./js/component/Post/EditPost";

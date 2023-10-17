@@ -34,9 +34,7 @@ public class FtalentController {
 
 
     @RequestMapping("/ftw")
-    public Iterable<FtWorker> getWorkers() {
-
-        return ftwRepository.findAll();
+    public Iterable<FtWorker> getWorkers() {return ftwRepository.findAll();
     }
 
     @RequestMapping("/ftc")

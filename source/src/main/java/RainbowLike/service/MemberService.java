@@ -3,7 +3,7 @@ package RainbowLike.service;
 import RainbowLike.constant.DelYN;
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
-import RainbowLike.dto.MemberFormDto;
+import RainbowLike.dto.MemberDto;
 import RainbowLike.entity.*;
 import RainbowLike.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,13 +38,13 @@ public class MemberService implements UserDetailsService {
 
     @PostConstruct
     private void createDefaultMembers() {
-        List<MemberFormDto> memberFormDtoList = MemberFormDto.createtestMember();
-        for (MemberFormDto memberFormDto : memberFormDtoList) {
-            saveMember(memberFormDto);
+        List<MemberDto> memberDtoList = MemberDto.createtestMember();
+        for (MemberDto memberDto : memberDtoList) {
+            saveMember(memberDto);
         }
     }
 
-    public Member saveMember(MemberFormDto memberDto) {
+    public Member saveMember(MemberDto memberDto) {
         Member member = mapper.map(memberDto, Member.class);
         String encodedPassword = passwordEncoder.encode(member.getPwd());
         member.setPwd(encodedPassword);
