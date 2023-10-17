@@ -80,7 +80,7 @@ export default function RentReviewEdit({postNum}) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`${SERVER_URL}posts/new`, {
+            const response = await fetch(`${SERVER_URL}post/new`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
