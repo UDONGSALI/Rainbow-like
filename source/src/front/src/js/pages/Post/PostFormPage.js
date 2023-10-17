@@ -34,7 +34,7 @@ function PostFormPage() {
     return (
         <div>
             <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
-            <PostForm />
+            <PostForm postNum={postNum} />
             <Footer/>
         </div>
     );

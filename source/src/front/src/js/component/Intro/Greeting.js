@@ -1,23 +1,24 @@
-
-
+import greetImg from '../../../img/component/Intro/greeting_img.png';
+import styled from '../../../css/component/Intro/Greeting.module.css';
 function Greeting(){
 
-
     return (
-        <div>
-            <section id="content_wrap">
-                <div className="layout ">
-                    <header id="sub_tit">
+        <div className={styled.FullContainer}>
+            <section id={styled.contentWrap}>
+                <div className={styled.fullLayout }>
+                    <header id={styled.subTit}>
                         <h3>인사말</h3>
                     </header>
-                    <div className="greeting">
-                        <div className="greeting_img">
-                            <img src="/html/images/content/greeting_img.svg" alt="" />
+                    <div className={styled.greeting}>
+                        <div className={styled.greetingImg}>
+                            <img src={greetImg} alt={'xx'} />
                         </div>
-                        <div className="greeting_txt">
-                            <h4>세종여성플라자 이곳에서 여성들의 <strong>
-                                <span>날개가 활짝,만남의 문이 활짝,</span>
-                                <br /> <span>웃음이 활짝,성평등이 활짝</span>
+                        <div className={styled.greetingTxt} >
+                            <h4>세종여성플라자 이곳에서 여성들의 <br/><strong>
+                                <span className={styled.highLight}>날개가 활짝,만남의 문이 활짝,</span>
+                                <br/>
+                                <span className={styled.highLight}>웃음이 활짝,성평등이 활짝</span>
+                                <br/>
                             </strong> 피어나도록 함께 하고 싶습니다.
                             </h4>
                             <p>세종여성플라자는 여성들의 사회참여를 돕고 지역사회에
@@ -41,7 +42,7 @@ function Greeting(){
                                 만남의 문이 활짝, 연대와 협력의 기회가 활짝,
                                 여성의 날개가 활짝 펼쳐지길 바랍니다. 감사합니다.
                             </p>
-                            <p className="name">세종여성플라자 대표 <span>홍만희</span></p>
+                            <p className={styled.dFName}>세종여성플라자 대표 <span>홍만희</span></p>
                         </div>
                     </div>
                 </div>
