@@ -1,6 +1,9 @@
 import ClubDetail from "../../component/Club/ClubDetail";
 import Comment from "../../component/Comment/Comment";
 import styles from '../../../css/pages/Club/ClubDtlPage.module.css';
+import Header from "../../layout/Header/Header";
+import {headerInfo, urlData} from "../../layout/Header/Data/ClubHeader";
+import React from "react";
 
 
 function ClubDtlPage(props){
@@ -8,6 +11,9 @@ function ClubDtlPage(props){
 
 
     return(
+        <>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
+
         <div className={styles.postDetailPage}>
 
             <ClubDetail memId = {memId} />
@@ -15,7 +21,7 @@ function ClubDtlPage(props){
                 <Comment memId = {memId}  />
             </div>
         </div>
-
+        </>
 
 );
 }
