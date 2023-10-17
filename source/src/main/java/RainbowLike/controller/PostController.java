@@ -17,10 +17,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class PostController {
@@ -102,7 +99,6 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
-    
 
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostInfo> getPostInfo(@PathVariable Long id) {

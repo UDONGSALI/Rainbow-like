@@ -5,9 +5,7 @@ import RainbowLike.entity.Space;
 import RainbowLike.repository.SpaceRepository;
 import RainbowLike.service.SpaceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -24,6 +22,12 @@ public class SpaceController {
     @RequestMapping("/spaces")
     private Iterable<Space> getSpaces() {
         return spaceRepository.findAll();
+    }
+
+    // 추가된 메서드
+    @GetMapping("/spaces/{spaceNum}")
+    private Space getSpaceByNum(@PathVariable Long spaceNum) {
+        return spaceRepository.findBySpaceNum(spaceNum);
     }
 
     @PostConstruct
