@@ -5,9 +5,14 @@ import { SERVER_URL } from "../Common/constants";
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from "react-quill";
 
-function PostForm() {
-    const { postNum } = useParams();
+function PostForm(props) {
     const location = useLocation();
+    const mode = location.state?.mode || 'create';  // "create" 또는 "edit"
+    const [isEditMode, setIsEditMode] = useState(mode === 'edit');
+
+    const { postNum: postNumFromParams } = useParams();
+    const postNum = props.postNum || postNumFromParams;
+
     const boardNum = location.state?.boardNum;
     const navigate = useNavigate();
     const memId = sessionStorage.getItem("memId");
@@ -54,33 +59,34 @@ function PostForm() {
             });
 
         // 글 정보 가져오기 (추가)
-        if(postNum) {
+        if (isEditMode) {  // postNum의 유무와 isEditMode로 fetch를 실행
             fetch(`${SERVER_URL}posts/${postNum}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)
-                    setFormData({
-                        memNum: data.member.memNum || '',
-                        boardNum: data.boardNum || '',
-                        title: data.post.title || '',
-                        content: data.post.content || '',
-                        pageView: data.post.pageView || 0,
-                        conselStatus: data.post.conselStatus || 'WAIT',
-                        parentsNum: data.post.parentsNum || '',
-                        memName: data.member.name || '',
-                        phone: data.member.tel || '',
-                        email: data.member.email || '',
-                        clubAllowStatus: data.clubAllowStatus || 'WAIT',
-                        clubRecuStatus: data.clubRecuStatus || '',
-                        delYN: data.delYN || 'N'
-                    });
-                    setContent(data.post.content || '');  // ReactQuill에 값을 설정하기 위해
+                    if (data.post.title && data.post.title.length > 0) {  // title에 문자가 있다면 로직 실행
+                        setFormData({
+                            memNum: data.member.memNum || '',
+                            boardNum: data.boardNum || '',
+                            title: data.post.title || '',
+                            content: data.post.content || '',
+                            pageView: data.post.pageView || 0,
+                            conselStatus: data.post.conselStatus || 'WAIT',
+                            parentsNum: data.post.parentsNum || '',
+                            memName: data.member.name || '',
+                            phone: data.member.tel || '',
+                            email: data.member.email || '',
+                            clubAllowStatus: data.clubAllowStatus || 'WAIT',
+                            clubRecuStatus: data.clubRecuStatus || '',
+                            delYN: data.delYN || 'N'
+                        });
+                        setContent(data.post.content || '');  // ReactQuill에 값을 설정하기 위해
+                    }
                 })
                 .catch(error => {
                     console.error('Error fetching the post:', error);
                 });
         }
-    }, [postNum]);
+    }, [postNum,isEditMode]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -112,8 +118,8 @@ function PostForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const endpoint = postNum ? `${SERVER_URL}posts/update/${postNum}` : `${SERVER_URL}posts/new`;
-        const method = postNum ? 'PUT' : 'POST';
+        const endpoint = isEditMode ? `${SERVER_URL}posts/update/${postNum}` : `${SERVER_URL}posts/new`;
+        const method = isEditMode ? 'PUT' : 'POST';
 
         try {
             const response = await fetch(endpoint, {
@@ -130,7 +136,7 @@ function PostForm() {
 
             const data = await response.json();
 
-            if (formData.content) {
+            if (isEditMode) {
                 alert('게시글을 수정했습니다.');
             } else {
                 alert('게시글을 작성했습니다.');
@@ -166,7 +172,8 @@ function PostForm() {
         } else if (boardNum >= 7) {
             navigate(`/csl/${boardNum}`);
         } else {
-            navigate(`/`);
+            // 뒤로 가기
+            navigate(-1);
         }
     };
 
@@ -364,7 +371,7 @@ function PostForm() {
                         />
                     </div>
                     <div className={styles.buttonGroup}>
-                        <button type="submit" className={styles.submitButton}>{postNum ? "수정" : "저장"}</button>
+                        <button type="submit" className={styles.submitButton}>{isEditMode ? "수정" : "저장"}</button>
                         <button type="button" onClick={handleRedirect} className={styles.redirectButton}>목록으로</button>
                     </div>
                 </form>

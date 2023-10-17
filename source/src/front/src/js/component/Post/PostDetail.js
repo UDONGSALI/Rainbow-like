@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import {useNavigate} from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
 import styles from '../../../css/component/Post/PostDetail.module.css';
+import useDeletePost from "../hook/useDeletePost";
 
 function PostDetail(props) {
     const { postNum,boardNum } = props;
+    const { deletePost } = useDeletePost();  // 삭제 훅
     const [post, setPost] = useState(null);
     const [files, setFiles] = useState([]);
     const [prevPostTitle, setPrevPostTitle] = useState(null);
@@ -60,51 +62,9 @@ function PostDetail(props) {
             .catch(error => console.error(error));
     }, []);
 
+    // 기존 onDelClick 함수를 간략화합니다.
     const onDelClick = () => {
-        const isConfirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
-        if (isConfirmed) {
-            console.log("Filtered Files:", files);
-
-            // 연결된 파일들이 있을 경우에만 삭제 로직을 수행
-            const fileDeletePromises = files.length ?
-                files.filter(file => file.post.postNum === post.postNum) // 해당 게시글 번호와 일치하는 파일만 필터링
-                    .map(file => {
-                        const fileDeleteUrl = `${SERVER_URL}files/post/${post.postNum}`; // 게시글 번호로 URL 구성
-                        console.log("Deleting file from URL:", fileDeleteUrl);
-                        return fetch(fileDeleteUrl, { method: 'DELETE' });
-                    }) : [];
-
-            Promise.all(fileDeletePromises)
-                .then(responses => {
-                    // 연결된 파일들이 있을 때만 모든 파일이 성공적으로 삭제되었는지 확인
-                    if(!responses.length || responses.every(response => response.ok)) {
-                        // 주 게시글과 parentsNum이 일치하는 게시글들을 삭제
-                        return fetch(`${SERVER_URL}post/${postNum}`, { method: 'DELETE' });
-                    } else {
-                        throw new Error('Failed to delete some files');
-                    }
-                })
-                .then(response => {
-                    if(response.ok) {
-                        // boardNum에 따른 이동 경로 설정
-                        if (post.board.boardNum <= 2) {
-                            navigate(`/post/${post.board.boardNum}`);
-                        } else if (post.board.boardNum >= 3 && post.board.boardNum <= 5) {
-                            navigate(`/imgPost/${post.board.boardNum}`);
-                        } else if (post.board.boardNum >= 7) {
-                            navigate(`/csl/${post.board.boardNum}`);
-                        } else {
-                            navigate('/posts');
-                        }
-                    } else {
-                        alert("게시글 삭제에 실패하였습니다.");
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert("오류가 발생했습니다. 다시 시도해주세요.");
-                });
-        }
+        deletePost(postNum, files, post.board.boardNum, SERVER_URL);
     };
 
     useEffect(() => {
