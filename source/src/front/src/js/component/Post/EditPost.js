@@ -7,7 +7,7 @@ function EditPost(props) {
     const [content, setContent] = useState('');
 
     useEffect(() => {
-        fetch(`${SERVER_URL}posts/${postNum}`)
+        fetch(`${SERVER_URL}post/${postNum}`)
             .then(response => response.json())
             .then(data => {
                 setTitle(data.title);
@@ -25,7 +25,7 @@ function EditPost(props) {
                 content: content
             };
             // 2. API 호출
-            fetch(`${SERVER_URL}posts/${postNum}`, {
+            fetch(`${SERVER_URL}post/${postNum}`, {
                 method: 'PUT',  // PUT 메서드를 사용하여 리소스를 업데이트합니다.
                 headers: {
                     'Content-Type': 'application/json'

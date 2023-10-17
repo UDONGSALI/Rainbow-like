@@ -112,7 +112,7 @@ function PostForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const endpoint = postNum ? `${SERVER_URL}posts/update/${postNum}` : `${SERVER_URL}posts/new`;
+        const endpoint = postNum ? `${SERVER_URL}post/edit/${postNum}` : `${SERVER_URL}post/new`;
         const method = postNum ? 'PUT' : 'POST';
 
         try {

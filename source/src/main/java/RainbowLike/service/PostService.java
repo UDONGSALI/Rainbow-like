@@ -69,6 +69,8 @@ public class PostService {
 
         mapper.map(postFormDto, existingPost);
 
+        System.out.println(postFormDto.getBoardNum() + "보드 넘 확인");
+        System.out.println(postFormDto.getMemNum() + "멤 넘 확인");
 
         existingPost.setBoard(boardRepository.findByBoardNum(postFormDto.getBoardNum()));
 
