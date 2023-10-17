@@ -83,18 +83,17 @@ function ChatBot() {
         if (memNum === null) {
             alert('로그인 후 사용 가능합니다.');
         } else {
-            //개인채팅방이 있는지 확인
+            // 개인채팅방이 있는지 확인
             fetch(SERVER_URL + "chatroom/" + memNum)
-                .then(response =>
-                    response.json())
+                .then(response => response.json())
                 .then(data => {
-                    if(Array.isArray(data) && data.length !== 0){
+                    if (Array.isArray(data) && data.length !== 0) {
                         navigate(`/chat/${memNum}`);
-                    }else{
+                    } else {
                         const roomData = {
-                            memNum : memNum,
-                            answerYN : 'N'
-                        }
+                            memNum: memNum,
+                            answerYN: 'N'
+                        };
                         fetch(SERVER_URL + 'chatroom/new', {
                             method: 'POST',
                             headers: {
@@ -104,24 +103,21 @@ function ChatBot() {
                         })
                             .then((response) => response.json())
                             .then((data) => {
-                                navigate(`/chat/${memNum}`);
-
+                                // setTimeout 함수를 사용하여 3초 대기 후 navigate를 호출
+                                setTimeout(() => {
+                                    navigate(`/chat/${memNum}`);
+                                }, 1000);
                             })
                             .catch((error) => {
                                 // 오류 처리
                                 console.error('Error:', error);
                             });
                     }
-
-
-                }, [])
+                })
                 .catch(err => console.error(err));
-
-
-            navigate(`/chat/${memNum}`);
         }
-
     }
+
 
     const handleUserMessageSubmit = () => {
         if (userMessage.trim() === '') return;
