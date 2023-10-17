@@ -18,6 +18,9 @@ function Chatting({ param }) {
     const memId = sessionStorage.getItem("memId");
     const scrollContainerRef = useRef(null);
     const [chatRoomId, setChatRoomId] = useState('');
+    const [answerYN, setAnswerYN] = useState('');
+    const [chatDataChangedCount, setChatDataChangedCount] = useState(0);
+
 
     const [chatForm, setChatForm] = useState({
         chatRoomId: chatRoomId,
@@ -34,10 +37,18 @@ function Chatting({ param }) {
             content: '',
         });
         webSocket.emit("login", { userId: isMemNum, roomNumber: memNum });
+        console.log(answerYN);
         scrollToBottom();
 
         console.log(chatRoomId);
     }, [chatRoomId]);
+
+    useEffect(() => {
+        setChatDataChangedCount(chatDataChangedCount + 1);
+        if(chatDataChangedCount === 2){
+            hello(chatData);
+        }
+    }, [chatData]);
 
     const fetchChatData = () => {
         fetch(SERVER_URL + "findchatbymem/" + memNum)
@@ -45,7 +56,6 @@ function Chatting({ param }) {
             .then(data => {
                 setChatData(data);
                 scrollToBottom();
-                hello(data);
             })
             .catch(err => console.error(err));
     };
@@ -56,6 +66,7 @@ function Chatting({ param }) {
             .then(data => {
                 setRoomData(data[0]);
                 setChatRoomId(data[0].chatRoomId);
+                setAnswerYN(data[0].answerYN);
                 scrollToBottom();
             })
             .catch(err => console.error(err));
@@ -93,8 +104,11 @@ function Chatting({ param }) {
     }, [chatHistory]);
 
     const hello = (chatData) => {
-        if (Array.isArray(chatData) && chatData.length === 0 || roomData.answerYN === 'Y') {
+        if (Array.isArray(chatData) && chatData.length === 0) {
             const newChatHistory = [...chatHistory, { msg: `반갑습니다, ${memId}님! 무엇이 궁금하신가요?`, isUser: false }];
+            setChatHistory(newChatHistory);
+        }else if(answerYN === 'Y'){
+            const newChatHistory = [...chatHistory, { msg: `상담이 종료되었습니다. 감사합니다.`, isUser: false }];
             setChatHistory(newChatHistory);
         }
     };
@@ -132,6 +146,27 @@ function Chatting({ param }) {
             .catch((error) => {
                 console.error('Error:', error);
             });
+
+        if(answerYN === 'Y'){
+            const roomForm = {
+                memNum: memNum,
+                answerYN: 'N',
+            }
+            fetch(SERVER_URL + 'chatroom/edit/' + chatRoomId, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(roomForm),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                   fetchRoomData();
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
 
         if (userMessage.trim() === '') return;
 

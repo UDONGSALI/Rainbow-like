@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import styles from '../../../css/component/Post/PostForm.module.css';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { SERVER_URL } from "../Common/constants";
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from "react-quill";
 
-function PostForm({ postNum }) {
+function PostForm() {
+    const { postNum } = useParams();
     const location = useLocation();
     const boardNum = location.state?.boardNum;
     const navigate = useNavigate();
@@ -25,18 +26,20 @@ function PostForm({ postNum }) {
         pageView: 0,
         conselStatus: 'WAIT',
         parentsNum: '',
+        memName:'',
+        email:'',
+        phone:'',
         clubAllowStatus: 'WAIT',
         clubRecuStatus: '',
         delYN: 'N'
     });
 
     useEffect(() => {
+        // 회원 정보 가져오기 (이전 코드)
         fetch(SERVER_URL + `members/id/${memId}`)
             .then(response => response.json())
             .then(data => {
                 setMember(data);
-
-                // 필요한 필드만 업데이트
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     memNum: data.memNum,
@@ -49,7 +52,36 @@ function PostForm({ postNum }) {
                 alert('회원 정보를 찾을 수 없습니다!');
                 window.location.href = '/login';
             });
-    }, []);
+
+        // 글 정보 가져오기 (추가)
+        if(postNum) {
+            fetch(`${SERVER_URL}posts/${postNum}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    setFormData({
+                        memNum: data.member.memNum || '',
+                        boardNum: data.boardNum || '',
+                        title: data.post.title || '',
+                        content: data.post.content || '',
+                        pageView: data.post.pageView || 0,
+                        conselStatus: data.post.conselStatus || 'WAIT',
+                        parentsNum: data.post.parentsNum || '',
+                        memName: data.member.name || '',
+                        phone: data.member.tel || '',
+                        email: data.member.email || '',
+                        clubAllowStatus: data.clubAllowStatus || 'WAIT',
+                        clubRecuStatus: data.clubRecuStatus || '',
+                        delYN: data.delYN || 'N'
+                    });
+                    setContent(data.post.content || '');  // ReactQuill에 값을 설정하기 위해
+                })
+                .catch(error => {
+                    console.error('Error fetching the post:', error);
+                });
+        }
+    }, [postNum]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
@@ -79,9 +111,13 @@ function PostForm({ postNum }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const endpoint = postNum ? `${SERVER_URL}posts/update/${postNum}` : `${SERVER_URL}posts/new`;
+        const method = postNum ? 'PUT' : 'POST';
+
         try {
-            const response = await fetch(`${SERVER_URL}posts/new`, {
-                method: 'POST',
+            const response = await fetch(endpoint, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -93,7 +129,12 @@ function PostForm({ postNum }) {
             }
 
             const data = await response.json();
-            alert('게시글을 작성했습니다.');
+
+            if (formData.content) {
+                alert('게시글을 수정했습니다.');
+            } else {
+                alert('게시글을 작성했습니다.');
+            }
 
             if (filesNumbers && filesNumbers.length > 0) {
                 filesNumbers.push(postNum + 1);
@@ -105,6 +146,7 @@ function PostForm({ postNum }) {
                     },
                     body: JSON.stringify(filesNumbers),
                 });
+
                 if (!fileResponse.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -116,7 +158,6 @@ function PostForm({ postNum }) {
             console.error('Error:', error);
         }
     };
-
     const handleRedirect = () => {
         if (boardNum == 1 || boardNum == 2) {
             navigate(`/post/${boardNum}`);
@@ -253,7 +294,6 @@ function PostForm({ postNum }) {
         'blockquote',
         'image',
     ];
-
     const quillRef = useRef();
 
     return (
@@ -263,67 +303,71 @@ function PostForm({ postNum }) {
                     <span className={styles.formHeaderText}>게시글 등록</span>
                 </div>
                 <hr className={`${styles.formHeaderLine} ${styles.otherHr}`} />
-            <form onSubmit={handleSubmit} className={styles.postForm}>
-                <div className={styles.inputGroup}>
-                    <label className={styles.label}><span className={styles.required}>*</span>이름</label>
-                    <input
-                        type="text"
-                        name="memName"
-                        value={formData.memName}
-                        disabled
-                        className={styles.input}
-                    />
-                </div>
-                <div className={styles.inputGroup}>
-                    <label className={styles.label}><span className={styles.required}>*</span>연락처</label>
-                    <input
-                        type="text"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                        className={styles.input}
-                    />
-                </div>
-                <div className={styles.inputGroup}>
-                    <label className={styles.label}><span className={styles.required}>*</span>이메일 주소</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className={styles.input}
-                    />
-                </div>
-                <div className={styles.inputGroup}>
-                    <label className={styles.label}><span className={styles.required}>*</span>제목</label>
-                    <input
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        required
-                        className={styles.input}
-                    />
-                </div>
-                <div className={`${styles.inputGroup} ${styles.customInputGroup}`}>
-                    <label className={styles.label}></label>
-                    <ReactQuill
-                        ref={quillRef}
-                        theme="snow"
-                        value={content}
-                        onChange={handleQuillChange}
-                        modules={modules}
-                        formats={formats}
-                        className={styles.customQuill}
-                    />
-                </div>
-                <div className={styles.buttonGroup}>
-                    <button type="submit" className={styles.submitButton}>저장</button>
-                    <button type="button" onClick={handleRedirect} className={styles.redirectButton}>목록으로</button>
-                </div>
-            </form>
+                <form onSubmit={handleSubmit} className={styles.postForm}>
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label}><span className={styles.required}>*</span>이름</label>
+                        <input
+                            type="text"
+                            name="memName"
+                            value={formData.memName}
+                            disabled
+                            className={styles.input}
+                        />
+                    </div>
+                    {boardNum == 7 || boardNum == 8 ? ( // 보드넘이 7 또는 8인 경우에만 연락처 및 이메일 주소 표시
+                        <div>
+                            <div className={styles.inputGroup}>
+                                <label className={styles.label}><span className={styles.required}>*</span>연락처</label>
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    required
+                                    className={styles.input}
+                                />
+                            </div>
+                            <div className={styles.inputGroup}>
+                                <label className={styles.label}><span className={styles.required}>*</span>이메일 주소</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    className={styles.input}
+                                />
+                            </div>
+                        </div>
+                    ) : null}
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label}><span className={styles.required}>*</span>제목</label>
+                        <input
+                            type="text"
+                            name="title"
+                            value={formData.title}
+                            onChange={handleChange}
+                            required
+                            className={styles.input}
+                        />
+                    </div>
+                    <div className={`${styles.inputGroup} ${styles.customInputGroup}`}>
+                        <label className={styles.label}></label>
+                        <ReactQuill
+                            ref={quillRef}
+                            theme="snow"
+                            value={content}
+                            onChange={handleQuillChange}
+                            modules={modules}
+                            formats={formats}
+                            className={styles.customQuill}
+                        />
+                    </div>
+                    <div className={styles.buttonGroup}>
+                        <button type="submit" className={styles.submitButton}>{postNum ? "수정" : "저장"}</button>
+                        <button type="button" onClick={handleRedirect} className={styles.redirectButton}>목록으로</button>
+                    </div>
+                </form>
             </div>
         </div>
     );
