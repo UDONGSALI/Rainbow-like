@@ -16,7 +16,7 @@ function PostDetailPage() {
 
     //7,8번 게시판 상세 글 접근 권한 설정
     useEffect(() => {
-        fetch(`${SERVER_URL}posts/${postNum}`)
+        fetch(`${SERVER_URL}post/${postNum}`)
             .then(response => response.json())
             .then(data => {
                 const parentsNum = data.post.parentsNum;

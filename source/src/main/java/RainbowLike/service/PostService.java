@@ -28,9 +28,15 @@ public class PostService {
     private final ModelMapper mapper;
 
     public void savePost(Post post) {
-
         postRepository.save(post);
     }
+
+
+    public void createPosts(){
+        ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();
+        createPosts(postDtoList);
+    }
+
 
     public Iterable<Post> searchPostsByOptionAndValue(String option, String value) {
 
@@ -61,11 +67,11 @@ public class PostService {
                 return Collections.emptyList();
         }
     }
-
-    public Optional<Post> updateRentClubAllowStatus(Long postNum, Status status) {
-        Optional<Post> optionalRentHist = postRepository.findById(postNum);
-        if (optionalRentHist.isPresent()) {
-            Post post = optionalRentHist.get();
+    @Transactional
+    public Optional<Post> updateStatus(Long postNum, Status status) {
+        Optional<Post> optionalPost = postRepository.findById(postNum);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
             post.setClubAllowStatus(status);
             return Optional.of(postRepository.save(post));
         }
