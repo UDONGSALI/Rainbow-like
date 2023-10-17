@@ -136,7 +136,7 @@ function App() {
 
                 {/*게시글*/}
                 <Route path="/sj" element={<SjNewsPage/>}/>
-                <Route path="/posts" element={<PostList/>}/>
+                {/*<Route path="/posts" element={<PostList/>}/>*/}
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>

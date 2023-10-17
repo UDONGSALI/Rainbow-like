@@ -27,29 +27,29 @@ function ClubEditor(props) {
 
 
     useEffect(() => {
-        fetch(SERVER_URL + "posts/" + id)
+        fetch(SERVER_URL + "post/" + id)
             .then(response => response.json())
             .then(data => setFormData(data))
             .catch(error => console.error(error));
     }, [id]);
 
     useEffect(() => {
-        fetch(SERVER_URL + "posts/" + id)
+        fetch(SERVER_URL + "post/" + id)
             .then(response => response.json())
-            .then(formData => {
+            .then(data => {
                 // 데이터를 가져와서 formData 상태를 업데이트
                 setFormData({
-                    memNum: formData.member.memNum,
-                    boardNum: formData.board.boardNum,
-                    title: formData.post.title,
-                    content: formData.post.content,
-                    writeDate: formData.post.writeDate,
+                    memNum: data.member.memNum,
+                    boardNum: data.board.boardNum,
+                    title: data.post.title,
+                    content: data.post.content,
+                    writeDate: data.post.writeDate,
                     editDate: new Date(),
-                    pageView: formData.post.pageView,
-                    parentsNum: formData.post.parentsNum,
-                    clubAllowStatus: formData.post.clubAllowStatus,
-                    clubRecuStatus: formData.post.clubRecuStatus,
-                    delYN: formData.post.delYN
+                    pageView: data.post.pageView,
+                    parentsNum: data.post.parentsNum,
+                    clubAllowStatus: data.post.clubAllowStatus,
+                    clubRecuStatus: data.post.clubRecuStatus,
+                    delYN: data.post.delYN
                 });
             })
             .catch(error => console.error(error));
@@ -81,9 +81,12 @@ function ClubEditor(props) {
             const handleSubmit = (e) => {
                 e.preventDefault();
 
+                formData.boardNum = formData.board.boardNum;
+
+                formData.memNum = formData.member.memNum;
 
                 // API 호출하여 게시글 정보 전송
-                fetch(SERVER_URL + "posts/edit/" + id, {
+                fetch(SERVER_URL + "post/edit/" + id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -137,7 +140,6 @@ function ClubEditor(props) {
                             <option value="진행중">진행중</option>
                             <option value="모집중">모집중</option>
                             <option value="모집마감">모집마감</option>
-
 
                         </select>
                     </div>

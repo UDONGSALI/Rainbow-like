@@ -19,7 +19,7 @@ function PostDetailPage() {
         fetch(`${SERVER_URL}post/${postNum}`)
             .then(response => response.json())
             .then(data => {
-                const parentsNum = data.post.parentsNum;
+                const parentsNum = data.parentsNum;
 
                 if (data.board.boardNum == 7 || data.board.boardNum == 8) {
                     if (parentsNum) {

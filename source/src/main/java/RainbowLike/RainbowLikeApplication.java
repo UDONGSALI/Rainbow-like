@@ -34,7 +34,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
 
         rentHistService.createBasicRent();
 
-        postService.createPosts();
+        postService.createDefaultPosts();
 
         commentController.createComms();
 
