@@ -1,0 +1,36 @@
+.quickMenu {
+    position: fixed; /* 고정 위치 설정 */
+    top: 40%; /* 화면 상단에서 중앙으로 이동 */
+    right: 0; /* 화면 오른쪽에 붙임 */
+    transform: translate(0, -50%); /* 수직 중앙 정렬 */
+    z-index: 1000000; /* 다른 요소 위에 표시하기 위한 z-index 설정 */
+}
+
+.quickMenuOptions {
+    position: absolute;
+    top: 100%; /* QuickMenu 아래에 표시 */
+    right: 0;
+    background: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    text-align: center;
+
+}
+
+.quickMenuOptions a:link{
+    color: #1B1B1B;
+    text-decoration: none;
+}
+
+.quickMenuOptions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.quickMenuOptions li {
+    padding: 5px 0;
+}
