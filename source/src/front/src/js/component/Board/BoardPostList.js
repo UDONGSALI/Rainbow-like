@@ -40,8 +40,8 @@ function BoardPostList({ boardNum }) {
     const { activePage, setActivePage } = usePagination(1);
     const patchItem = usePatch(SERVER_URL);
     // 4. 데이터 가져오기,
-    const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}post/${boardNum}`, setPosts);
-    const { data: fetchedPosts, loading } = useFetch(`${SERVER_URL}post/${boardNum}`);
+    const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}post/board/${boardNum}`, setPosts);
+    const { data: fetchedPosts, loading } = useFetch(`${SERVER_URL}post/board/${boardNum}`);
 
     useEffect(() => {
         if (!loading) {
@@ -112,8 +112,7 @@ function BoardPostList({ boardNum }) {
     };
 
     const handleStatusChange = async (postNum, newStatus) => {
-        const isSuccess = await patchItem('post/status/' + postNum, { status: newStatus }, "신청");
-
+        const isSuccess = await patchItem('post/patch/' + postNum, { action: "status", status: newStatus }, "신청");
         if (isSuccess) {
             const updatedRows = posts.map(row =>
                 row.postNum === postNum ? { ...row, status: newStatus } : row
@@ -140,7 +139,12 @@ function BoardPostList({ boardNum }) {
     const handleCancelAssignment = async (postNum) => {
         if (!window.confirm("배정된 노무사를 취소하시겠습니까?")) return;
 
-        const isSuccess = await patchItem(`post/labor/cancel/` + postNum, {}, '배정');
+        // 이제 'action'이라는 키로 액션 타입을 지정하고 API에 전달합니다.
+        const bodyData = {
+            action: "cancelLabor"
+        };
+
+        const isSuccess = await patchItem(`post/patch/` + postNum, bodyData, '배정');
         if (isSuccess) {
             const updatedRows = posts.map(row =>
                 row.postNum === postNum ? { ...row, labor: null, conselStatus: "WAIT" } : row

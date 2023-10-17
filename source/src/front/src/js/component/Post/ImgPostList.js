@@ -15,7 +15,7 @@ function ImgPostList(props) {
     const postsPerPage = 6;
 
     useEffect(() => {
-        fetch(`${SERVER_URL}post/${boardNum}`)
+        fetch(`${SERVER_URL}post/board/${boardNum}`)
             .then(response => response.json())
             .then(data => {
                 const filteredPosts = data.filter(post => [3, 4, 5].includes(post.board.boardNum));

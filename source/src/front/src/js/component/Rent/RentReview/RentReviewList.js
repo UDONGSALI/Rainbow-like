@@ -16,12 +16,14 @@ export default function RentReviewList() {
     }, []);
 
     const fetchRentReviewPosts = () => {
-        fetch(SERVER_URL + "rentReview/")
-            .then(response =>
-                response.json())
+        fetch(SERVER_URL + "post/board/6")
+            .then(response => response.json())
             .then((data) => {
                 console.log(data);
-                const rentReviewWithNumbers= data.map((rentReviews, index) => ({
+                // Sort the data array in descending order based on postNum
+                data.sort((a, b) => b.postNum - a.postNum);
+
+                const rentReviewWithNumbers = data.map((rentReviews, index) => ({
                     ...rentReviews,
                     id: rentReviews.postNum,
                     number: data.length - index, // 내림차순으로 번호 할당
@@ -173,7 +175,7 @@ export default function RentReviewList() {
 
                         />
                         <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <button onClick={() => navigate('/rent/reviewEdit')}
+                        <button onClick={() => navigate('/rent/reviewWrite')}
                                 style={{
                                     width: "100px",
                                     height: "40px",

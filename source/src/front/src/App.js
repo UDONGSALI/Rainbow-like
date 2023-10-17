@@ -53,15 +53,15 @@ import Pay from "./js/component/Pay/pay";
 import SMSPage from "./js/pages/SMS/SMSPage";
 import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
+import ChatBot from "./js/component/Chat/ChatBot";
 import Chatting from "./js/component/Chat/Chatting";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import PostForm from "./js/component/Post/PostForm";
-import ChatList from "./js/component/Chat/ChatList";
 // import ChatTestPage from "./js/component/Chat/ChatTestPage";
 import SearchPage from "./js/pages/Search/SearchPage";
 import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
 import MainPage from "./js/pages/Main/MainPage";
-import ImgContainer from "./js/component/Main/ImgContainer";
+import ImgContainer from "./js/component/Main/Img/ImgContainer";
 import CslFormPage from "./js/pages/Post/CslFormPage";
 import PostFormPage from "./js/pages/Post/PostFormPage";
 import RentReviewListPage from "./js/pages/Rent/RentReviewListPage";
@@ -69,6 +69,8 @@ import RentReviewEditPage from "./js/pages/Rent/RentReviewEditPage";
 import Greeting from "./js/component/Intro/Greeting";
 import Purpose from "./js/component/Intro/Purpose";
 import AgenHistory from "./js/component/Intro/AgenHistory";
+import RentReviewWritePage from "./js/pages/Rent/RentReviewWritePage";
+import QuickMenu from "./js/layout/QuickMenu/QuickMenu";
 
 
 
@@ -94,6 +96,7 @@ function App() {
         <div className="App" onClick={trackButtonClick}>
 
             {!isPaymentRoute && !isChatRoute && <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
+            {!isPaymentRoute && !isChatRoute && <QuickMenu />}
             <Routes>
                 <Route path="/" element={<MainPage/>}/>
                 <Route path="/test" element={<ImgContainer/>}/>
@@ -140,7 +143,7 @@ function App() {
 
                 {/*게시글*/}
                 <Route path="/sj" element={<SjNewsPage/>}/>
-                <Route path="/posts" element={<PostList/>}/>
+                {/*<Route path="/posts" element={<PostList/>}/>*/}
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
@@ -158,6 +161,7 @@ function App() {
                 <Route path="/rent/review" element={<RentReviewListPage/>}/>
                 <Route path="/rent/reviewPost/:postNum" element={<RentReviewPostPage/>}/>
                 <Route path="/rent/reviewEdit/:postNum" element={<RentReviewEditPage/>}/>
+                <Route path="/rent/reviewWrite" element={<RentReviewWritePage/>}/>
 
                 {/*마이페이지관련*/}
                 <Route path="/mypage/edu"
@@ -197,19 +201,11 @@ function App() {
 
                 {/*SMS*/}
                 <Route path="/sms" element={isAdmin ? <SMSPage/> : null}/>
-                {/*<Route path="/sms" element={<SMSPage />}  />*/}
 
                 {/*챗봇 / 채팅*/}
-
-                <Route path="/chat" element={<ChatPage/>}/>
-                <Route path="/chat/:memNum" element={<Chatting/>}/>
-                {/*<Route path="/chatlist" element={<ChatList />} />*/}
-                {/*<Route path="/chattest" element={<Chattest />} />*/}
-                {/*<Route path="/chattest" element={<ChatTestPage/>}/>*/}
-
-                <Route path="/chat" element={<ChatPage />} />
+                <Route path="/chat" element={<ChatBot />} />
                 <Route path="/chat/:memNum" element={<Chatting />} />
-                <Route path="/chatlist" element={<ChatList />} />
+                <Route path="/listchat" element={<ChatPage />} />
                 {/*/!*<Route path="/chattest" element={<Chattest />} />*!/*/}
                 {/*<Route path="/chattest" element={<ChatTestPage />} />*/}
 

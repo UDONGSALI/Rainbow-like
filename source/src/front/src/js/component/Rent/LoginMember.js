@@ -1,45 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import {useHistory, useLocation, useNavigate} from 'react-router-dom';
+import {SERVER_URL} from "../Common/constants";
 
 
 const LoginMember = () => {
     const [member, setMember] = useState(null);
-    const [loading, setLoading] = useState(true); // 추가: 데이터 로딩 상태
+    const location = useLocation();
+    const boardNum = location.state?.boardNum;
+    const navigate = useNavigate();
+    const memId = sessionStorage.getItem("memId");
+    const [formData, setFormData] = useState();
 
     useEffect(() => {
-        const fetchMemberData = async () => {
-            try {
-                const memId = localStorage.getItem('memId');
-
-                if (!memId) {
-                    throw new Error('memId가 없습니다.');
-                }
-
-                const response = await fetch(`/api/members/${memId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error('멤버 정보를 가져오는 데 실패했습니다.');
-                }
-
-                const data = await response.json();
+        fetch(SERVER_URL + `members/id/${memId}`)
+            .then(response => response.json())
+            .then(data => {
                 setMember(data);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching member data:', error);
-                setLoading(false);
-                // TODO: 로그인을 하셔야 대관신청을 하실 수 있습니다.
-                // 아래의 리디렉션 코드를 여기에 추가
-                window.location.href = '/login';
-            }
-        };
 
-        fetchMemberData();
+            })
+            .catch(error => {
+                alert('회원 정보를 찾을 수 없습니다!');
+                window.location.href = '/login';
+            });
     }, []);
+
     return (
         <div id="title">
             {member !== null ? (  // member가 null이 아닌 경우에만 렌더링
@@ -51,26 +35,32 @@ const LoginMember = () => {
                             <p>*</p>
                             <b>신청자명</b> <input value={member.name} />
                         </li>
+                        <hr />
                         <li>
                             <p>*</p>
                             <b>휴대폰번호</b> <input value={member.tel} />
                         </li>
+                        <hr />
                         <li>
                             <p>*</p>
                             <b>이메일주소</b> <input value={member.email} />
                         </li>
+                        <hr />
                         <li>
                             <b>단체명</b>
                             <input />
                         </li>
+                        <hr />
                         <li>
                             <b>대표자</b>
                             <input value={member.name} />
                         </li>
+                        <hr />
                         <li>
                             <b>사업자등록증</b>
                             <button>파일추가</button>
                         </li>
+                        <hr />
                     </ul>
                 </div>
             ) : (

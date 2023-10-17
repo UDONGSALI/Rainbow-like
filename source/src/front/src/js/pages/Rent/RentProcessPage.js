@@ -1,5 +1,5 @@
 import React from "react";
-import RentProcess from "../../component/Rent/RentProcess";
+import RentProcess from "../../component/Rent/RentProcess/RentProcess";
 import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/RentHeader";
 import Footer from "../../layout/Footer/footer";
