@@ -89,6 +89,7 @@ function PostDetailPage() {
             pageTitle = '알 수 없는 게시판'; // 또는 적절한 오류 메시지
             break;
     }
+
     return (
         <div>
             <h2 style={{ textAlign: 'center',marginTop:'20px' ,marginBottom:'20px'}}>{pageTitle}</h2>

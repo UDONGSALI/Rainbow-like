@@ -48,6 +48,23 @@ function PostNoticeList(props) {
         };
     });
 
+    // boardNum 기준으로 게시글들을 그룹화
+    const groupedByBoardNum = postsWithFiles.reduce((acc, post) => {
+        if (!acc[post.board.boardNum]) {
+            acc[post.board.boardNum] = [];
+        }
+        acc[post.board.boardNum].push(post);
+        return acc;
+    }, {});
+
+    Object.keys(groupedByBoardNum).forEach(board => {
+        const totalPosts = groupedByBoardNum[board].length; // 해당 게시판의 총 게시글 수
+        groupedByBoardNum[board].forEach((post, index) => {
+            post.orderNumber = totalPosts - index; // 역순으로 순서 번호 부여
+        });
+    });
+
+
     const onDelClick = (url) => {
         fetch(url, {method: 'DELETE'})
             .then(response => {
@@ -76,17 +93,17 @@ function PostNoticeList(props) {
 
     const columns = [
         {
-            field: 'postNum',
+            field: 'orderNumber',
             headerName: '번호',
             headerAlign: 'center',
             sortable: false,
             filterable: false,
             renderCell: (params) => (
-                    <CenteredData>
-                        <StyledCell>
-                        {params.row.postNum - 5}
-                        </StyledCell>
-                    </CenteredData>
+                <CenteredData>
+                    <StyledCell>
+                        {params.value}
+                    </StyledCell>
+                </CenteredData>
             ),
             width: 50
         },

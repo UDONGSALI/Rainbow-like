@@ -19,13 +19,14 @@ function ChatList(){
 
         {
             field: 'chatRoom',
-            headerName: '채팅목록',
+            headerName: '문의목록',
             width: 100,
             valueGetter: (params) => {
                 const members = Array.isArray(params.row.chatRoom) ? params.row.chatRoom : [params.row.chatRoom];
                 return members.map((m) => m.chatRoomId).join(', ');
             }
         },
+
         {
             field: 'member',
             headerName: '작성자',
@@ -37,7 +38,7 @@ function ChatList(){
         },
         {
             field: 'content',
-            headerName: '최근 채팅',
+            headerName: '최근 글',
             width: 450,
             renderCell: (params) => (
                 <div
@@ -86,7 +87,6 @@ function ChatList(){
         fetch(SERVER_URL + "chat")
             .then((response) => response.json())
             .then((data) => {
-
                 const uniqueChats = data.reduce((unique, chat) => {
                     const existingChat = unique.find((c) => c.chatRoom.chatRoomId === chat.chatRoom.chatRoomId);
                     if (!existingChat || chat.chatNum > existingChat.chatNum) {
@@ -100,6 +100,10 @@ function ChatList(){
                     }
                     return unique;
                 }, []);
+
+                // chats 배열을 chatNum에 따라 정렬
+                uniqueChats.sort((a, b) => b.chatNum - a.chatNum);
+
                 setChats(uniqueChats);
             })
             .catch((err) => console.error(err));
@@ -107,12 +111,34 @@ function ChatList(){
 
     const onRowClick = (params) => {
         const rowId = params.row.chatRoom.member.memNum;
-        navigate(`/chat/${rowId}`);
+        const popupWindow = window.open(`/chat/${rowId}`, '_blank', 'width=400,height=650');
         // <Chatting  />
     };
 
     function onAnswerClick(row) {
 
+        const answerYNCheck = {
+            memNum : row.member.memNum,
+            answerYN : 'Y'
+        }
+        const chatRoomId = row.chatRoom.chatRoomId;
+
+        fetch(SERVER_URL + "chatroom/edit/" + chatRoomId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(answerYNCheck),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                alert('상담이 완료되었습니다.');
+                fetchChats();
+            })
+            .catch((error) => {
+                // 오류 처리
+                console.error('Error:', error);
+            });
     }
 
     return (

@@ -69,6 +69,8 @@ public class FileService {
                 return fileRepository.findByEduHistIsNotNull();
             case "member":
                 return fileRepository.findByMemberIsNotNull();
+            case "space":
+                return fileRepository.findBySpaceIsNotNull();
             default:
                 throw new IllegalArgumentException("Invalid table name: " + name);
         }
@@ -209,6 +211,7 @@ public class FileService {
     }
 
     public void updatePostNumForFiles(List<Long> fileNumsExcludingPostNum, Long postNum) {
+        //파일넘을 업데이트하는 로직
         for (Long fileNum : fileNumsExcludingPostNum) {
             File file = fileRepository.findById(fileNum)
                     .orElseThrow(() -> new RuntimeException("File not found with id: " + fileNum));
@@ -217,5 +220,9 @@ public class FileService {
             file.setPost(post);
             fileRepository.save(file);
         }
+    }
+    public void deleteFilesByPostNum(Long postNum) {
+        List<File> files = fileRepository.findByPostPostNum(postNum); // 여기서도 Long 타입 변환을 제거했습니다.
+        fileRepository.deleteAll(files);
     }
 }

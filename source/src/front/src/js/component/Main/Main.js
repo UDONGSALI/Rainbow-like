@@ -3,12 +3,14 @@ import MapComponent from "./Map/MapComponent";
 import styles from '../../../css/component/Main/Main.module.css';
 import ImgContainer from "./ImgContainer";
 import EduContainer from "./Edu/EduContainer";
+import RentContainer from "./Rent/RentContainer";
 
 function Main() {
     const imgContainerRef = useRef(null);
     const eduContainerRef = useRef(null);
+    const rentContainerRef = useRef(null);
     const mapComponentRef = useRef(null);
-    const [activeSlide, setActiveSlide] = useState(0);  // 현재 활성화된 슬라이드를 추적하는 상태
+    const [activeSlide, setActiveSlide] = useState(0);
 
     useEffect(() => {
         const mainDiv = document.querySelector(`.${styles.Main}`);
@@ -28,11 +30,17 @@ function Main() {
                 eduContainerRef.current.scrollIntoView({ behavior: 'smooth' });
                 setActiveSlide(1);
             } else if (activeSlide === 1) {
-                mapComponentRef.current.scrollIntoView({ behavior: 'smooth' });
+                rentContainerRef.current.scrollIntoView({ behavior: 'smooth' });
                 setActiveSlide(2);
+            } else if (activeSlide === 2) {
+                mapComponentRef.current.scrollIntoView({ behavior: 'smooth' });
+                setActiveSlide(3);
             }
         } else {
-            if (activeSlide === 2) {
+            if (activeSlide === 3) {
+                rentContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+                setActiveSlide(2);
+            } else if (activeSlide === 2) {
                 eduContainerRef.current.scrollIntoView({ behavior: 'smooth' });
                 setActiveSlide(1);
             } else if (activeSlide === 1) {
@@ -50,12 +58,14 @@ function Main() {
             <div className={styles.slide} ref={eduContainerRef}>
                 <EduContainer />
             </div>
+            <div className={styles.slide} ref={rentContainerRef}>
+                <RentContainer />
+            </div>
             <div className={styles.slide} ref={mapComponentRef}>
                 <MapComponent />
             </div>
         </div>
     );
 };
-
 
 export default Main;
