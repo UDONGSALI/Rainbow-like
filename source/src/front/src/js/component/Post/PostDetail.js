@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import {useNavigate} from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
 import styles from '../../../css/component/Post/PostDetail.module.css';
+import useDeletePost from "../hook/useDeletePost";
 
 function PostDetail(props) {
     const { postNum,boardNum } = props;
+    const { deletePost } = useDeletePost();  // 삭제 훅
     const [post, setPost] = useState(null);
     const [files, setFiles] = useState([]);
     const [prevPostTitle, setPrevPostTitle] = useState(null);
@@ -60,7 +62,10 @@ function PostDetail(props) {
             .catch(error => console.error(error));
     }, []);
 
+    // 기존 onDelClick 함수를 간략화합니다.
     const onDelClick = () => {
+        deletePost(postNum, files, post.board.boardNum, SERVER_URL);
+
         const isConfirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
         if (isConfirmed) {
             // 연결된 파일들이 있을 경우에만 삭제 로직을 수행
@@ -124,7 +129,7 @@ function PostDetail(props) {
     }, [prevPostNum, lastPostNum, post]); // post도 의존성 배열에 추가했습니다.
 
     const onEditClick = () => {
-        navigate(`/post/edit/${postNum}`);
+        navigate(`/post/edit/${postNum}`, { state: { mode: "edit" } });
     };
     if (!post) {
         return <div>Loading...</div>;

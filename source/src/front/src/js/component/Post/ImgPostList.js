@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate,Link } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
-import styles from '../../../css/component/Post/imgPostList.module.css';
+import styles from '../../../css/component/Post/ImgPostList.module.css';
 import Pagination from "../Common/Pagination";
 
 
 function ImgPostList(props) {
     const { boardNum } = props;
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const [posts, setPosts] = useState([]);
     const [files, setFiles] = useState([]);
     const navigate = useNavigate();
@@ -90,10 +91,12 @@ function ImgPostList(props) {
                     </Link>
                 ))}
             </div>
+            {isAdmin && (
             <button className={styles.newPost}
                     onClick={() => navigate('/post/new', { state: { boardNum } })}>
                 등록
             </button>
+            )}
             <Pagination
                 activePage={currentPage}
                 itemsCountPerPage={postsPerPage}
