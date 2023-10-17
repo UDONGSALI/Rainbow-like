@@ -4,13 +4,46 @@ import Button from "@mui/material/Button";
 import {SERVER_URL} from "../Common/constants";
 import CustomDataGrid from "../Common/CustomDataGrid";
 import SpaceModal from "./SpaceModal";
+import {DataGrid} from "@mui/x-data-grid";
+import RentCalendar from '../Rent/RentApply/RentCalender';
 
 function SpaceApplyForm() {
     const [spaces, setSpaces] = useState([]);
-    const [rent,setRent] =useState([]);
-     const [loadingSpaces, setLoadingSpaces] = useState(true);
+    const [rent, setRent] = useState([]);
+    const [loadingSpaces, setLoadingSpaces] = useState(true);
     const [loadingRent, setLoadingRent] = useState(true);
     const [selectedTimes, setSelectedTimes] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedSpace, setSelectedSpace] = useState(null);
+
+
+    //대관내역 불러오기
+
+
+    useEffect(() => {
+        fetchRentHist();
+    }, []);
+
+    const fetchRentHist = async () => {
+        try {
+            const response = await fetch(SERVER_URL + 'rent');
+            const data = await response.json();
+            console.log('Raw Data:', data);
+            setRent(data);
+        } catch (error) {
+            alert('대관 장소 정보를 찾을 수 없습니다!');
+            console.error(error);
+        }
+    };
+
+    // 일자 선택
+    const handleDateSelect = (selectedDate) => {
+        console.log("Selected Date:", selectedDate);
+        setSelectedDate(selectedDate);  // 선택된 날짜를 업데이트
+    };
+
+
+    //일자 선택 관련
 
     //시간 선택 관련
     const times = Array(18)
@@ -30,51 +63,118 @@ function SpaceApplyForm() {
         return acc;
     }, []);
 
+    const currentDate = new Date();
+    console.log("Current Date and Time:", currentDate);
+
+    // 이미 예약된 시간인지 확인하는 함수
+    const isTimeAlreadyReserved = (spaceName, selectedTime) => {
+        // setRent에서 대관 정보를 가져오고, 해당 장소에 대한 예약된 시간을 추출
+        const reservedTimes = rent
+            .filter((reservation) => reservation.spaceName === spaceName)
+            .map((reservation) => {
+                // 대관 정보에서 'rentTime' 값을 기반으로 시작 시간과 종료 시간을 계산
+                const [num, unit] = reservation.rentTime.split('/');
+                const duration = parseInt(num);
+                const startTime = reservation.time;
+                const endTime = addTime(startTime, unit, duration);
+                return generateTimeRange(startTime, endTime);
+            })
+            .flat();
+
+        return reservedTimes.includes(selectedTime);
+    };
+
+
+    // 시간선택 관련
     const handleSelectTime = (spaceName, time) => {
+        console.log("Selected Date:", selectedDate);
+        console.log("Selected Time:", time);
+        console.log("Selected Space:", spaceName);
 
 
+        // 선택한 시간이 현재 시간 이전인지 확인
+        const currentTime = new Date();
+        const selectedDateTime = new Date();
+        const [hours, minutes] = time.split(":");
+        selectedDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
 
         // 최초 선택 시, 연속으로 3개 선택
         const indexOfTime = times.indexOf(time);
         const selectedRowTimes = times.slice(indexOfTime, indexOfTime + 3);
-        setSelectedTimes((prev) => ({ ...prev, [spaceName]: selectedRowTimes }));
-
-
-
 
         // 이미 예약된 시간이 포함되어 있는지 확인
-        if (selectedRowTimes.some((selectedTime) => isTimeAlreadyReserved(spaceName, selectedTime))) {
-            window.alert("선택한 시간 중 이미 예약된 시간이 포함되어 있습니다. 다른 시간을 선택해주세요.");
+        if (
+            selectedRowTimes.some((selectedTime) =>
+                isTimeAlreadyReserved(spaceName, selectedTime)
+            )
+        ) {
+            window.alert(
+                "선택한 시간 중 이미 예약된 시간이 포함되어 있습니다. 다른 시간을 선택해주세요."
+            );
             return;
         }
 
-        // 추가로 시간 선택
-        const remainingTimes = times.slice(indexOfTime);
-        const nextSelectedTime = remainingTimes.length > 0 ? remainingTimes[0] : null;
+        setSelectedTimes((prev) => ({ ...prev, [spaceName]: selectedRowTimes }));
+        setSelectedSpace({ spaceName, time }); // 선택한 공간 및 시간 저장
 
-        if (nextSelectedTime) {
-            setSelectedTimes((prev) => ({ ...prev, [spaceName]: [...selectedRowTimes, nextSelectedTime] }));
+
+        // 추가로 시간 선택
+        const remainingTimes = times.slice(indexOfTime + 3);
+        const nextSelectedTimes =
+            remainingTimes.length >= 3 ? remainingTimes.slice(0, 3) : remainingTimes;
+
+        if (nextSelectedTimes.length > 0) {
+            setSelectedTimes((prev) => ({
+                ...prev,
+                [spaceName]: [...selectedRowTimes, ...nextSelectedTimes],
+            }));
         }
     };
 
 
-   // 이미 예약된 시간인지 확인하는 함수
-    const isTimeAlreadyReserved = (spaceName, selectedTime) => {
 
-        const reservedTimes = {
-            "공유오피스(폴짝)": ["09:00", "09:30", "10:00"],
-            // 다른 공간들에 대한 정보 추가
-        };
+// 시작 시간과 종료 시간을 기반으로 시간 범위를 생성
+    const generateTimeRange = (startTime, endTime) => {
+        const start = convertTimeToIndex(startTime);
+        const end = convertTimeToIndex(endTime);
+        return Array.from({length: end - start + 1}, (_, index) => convertIndexToTime(start + index));
+    };
 
-        return reservedTimes[spaceName]?.includes(selectedTime);
+// 시간을 배열의 인덱스로 변환 (예: "09:30" -> 9)
+    const convertTimeToIndex = (time) => {
+        const [hours, minutes] = time.split(':');
+        return parseInt(hours) * 2 + (minutes === '30' ? 1 : 0);
+    };
+
+// 배열의 인덱스를 시간으로 변환 (예: 9 -> "09:00")
+    const convertIndexToTime = (index) => {
+        const hours = Math.floor(index / 2) + 9;
+        const minutes = index % 2 === 0 ? '00' : '30';
+        return `${String(hours).padStart(2, '0')}:${minutes}`;
+    };
+
+// 시간에 일정 시간을 더함 (예: "09:00", "시간", 2 -> "11:00")
+    const addTime = (time, unit, amount) => {
+        const [hours, minutes] = time.split(':');
+        const totalMinutes = parseInt(hours) * 60 + parseInt(minutes);
+        const addedMinutes = unit.toLowerCase() === '시간' ? amount * 60 : amount;
+        const resultMinutes = totalMinutes + addedMinutes;
+        const resultHours = Math.floor(resultMinutes / 60);
+        const resultMinutesInHour = resultMinutes % 60;
+        return `${String(resultHours).padStart(2, '0')}:${String(resultMinutesInHour).padStart(2, '0')}`;
     };
 
 
-
-    //신청하기 버튼//
     function redirectToURL() {
-        window.location.href = `http://localhost:3000/rent/apply`;
-    };
+        if (!selectedDate || !selectedSpace) {
+            window.alert("날짜, 시간, 장소를 선택하세요!");
+            return;
+        }
+
+        const { spaceName, time } = selectedSpace;
+        const url = `http://localhost:3000/rent/apply?date=${selectedDate}&space=${spaceName}&time=${time}`;
+        window.location.href = url;
+    }
 
     useEffect(() => {
         fetch(SERVER_URL + 'api/spaces')
@@ -88,8 +188,6 @@ function SpaceApplyForm() {
                 setLoadingSpaces(false);
             });
     }, []);
-
-
 
 
     //Space 목록
@@ -187,7 +285,7 @@ function SpaceApplyForm() {
         {
             field: 'spaceName', headerName: '공간', width: 400,
             renderCell: (params) => (
-                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: "3%"}}>
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <span style={{fontSize: "23px", fontWeight: "bold"}}>{params.row.spaceName}</span>
                         <p style={{fontSize: "15px"}}>최대인원 <span
@@ -197,12 +295,12 @@ function SpaceApplyForm() {
                         <img
                             alt={params.row.spaceName}
                             src={params.row.imageURL}
-                            style={{width: "350px", height: "250px", padding: "3%",marginLeft:'3%'}}
+                            style={{width: "350px", height: "250px", padding: "3%", marginLeft: '3%'}}
                         />
 
                     </div>
                     <div style={{
-                        display: 'flex', flexDirection: 'column', alignItems: 'center'
+                        display: 'flex', flexDirection: 'column', alignItems: 'center',
                     }}>
                         <SpaceModal spaceInfo={params.row}/>
                     </div>
@@ -212,7 +310,7 @@ function SpaceApplyForm() {
 
 
         {
-            field: 'time', headerName: '시간 선택', width: 650,
+            field: 'time', headerName: '시간 선택', flex: 1,
             renderCell: (params) => (
                 <div>
                     <div>
@@ -225,8 +323,8 @@ function SpaceApplyForm() {
                                         onClick={() => handleSelectTime(params.row.spaceName, time)}
                                         disabled={isTimeAlreadyReserved(params.row.spaceName, time)}
                                         style={{
-                                            alignItems:'center',
-                                            fontSize:"15px",
+                                            alignItems: 'center',
+                                            fontSize: "15px",
                                             width: '60px',
                                             margin: '5px',
                                             padding: '10px',
@@ -247,7 +345,8 @@ function SpaceApplyForm() {
 
                     <div className="selectedTime">
                         {/* 선택된 시간을 표시 */}
-                        <p>선택된 시간: {selectedTimes[params.row.spaceName]?.[0]} ~ {selectedTimes[params.row.spaceName]?.[selectedTimes[params.row.spaceName]?.length - 1]}</p>
+                        <p>선택된
+                            시간: {selectedTimes[params.row.spaceName]?.[0]} ~ {selectedTimes[params.row.spaceName]?.[selectedTimes[params.row.spaceName]?.length - 1]}</p>
                     </div>
 
                     <div>
@@ -262,7 +361,8 @@ function SpaceApplyForm() {
                                         borderRadius: '5px',
                                         fontSize: "15px",
                                         fontWeight: "bold",
-                                        marginRight: "2%"
+                                        marginRight: "2%",
+
 
                                     }}>신청하기</Button>
                         </Stack>
@@ -277,25 +377,27 @@ function SpaceApplyForm() {
     return (
 
         <div>
-
+            <RentCalendar onSelectDate={handleDateSelect} />
             {loadingSpaces ? (
                 <p>Loading....</p>
             ) : (
                 <CustomDataGrid className="spaceList"
-                                columns={columns}
-                                rows={lists}
-                                getRowId={(params) => params.id}
-                                style={{
-                                    position: "relative",
-                                    width: "100%",
-                                    paddingLeft: "15%",
-                                    paddingRight: "15%",
+                          HeadersVisibility="None"
+                          columns={columns}
+                          rows={lists}
+                          getRowId={(params) => params.id}
+                          style={{
+                              position: "relative",
+                              width: "100%",
+                              paddingLeft: "20%",
+                              paddingRight: "20%",
 
-                                }}
+                          }}
 
 
-                                hideFooter={true}
-                                rowHeight={400}
+                          hideFooter={true}
+                          rowHeight={400}
+
 
                 />
 

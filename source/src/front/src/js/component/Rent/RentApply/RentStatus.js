@@ -1,5 +1,5 @@
 import * as React from "react";
-import styles from  '../../../css/component/Rent/RentStatus.module.css';
+import styles from '../../../../css/component/Rent/RentStatus.module.css';
 
 
 
