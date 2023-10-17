@@ -6,7 +6,7 @@ import {headerInfo, urlData} from "../../layout/Header/Data/InfoShareHeader";
 import Header from "../../layout/Header/Header";
 
 function NoticeListPage() {
-    const { boardNum } = useParams();
+    const { boardNum,postNum } = useParams();
 
     let footerTitle = "";
 
