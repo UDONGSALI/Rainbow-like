@@ -64,10 +64,11 @@ import MainPage from "./js/pages/Main/MainPage";
 import ImgContainer from "./js/component/Main/ImgContainer";
 import CslFormPage from "./js/pages/Post/CslFormPage";
 import PostFormPage from "./js/pages/Post/PostFormPage";
-import EditPost from "./js/component/Post/EditPost";
 import RentReviewListPage from "./js/pages/Rent/RentReviewListPage";
 import RentReviewEditPage from "./js/pages/Rent/RentReviewEditPage";
-
+import Greeting from "./js/component/Intro/Greeting";
+import Purpose from "./js/component/Intro/Purpose";
+import AgenHistory from "./js/component/Intro/AgenHistory";
 
 
 
@@ -120,6 +121,10 @@ function App() {
                 <Route path="admin/ftmain" element={<FTMainPage type="admin"/>}/>
                 <Route path="admin/ftmain/ftw/:id" element={<FTWDtlPage type="admin"/>}/>
 
+                {/*기관소개*/}
+                <Route path="/intro" element={<Greeting />}/>
+                <Route path="/purpose" element={<Purpose />}/>
+                <Route path="/history" element={<AgenHistory />}/>
 
                 {/*교육*/}
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
@@ -144,7 +149,6 @@ function App() {
                 <Route path="/csl/new" element={<CslFormPage/>}/>
                 <Route path="/post/new" element={<PostFormPage/>}/>
                 <Route path="/post/edit/:postNum" element={<PostForm/>}/>
-
 
 
                 {/*공간대관페이지관련*/}
