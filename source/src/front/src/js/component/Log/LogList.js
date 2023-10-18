@@ -174,18 +174,6 @@ function LogList() {
 
 }
 
-const StyledScrollHideDiv = styled.div`
-  max-height: 50px;
-  overflow-y: auto;
-  width: 100%;
-  scrollbar-width: none; // Firefox
-  -ms-overflow-style: none; // IE and Edge
-
-  &::-webkit-scrollbar {
-    display: none; // Chrome, Safari, and Opera
-  }
-`;
-
 const Wrapper = styled.div`
   width: fit-content;
   margin: 0 auto; // 중앙 정렬을 위한 스타일

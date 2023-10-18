@@ -97,11 +97,8 @@ function App() {
         <div className="App" onClick={trackButtonClick}>
 
             {!isPaymentRoute && !isChatRoute && <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
-            {!isPaymentRoute && !isChatRoute && <QuickMenu />}
             <Routes>
                 <Route path="/" element={<MainPage/>}/>
-                <Route path="/test" element={<ImgContainer/>}/>
-
 
                 {/*로그인*/}
                 <Route path="/login" element={<LoginPage/>}/>
@@ -110,7 +107,7 @@ function App() {
 
                 {/*관리자*/}
                 {/*<Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>*/}
-                <Route path="/admin/member" element={<MemManagePage/>} />
+                <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null} />
                 <Route path="/admin/edu" element={isAdmin ? <EduListPage type="admin"/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>

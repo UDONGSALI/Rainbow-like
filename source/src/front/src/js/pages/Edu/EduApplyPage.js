@@ -1,5 +1,4 @@
 import React from 'react';
-import BackButton from "../../component/Common/BackButton";
 import {useParams} from "react-router-dom";
 import EduApply from "../../component/Edu/EduApply";
 import Header from "../../layout/Header/Header";
@@ -13,7 +12,6 @@ function EduApplyPage() {
         <div>
             <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={"교육 신청"}/>
             <EduApply eduNum={eduNum} memId={memId}/>
-            <BackButton/>
         </div>
     );
 }
