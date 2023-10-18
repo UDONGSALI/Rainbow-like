@@ -3,6 +3,7 @@ import {DataGrid} from "@mui/x-data-grid";
 import {SERVER_URL} from "../../Common/constants";
 import {useNavigate } from 'react-router-dom';
 import styles from '../../../../css/component/Club/ClubList.module.css';
+import CustomDataGrid from "../../Common/CustomDataGrid";
 
 function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
     const [posts, setPosts] = useState([]);
@@ -38,11 +39,20 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
             field: 'ftWorkerNum',
             headerName: 'DB',
             width: 50,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+
         },
         {
             field: 'member',
             headerName: '인재명',
             width: 100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
             valueGetter: (params) => {
                 const members = Array.isArray(params.row.member) ? params.row.member : [params.row.member];
                 return members.map((m) => m.name).join(', ');
@@ -52,6 +62,10 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
             field: 'speField',
             headerName: '분류',
             width: 200,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
             renderCell: (params) => (
                 <div
                     style={{ cursor: 'pointer' }}
@@ -65,16 +79,29 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
             field: 'licenseYN',
             headerName: '자격증 유무',
             width: 100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
         },
         {
             field: 'ftStatus',
             headerName: '등록여부',
             width: 100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
         },
         {
             field: 'statusDtl',
             headerName: '거부사유',
             width: 300,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+            flex: 1,
         },
 
 
@@ -87,6 +114,10 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
         width: 120,
         sortable: false,
         filterable: false,
+        headerClassName: styles.customHeader,
+        cellClassName: styles.customCell,
+        align: 'center',
+        headerAlign: 'center',
         renderCell: (params) => (
             // ftStatus가 '승인'인 경우에만 체크박스를 출력
             params.row.ftStatus === '승인' && (
@@ -113,7 +144,12 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
                 headerName: '수정',
                 sortable: false,
                 filterable: false,
+                headerClassName: styles.customHeader,
+                cellClassName: styles.customCell,
+                align: 'center',
+                headerAlign: 'center',
                 renderCell: (params) => (
+                    <div className={styles.btn}>
                     <button
                         style={{ cursor: 'pointer' }}
                         onClick={() => onEditClick(params)}
@@ -121,6 +157,7 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
                         {params.value}
                         수정
                     </button>
+                    </div>
                 ),
             },
             // 삭제 버튼 컬럼 정의
@@ -129,12 +166,19 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
                 headerName: '삭제',
                 sortable: false,
                 filterable: false,
+                headerClassName: styles.customHeader,
+                cellClassName: styles.customCell,
+                align: 'center',
+                headerAlign: 'center',
                 renderCell: (params) => (
+                    <div className={styles.btn}>
+
                     <button
                         onClick={() => onDelClick(params.row)}
                     >
                         삭제
                     </button>
+                    </div>
                 ),
             }
         );
@@ -210,6 +254,23 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
         }
     };
 
+    function CustomNoRowsOverlay() {
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
+                    fontWeight: 'bold',
+                    flexDirection: 'column',
+                }}
+            >
+                <p>데이터가 없습니다.</p>
+            </div>
+        );
+    }
+
     return(
         <div className={styles.List} style={{ height: 500, width: '100%' }}>
             { ftmMode?
@@ -226,18 +287,35 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
                     </ul>
                 </div>
                 :
+                <div class={styles.btn}>
                 <button onClick={() => {
                     const path = isAdmin ? '/admin/ftmain' : '/ftmain';
                     navigate(path);
                 }}>
                     DB 메인
                 </button>
+                </div>
             }
-            <DataGrid columns={columns}
+            <CustomDataGrid
+                className={styles.customDataGrid}
+                columns={columns}
                       rows={posts}
                       disableRowSelectionOnClick={true}
                       getRowId={row => row.ftWorkerNum}
+                onRowClick={onRowClick}
+                pageSize={5} // 페이지당 5개의 행을 보여줍니다.
+                components={{
+                    NoRowsOverlay: CustomNoRowsOverlay
+                }}
+                pagination={true}
+                sortModel={[
+                    {
+                        field: "number",
+                        sort: "desc", // 내림차순 정렬
+                    },
+                ]}
             />
+
 
         </div>
     );

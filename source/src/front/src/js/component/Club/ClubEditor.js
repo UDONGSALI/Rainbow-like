@@ -67,46 +67,51 @@ function ClubEditor(props) {
             });
     }, []);
 
-            const handleChange = (e) => {
-                const {name, value} = e.target;
+    const handleChange = (e) => {
+        const {name, value} = e.target;
 
-                if (value === '') {
-                    // 선택되지 않았을 때 이전 값을 유지
-                    setFormData({...formData});
-                } else {
-                    setFormData({...formData, [name]: value});
-                }
-            };
+        if (value === '') {
+            // 선택되지 않았을 때 이전 값을 유지
+            setFormData({...formData});
+        } else {
+            setFormData({...formData, [name]: value});
+        }
+    };
 
-            const handleSubmit = (e) => {
-                e.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-                formData.boardNum = formData.board.boardNum;
+        formData.boardNum = formData.board.boardNum;
 
-                formData.memNum = formData.member.memNum;
+        formData.memNum = formData.member.memNum;
 
-                // API 호출하여 게시글 정보 전송
-                fetch(SERVER_URL + "post/edit/" + id, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        alert('게시글을 수정했습니다.');
+        // API 호출하여 게시글 정보 전송
+        fetch(SERVER_URL + "post/edit/" + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                alert('게시글을 수정했습니다.');
 
-                        //게시글 상세로 이동
-                        navigate(`/clubs/${id}`);
-                    })
-                    .catch((error) => {
-                        // 오류 처리
-                        console.error('Error:', error);
-                    });
-            };
+                //게시글 상세로 이동
+                navigate(`/clubs/${id}`);
+            })
+            .catch((error) => {
+                // 오류 처리
+                console.error('Error:', error);
+            });
+    };
 
-    return (isAdmin || memNum === formData.member.memNum) ? (
+    if (!formData.member) {
+        return <div>Loading...</div>;
+    }
+
+
+    return (isAdmin || memNum == formData.member.memNum) ? (
             <div className={styles.registrationFormContainer}>
                 <h2>게시글 수정 폼</h2>
                 <form onSubmit={handleSubmit} className={styles.registrationForm}>
