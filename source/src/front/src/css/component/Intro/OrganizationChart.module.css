@@ -1,15 +1,16 @@
 /* Intro/OrganizationChart.module.css */
 
 #contentWrap {
-    margin-top:100px;
+    display: block;
+    margin: 0;
+    padding: 10rem 0 20rem 0;
 }
 
 .layout {
-    max-width: 60%;
+    position: relative;
+    max-width: 1240px;
+    width: 60%;
     margin: 0 auto;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
 }
 
 #subTit {
@@ -28,8 +29,6 @@
 .organization {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
 }
 
 .orgWrap {
@@ -54,29 +53,86 @@
 .orgWrap .head::before {
     content: "";
     width: 1px;
-    height: 8rem;
+    height: 7rem;
     background: black;
     position: absolute;
-    bottom: -8rem;
+    bottom: -7rem;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .orgWrap .orgRight {
-    margin-top: 3rem;
-    margin-left: 50%;
+    margin-top: 1.5rem;
+    margin-left: 40%;
     position: relative;
 }
 
 .orgWrap .orgRight::before {
     content: "";
-    width: 50%;
+    width: 25%;
     height: 1px;
     background: black;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 0;
+    left: 16.8%;
+}
+
+.orgWrap .orgRight p {
+    border: 3px solid #8757B8;
+    border-radius: 0.3rem;
+    width: 8rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    position: relative;
+    margin: auto;
+    font-weight: bold;
+}
+
+.orgWrap .orgDepth1 {
+    margin-top: 2.5rem;
+    position: relative;
+    display: flex;
+}
+
+.orgWrap .orgDepth1::before {
+    content: "";
+    width: calc(100% - 33.333%);
+    height: 1px;
+    background: black;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.orgWrap .orgDepth1 p {
+    padding-top: 4rem;
+    width: 33.333%;
+    position: relative;
+    font-weight: bold;
+}
+
+.orgWrap .orgDepth1 p span {
+    border: 3px solid #8757B8;
+    border-radius: 0.3rem;
+    width: 8rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    display: block;
+    margin: auto
+}
+
+.orgWrap .orgDepth1 p::before {
+    content: "";
+    width: 1px;
+    height: 4rem;
+    background: black;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .tbl, .tbl th, .tbl td {
