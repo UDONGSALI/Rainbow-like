@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
@@ -24,13 +23,13 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class PostService {
-    private  final MemberRepository memberRepository;
-    private  final BoardRepository boardRepository;
-    private  final PostRepository postRepository;
+    private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
+    private final PostRepository postRepository;
     private final SmsService smsService;
     private final ModelMapper mapper;
 
-    public void createDefaultPosts(){
+    public void createDefaultPosts() {
         ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();
         for (PostFormDto postFormDto : postDtoList) {
             mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -43,6 +42,7 @@ public class PostService {
     public Post savePost(Post post) {
         return postRepository.save(post);
     }
+
     public Post createPost(PostFormDto postFormDto) {
         Post newPost = mapper.map(postFormDto, Post.class);
 
@@ -107,6 +107,7 @@ public class PostService {
                 return Collections.emptyList();
         }
     }
+
     @Transactional
     public Optional<Post> updateStatus(Long postNum, Status status) {
         Optional<Post> optionalPost = postRepository.findById(postNum);
