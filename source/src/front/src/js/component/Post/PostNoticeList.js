@@ -7,11 +7,20 @@ import File from "../../../img/component/file.png";
 import styled from '@emotion/styled';
 import Pagination from "../Common/Pagination";
 import useDeletePost from "../hook/useDeletePost";
+import useFetch from "../hook/useFetch";
+import useSearch from "../hook/useSearch";
+import SearchComponent from "../Common/SearchComponent";
+
+const SEARCH_OPTIONS = [
+    {label: "제목", value: "title", type: "text"},
+    {label: "내용", value: "content", type: "text"},
+    {label: "작성자", value: "member", type: "text", valueGetter: (post) => post.member.memId},
+];
 
 function PostNoticeList(props) {
     const {boardNum} = props;
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    const { deletePost } = useDeletePost(); // 삭제 훅
+    const {deletePost} = useDeletePost(); // 삭제 훅
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
@@ -20,36 +29,27 @@ function PostNoticeList(props) {
     const [activePage, setActivePage] = useState(1);
     const itemsCountPerPage = 10;
     const totalItemsCount = posts.length;
+    const indexOfLastPost = activePage * itemsCountPerPage;
+    const indexOfFirstPost = indexOfLastPost - itemsCountPerPage;
     const pageRangeDisplayed = 5;
+    const {data: fetchedPosts, loadingPosts} = useFetch(`${SERVER_URL}post/board/${boardNum}`);
+    const {data: fetchedFiles, filesLoading} = useFetch(SERVER_URL + 'files/table/post', []);
+    const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}post/${boardNum}`, setPosts);
+
+
+    useEffect(() => {
+        if (!loadingPosts) {
+            setPosts(fetchedPosts.reverse());
+        }
+
+        if (!filesLoading) {
+            setFiles(fetchedFiles);
+        }
+    }, [fetchedPosts, fetchedFiles]);
 
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
     };
-
-    // 게시물 목록을 불러오는 로직을 함수로 분리
-    const fetchPosts = () => {
-        fetch(SERVER_URL + `post/board/${boardNum}`)
-            .then(res => res.json())
-            .then(data => {
-                const reversedData = [...data].reverse();
-                setPosts(reversedData);
-            })
-            .catch(err => console.error(err));
-    };
-
-    useEffect(() => {
-        fetchPosts();  // 처음 마운트 될 때 게시물 목록 불러오기
-    }, [boardNum]);
-
-
-    useEffect(() => {
-        fetch(SERVER_URL + "files/table/post")
-            .then(res => res.json())
-            .then(data => {
-                setFiles(data);
-            })
-            .catch(err => console.error(err));
-    }, [posts]);
 
     const postsWithFiles = posts.map((post) => {
         const postFiles = files.filter((file) => file.post && file.post.postNum === post.postNum);
@@ -58,8 +58,7 @@ function PostNoticeList(props) {
             postFiles,
         };
     });
-    const indexOfLastPost = activePage * itemsCountPerPage;
-    const indexOfFirstPost = indexOfLastPost - itemsCountPerPage;
+
     const currentPagePosts = postsWithFiles.slice(indexOfFirstPost, indexOfLastPost);
 
     // boardNum 기준으로 게시글들을 그룹화
@@ -83,13 +82,13 @@ function PostNoticeList(props) {
 
         if (success) {
             setOpen(true);  // 삭제 성공 알림 표시
-            fetchPosts();  // 게시물 목록 다시 불러오기
+            fetchedPosts();  // 게시물 목록 다시 불러오기
         }
     };
 
     const onEditClick = (params) => {
         const rowId = params.row.postNum;
-        navigate(`/post/edit/${rowId}`, { state: { mode: "edit" } });
+        navigate(`/post/edit/${rowId}`, {state: {mode: "edit"}});
     };
 
     const getRowId = (row) => {
@@ -101,7 +100,7 @@ function PostNoticeList(props) {
         const boardNumber = params.row.board.boardNum;
 
         navigate(`/post/detail/${boardNum}/${rowId}`, {
-            state: { boardNum: boardNumber }
+            state: {boardNum: boardNumber}
         });
     };
 
@@ -145,11 +144,11 @@ function PostNoticeList(props) {
                 return members.map((m) => m.name).join(', ');
             },
             renderCell: (params) => (
-                    <CenteredData>
-                        <StyledCell>
+                <CenteredData>
+                    <StyledCell>
                         {params.value}
-                        </StyledCell>
-                    </CenteredData>
+                    </StyledCell>
+                </CenteredData>
             ),
         },
         {
@@ -158,11 +157,11 @@ function PostNoticeList(props) {
             headerAlign: 'center',
             width: isAdmin ? 80 : 110,  // 조건부 width 값 설정
             renderCell: (params) => (
-                    <CenteredData>
-                        <StyledCell>
+                <CenteredData>
+                    <StyledCell>
                         {params.value}
-                        </StyledCell>
-                    </CenteredData>
+                    </StyledCell>
+                </CenteredData>
             )
         },
         {
@@ -175,15 +174,15 @@ function PostNoticeList(props) {
                 return (
                     <CenteredData>
                         <StyledCell>
-                        {row.value && row.value[0] && ( // 첫 번째 파일만 확인
-                            <div style={{width: '24px', height: '24px', marginRight: '8px'}}>
-                                <img
-                                    src={File}
-                                    alt='file'
-                                    style={{maxWidth: '100%', maxHeight: '100%'}}
-                                />
-                            </div>
-                        )}
+                            {row.value && row.value[0] && ( // 첫 번째 파일만 확인
+                                <div style={{width: '24px', height: '24px', marginRight: '8px'}}>
+                                    <img
+                                        src={File}
+                                        alt='file'
+                                        style={{maxWidth: '100%', maxHeight: '100%'}}
+                                    />
+                                </div>
+                            )}
                         </StyledCell>
                     </CenteredData>
                 );
@@ -198,8 +197,8 @@ function PostNoticeList(props) {
             renderCell: (params) => (
                 <CenteredData>
                     <StyledCell>
-                    {params.value.slice(0, 10)}
-                </StyledCell>
+                        {params.value.slice(0, 10)}
+                    </StyledCell>
                 </CenteredData>
 
             )
@@ -242,36 +241,49 @@ function PostNoticeList(props) {
     ];
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column',
-            alignItems: 'center',width:'100%' }}>
-            <DataGrid
-                columns={columns}
-                rows={currentPagePosts}
-                style={{ width: '920px', height: 400 }}
-                disableRowSelectionOnClick={true}
-                getRowId={getRowId}
-                hideFooter={true}
-            />
-            <Snackbar
-                open={open}
-                autoHideDuration={2000}
-                onClose={() => setOpen(false)}
-                message="게시글을 지웠습니다."
-            />
-            {isAdmin && (
-                <NewPost onClick={() => navigate('/post/new', { state: { mode: "create", boardNum } })}>
-                    등록
-                </NewPost>
-            )}
-            <Pagination
-                activePage={activePage}
-                itemsCountPerPage={itemsCountPerPage}
-                totalItemsCount={totalItemsCount}
-                pageRangeDisplayed={pageRangeDisplayed}
-                onChange={handlePageChange}
-                prevPageText="<"
-                nextPageText=">"
-            />
+        <div style={{width:"fit-content", margin:'0 auto'}}>
+            <div style={{
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center'
+            }}>
+                <SearchComponent
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    onSearch={handleSearch}
+                    searchOptions={SEARCH_OPTIONS}
+                    totalCount={postsWithFiles.length}
+                    currentPage={activePage}
+                    totalPages={Math.ceil(postsWithFiles.length / itemsCountPerPage)}
+                />
+                <DataGrid
+                    columns={columns}
+                    rows={currentPagePosts}
+                    style={{width: '920px', height: 400}}
+                    disableRowSelectionOnClick={true}
+                    getRowId={getRowId}
+                    hideFooter={true}
+                />
+                <Snackbar
+                    open={open}
+                    autoHideDuration={2000}
+                    onClose={() => setOpen(false)}
+                    message="게시글을 지웠습니다."
+                />
+                {isAdmin && (
+                    <NewPost onClick={() => navigate('/post/new', {state: {mode: "create", boardNum}})}>
+                        등록
+                    </NewPost>
+                )}
+                <Pagination
+                    activePage={activePage}
+                    itemsCountPerPage={itemsCountPerPage}
+                    totalItemsCount={totalItemsCount}
+                    pageRangeDisplayed={pageRangeDisplayed}
+                    onChange={handlePageChange}
+                    prevPageText="<"
+                    nextPageText=">"
+                />
+            </div>
         </div>
 
     );
@@ -318,6 +330,7 @@ const NewPost = styled.button`
   display: block;
   margin-top: 40px;
   font-size: 14px;
+
   &:hover {
     background-color: #53468b;
   }
