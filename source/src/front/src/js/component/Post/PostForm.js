@@ -30,12 +30,10 @@ function PostForm(props) {
         title: '',
         content: '',
         pageView: 0,
-        conselStatus: 'WAIT',
         parentsNum: '',
         memName:'',
         email:'',
         phone:'',
-        clubAllowStatus: 'WAIT',
         clubRecuStatus: '',
         delYN: 'N'
     });
@@ -70,16 +68,14 @@ function PostForm(props) {
                     console.log(data)// title에 문자가 있다면 로직 실행
                         setFormData({
                             memNum: data.member.memNum,
-                            boardNum: data.boardNum || '',
+                            boardNum: data.board.boardNum || '',
                             title: data.title || '',
                             content: data.content || '',
                             pageView: data.pageView || 0,
-                            conselStatus: data.conselStatus || 'WAIT',
                             parentsNum: data.parentsNum || '',
                             memName: data.member.name || '',
                             phone: data.member.tel || '',
                             email: data.member.email || '',
-                            clubAllowStatus: data.clubAllowStatus || 'WAIT',
                             clubRecuStatus: data.clubRecuStatus || '',
                             delYN: data.delYN || 'N'
                         });
@@ -125,7 +121,7 @@ function PostForm(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const endpoint = isEditMode ? `${SERVER_URL}post/update/${postNum}` : `${SERVER_URL}post/new`;
+        const endpoint = isEditMode ? `${SERVER_URL}post/edit/${postNum}` : `${SERVER_URL}post/new`;
         const method = isEditMode ? 'PUT' : 'POST';
 
         try {

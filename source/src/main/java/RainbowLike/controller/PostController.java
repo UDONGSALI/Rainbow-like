@@ -3,10 +3,8 @@ package RainbowLike.controller;
 import RainbowLike.constant.Status;
 import RainbowLike.dto.PostFormDto;
 import RainbowLike.entity.Board;
-import RainbowLike.entity.Member;
 import RainbowLike.entity.Post;
 import RainbowLike.repository.BoardRepository;
-import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.PostRepository;
 import RainbowLike.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,9 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,11 +32,13 @@ public class PostController {
     public Iterable<Post> getPosts() {
         return postRepository.findAll();
     }
+
     @GetMapping("/{postNum}")
-    public ResponseEntity<Post> getPost (@PathVariable Long postNum) {
+    public ResponseEntity<Post> getPost(@PathVariable Long postNum) {
         Post post = postRepository.findByPostNum(postNum);
         return ResponseEntity.ok(post);
     }
+
     // 게시판 넘버로 게시물을 검색
     @GetMapping("/board/{boardNum}")
     public Iterable<Post> getPostsByBoardNum(@PathVariable Long boardNum) {
@@ -103,36 +105,6 @@ public class PostController {
     public ResponseEntity<Post> editPost(@PathVariable Long postId, @RequestBody PostFormDto postFormDto) {
 
         Post updatedPost = postService.editPost(postId, postFormDto);
-        return ResponseEntity.ok(updatedPost);
-    }
-
-    @PutMapping("/update/{postNum}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long postNum, @RequestBody PostFormDto postFormDto) {
-        Optional<Post> existingPost = postRepository.findById(postNum);
-        Board board = existingPost.get().getBoard();
-
-        if (!existingPost.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Post postToUpdate = existingPost.get();
-        postToUpdate.setTitle(postFormDto.getTitle());
-        postToUpdate.setContent(postFormDto.getContent());
-        postToUpdate.setPageView(postFormDto.getPageView());
-        postToUpdate.setConselStatus(postFormDto.getConselStatus());
-        postToUpdate.setParentsNum(postFormDto.getParentsNum());
-        postToUpdate.setClubAllowStatus(postFormDto.getClubAllowStatus());
-        postToUpdate.setClubRecuStatus(postFormDto.getClubRecuStatus());
-        postToUpdate.setDelYN(postFormDto.getDelYN());
-
-        postToUpdate.setBoard(board);
-
-        Member member = new Member();
-        member.setMemNum(postFormDto.getMemNum());
-        postToUpdate.setMember(member);
-
-        Post updatedPost = postRepository.save(postToUpdate);
-
         return ResponseEntity.ok(updatedPost);
     }
 
