@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -62,54 +61,27 @@ public class ChatController {
     }
     @GetMapping("/findchatbymem/{memNum}")
     public Iterable<Chat> getChatByMemNum(@PathVariable Long memNum){
-
-//        return chatRepository.findByMemNum(memNum);
         return chatRepository.findByChatRoomMemberMemNumOrderByChatNumAsc(memNum);
     }
 
     @RequestMapping("/chatroom/new")
     public ResponseEntity<ChatRoom> createChatRoom(@RequestBody ChatRoomDto roomDto) {
-        ChatRoom room = new ChatRoom();
 
-        Member member = new Member();
-        member.setMemNum(roomDto.getMemNum());
-        room.setMember(member);
-        room.setAnswerYN(roomDto.getAnswerYN());
-
-        ChatRoom savedRoom = chatRoomRepository.save(room);
+        ChatRoom savedRoom = chatService.createChatRoom(roomDto);
 
         return ResponseEntity.ok(savedRoom);
     }
 
     @RequestMapping("/chatroom/edit/{roomId}")
     public ResponseEntity<ChatRoom> editChatRoom (@PathVariable Long roomId, @RequestBody ChatRoomDto roomDto) {
-        ChatRoom editRoom = new ChatRoom();
-        editRoom.setChatRoomId(roomId);
-
-        Member member = new Member();
-        member.setMemNum(roomDto.getMemNum());
-        editRoom.setMember(member);
-        editRoom.setAnswerYN(roomDto.getAnswerYN());
-
-        ChatRoom savedRoom = chatRoomRepository.save(editRoom);
+        ChatRoom savedRoom = chatService.editChatRoom(roomId, roomDto);
 
         return ResponseEntity.ok(savedRoom);
     }
 
     @RequestMapping("/chat/new")
-    public ResponseEntity<Chat> createChatRoom(@RequestBody ChatDto chatDto) {
-        Chat newChat = new Chat();
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setChatRoomId(chatDto.getChatRoomId());
-        newChat.setChatRoom(chatRoom);
-        Member member = new Member();
-        member.setMemNum(chatDto.getMemNum());
-        newChat.setMember(member);
-        newChat.setContent(chatDto.getContent());
-        newChat.setWriteDate(LocalDateTime.now());
-
-        Chat savedChat = chatRepository.save(newChat);
-
+    public ResponseEntity<Chat> createChat(@RequestBody ChatDto chatDto) {
+        Chat savedChat = chatService.createChat(chatDto);
         return ResponseEntity.ok(savedChat);
     }
 
