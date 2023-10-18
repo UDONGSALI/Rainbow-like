@@ -4,15 +4,13 @@ import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/ClubHeader";
 import React from "react";
 
-function ClubEditorPage(props){
-    const {memId} = props;
-
+function ClubEditorPage(){
 
     return(
         <div>
             <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
 
-            <ClubEditor memId = {memId} />
+            <ClubEditor />
         </div>
 
 
