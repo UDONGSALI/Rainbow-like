@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 // 2. 외부 라이브러리 관련
 import { DataGrid } from "@mui/x-data-grid";
-import { Pagination } from "@mui/material";
 import styled from '@emotion/styled';
 // 3. 프로젝트 내 공통 모듈 관련
 import { SERVER_URL } from '../Common/constants';
@@ -11,6 +10,7 @@ import DateCell from "../Common/DateCell";
 import InfoModal from "../Common/InfoModal";
 // 4. 컴포넌트 관련
 import LaborAssignmentModal from "./LaborAssignmentModal";
+import Pagination from "../Common/Pagination";
 // 5. 훅 관련
 import useSearch from "../hook/useSearch";
 import useFetch from "../hook/useFetch";
@@ -20,6 +20,7 @@ import usePatch from "../hook/usePatch";
 import StatusCell from "../Rent/RenderCell/StatusCell";
 import ConselStatusCell from "./RenderCell/ConselStatusCell";
 import LaborCell from "./RenderCell/LaborCell";
+import {useLocation, useNavigate} from "react-router-dom";
 
 function BoardPostList({ boardNum }) {
     // 1. 상수 정의
@@ -29,6 +30,9 @@ function BoardPostList({ boardNum }) {
         { label: "내용", value: "content", type: "text" },
         { label: "작성자", value: "member", type: "text", valueGetter: (post) => post.member.memId },
     ];
+    // Router Hooks
+    const navigate = useNavigate();
+    const location = useLocation();
     // 2. 로컬 상태 관리
     const [posts, setPosts] = useState([]);
     const [isLaborModalOpen, setIsLaborModalOpen] = useState(false);
@@ -71,7 +75,7 @@ function BoardPostList({ boardNum }) {
                 setPosts(sortedPosts);
             } else {
                 // boardNum이 7 또는 8이 아닐 때의 로직
-                setPosts(fetchedPosts);
+                setPosts(fetchedPosts.reverse());
             }
         }
     }, [loading, fetchedPosts, boardNum]);
@@ -151,6 +155,11 @@ function BoardPostList({ boardNum }) {
             );
             setPosts(updatedRows);
         }
+    };
+
+    const handlePageChange = (newPage) => {
+        navigate(`${location.pathname}?page=${newPage}`);
+        setActivePage(newPage);
     };
 
     const columns = [
@@ -260,14 +269,15 @@ function BoardPostList({ boardNum }) {
                         hideFooter={true}
                     />
                 )}
-                <div className="paginationContainer" style={{ marginTop: '10px' }}>
-                    <Pagination
-                        count={Math.ceil(posts.length / itemsPerPage)}
-                        page={activePage}
-                        onChange={(event, newPage) => setActivePage(newPage)}
-                        color="primary"
-                    />
-                </div>
+                <Pagination
+                    activePage={activePage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={posts.length}
+                    pageRangeDisplayed={10}
+                    onChange={handlePageChange}
+                    prevPageText="<"
+                    nextPageText=">"
+                />
             </div>
             <LaborAssignmentModal
                 open={isLaborModalOpen}

@@ -381,6 +381,188 @@ public class EduDto {
         Edu7.setTel("044-850-8128");
         eduList.add(Edu7);
 
+        EduDto Edu8 = new EduDto();
+        Edu8.setType(EduType.EDU);
+        Edu8.setEduName("(구글교육) 실무에서 바로 쓰는 IT 활용 교육");
+        Edu8.setContent("실무에서 바로 쓰는 IT 활용 교육\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "“카드뉴스 제작툴 및 구글 협업툴 이해 교육”\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "[교육신청 안내]\n" +
+                "\n" +
+                "○ 신청기간: 6. 19.(월) ~ 6. 30.(금)\n" +
+                "\n" +
+                "○ 대상: 세종에서 일하는 여성 20명(선착순, 무료)\n" +
+                "\n" +
+                "○ 신청방법: 세종여성플라자 홈페이지 로그인 후 신청\n" +
+                "\n" +
+                "○ 장소: 세종여성플라자 ‘하람’(새롬로 14, 새롬종합복지센터 4층)\n" +
+                "\n" +
+                "○ 준비사항: 구글 개인 계정\n" +
+                "\n" +
+                "○ 문의: 기획운영팀 044-850-8179\n" +
+                "\n" +
+                " \n" +
+                "\n" +
+                "[교육일정 안내]\n" +
+                "\n" +
+                "○ 1차: 구글 도구를 활용한 스마트워크\n" +
+                "\n" +
+                "- 일시: 7. 21.(금) 13:30~17:30\n" +
+                "\n" +
+                "- 강사: 김종원 대표(사회복지 홍보를 말하다, 구글워크스페이스, 구글 팁북 등 출간) \n" +
+                "\n" +
+                " ※ 1차, 2차 일정과 내용이 다릅니다. 희망하는 일자 확인 후 신청해주시기 바랍니다.");
+        Edu8.setEduStdt(LocalDateTime.of(2023,11,2,9,0,00,000));
+        Edu8.setEduEddt(LocalDateTime.of(2023,11,2,15,00,00,000));
+        Edu8.setEduAddr("세종여성플라자 하람");
+        Edu8.setTarget("세종에서 일하는 여성 20명");
+        Edu8.setRecuStdt(LocalDate.of(2023,10,15));
+        Edu8.setRecuEddt(LocalDate.of(2023,10,29));
+        Edu8.setCapacity(20);
+        Edu8.setRecuPerson(0);
+        Edu8.setRecuMethod(RecuMethod.ADMIN_APPROVAL);
+        Edu8.setTel("044-850-8179");
+        eduList.add(Edu8);
+
+        EduDto Edu9 = new EduDto();
+        Edu9.setType(EduType.EDU);
+        Edu9.setEduName("스마트폰 활용 기초 교육");
+        Edu9.setContent("스마트폰 기초 사용법부터 앱 활용까지! \n" +
+                "□ 교육일정: 11. 10.(금) 14:00~16:00\n" +
+                "□ 모집기간: 10. 20.(금) ~ 11. 5.(일)\n" +
+                "□ 모집대상: 스마트폰 사용에 어려움을 느끼는 세종시민 20명\n" +
+                "□ 신청방법: 세종여성플라자 홈페이지 로그인 후 신청\n" +
+                "□ 교육장소: 세종여성플라자 혜윰\n" +
+                "□ 교육내용: 스마트폰 기본 사용법, 앱 설치 및 관리\n" +
+                "□ 문의: 세종여성플라자 기획운영팀 ☎044-850-8179");
+        Edu9.setEduStdt(LocalDateTime.of(2023,11,10,14,00,00,000));
+        Edu9.setEduEddt(LocalDateTime.of(2023,11,10,16,00,00,000));
+        Edu9.setEduAddr("세종여성플라자 혜윰");
+        Edu9.setTarget("스마트폰 사용에 어려움을 느끼는 세종시민 20명");
+        Edu9.setRecuStdt(LocalDate.of(2023,10,20));
+        Edu9.setRecuEddt(LocalDate.of(2023,11,5));
+        Edu9.setCapacity(20);
+        Edu9.setRecuPerson(0);
+        Edu9.setRecuMethod(RecuMethod.FIRST_COME);
+        Edu9.setTel("044-850-8179");
+        eduList.add(Edu9);
+
+        EduDto Edu10 = new EduDto();
+        Edu10.setType(EduType.EDU);
+        Edu10.setEduName("영어 회화 기초 특강");
+        Edu10.setContent("영어 회화 기초부터 실용회화까지\n" +
+                "□ 교육일정: 11. 15.(수) 10:00~12:00\n" +
+                "□ 모집기간: 10. 25.(수) ~ 11. 10.(금)\n" +
+                "□ 모집대상: 영어에 관심있는 세종시민 15명\n" +
+                "□ 신청방법: 세종여성플라자 홈페이지 로그인 후 신청\n" +
+                "□ 교육장소: 세종여성플라자 혜윰\n" +
+                "□ 교육내용: 기초문법, 일상회화 연습\n" +
+                "□ 문의: 세종여성플라자 기획운영팀 ☎044-850-8179");
+        Edu10.setEduStdt(LocalDateTime.of(2023,11,15,10,00,00,000));
+        Edu10.setEduEddt(LocalDateTime.of(2023,11,15,12,00,00,000));
+        Edu10.setEduAddr("세종여성플라자 혜윰");
+        Edu10.setTarget("영어에 관심있는 세종시민 15명");
+        Edu10.setRecuStdt(LocalDate.of(2023,10,25));
+        Edu10.setRecuEddt(LocalDate.of(2023,11,10));
+        Edu10.setCapacity(15);
+        Edu10.setRecuPerson(0);
+        Edu10.setRecuMethod(RecuMethod.FIRST_COME);
+        Edu10.setTel("044-850-8179");
+        eduList.add(Edu10);
+
+        EduDto Edu11 = new EduDto();
+        Edu11.setType(EduType.EDU);
+        Edu11.setEduName("재테크 기초 교육");
+        Edu11.setContent("재테크의 기초를 배우는 시간\n" +
+                "□ 교육일정: 11. 20.(월) 13:00~15:00\n" +
+                "□ 모집기간: 10. 30.(월) ~ 11. 15.(수)\n" +
+                "□ 모집대상: 재테크에 관심있는 세종시민 20명\n" +
+                "□ 신청방법: 세종여성플라자 홈페이지 로그인 후 신청\n" +
+                "□ 교육장소: 세종여성플라자 혜윰\n" +
+                "□ 교육내용: 저축, 투자, 금융상품 알아보기\n" +
+                "□ 문의: 세종여성플라자 기획운영팀 ☎044-850-8179");
+        Edu11.setEduStdt(LocalDateTime.of(2023,11,20,13,00,00,000));
+        Edu11.setEduEddt(LocalDateTime.of(2023,11,20,15,00,00,000));
+        Edu11.setEduAddr("세종여성플라자 혜윰");
+        Edu11.setTarget("재테크에 관심있는 세종시민 20명");
+        Edu11.setRecuStdt(LocalDate.of(2023,10,30));
+        Edu11.setRecuEddt(LocalDate.of(2023,11,15));
+        Edu11.setCapacity(20);
+        Edu11.setRecuPerson(0);
+        Edu11.setRecuMethod(RecuMethod.FIRST_COME);
+        Edu11.setTel("044-850-8179");
+        eduList.add(Edu11);
+
+        EduDto Edu12 = new EduDto();
+        Edu12.setType(EduType.EDU);
+        Edu12.setEduName("사회적 대화의 기술");
+        Edu12.setContent("현대 사회에서 효과적인 대화의 중요성과 기술에 대해 배우는 시간입니다.\n" +
+                "□ 교육일정: 11. 10.(금) 10:00~12:00\n" +
+                "□ 모집기간: 10. 20.(금) ~ 11. 3.(금)\n" +
+                "□ 모집대상: 세종 지역에 거주하는 누구나 20명(선착순, 무료)\n" +
+                "□ 신청방법: 세종여성플라자 홈페이지 로그인 후 신청\n" +
+                "□ 교육장소: 세종여성플라자 혜윰(새롬로 14, 새롬종합복지센터 4층)\n" +
+                "□ 문의: 세종여성플라자 교육사업팀 ☎044-850-8128");
+        Edu12.setEduStdt(LocalDateTime.of(2023,11,10,10,00,00,000));
+        Edu12.setEduEddt(LocalDateTime.of(2023,11,10,12,00,00,000));
+        Edu12.setEduAddr("세종여성플라자 혜윰");
+        Edu12.setTarget("세종 지역에 거주하는 누구나 20명");
+        Edu12.setRecuStdt(LocalDate.of(2023,10,20));
+        Edu12.setRecuEddt(LocalDate.of(2023,11,3));
+        Edu12.setCapacity(20);
+        Edu12.setRecuPerson(0);
+        Edu12.setRecuMethod(RecuMethod.FIRST_COME);
+        Edu12.setTel("044-850-8128");
+        eduList.add(Edu12);
+
+        EduDto Edu13 = new EduDto();
+        Edu13.setType(EduType.BUSINESS);
+        Edu13.setEduName("창업 기초 교육");
+        Edu13.setContent("창업을 준비하는 분들을 위한 기초 교육입니다.\n" +
+                "□ 교육일정: 11. 14.(화) 13:00~15:00\n" +
+                "□ 모집기간: 10. 24.(화) ~ 11. 7.(화)\n" +
+                "□ 모집대상: 창업을 준비하는 분들 30명(선착순, 무료)\n" +
+                "□ 신청방법: 세종여성플라자 홈페이지 로그인 후 신청\n" +
+                "□ 교육장소: 세종여성플라자 혜윰(새롬로 14, 새롬종합복지센터 4층)\n" +
+                "□ 문의: 세종여성플라자 기획운영팀 ☎044-850-8179");
+        Edu13.setEduStdt(LocalDateTime.of(2023,11,14,13,00,00,000));
+        Edu13.setEduEddt(LocalDateTime.of(2023,11,14,15,00,00,000));
+        Edu13.setEduAddr("세종여성플라자 혜윰");
+        Edu13.setTarget("창업을 준비하는 분들 30명");
+        Edu13.setRecuStdt(LocalDate.of(2023,10,24));
+        Edu13.setRecuEddt(LocalDate.of(2023,11,7));
+        Edu13.setCapacity(30);
+        Edu13.setRecuPerson(0);
+        Edu13.setRecuMethod(RecuMethod.FIRST_COME);
+        Edu13.setTel("044-850-8179");
+        eduList.add(Edu13);
+
+        EduDto Edu14 = new EduDto();
+        Edu14.setType(EduType.EDU);
+        Edu14.setEduName("아동 상담 기초 교육");
+        Edu14.setContent("아동 상담의 기초에 대해 배우는 교육입니다.\n" +
+                "□ 교육일정: 11. 18.(토) 10:00~12:00\n" +
+                "□ 모집기간: 10. 28.(토) ~ 11. 11.(토)\n" +
+                "□ 모집대상: 아동 상담에 관심 있는 분들 20명(선착순, 무료)\n" +
+                "□ 신청방법: 세종여성플라자 홈페이지 로그인 후 신청\n" +
+                "□ 교육장소: 세종여성플라자 혜윰(새롬로 14, 새롬종합복지센터 4층)\n" +
+                "□ 문의: 세종여성플라자 교육사업팀 ☎044-850-8128");
+        Edu14.setEduStdt(LocalDateTime.of(2023,11,18,10,00,00,000));
+        Edu14.setEduEddt(LocalDateTime.of(2023,11,18,12,00,00,000));
+        Edu14.setEduAddr("세종여성플라자 혜윰");
+        Edu14.setTarget("아동 상담에 관심 있는 분들 20명");
+        Edu14.setRecuStdt(LocalDate.of(2023,10,28));
+        Edu14.setRecuEddt(LocalDate.of(2023,11,11));
+        Edu14.setCapacity(20);
+        Edu14.setRecuPerson(0);
+        Edu14.setRecuMethod(RecuMethod.FIRST_COME);
+        Edu14.setTel("044-850-8128");
+        eduList.add(Edu14);
 
 //        for (int i = 0; i < 100; i++) {
 //            EduDto eduDto = new EduDto();
