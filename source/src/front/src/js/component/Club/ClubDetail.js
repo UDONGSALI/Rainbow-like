@@ -9,14 +9,11 @@ function ClubDetail(props) {
     const memId = sessionStorage.getItem("memId");
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const [post, setPost] = useState(null);
-    const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-console.log(memId);
-
 
     useEffect(() => {
         // 조회수 증가 API 호출
-        fetch(`${SERVER_URL}posts/${id}/increase-view`, {
+        fetch(`${SERVER_URL}post/${id}/increase-view`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +36,7 @@ console.log(memId);
     }, []);
 
     const fetchPost = () =>{
-        fetch(SERVER_URL + "posts/" + id)
+        fetch(`${SERVER_URL}post/${id}`)
             .then(response =>
                 response.json())
             .then(data =>
@@ -48,10 +45,8 @@ console.log(memId);
     };
 
     const onDelClick = (post) => {
-        console.log(post);
         const updatedPostData = {
-
-            memNum: post.member.memNum,
+            memNum:post.member.memNum,
             boardNum: post.board.boardNum,
             title: post.title,
             content: post.content,
@@ -65,7 +60,7 @@ console.log(memId);
         };
 
         // PUT 요청 보내기
-        fetch(SERVER_URL + "posts/edit/" + post.postNum, {
+        fetch(SERVER_URL + "post/edit/" + post.postNum, {
             method: 'PUT', // PUT 요청을 사용
             headers: {
                 'Content-Type': 'application/json',
@@ -82,7 +77,6 @@ console.log(memId);
 
             .then((data) => {
                 alert('게시글을 삭제했습니다.');
-                setOpen(true);
                 navigate('/clubs');
 
             })
@@ -115,26 +109,25 @@ console.log(memId);
 
     return (
 
-
                 <div className={styles.postDetailPage}>
-            <h3>{post.post.title}</h3>
+            <h3>{post.title}</h3>
             <div className={styles.postMeta}>
                 <div className={styles.postMeta1}>
                     {post.member.name}
                 </div>
                 <div className={styles.postMeta2}>
-                    <span className={styles.metaItem}>{convertStatus(post.post.clubAllowStatus)}</span>
-                    <span className={styles.metaItem}>{post.post.clubRecuStatus}</span>
-                    <span className={styles.metaItem}>조회수 {post.post.pageView}</span>
+                    <span className={styles.metaItem}>{convertStatus(post.clubAllowStatus)}</span>
+                    <span className={styles.metaItem}>{post.clubRecuStatus}</span>
+                    <span className={styles.metaItem}>조회수 {post.pageView}</span>
                 </div>
             </div>
 
-            <div className={styles.content}>{post.post.content}</div>
+            <div className={styles.content}>{post.content}</div>
                     <div className={styles.postButton}>
                         {post.member.memId === memId || isAdmin ? (
                             <>
                                 <button onClick={() => onEditClick()}>수정</button>
-                                <button onClick={() => onDelClick(post.post)}>삭제</button>
+                                <button onClick={() => onDelClick(post)}>삭제</button>
                             </>
                         ) : (
                             <></>

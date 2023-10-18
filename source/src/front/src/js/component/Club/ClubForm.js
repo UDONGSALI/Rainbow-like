@@ -54,7 +54,7 @@ function ClubForm(props){
         e.preventDefault();
 
         // API 호출하여 게시글 정보 전송
-        fetch(SERVER_URL + 'posts/new', {
+        fetch(SERVER_URL + 'post/new', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

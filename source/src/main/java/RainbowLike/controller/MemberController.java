@@ -2,13 +2,10 @@ package RainbowLike.controller;
 
 
 import RainbowLike.component.MemberNotFoundException;
-import RainbowLike.component.UpdateMemberException;
-import RainbowLike.dto.MemberFormDto;
+import RainbowLike.dto.MemberDto;
 import RainbowLike.entity.Member;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.service.MemberService;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,7 +64,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<Member> saveMember(@RequestBody MemberFormDto memberDto) {
+    public ResponseEntity<Member> saveMember(@RequestBody MemberDto memberDto) {
         Member savedMember = memberService.saveMember(memberDto);
         return ResponseEntity.ok(savedMember);
     }
@@ -121,7 +118,7 @@ public class MemberController {
 
     //회원정보수정에 따른 업데이트
     @PatchMapping("/update/{memId}")
-    public ResponseEntity<String> updateMember(@PathVariable String memId, @RequestBody MemberFormDto updatedInfo) {
+    public ResponseEntity<String> updateMember(@PathVariable String memId, @RequestBody MemberDto updatedInfo) {
         try {
             Member existingMember = memberRepository.findByMemId(memId);
 

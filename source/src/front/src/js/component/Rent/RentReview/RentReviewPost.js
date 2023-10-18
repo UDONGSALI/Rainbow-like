@@ -17,8 +17,8 @@ const RentReviewDetails = () => {
     const fetchPostDetails = async () => {
         try {
             const [detailsResponse, postResponse] = await Promise.all([
-                fetch(SERVER_URL + `rentReview/${postNum}`),
-                fetch(`${SERVER_URL}posts/${postNum}/increase-view`, {
+                fetch(SERVER_URL + `post/${postNum}`),
+                fetch(`${SERVER_URL}post/${postNum}/increase-view`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

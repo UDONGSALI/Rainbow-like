@@ -6,30 +6,41 @@ import {SERVER_URL} from "../Common/constants";
 import File from "../../../img/component/file.png";
 import styled from '@emotion/styled';
 import Pagination from "../Common/Pagination";
+import useDeletePost from "../hook/useDeletePost";
 
 function PostNoticeList(props) {
     const {boardNum} = props;
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    const { deletePost } = useDeletePost(); // 삭제 훅
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    //페이지관련
     const [activePage, setActivePage] = useState(1);
     const itemsCountPerPage = 10;
     const totalItemsCount = posts.length;
     const pageRangeDisplayed = 5;
+
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
     };
 
-    useEffect(() => {
-        fetch(SERVER_URL + `post/${boardNum}`)
+    // 게시물 목록을 불러오는 로직을 함수로 분리
+    const fetchPosts = () => {
+        fetch(SERVER_URL + `post/board/${boardNum}`)
             .then(res => res.json())
             .then(data => {
                 const reversedData = [...data].reverse();
                 setPosts(reversedData);
             })
             .catch(err => console.error(err));
+    };
+
+    useEffect(() => {
+        fetchPosts();  // 처음 마운트 될 때 게시물 목록 불러오기
     }, [boardNum]);
+
 
     useEffect(() => {
         fetch(SERVER_URL + "files/table/post")
@@ -47,6 +58,9 @@ function PostNoticeList(props) {
             postFiles,
         };
     });
+    const indexOfLastPost = activePage * itemsCountPerPage;
+    const indexOfFirstPost = indexOfLastPost - itemsCountPerPage;
+    const currentPagePosts = postsWithFiles.slice(indexOfFirstPost, indexOfLastPost);
 
     // boardNum 기준으로 게시글들을 그룹화
     const groupedByBoardNum = postsWithFiles.reduce((acc, post) => {
@@ -64,18 +78,18 @@ function PostNoticeList(props) {
         });
     });
 
+    const onDelClick = async (postNum, postFiles, boardNum) => {
+        const success = await deletePost(postNum, postFiles, boardNum, SERVER_URL);  // 삭제 요청
 
-    const onDelClick = (url) => {
-        fetch(url, {method: 'DELETE'})
-            .then(response => {
-                setOpen(true);
-            })
-            .catch(err => console.error(err));
+        if (success) {
+            setOpen(true);  // 삭제 성공 알림 표시
+            fetchPosts();  // 게시물 목록 다시 불러오기
+        }
     };
 
     const onEditClick = (params) => {
         const rowId = params.row.postNum;
-        navigate(`/posts/edit/${rowId}`);
+        navigate(`/post/edit/${rowId}`, { state: { mode: "edit" } });
     };
 
     const getRowId = (row) => {
@@ -111,7 +125,7 @@ function PostNoticeList(props) {
             field: 'title',
             headerName: '제목',
             headerAlign: 'center',
-            width: 350,
+            width: isAdmin ? 350 : 420,  // 조건부 width 값 설정
             renderCell: (params) => (
                 <div
                     style={{cursor: 'pointer'}}
@@ -125,7 +139,7 @@ function PostNoticeList(props) {
             field: 'member',
             headerName: '작성자',
             headerAlign: 'center',
-            width: 80,
+            width: isAdmin ? 80 : 100,  // 조건부 width 값 설정
             valueGetter: (params) => {
                 const members = Array.isArray(params.row.member) ? params.row.member : [params.row.member];
                 return members.map((m) => m.name).join(', ');
@@ -142,7 +156,7 @@ function PostNoticeList(props) {
             field: 'pageView',
             headerName: '조회수',
             headerAlign: 'center',
-            width: 80,
+            width: isAdmin ? 80 : 110,  // 조건부 width 값 설정
             renderCell: (params) => (
                     <CenteredData>
                         <StyledCell>
@@ -159,7 +173,8 @@ function PostNoticeList(props) {
             filterable: false,
             renderCell: (row) => {
                 return (
-                       <div>
+                    <CenteredData>
+                        <StyledCell>
                         {row.value && row.value[0] && ( // 첫 번째 파일만 확인
                             <div style={{width: '24px', height: '24px', marginRight: '8px'}}>
                                 <img
@@ -169,16 +184,17 @@ function PostNoticeList(props) {
                                 />
                             </div>
                         )}
-                       </div>
+                        </StyledCell>
+                    </CenteredData>
                 );
             },
-            width: 50,
+            width: isAdmin ? 50 : 80  // 조건부 width 값 설정
         },
         {
             field: 'writeDate',
             headerName: '작성일',
             headerAlign: 'center',
-            width: 100,
+            width: isAdmin ? 100 : 120,  // 조건부 width 값 설정
             renderCell: (params) => (
                 <CenteredData>
                     <StyledCell>
@@ -188,39 +204,41 @@ function PostNoticeList(props) {
 
             )
         },
-        {
-            field: 'editLink',
-            headerName: '수정',
-            headerAlign: 'center',
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
-                <CenteredData>
-                    <EditButton
-                        style={{cursor: 'pointer'}}
-                        onClick={() => onEditClick(params)}
-                    >
-                        수정
-                    </EditButton>
-                </CenteredData>
-            ),
-        },
-        {
-            field: 'deleteLink',
-            headerName: '삭제',
-            headerAlign: 'center',
-            sortable: false,
-            filterable: false,
-            renderCell: (params) => (
-                <CenteredData>
-                    <DeleteButton
-                        onClick={() => onDelClick(params.row.deleteLink)}
-                    >
-                        삭제
-                    </DeleteButton>
-                </CenteredData>
-            ),
-        },
+        ...(isAdmin ? [
+            {
+                field: 'editLink',
+                headerName: '수정',
+                headerAlign: 'center',
+                sortable: false,
+                filterable: false,
+                renderCell: (params) => (
+                    <CenteredData>
+                        <EditButton
+                            style={{cursor: 'pointer'}}
+                            onClick={() => onEditClick(params)}
+                        >
+                            수정
+                        </EditButton>
+                    </CenteredData>
+                ),
+            },
+            {
+                field: 'deleteLink',
+                headerName: '삭제',
+                headerAlign: 'center',
+                sortable: false,
+                filterable: false,
+                renderCell: (params) => (
+                    <CenteredData>
+                        <DeleteButton
+                            onClick={() => onDelClick(params.row.postNum, params.row.postFiles, params.row.board.boardNum)}
+                        >
+                            삭제
+                        </DeleteButton>
+                    </CenteredData>
+                ),
+            },
+        ] : [])  // 조건부로 배열을 확장하여 추가
     ];
 
     return (
@@ -228,7 +246,7 @@ function PostNoticeList(props) {
             alignItems: 'center',width:'100%' }}>
             <DataGrid
                 columns={columns}
-                rows={postsWithFiles}
+                rows={currentPagePosts}
                 style={{ width: '920px', height: 400 }}
                 disableRowSelectionOnClick={true}
                 getRowId={getRowId}
@@ -240,9 +258,11 @@ function PostNoticeList(props) {
                 onClose={() => setOpen(false)}
                 message="게시글을 지웠습니다."
             />
-            <NewPost onClick={() => navigate('/post/new', { state: { boardNum } })}>
-                등록
-            </NewPost>
+            {isAdmin && (
+                <NewPost onClick={() => navigate('/post/new', { state: { mode: "create", boardNum } })}>
+                    등록
+                </NewPost>
+            )}
             <Pagination
                 activePage={activePage}
                 itemsCountPerPage={itemsCountPerPage}
