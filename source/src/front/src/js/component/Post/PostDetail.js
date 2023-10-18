@@ -148,7 +148,7 @@ function PostDetail(props) {
             <h2 className={styles.title}>{post.title}</h2>
             <div className={styles.postMeta}>
                 <p className={styles.postData}>
-                    작성자: {post.member.name}{' '}
+                    작성자: {post.member.memId}{' '}
                     작성일: {post.writeDate.slice(0, 10)}{' '}
                     조회수: {post.pageView}
                 </p>
