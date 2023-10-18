@@ -4,6 +4,7 @@ import { SERVER_URL } from "../../component/Common/constants";
 import { useNavigate } from 'react-router-dom';
 import styles from '../../../css/component/Club/ClubList.module.css';
 import SMSDtl from "./SMSDtl";
+import CustomDataGrid from "../../component/Common/CustomDataGrid";
 
 function SMSList({ refresh }) {
     const [posts, setPosts] = useState([]);
@@ -46,23 +47,59 @@ function SMSList({ refresh }) {
             field: 'smsType',
             headerName: '타입',
             width: 100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+
         },
         {
             field: 'sendTel',
             headerName: '송신번호',
             width: 200,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
         },
         {
             field: 'content',
             headerName: '메세지',
             width: 400,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+            flex: 1,
         },
         {
             field: 'sendDate',
             headerName: '보낸 일자',
             width: 300,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
         }
     ];
+
+    function CustomNoRowsOverlay() {
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
+                    fontWeight: 'bold',
+                    flexDirection: 'column',
+                }}
+            >
+                <p>데이터가 없습니다.</p>
+            </div>
+        );
+    }
+
 
     if (!posts) {
         return <div>Loading...</div>;
@@ -70,16 +107,28 @@ function SMSList({ refresh }) {
 
     return (
         <div className={styles.List} style={{ height: 500, width: '100%' }}>
-            <DataGrid
+            <CustomDataGrid
+                className={styles.customDataGrid}
                 columns={columns}
                 rows={posts}
                 disableRowSelectionOnClick={true}
                 getRowId={row => row.smsHistNum}
                 onRowClick={(params) => onModalClick(params.row.smsHistNum)} // 모달 열릴 때 smsHistNum 전달
+                pageSize={5} // 페이지당 5개의 행을 보여줍니다.
+                components={{
+                    NoRowsOverlay: CustomNoRowsOverlay
+                }}
+                pagination={true}
+                sortModel={[
+                    {
+                        field: "number",
+                        sort: "desc", // 내림차순 정렬
+                    },
+                ]}
             />
 
             {isModalOpen && (
-                <SMSDtl onClose={closeModal} histNum={selectedSmsHistNum} /> // 선택된 smsHistNum을 SMSDtl 컴포넌트로 전달
+                <SMSDtl onClose={closeModal} histNum={selectedSmsHistNum} />
             )}
         </div>
     );
