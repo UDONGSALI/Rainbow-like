@@ -71,6 +71,9 @@ import Purpose from "./js/component/Intro/Purpose";
 import AgenHistory from "./js/component/Intro/AgenHistory";
 import RentReviewWritePage from "./js/pages/Rent/RentReviewWritePage";
 import QuickMenu from "./js/layout/QuickMenu/QuickMenu";
+import OrganizationChart from "./js/component/Intro/OrganizationChart";
+import SpaceIntro from "./js/component/Intro/SpaceIntro";
+import IntroPage from "./js/pages/Intro/IntroPage";
 
 
 
@@ -122,9 +125,12 @@ function App() {
                 <Route path="admin/ftmain/ftw/:id" element={<FTWDtlPage type="admin"/>}/>
 
                 {/*기관소개*/}
-                <Route path="/intro" element={<Greeting />}/>
-                <Route path="/purpose" element={<Purpose />}/>
-                <Route path="/history" element={<AgenHistory />}/>
+                <Route path="/intro" element={<IntroPage />}/>
+                {/*<Route path="/intro" element={<Greeting />}/>*/}
+                {/*<Route path="/purpose" element={<Purpose />}/>*/}
+                {/*<Route path="/history" element={<AgenHistory />}/>*/}
+                {/*<Route path="/organi" element={<OrganizationChart />}/>*/}
+                {/*<Route path="/spaceIntro" element={<SpaceIntro />}/>*/}
 
                 {/*교육*/}
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>

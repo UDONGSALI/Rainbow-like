@@ -19,7 +19,6 @@ public class DefaultFileService {
     private final PostRepository postRepository;
     private final FileRepository fileRepository;
     public void createDefaultFiles() {
-
         // 기본 파일 저장용 리스트
         // 멤버 관련
         List<File> fileList = new ArrayList<>();
@@ -342,6 +341,53 @@ public class DefaultFileService {
         post17File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/17/sj6.jpg");
 
         fileList.add(post17File1);
+
+        File post18File1 = new File();
+        post18File1.setPost(postRepository.findByPostNum(35L));
+        post18File1.setFileName("post/35/ple1.png");
+        post18File1.setFileOriName("ple1.png");
+        post18File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/35/ple1.png");
+
+        fileList.add(post18File1);
+
+        File post19File1 = new File();
+        post19File1.setPost(postRepository.findByPostNum(36L));
+        post19File1.setFileName("post/36/ple2.png");
+        post19File1.setFileOriName("ple2.png");
+        post19File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/36/ple2.png");
+
+        fileList.add(post19File1);
+
+        File post20File1 = new File();
+        post20File1.setPost(postRepository.findByPostNum(37L));
+        post20File1.setFileName("post/37/ple3.png");
+        post20File1.setFileOriName("ple3.png");
+        post20File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/37/ple3.png");
+
+        fileList.add(post20File1);
+
+        File post21File1 = new File();
+        post21File1.setPost(postRepository.findByPostNum(38L));
+        post21File1.setFileName("post/38/ple4.png");
+        post21File1.setFileOriName("ple4.png");
+        post21File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/38/ple4.png");
+
+        fileList.add(post21File1);
+
+        File post22File1 = new File();
+        post22File1.setPost(postRepository.findByPostNum(39L));
+        post22File1.setFileName("post/36/ple2.png");
+        post22File1.setFileOriName("ple2.png");
+        post22File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/36/ple2.png");
+        fileList.add(post22File1);
+
+        File post23File1 = new File();
+        post23File1.setPost(postRepository.findByPostNum(40L));
+        post23File1.setFileName("post/36/ple2.png");
+        post23File1.setFileOriName("ple2.png");
+        post23File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/36/ple2.png");
+
+        fileList.add(post23File1);
 
         // 교육 내역 관련
 
