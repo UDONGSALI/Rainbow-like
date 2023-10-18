@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import useFetch from "../../hook/useFetch";
 import { SERVER_URL } from "../../Common/constants";
 import styles from "../../../../css/component/Main/Edu/ThumbnailComponent.module.css";
 import {useNavigate} from "react-router-dom";
+import replace from '../../../../img/component/Main/replace.jpg'
 
 function getStatus(currentDate, recuStdt, recuEddt) {
     if (currentDate < new Date(recuStdt)) return 'waiting';
@@ -35,7 +35,7 @@ function ThumbnailComponent({ basicEdus }) {
             {edus.map((edu, index) => (
                 <div key={index} className={styles.thumbnailItem} onClick={() => navigateToDetail(edu.eduNum)}>
                     <div className={styles.imageFrame}>
-                        <img src={edu.files[0].fileUri} alt={edu.title} className={styles.thumbnailImage} />
+                        <img src={edu.files && edu.files.length > 0 ? edu.files[0].fileUri : replace} alt={edu.title} className={styles.thumbnailImage} />
                         <div className={styles.statusBox}>
                             {getStatus(currentDate, edu.recuStdt, edu.recuEddt) === 'waiting' && <span className={styles.waiting}>접수대기</span>}
                             {getStatus(currentDate, edu.recuStdt, edu.recuEddt) === 'ongoing' && <span className={styles.ongoing}>접수중</span>}

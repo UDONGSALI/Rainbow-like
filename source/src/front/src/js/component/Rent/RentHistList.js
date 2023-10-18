@@ -2,7 +2,6 @@
 import React, {useEffect, useState} from "react";
 // 2. 외부 라이브러리 관련
 import {DataGrid} from "@mui/x-data-grid";
-import {Pagination} from "@mui/material";
 import styled from '@emotion/styled';
 // 3. 프로젝트 내 공통 모듈 관련
 import {useLocation, useNavigate} from "react-router-dom";
@@ -10,6 +9,7 @@ import {SERVER_URL} from "../Common/constants";
 // 4. 컴포넌트 관련
 import SearchComponent from "../Common/SearchComponent";
 import Permit from "./RenderCell/Permit";
+import Pagination from "../Common/Pagination";
 // 5. 훅 관련
 import usePagination from "../hook/usePagination";
 import useSearch from "../hook/useSearch";
@@ -98,7 +98,7 @@ function RentHistList(props) {
     };
 
 
-    const handlePageChange = (event, newPage) => {
+    const handlePageChange = (newPage) => {
         navigate(`${location.pathname}?page=${newPage}`);
         setActivePage(newPage);
     }
@@ -277,14 +277,15 @@ function RentHistList(props) {
                         hideFooter={true}
                     />
                 )}
-                <div className="paginationContainer" style={{marginTop: '10px'}}>
-                    <Pagination
-                        count={Math.ceil(rentHist.length / itemsPerPage)}
-                        page={activePage}
-                        onChange={handlePageChange}
-                        color="primary"
-                    />
-                </div>
+                <Pagination
+                    activePage={activePage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={rentHist.length}
+                    pageRangeDisplayed={10}
+                    onChange={handlePageChange}
+                    prevPageText="<"
+                    nextPageText=">"
+                />
             </div>
             <Permit
                 isOpen={isPermitOpen}

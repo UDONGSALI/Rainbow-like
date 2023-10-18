@@ -1,11 +1,12 @@
 /* 컨테이너 전체의 스타일 */
 .FullContainer {
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 50px;
-    background-color: #FAFAFA; /* 또는 원하시는 배경색으로 설정 */
-    margin-top: 50px;
+    background-color: #FAFAFA;
 }
 
 /* 섹션의 스타일 */

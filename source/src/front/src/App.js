@@ -1,4 +1,4 @@
-import {Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes, useLocation} from "react-router-dom";
 import './App.css';
 import LoginPage from "./js/pages/Login/LoginPage";
 import React, {useEffect, useState} from "react";
@@ -12,7 +12,6 @@ import EduApplyPage from "./js/pages/Edu/EduApplyPage";
 import PostDetailPage from './js/pages/Post/PostDetailPage';
 import NoticeListPage from './js/pages/Post/NoticeListPage';
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
-import PostList from "./js/component/Post/PostList";
 import RentProcessPage from "./js/pages/Rent/RentProcessPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
 import RentApplyPage from "./js/pages/Rent/RentApplyPage";
@@ -55,26 +54,20 @@ import PayListPage from "./js/pages/Pay/PayListPage";
 import ChatPage from "./js/pages/Chat/ChatPage";
 import ChatBot from "./js/component/Chat/ChatBot";
 import Chatting from "./js/component/Chat/Chatting";
-import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import PostForm from "./js/component/Post/PostForm";
-// import ChatTestPage from "./js/component/Chat/ChatTestPage";
 import SearchPage from "./js/pages/Search/SearchPage";
 import MyInfoEditSuccessPage from "./js/pages/My/MyInfoEditSuccessPage";
 import MainPage from "./js/pages/Main/MainPage";
-import ImgContainer from "./js/component/Main/Img/ImgContainer";
 import CslFormPage from "./js/pages/Post/CslFormPage";
 import PostFormPage from "./js/pages/Post/PostFormPage";
 import RentReviewListPage from "./js/pages/Rent/RentReviewListPage";
 import RentReviewEditPage from "./js/pages/Rent/RentReviewEditPage";
-import Greeting from "./js/component/Intro/Greeting";
 import Purpose from "./js/component/Intro/Purpose";
 import AgenHistory from "./js/component/Intro/AgenHistory";
 import RentReviewWritePage from "./js/pages/Rent/RentReviewWritePage";
-import QuickMenu from "./js/layout/QuickMenu/QuickMenu";
-import OrganizationChart from "./js/component/Intro/OrganizationChart";
-import SpaceIntro from "./js/component/Intro/SpaceIntro";
 import IntroPage from "./js/pages/Intro/IntroPage";
-
+import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
+import OrganizationChart from "./js/component/Intro/OrganizationChart";
 
 
 function App() {
@@ -95,8 +88,7 @@ function App() {
     }, [trackPageView]);
 
 
-    return (
-        <div className="App" onClick={trackButtonClick}>
+    return (<div className="App" onClick={trackButtonClick}>
 
             {!isPaymentRoute && !isChatRoute && <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
             <Routes>
@@ -109,7 +101,7 @@ function App() {
 
                 {/*관리자*/}
                 {/*<Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>*/}
-                <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null} />
+                <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/admin/edu" element={isAdmin ? <EduListPage type="admin"/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
@@ -125,12 +117,7 @@ function App() {
                 <Route path="admin/ftmain/ftw/:id" element={<FTWDtlPage type="admin"/>}/>
 
                 {/*기관소개*/}
-                <Route path="/intro" element={<IntroPage />}/>
-                {/*<Route path="/intro" element={<Greeting />}/>*/}
-                {/*<Route path="/purpose" element={<Purpose />}/>*/}
-                {/*<Route path="/history" element={<AgenHistory />}/>*/}
-                {/*<Route path="/organi" element={<OrganizationChart />}/>*/}
-                {/*<Route path="/spaceIntro" element={<SpaceIntro />}/>*/}
+                <Route path="/intro" element={<IntroPage/>}/>
 
                 {/*교육*/}
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
@@ -146,7 +133,6 @@ function App() {
 
                 {/*게시글*/}
                 <Route path="/sj" element={<SjNewsPage/>}/>
-                {/*<Route path="/posts" element={<PostList/>}/>*/}
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
@@ -206,16 +192,15 @@ function App() {
                 <Route path="/sms" element={isAdmin ? <SMSPage/> : null}/>
 
                 {/*챗봇 / 채팅*/}
-                <Route path="/chat" element={<ChatBot />} />
-                <Route path="/chat/:memNum" element={<Chatting />} />
-                <Route path="/listchat" element={<ChatPage />} />
+                <Route path="/chat" element={<ChatBot/>}/>
+                <Route path="/chat/:memNum" element={<Chatting/>}/>
+                <Route path="/listchat" element={<ChatPage/>}/>
                 {/*/!*<Route path="/chattest" element={<Chattest />} />*!/*/}
                 {/*<Route path="/chattest" element={<ChatTestPage />} />*/}
 
 
             </Routes>
-        </div>
-    );
+        </div>);
 }
 
 export default App;
