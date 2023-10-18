@@ -47,6 +47,7 @@ public class PostFormDto {
         Board board5 = new Board();
         Board board6 = new Board();
         Board board7 = new Board();
+        Board board8 = new Board();
 
 
         board1.setBoardNum(9L);
@@ -56,6 +57,7 @@ public class PostFormDto {
         board5.setBoardNum(7L);
         board6.setBoardNum(2L);
         board7.setBoardNum(6L);
+        board8.setBoardNum(4L);
 
 
 
@@ -323,6 +325,26 @@ public class PostFormDto {
         post23.setPageView(0);
 
         postList.add(post23);
+
+        PostFormDto post24 = new PostFormDto();
+        post24.setBoard(board8);
+        post24.setMember(member1);
+        post24.setTitle("여플소식 게시판1");
+        post24.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/35/ple1.png\"></p><p>여플소식 내용 입니다. 1</p>");
+        post24.setWriteDate(LocalDateTime.now());
+        post24.setPageView(0);
+
+        postList.add(post24);
+
+        PostFormDto post25 = new PostFormDto();
+        post25.setBoard(board8);
+        post25.setMember(member1);
+        post25.setTitle("여플소식 게시판2");
+        post25.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/36/ple2.png\"></p><p>여플소식 내용 입니다. 2</p>");
+        post25.setWriteDate(LocalDateTime.now());
+        post25.setPageView(0);
+
+        postList.add(post25);
 
         return postList;
     }
