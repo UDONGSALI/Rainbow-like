@@ -1,4 +1,12 @@
 
+#contentWrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+
 .topLayout {
     margin-top: 150px;
     width: 60%;
@@ -30,9 +38,27 @@
     height: 100%;
     background: #D8D8D8;
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.historyInner .historyItem {
+    margin-left: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.historyInner .historyItemB {
+    display: flex;
+    align-items: center;
+    margin-left: 0;
+    margin-right: 50%;
+    flex-direction: row-reverse;
+}
+
+.yearA, .yearB {
+    margin: 2em 0;
 }
 
 .history .logoHis {
@@ -48,21 +74,8 @@
     margin: 0 auto;
 }
 
-.historyInner .historyItem {
-    margin-left: 47.2%;
-    display: flex;
-    align-items: center
-}
-
-.historyInner .historyItemB {
-    display: flex;
-    align-items: center;
-    margin-left: 0;
-    margin-right: 47.2%;
-    flex-direction: row-reverse;
-}
-
 .yearA {
+    margin-top: 2em;
     display: inline-block;
     width: 6.8rem;
     height:6.8rem;
@@ -77,6 +90,7 @@
 
 .yearB {
     display: inline-block;
+    margin-top: 2em;
     width: 6.8rem;
     height:6.8rem;
     border: 3px solid #8757B8;
@@ -92,7 +106,7 @@
 .historyInner .historyItem .desc {
     width: calc(100% - 7.4rem);
     padding-left: 4rem;
-    font-size: 1.8rem;
+    font-size: 1.3rem;
 }
 
 .historyInner .historyItem .desc li {
@@ -113,7 +127,7 @@
     padding-left: 0;
     padding-right: 4rem;
     width: calc(100% - 7.4rem);
-    font-size: 1.8rem;
+    font-size: 1.5rem;
 }
 
 .historyInner .historyItemB .desc li {
