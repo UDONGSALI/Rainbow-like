@@ -106,7 +106,12 @@ function ClubEditor(props) {
                     });
             };
 
-    return (isAdmin || memNum === formData.member.memNum) ? (
+    if (!formData.member) {
+        return <div>Loading...</div>;
+    }
+
+
+    return (isAdmin || memNum == formData.member.memNum) ? (
             <div className={styles.registrationFormContainer}>
                 <h2>게시글 수정 폼</h2>
                 <form onSubmit={handleSubmit} className={styles.registrationForm}>

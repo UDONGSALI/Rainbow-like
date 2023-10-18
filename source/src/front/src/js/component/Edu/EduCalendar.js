@@ -96,7 +96,7 @@ function EduCalendar() {
         // event.isHoliday 가 true면 이 함수의 나머지 부분은 실행되지 않습니다.
         if (event.isHoliday) return;
 
-        window.location.href = `http://localhost:3000/edu/detail/${event.eduNum}`;
+        window.location.href = `/edu/list/detail/${event.eduNum}`;
     };
 
     const CustomToolbar = toolbar => {
