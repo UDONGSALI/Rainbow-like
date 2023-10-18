@@ -4,6 +4,7 @@ import { SERVER_URL} from "../Common/constants";
 import Snackbar from '@mui/material/Snackbar';
 import {useNavigate } from 'react-router-dom';
 import styles from '../../../css/component/Club/ClubList.module.css';
+import CustomDataGrid from "../Common/CustomDataGrid";
 
 
 function ClubList(props) {
@@ -20,6 +21,11 @@ function ClubList(props) {
             field: 'member',
             headerName: '작성자',
             width: 100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+
             valueGetter: (params) => {
                 const members = Array.isArray(params.row.member) ? params.row.member : [params.row.member];
                 return members.map((m) => m.name).join(', ');
@@ -29,6 +35,12 @@ function ClubList(props) {
             field: 'title',
             headerName: '제목',
             width: 450,
+            flex: 1,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+
             renderCell: (params) => (
                 <div
                     style={{ cursor: 'pointer' }}
@@ -42,6 +54,11 @@ function ClubList(props) {
             field: 'clubAllowStatus',
             headerName: '허가 현황',
             width: 100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+
             renderCell: (params) => {
                 switch (params.value) {
                     case 'WAIT':
@@ -57,11 +74,21 @@ function ClubList(props) {
             field: 'clubRecuStatus',
             headerName: '현황',
             width: 100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+
         },
         {
             field: 'pageView',
             headerName: '조회수',
             width: 100,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
+
         },
 
     ];
@@ -73,6 +100,10 @@ function ClubList(props) {
                 headerName: '수정',
                 sortable: false,
                 filterable: false,
+                headerClassName: styles.customHeader,
+                cellClassName: styles.customCell,
+                align: 'center',
+                headerAlign: 'center',
                 renderCell: (params) => (
                     <button
                         style={{ cursor: 'pointer' }}
@@ -88,6 +119,11 @@ function ClubList(props) {
                 headerName: '삭제',
                 sortable: false,
                 filterable: false,
+                headerClassName: styles.customHeader,
+                cellClassName: styles.customCell,
+                align: 'center',
+                headerAlign: 'center',
+
                 renderCell: (params) => (
                     <button
                         onClick={() => onDelClick(params.row)}
@@ -169,15 +205,48 @@ function ClubList(props) {
         navigate(`/clubs/${rowId}`);
     };
 
+    function CustomNoRowsOverlay() {
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
+                    fontWeight: 'bold',
+                    flexDirection: 'column',
+                }}
+            >
+                <p>데이터가 없습니다.</p>
+            </div>
+        );
+    }
+
     return (
         <div className={styles.List} style={{ height: 500, width: '100%' }}>
+            <div class={styles.btn}>
             <button onClick = {() => navigate('/clubs/new')}>소모임 신청</button>
-
-            <DataGrid columns={columns}
+            </div>
+            <CustomDataGrid
+                className={styles.customDataGrid}
+                columns={columns}
                       rows={posts}
                       disableRowSelectionOnClick={true}
                       getRowId={row => row.postNum}
+                pageSize={5} // 페이지당 5개의 행을 보여줍니다.
+                getRowId={(row) => row.postNum}
+                components={{
+                    NoRowsOverlay: CustomNoRowsOverlay
+                }}
+                pagination={true}
+                sortModel={[
+                    {
+                        field: "number",
+                        sort: "desc", // 내림차순 정렬
+                    },
+                ]}
             />
+
 
 
             <Snackbar

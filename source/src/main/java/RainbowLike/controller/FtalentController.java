@@ -110,122 +110,37 @@ public class FtalentController {
 
     @PostMapping("/ftw/new")
     public ResponseEntity<FtWorker> createFtw(@RequestBody FtwDto ftwDto) {
-        FtWorker newFtw = new FtWorker();
-
-        Member member = new Member();
-        member.setMemNum(ftwDto.getMemNum());
-        newFtw.setMember(member);
-
-        newFtw.setSpeField(ftwDto.getSpeField());
-        newFtw.setLicenseYN(ftwDto.getLicenseYN());
-        newFtw.setLicenseDtl(ftwDto.getLicenseDtl());
-        newFtw.setFtDtl(ftwDto.getFtDtl());
-        newFtw.setFtStatus(ftwDto.getFtStatus());
-        newFtw.setStatusDtl(ftwDto.getStatusDtl());
-        newFtw.setDelYN(ftwDto.getDelYN());
-//        newFtw.setEditDate(ftwDto.getEditDate());
-
-        FtWorker savedFtw = ftwRepository.save(newFtw);
-
-        // 저장한 게시글을 반환
+        FtWorker savedFtw = ftService.createFtw(ftwDto);
         return ResponseEntity.ok(savedFtw);
     }
 
     @PostMapping("/ftc/new")
     public ResponseEntity<FtConsumer> createFtc(@RequestBody FtcDto ftcDto) {
-        FtConsumer newFtc = new FtConsumer();
-
-        Member member = new Member();
-        member.setMemNum(ftcDto.getMemNum());
-        newFtc.setMember(member);
-
-        newFtc.setSpeField(ftcDto.getSpeField());
-        newFtc.setApplyContent(ftcDto.getApplyContent());
-        newFtc.setStatusDtl(ftcDto.getStatusDtl());
-        newFtc.setFtmYN(ftcDto.getFtmYN());
-
-        FtConsumer savedFtc = ftcRepository.save(newFtc);
-
-        // 저장한 게시글을 반환
+        FtConsumer savedFtc = ftService.createFtc(ftcDto);
         return ResponseEntity.ok(savedFtc);
     }
 
     @PostMapping("/ftm/new")
     public ResponseEntity<FemaleTalentMatching> createFtm(@RequestBody FtmDto ftmDto) {
-        FemaleTalentMatching newFtm = new FemaleTalentMatching();
-
-        FtWorker ftw = new FtWorker();
-        ftw.setFtWorkerNum(ftmDto.getFtWorkerNum());
-        newFtm.setFtWorker(ftw);
-        FtConsumer ftc = new FtConsumer();
-        ftc.setFtConsumerNum(ftmDto.getFtConsumerNum());
-        newFtm.setFtConsumer(ftc);
-
-        FemaleTalentMatching savedFtm = ftmRepository.save(newFtm);
-
-        // 저장한 게시글을 반환
+        FemaleTalentMatching savedFtm = ftService.createFtm(ftmDto);
         return ResponseEntity.ok(savedFtm);
     }
 
     @RequestMapping("/ftw/edit/{ftwId}")
     public ResponseEntity<FtWorker> editFtw(@PathVariable Long ftwId, @RequestBody FtwDto ftwDto) {
-        FtWorker editFtw = new FtWorker();
-
-        editFtw.setFtWorkerNum(ftwId);
-
-        Member member = new Member();
-        member.setMemNum(ftwDto.getMemNum());
-        editFtw.setMember(member);
-
-        editFtw.setSpeField(ftwDto.getSpeField());
-        editFtw.setLicenseYN(ftwDto.getLicenseYN());
-        editFtw.setLicenseDtl(ftwDto.getLicenseDtl());
-        editFtw.setFtDtl(ftwDto.getFtDtl());
-        editFtw.setFtStatus(ftwDto.getFtStatus());
-        editFtw.setStatusDtl(ftwDto.getStatusDtl());
-        editFtw.setDelYN(ftwDto.getDelYN());
-
-        FtWorker savedFtw = ftwRepository.save(editFtw);
-
-        // 저장한 게시글을 반환
+        FtWorker savedFtw = ftService.editFtw(ftwId, ftwDto);
         return ResponseEntity.ok(savedFtw);
     }
 
     @RequestMapping("/ftc/edit/{ftcId}")
     public ResponseEntity<FtConsumer> editFtc(@PathVariable Long ftcId, @RequestBody FtcDto ftcDto) {
-        FtConsumer editFtc = new FtConsumer();
-
-        editFtc.setFtConsumerNum(ftcId);
-
-        Member member = new Member();
-        member.setMemNum(ftcDto.getMemNum());
-        editFtc.setMember(member);
-
-        editFtc.setSpeField(ftcDto.getSpeField());
-        editFtc.setApplyContent(ftcDto.getApplyContent());
-        editFtc.setStatusDtl(ftcDto.getStatusDtl());
-        editFtc.setFtmYN(ftcDto.getFtmYN());
-
-        FtConsumer savedFtc = ftcRepository.save(editFtc);
-
-        // 저장한 게시글을 반환
+        FtConsumer savedFtc = ftService.editFtc(ftcId, ftcDto);
         return ResponseEntity.ok(savedFtc);
     }
 
     @RequestMapping("/ftm/edit/{ftmId}")
     public ResponseEntity<FemaleTalentMatching> editFtc(@PathVariable Long ftmId, @RequestBody FtmDto ftmDto) {
-        FemaleTalentMatching editFtm = new FemaleTalentMatching();
-
-        editFtm.setFtmNum(ftmId);
-
-        FtWorker ftw = new FtWorker();
-        ftw.setFtWorkerNum(ftmDto.getFtWorkerNum());
-        editFtm.setFtWorker(ftw);
-        FtConsumer ftc = new FtConsumer();
-        ftc.setFtConsumerNum(ftmDto.getFtConsumerNum());
-        editFtm.setFtConsumer(ftc);
-
-        FemaleTalentMatching savedFtm = ftmRepository.save(editFtm);
+        FemaleTalentMatching savedFtm = ftService.editFtc(ftmId, ftmDto);
 
         // 저장한 게시글을 반환
         return ResponseEntity.ok(savedFtm);
