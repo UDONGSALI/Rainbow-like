@@ -6,11 +6,11 @@ import SpaceIntroImg from '../../../img/component/Intro/spaceintroImg.png';
 function SpaceIntro() {
     return(
 
-        <div>
+        <div style={{height:'100%', marginTop:'150px'}}>
             <section id={styled.contentWrap}>
                 <div className={styled.layout}>
                     <header className={styled.subTit}>
-                        <h3>공간소개</h3>
+                        <h3>공간 소개</h3>
                     </header>
                     <div className={styled.space}>
                         <div className={styled.topBox}>

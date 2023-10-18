@@ -6,7 +6,7 @@ import Vision4 from '../../../img/component/Intro/vision_icon04.png';
 
 function Purpose() {
     return (
-        <div>
+        <div style={{width:'100%', marginTop:'90px'}}>
             <section id={styled.purContentWrap}>
                 <div className={styled.topLayout}>
                     <header id={styled.hederSubTit}>

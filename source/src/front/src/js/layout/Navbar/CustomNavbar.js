@@ -13,10 +13,13 @@ import {useToken} from "../../component/hook/useToken";
 const menuData = [
     {
         title: "기관 소개",
-        items: [{name: "인사말", url: "/"}, {name: "목적 및 비전", url: "/"}, {name: "연혁", url: "/"}, {
-            name: "조직도",
-            url: "/"
-        }, {name: "CI소개", url: "/"}, {name: "공간소개", url: "/"}, {name: "오시는 길", url: "/"}]
+        items: [
+            {name: "인사말", url: "/intro?slide=Greeting"},
+            {name: "목적 및 비전", url: "/intro?slide=Purpose"},
+            {name: "연혁", url: "/intro?slide=AgenHistory"},
+            {name: "공간 소개", url: "/intro?slide=SpaceIntro"},
+            {name: "유관기관", url: "/intro?slide=MapComponent"}
+        ]
     },
     {
         title: "신청 · 접수",
