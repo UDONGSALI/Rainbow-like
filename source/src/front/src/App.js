@@ -71,6 +71,9 @@ import Purpose from "./js/component/Intro/Purpose";
 import AgenHistory from "./js/component/Intro/AgenHistory";
 import RentReviewWritePage from "./js/pages/Rent/RentReviewWritePage";
 import QuickMenu from "./js/layout/QuickMenu/QuickMenu";
+import OrganizationChart from "./js/component/Intro/OrganizationChart";
+import SpaceIntro from "./js/component/Intro/SpaceIntro";
+import IntroPage from "./js/pages/Intro/IntroPage";
 
 
 
@@ -96,11 +99,8 @@ function App() {
         <div className="App" onClick={trackButtonClick}>
 
             {!isPaymentRoute && !isChatRoute && <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
-            {!isPaymentRoute && !isChatRoute && <QuickMenu />}
             <Routes>
                 <Route path="/" element={<MainPage/>}/>
-                <Route path="/test" element={<ImgContainer/>}/>
-
 
                 {/*로그인*/}
                 <Route path="/login" element={<LoginPage/>}/>
@@ -109,7 +109,7 @@ function App() {
 
                 {/*관리자*/}
                 {/*<Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>*/}
-                <Route path="/admin/member" element={<MemManagePage/>} />
+                <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null} />
                 <Route path="/admin/edu" element={isAdmin ? <EduListPage type="admin"/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>
                 <Route path="/admin/edu/edit/:eduNum" element={isAdmin ? <EduEditPage/> : null}/>
@@ -125,9 +125,12 @@ function App() {
                 <Route path="admin/ftmain/ftw/:id" element={<FTWDtlPage type="admin"/>}/>
 
                 {/*기관소개*/}
-                <Route path="/intro" element={<Greeting />}/>
-                <Route path="/purpose" element={<Purpose />}/>
-                <Route path="/history" element={<AgenHistory />}/>
+                <Route path="/intro" element={<IntroPage />}/>
+                {/*<Route path="/intro" element={<Greeting />}/>*/}
+                {/*<Route path="/purpose" element={<Purpose />}/>*/}
+                {/*<Route path="/history" element={<AgenHistory />}/>*/}
+                {/*<Route path="/organi" element={<OrganizationChart />}/>*/}
+                {/*<Route path="/spaceIntro" element={<SpaceIntro />}/>*/}
 
                 {/*교육*/}
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>

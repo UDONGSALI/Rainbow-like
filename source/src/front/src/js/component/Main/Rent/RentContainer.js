@@ -124,7 +124,7 @@ function RentContainer() {
                         <img
                             src={filteredImages[selectedImageIndex].fileUrl}
                             alt={filteredImages[selectedImageIndex].name}
-                            className={selectedType === '상담실' ? styles.ImageConsult : styles.ImageOther} // 조건부 클래스 이름 적용
+                            className={styles.Image} // 조건부 클래스 이름 적용
                         />
                         <div style={{position: 'absolute', top: '30px', right: '30px'}}>
                             {filteredImages.map((imageData, index) => (

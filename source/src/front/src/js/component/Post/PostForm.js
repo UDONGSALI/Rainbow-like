@@ -38,8 +38,6 @@ function PostForm(props) {
         delYN: 'N'
     });
 
-    console.log(formData)
-
     useEffect(() => {
         // 회원 정보 가져오기 (이전 코드)
         fetch(SERVER_URL + `members/id/${memId}`)
@@ -58,7 +56,6 @@ function PostForm(props) {
                 alert('회원 정보를 찾을 수 없습니다!');
                 window.location.href = '/login';
             });
-        console.log(isEditMode)
 
         // 글 정보 가져오기 (추가)
         if (isEditMode) {  // postNum의 유무와 isEditMode로 fetch를 실행
@@ -85,7 +82,7 @@ function PostForm(props) {
                 .catch(error => {
                     console.error('Error fetching the post:', error);
                 });
-            console.log(formData)
+            console.log(formData.content)
         }
     }, [postNum,isEditMode]);
     const handleChange = (e) => {
@@ -93,8 +90,6 @@ function PostForm(props) {
         setFormData(prevState => ({ ...prevState, [name]: value }));
     };
 
-
-    console.log(formData)
 
     const handleQuillChange = (contentValue) => {
         setContent(contentValue);
