@@ -153,6 +153,7 @@ function EduForm({eduNum}) {
                             value={formData.type}
                             onChange={handleChange}
                             required
+                            style={{width:'100%'}}
                         >
                             <option value="">유형 선택</option>
                             <option value="EDU">교육</option>
@@ -167,6 +168,7 @@ function EduForm({eduNum}) {
                             value={formData.recuMethod}
                             onChange={handleChange}
                             required
+                            style={{width:'100%'}}
                         >
                             <option value="">모집 방법 선택</option>
                             <option value="FIRST_COME">선착순</option>
