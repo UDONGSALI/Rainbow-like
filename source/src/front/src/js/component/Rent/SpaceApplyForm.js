@@ -117,6 +117,13 @@ function SpaceApplyForm() {
         setSelectedTimes((prev) => ({ ...prev, [spaceName]: selectedRowTimes }));
         setSelectedSpace({ spaceName, time }); // 선택한 공간 및 시간 저장
 
+        // 선택한 시간대를 selectedTime 상태에 업데이트
+        setSelectedTimes({
+            spaceName: spaceName,
+            startTime: selectedRowTimes[0],
+            endTime: selectedRowTimes[selectedRowTimes.length - 1],
+        });
+
 
         // 추가로 시간 선택
         const remainingTimes = times.slice(indexOfTime + 3);
