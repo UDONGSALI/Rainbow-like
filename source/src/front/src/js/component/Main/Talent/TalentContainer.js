@@ -14,13 +14,15 @@ function TalentContainer() {
 
     useEffect(() => {
         if (!loadingFtc) {
-            setFtc(fetchedFtc);
+            const filteredFtc = fetchedFtc.filter(item => !item.statusDtl);
+            setFtc(filteredFtc);
         }
     }, [loadingFtc, fetchedFtc]);
 
     useEffect(() => {
         if (!loadingFtw) {
-            setFtw(fetchedFtw);
+            const filteredFtw = fetchedFtw.filter(item => item.ftStatus === "승인");
+            setFtw(filteredFtw);
         }
     }, [loadingFtw, fetchedFtw]);
 

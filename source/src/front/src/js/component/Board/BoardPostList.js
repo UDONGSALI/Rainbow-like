@@ -40,7 +40,7 @@ function BoardPostList({ boardNum }) {
     const { activePage, setActivePage } = usePagination(1);
     const patchItem = usePatch(SERVER_URL);
     // 4. 데이터 가져오기,
-    const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}post/board/${boardNum}`, setPosts);
+    const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}post/${boardNum}`, setPosts);
     const { data: fetchedPosts, loading } = useFetch(`${SERVER_URL}post/board/${boardNum}`);
 
     useEffect(() => {

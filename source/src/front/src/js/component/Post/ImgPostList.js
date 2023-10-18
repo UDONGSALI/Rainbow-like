@@ -3,7 +3,16 @@ import { useNavigate,Link } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
 import styles from '../../../css/component/Post/ImgPostList.module.css';
 import Pagination from "../Common/Pagination";
+import useFetch from "../hook/useFetch";
+import SearchComponent from "../Common/SearchComponent";
+import useSearch from "../hook/useSearch";
 
+
+const SEARCH_OPTIONS = [
+    { label: "제목", value: "title", type: "text" },
+    { label: "내용", value: "content", type: "text" },
+    { label: "작성자", value: "member", type: "text", valueGetter: (post) => post.member.memId },
+];
 
 function ImgPostList(props) {
     const { boardNum } = props;
@@ -13,21 +22,20 @@ function ImgPostList(props) {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 6;
+    const { data: fetchedPosts, loadingPosts } = useFetch(`${SERVER_URL}post/board/${boardNum}`);
+    const { data: fetchedFiles,  filesLoading } = useFetch(SERVER_URL + 'files/table/post', []);
+    const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}post/${boardNum}`, setPosts);
+
 
     useEffect(() => {
-        fetch(`${SERVER_URL}post/board/${boardNum}`)
-            .then(response => response.json())
-            .then(data => {
-                const filteredPosts = data.filter(post => [3, 4, 5].includes(post.board.boardNum));
-                setPosts(filteredPosts.reverse()); // .reverse()를 추가하여 배열을 역순으로 만듭니다.
-            })
-            .catch(error => console.error(error));
+        if (!loadingPosts) {
+            setPosts(fetchedPosts.reverse());
+        }
 
-        fetch(SERVER_URL + `files/table/post`)
-            .then(response => response.json())
-            .then(data => setFiles(data))
-            .catch(error => console.error(error));
-    }, [boardNum]);
+        if (!filesLoading) {
+            setFiles(fetchedFiles);
+        }
+    }, [fetchedPosts, fetchedFiles]);
 
     const onDelClick = (postNum) => {
         fetch(`${SERVER_URL}api/posts/${postNum}`, { method: 'DELETE' })
@@ -62,7 +70,17 @@ function ImgPostList(props) {
 
     return (
         <div>
+
             <div className={styles.sjNewsListContainer}>
+                <SearchComponent
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    onSearch={handleSearch}
+                    searchOptions={SEARCH_OPTIONS}
+                    totalCount={posts.length}
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(posts.length / postsPerPage)}
+                />
                 {currentPosts.map((post, index) => (
                     // Link 컴포넌트로 게시글을 감싸고, 스타일을 직접 지정
                     <Link

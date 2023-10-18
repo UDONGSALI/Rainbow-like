@@ -120,8 +120,10 @@ function EduDetail() {
                                     방법:</strong> {getRecuMethodDescription(eduData.recuMethod)}</p>
                                 <p className={styles.detail}><strong>문의 전화번호:</strong> {eduData.tel}</p>
                                 {isWithinApplicationPeriod(eduData.recuStdt, eduData.recuEddt) && isBelowMaxApplicants(eduData.recuPerson, eduData.capacity) && (
+                                    <div style={{display:"flex", justifyContent:"center", marginRight:'50px'}}>
                                     <button className={styles.applyButton}
                                             onClick={handleApplyButtonClick}>신청하기</button>
+                                    </div>
                                 )}
                             </div>
                         </div>

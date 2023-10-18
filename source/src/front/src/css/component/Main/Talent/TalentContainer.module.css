@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     padding: 30px;
-    background-color: #F9F8F9;
+    background: linear-gradient(to bottom right, #F9F8F9, #fdf3fd);
     border-radius: 10px;
     box-shadow: 0px 0px 5px rgba(0,0,0,0.2);
     margin-top: 2.5%;
@@ -28,12 +28,13 @@
 
 .item {
     height: 200px;
-    background-color: #fff;
+    background: linear-gradient(to bottom right, #fffef9, #fff9ef);
     margin: 10px;
     padding: 15px;
     font-size: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
     max-width: 250px;
     word-wrap: break-word;
 }
