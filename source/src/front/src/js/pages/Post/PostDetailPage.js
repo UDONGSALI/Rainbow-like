@@ -24,12 +24,12 @@ function PostDetailPage() {
                 if (data.board.boardNum == 7 || data.board.boardNum == 8) {
                     if (parentsNum) {
                         // 부모 게시물이 있을 경우, 부모 게시물 정보를 가져옴
-                        fetch(`${SERVER_URL}posts/${parentsNum}`)
+                        fetch(`${SERVER_URL}post/${parentsNum}`)
                             .then(response => response.json())
                             .then(parentData => {
                                 if (!isAdmin &&
-                                    memNum != data.post.labor?.memNum &&
-                                    memNum != data.post.member?.memNum &&
+                                    memNum != data.labor?.memNum &&
+                                    memNum != data.member?.memNum &&
                                     memNum != parentData.member?.memNum) {
                                     alert("이 페이지에 접근할 수 없습니다.");
                                     navigate('/error');
@@ -43,7 +43,7 @@ function PostDetailPage() {
                                 // navigate('/error'); // 에러 발생 시 에러 페이지로 리다이렉트
                             });
                     } else {
-                        if (!isAdmin && memNum != data.post.labor?.memNum && memNum != data.post.member?.memNum) {
+                        if (!isAdmin && memNum != data.labor?.memNum && memNum != data.member?.memNum) {
                             alert("이 페이지에 접근할 수 없습니다.");
                             navigate('/error');
                             return;
