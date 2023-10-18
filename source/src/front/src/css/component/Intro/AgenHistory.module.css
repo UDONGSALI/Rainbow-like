@@ -1,0 +1,131 @@
+
+.topLayout {
+    margin-top: 150px;
+    width: 60%;
+}
+#topSubTit {
+    position: relative;
+    margin-bottom: 6rem;
+}
+
+#topSubTit h3 {
+    font-size: 2rem;
+    color: #222222;
+    text-align: center;
+    font-weight: 700;
+}
+
+.history {
+    display: block;
+    text-align: center;
+}
+
+.historyInner {
+    position: relative;
+}
+
+.historyInner::before {
+    content: "";
+    width: 1px;
+    height: 100%;
+    background: #D8D8D8;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.history .logoHis {
+    display: block;
+    width: 26.4rem;
+    margin: auto;
+}
+.logoHis img{
+    max-width: 100%;
+    height: auto;
+    border: 0;
+    vertical-align: top;
+    margin: 0 auto;
+}
+
+.historyInner .historyItem {
+    margin-left: 47.2%;
+    display: flex;
+    align-items: center
+}
+
+.historyInner .historyItemB {
+    display: flex;
+    align-items: center;
+    margin-left: 0;
+    margin-right: 47.2%;
+    flex-direction: row-reverse;
+}
+
+.yearA {
+    display: inline-block;
+    width: 6.8rem;
+    height:6.8rem;
+    border-radius: 50%;
+    background: #8757B8;
+    color: #fff;
+    text-align: center;
+    line-height: 6.8rem;
+    font-size: 1.2rem;
+    z-index: 1;
+}
+
+.yearB {
+    display: inline-block;
+    width: 6.8rem;
+    height:6.8rem;
+    border: 3px solid #8757B8;
+    border-radius: 50%;
+    background: #fff;
+    color: #8757B8;
+    text-align: center;
+    line-height: 6.8rem;
+    font-size: 1.2rem;
+    z-index: 1;
+}
+
+.historyInner .historyItem .desc {
+    width: calc(100% - 7.4rem);
+    padding-left: 4rem;
+    font-size: 1.8rem;
+}
+
+.historyInner .historyItem .desc li {
+    position: relative;
+    padding-left: 3.5rem;
+}
+
+.historyInner .historyItem .desc li span {
+    display: block;
+    font-weight: 700;
+    color: #8757B8;
+    position: absolute;
+    left: 0;
+}
+
+.historyInner .historyItemB .desc {
+    text-align: right;
+    padding-left: 0;
+    padding-right: 4rem;
+    width: calc(100% - 7.4rem);
+    font-size: 1.8rem;
+}
+
+.historyInner .historyItemB .desc li {
+    padding-left: 0;
+    padding-right: 3.5rem;
+    position: relative;
+}
+
+.historyInner .historyItemB .desc li span {
+    left: auto;
+    right: 0;
+    font-weight: 700;
+    color: #8757B8;
+    position: absolute;
+}

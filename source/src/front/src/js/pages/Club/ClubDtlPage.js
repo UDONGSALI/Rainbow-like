@@ -6,24 +6,22 @@ import {headerInfo, urlData} from "../../layout/Header/Data/ClubHeader";
 import React from "react";
 
 
-function ClubDtlPage(props){
+function ClubDtlPage(props) {
     const {memId} = props;
 
-
-    return(
+    return (
         <>
             <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
+            <div className={styles.postDetailPage}>
 
-        <div className={styles.postDetailPage}>
-
-            <ClubDetail memId = {memId} />
-            <div className="comment">
-                <Comment memId = {memId}  />
+                <ClubDetail memId={memId}/>
+                <div className="comment">
+                    <Comment memId={memId}/>
+                </div>
             </div>
-        </div>
         </>
 
-);
+    );
 }
 
 export default ClubDtlPage;

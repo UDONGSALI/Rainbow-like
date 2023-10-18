@@ -3,6 +3,7 @@ package RainbowLike.service;
 import RainbowLike.constant.Status;
 import RainbowLike.dto.PostFormDto;
 import RainbowLike.entity.Board;
+import RainbowLike.entity.Member;
 import RainbowLike.entity.Post;
 import RainbowLike.repository.BoardRepository;
 import RainbowLike.repository.MemberRepository;
@@ -13,6 +14,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
@@ -21,19 +23,63 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class PostService {
-    private  final MemberRepository memberRepository;
-    private  final BoardRepository boardRepository;
-    private  final PostRepository postRepository;
+    private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
+    private final PostRepository postRepository;
     private final SmsService smsService;
     private final ModelMapper mapper;
 
-    public void savePost(Post post) {
+    public void createDefaultPosts() {
+        ArrayList<PostFormDto> postDtoList = PostFormDto.createTestPost();
+        for (PostFormDto postFormDto : postDtoList) {
+            mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+            Post post = mapper.map(postFormDto, Post.class);
 
-        postRepository.save(post);
+            postRepository.save(post);
+        }
+    }
+
+    public Post savePost(Post post) {
+        return postRepository.save(post);
+    }
+
+    public Post createPost(PostFormDto postFormDto) {
+        Post newPost = mapper.map(postFormDto, Post.class);
+
+        Board board = new Board();
+        board.setBoardNum(postFormDto.getBoardNum());
+        newPost.setBoard(board);
+
+        Member member = new Member();
+        member.setMemNum(postFormDto.getMemNum());
+        newPost.setMember(member);
+
+        return savePost(newPost);
+    }
+
+    public Post editPost(Long postId, PostFormDto postFormDto) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
+
+        if (!optionalPost.isPresent()) {
+            // 여기에서 적절한 예외를 던질 수 있습니다.
+            throw new EntityNotFoundException("Post with id " + postId + " not found");
+        }
+
+        Post existingPost = optionalPost.get();
+
+        mapper.map(postFormDto, existingPost);
+
+        System.out.println(postFormDto.getBoardNum() + "보드 넘 확인");
+        System.out.println(postFormDto.getMemNum() + "멤 넘 확인");
+
+        existingPost.setBoard(boardRepository.findByBoardNum(postFormDto.getBoardNum()));
+
+        existingPost.setMember(memberRepository.findByMemNum(postFormDto.getMemNum()));
+
+        return savePost(existingPost);
     }
 
     public Iterable<Post> searchPostsByOptionAndValue(String option, String value) {
-
         switch (option.toLowerCase()) {
             case "title":
                 return postRepository.findByTitleContaining(value);
@@ -62,10 +108,11 @@ public class PostService {
         }
     }
 
-    public Optional<Post> updateRentClubAllowStatus(Long postNum, Status status) {
-        Optional<Post> optionalRentHist = postRepository.findById(postNum);
-        if (optionalRentHist.isPresent()) {
-            Post post = optionalRentHist.get();
+    @Transactional
+    public Optional<Post> updateStatus(Long postNum, Status status) {
+        Optional<Post> optionalPost = postRepository.findById(postNum);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
             post.setClubAllowStatus(status);
             return Optional.of(postRepository.save(post));
         }
@@ -103,15 +150,6 @@ public class PostService {
             postRepository.deleteById(postNum);
         } else {
             throw new RuntimeException("Post not found with postNum: " + postNum);
-        }
-    }
-
-    public void createPosts(ArrayList<PostFormDto> postList) {
-        for (PostFormDto postFormDto : postList) {
-            mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-            Post post = mapper.map(postFormDto, Post.class);
-
-            postRepository.save(post);
         }
     }
 

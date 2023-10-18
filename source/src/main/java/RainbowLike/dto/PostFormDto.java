@@ -324,19 +324,6 @@ public class PostFormDto {
 
         postList.add(post23);
 
-        for (int i = 1; i <= 11; i++) {
-            PostFormDto post = new PostFormDto();
-            post.setBoard(board6);
-            post.setMember(member1);
-            post.setTitle("언론보도 테스트 글" + i);
-            post.setContent("언론보도 테스트 글 입니다." + i);
-            post.setWriteDate(LocalDateTime.now());
-            post.setPageView(0);
-            postList.add(post);
-        }
-
-
-
         return postList;
     }
 
