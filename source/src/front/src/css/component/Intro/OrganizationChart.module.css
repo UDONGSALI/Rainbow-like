@@ -1,0 +1,115 @@
+/* Intro/OrganizationChart.module.css */
+
+#contentWrap {
+    margin-top:100px;
+}
+
+.layout {
+    max-width: 60%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#subTit {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+#subTit h3 {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.organization {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.orgWrap {
+    margin-bottom: 9rem;
+}
+
+.head {
+    display: block;
+    width: 5.8rem;
+    height: 5.8rem;
+    border-radius: 50%;
+    background: #8757B8;
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    line-height: 5.8rem;
+    margin: auto;
+    position: relative;
+}
+
+.orgWrap .head::before {
+    content: "";
+    width: 1px;
+    height: 8rem;
+    background: black;
+    position: absolute;
+    bottom: -8rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.orgWrap .orgRight {
+    margin-top: 3rem;
+    margin-left: 50%;
+    position: relative;
+}
+
+.orgWrap .orgRight::before {
+    content: "";
+    width: 50%;
+    height: 1px;
+    background: black;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+}
+
+.tbl, .tbl th, .tbl td {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+}
+
+.tbl {
+    position: relative;
+    border-collapse: collapse;
+    width: 100%;
+    border-top: 3px solid #8757B8;
+    letter-spacing: -0.05em;
+    table-layout: fixed;
+    margin-bottom: 50px;
+}
+
+
+.tbl th, .tbl td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+.tbl thead th {
+    background-color: #f2e7ff;
+    font-weight: bold;
+}
+
+.orgTitle {
+    float: left;
+    font-weight: bold;
+    font-size: 22px;
+}
+.br0 {
+    border-right: 0;
+}

@@ -71,6 +71,7 @@ import Purpose from "./js/component/Intro/Purpose";
 import AgenHistory from "./js/component/Intro/AgenHistory";
 import RentReviewWritePage from "./js/pages/Rent/RentReviewWritePage";
 import QuickMenu from "./js/layout/QuickMenu/QuickMenu";
+import OrganizationChart from "./js/component/Intro/OrganizationChart";
 
 
 
@@ -128,6 +129,7 @@ function App() {
                 <Route path="/intro" element={<Greeting />}/>
                 <Route path="/purpose" element={<Purpose />}/>
                 <Route path="/history" element={<AgenHistory />}/>
+                <Route path="/organi" element={<OrganizationChart />}/>
 
                 {/*교육*/}
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
