@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import styles from '../../../css/component/Login/SignUp.module.css';
-import FileUpload from "../Common/FileUpload";
+import styles from '../../../../css/component/Login/SignUp.module.css';
+import FileUpload from "../../Common/FileUpload";
 import axios from "axios";
-import {SERVER_URL} from "../Common/constants";
+import {SERVER_URL} from "../../Common/constants";
 import {useDaumPostcodePopup} from "react-daum-postcode";
 
 function SignUp() {
@@ -223,66 +223,31 @@ function SignUp() {
             return;
         }
 
+        const memberAndFileData = new FormData();
+        memberAndFileData.append("memberData", JSON.stringify(formData));
 
-        try {
-            const response = await fetch(SERVER_URL + 'members', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),  // 암호화된 비밀번호가 포함된 데이터를 전송
-            });
-
-            if (response.status === 200 || response.status === 201) {  // 200 OK 응답을 받은 경우
-                const data = await response.json();
-                alert('회원가입에 성공 했습니다!');
-                // 이하 코드는 회원가입 성공 후 실행되는 코드입니다.
-                setFormData({
-                    memId: '',
-                    pwd: '',
-                    passwordConfirm: "",
-                    type: 'USER',
-                    name: '',
-                    gender: '',
-                    bir: '',
-                    tel: '',
-                    email: '',
-                    addr: '',
-                    addrDtl: '',
-                    addrPost: '',
-                    jdate: new Date().toISOString().split('T')[0],
-                });
-                setPasswordConfirm('');
-
-                if (selectedFiles.length > 0) { // 선택된 파일이 있을 때만 파일 업로드 실행
-                    const formDataWithFiles = new FormData();
-
-                    for (const file of selectedFiles) {
-                        formDataWithFiles.append('file', file);
-                    }
-                    formDataWithFiles.append('tableName', "member");
-                    formDataWithFiles.append('number', 0);
-                    try {
-                        const response = await axios.post(`${SERVER_URL}files`, formDataWithFiles, {
-                            headers: {
-                                'Content-Type': 'multipart/form-data',
-                            },
-                        });
-                        console.log('파일 업로드 완료:', response.data);
-                    } catch (error) {
-                        console.error('파일 업로드 에러:', error);
-                    }
-                }
-
-            } else if (response.status === 409) {
-                alert('회원가입 중 이상이 발생 했습니다. 중복된 정보가 있을 수 있습니다.');
-            } else {
-                alert('회원가입 중 이상이 발생했습니다. 다시 시도해 주세요.'); // 다른 상태 코드가 반환되었을 때
+        if (selectedFiles.length > 0) {
+            for (const file of selectedFiles) {
+                memberAndFileData.append('file', file);
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('회원가입 중 네트워크 또는 서버 오류가 발생했습니다.'); // fetch 요청 자체가 실패했을 때
+            memberAndFileData.append('tableName', "member");
+            memberAndFileData.append('number', 0);
         }
+
+        fetch(SERVER_URL + 'members', {
+            method: 'POST',
+            body: memberAndFileData,
+        })
+            .then(response => {
+                return response.text();
+            })
+            .then(data => {
+                alert(data)
+                window.location.href = `/login`;
+            })
+            .catch(error => {
+                alert(error)
+            });
     };
 
     const handleDateInputBlur = (e) => {
@@ -478,7 +443,8 @@ function SignUp() {
                     />
                     <label>우편번호</label>
                 </div>
-                <FileUpload onFileChange={handleFileChange} noFileMessage="상담사, 노무사 회원은 자격증 사본을 첨부 해주세요." maxSize={3} maxCount={5}  />
+                <FileUpload onFileChange={handleFileChange} noFileMessage="상담사, 노무사 회원은 자격증 사본을 첨부 해주세요." maxSize={3}
+                            maxCount={5}/>
                 <div className={styles.inputGroup}>
                     <button type="submit">회원가입</button>
                 </div>

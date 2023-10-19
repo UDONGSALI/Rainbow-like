@@ -65,7 +65,6 @@ public class EduHistService {
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("교육 정보 변환에 실패했습니다.", e);
         }
-
         // EduHist 정보 저장
         saveEduHist(eduHistDto);
 

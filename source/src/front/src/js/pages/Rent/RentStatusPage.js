@@ -1,5 +1,5 @@
 import React from "react";
-import SpaceApplyForm from "../../component/Rent/SpaceApplyForm";
+import SpaceApplyForm from "../../component/Rent/RentApply/SpaceApplyForm";
 import RentStatus from "../../component/Rent/RentApply/RentStatus";
 import RentCalender from "../../component/Rent/RentApply/RentCalender";
 import Header from "../../layout/Header/Header";
@@ -11,7 +11,6 @@ function RentStatusPage() {
     return (
         <div>
             <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={'대관 현황 및 신청'}/>
-            <RentStatus/>
             <SpaceApplyForm/>
             <Footer/>
         </div>

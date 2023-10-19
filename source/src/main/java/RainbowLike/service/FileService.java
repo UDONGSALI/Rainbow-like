@@ -85,6 +85,7 @@ public class FileService {
     }
 
     public List<Long> uploadFilesAndGetFileNums(List<MultipartFile> files, String tableName, Long number) throws IOException {
+        System.out.println("파일 동작확인");
         return uploadToCloudAndGetFileNums(files, tableName, number);
     }
     public void updatePostNumForImage(String imageUrl, Long postNum) {

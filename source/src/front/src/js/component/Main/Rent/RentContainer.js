@@ -76,6 +76,70 @@ const imgData = [
         fileUrl: 'https://storage.googleapis.com/rainbow_like/space/5/space5.jpg'
     },
 ];
+function TextComponent({ selectedType, onTypeSelect }) {
+    return (
+        <div className={styles.TextComponent}>
+            <div>
+                <p style={{fontSize: '50px'}}><strong>공간 대관</strong></p>
+                <h5 style={{marginTop: '15px'}}>부담 없이 모일 장소가 필요하세요?</h5>
+                <h5>세종여성플라자의 문이 활짝 열려 있습니다.</h5>
+            </div>
+            <div style={{height: '65%', display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
+                {textData.map((text, index) => (
+                    <div
+                        key={index}
+                        className={`${styles.LinkComponent} ${selectedType === text ? styles.SelectedLink : ''}`}
+                        onClick={() => onTypeSelect(text)}
+                    >
+                        {text}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function ImageDisplay({ filteredImages, selectedImageIndex, onImageClick, onRentClick }) {
+    const selectedImageData = filteredImages[selectedImageIndex];
+    return (
+        <div className={styles.ImageComponent}>
+            <img src={selectedImageData.fileUrl} alt={selectedImageData.name} className={styles.Image} />
+            <div style={{position: 'absolute', top: '30px', right: '30px'}}>
+                {filteredImages.map((imageData, index) => (
+                    <button
+                        key={index}
+                        onClick={() => onImageClick(index)}
+                        className={index === selectedImageIndex ? styles.SelectedButton : ''}
+                    >
+                        {imageData.name}
+                    </button>
+                ))}
+            </div>
+            <div style={{position: 'absolute', bottom: '50px', left: '40px', color: "white"}}>
+                <span style={{fontSize: '28px', fontWeight: "bold"}}>
+                    {selectedImageData.name}
+                </span>ㅤ
+                <span style={{fontSize: '20px', fontWeight: "bold"}}>
+                    {selectedImageData.type}
+                </span>
+                <br/>
+                <span style={{fontSize: '18px', fontWeight: "bold"}}>#
+                    {selectedImageData.use}
+                </span>ㅤ
+                <span style={{fontSize: '18px', fontWeight: "bold"}}>#
+                    {selectedImageData.maxPerson}
+                </span>ㅤ
+                <span style={{fontSize: '18px', fontWeight: "bold"}}>#
+                    {selectedImageData.fee}
+                </span>
+            </div>
+            <div className={styles.rentButton} onClick={onRentClick}>
+                <span>대관 신청하기ㅤ</span>
+                <div className={styles.plusIcon}>✛</div>
+            </div>
+        </div>
+    );
+}
 
 function RentContainer() {
     const [selectedType, setSelectedType] = useState("멀티미디어실");
@@ -86,7 +150,7 @@ function RentContainer() {
 
     const handleTypeSelection = (type) => {
         setSelectedType(type);
-        setSelectedImageIndex(0); // 선택할 때마다 이미지 인덱스를 0으로 초기화
+        setSelectedImageIndex(0);
     };
 
     const handleImageNameClick = (index) => {
@@ -97,73 +161,17 @@ function RentContainer() {
         navigate('/rent/status');
     };
 
-
     return (
         <div className={styles.RentContainer}>
-            <div className={styles.TextComponent}>
-                <div>
-                    <p style={{fontSize: '50px'}}><strong>공간 대관</strong></p>
-                    <h5 style={{marginTop: '15px'}}>부담 없이 모일 장소가 필요하세요?</h5>
-                    <h5>세종여성플라자의 문이 활짝 열려 있습니다.</h5>
-                </div>
-                <div style={{height: '65%', display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
-                    {textData.map((text, index) => (
-                        <div
-                            key={index}
-                            className={`${styles.LinkComponent} ${selectedType === text ? styles.SelectedLink : ''}`}
-                            onClick={() => handleTypeSelection(text)}
-                        >
-                            {text}
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <div className={styles.ImageComponent}>
-                {filteredImages.length > 0 && (
-                    <div>
-                        <img
-                            src={filteredImages[selectedImageIndex].fileUrl}
-                            alt={filteredImages[selectedImageIndex].name}
-                            className={styles.Image} // 조건부 클래스 이름 적용
-                        />
-                        <div style={{position: 'absolute', top: '30px', right: '30px'}}>
-                            {filteredImages.map((imageData, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handleImageNameClick(index)}
-                                    className={index === selectedImageIndex ? styles.SelectedButton : ''}
-                                >
-                                    {imageData.name}
-                                </button>
-                            ))}
-                        </div>
-                        <div style={{position: 'absolute', bottom: '50px', left: '40px', color: "white"}}>
-                            <span style={{fontSize: '28px', fontWeight: "bold"}}>
-                                {filteredImages[selectedImageIndex].name}
-                            </span>ㅤ
-                            <span style={{fontSize: '20px', fontWeight: "bold"}}>
-                               {filteredImages[selectedImageIndex].type}
-                            </span>
-                            <br/>
-                            <span style={{fontSize: '18px', fontWeight: "bold"}}>#
-                                {filteredImages[selectedImageIndex].use}
-                            </span>ㅤ
-                            <span style={{fontSize: '18px', fontWeight: "bold"}}>#
-                                {filteredImages[selectedImageIndex].maxPerson}
-                            </span>ㅤ
-                            <span style={{fontSize: '18px', fontWeight: "bold"}}>#
-                                {filteredImages[selectedImageIndex].fee}
-                            </span>
-                        </div>
-                        <div className={styles.rentButton} onClick={handleRentButtonClick}>
-    <span>
-        대관 신청하기ㅤ
-    </span>
-                            <div className={styles.plusIcon}>✛</div>
-                        </div>
-                    </div>
-                )}
-            </div>
+            <TextComponent selectedType={selectedType} onTypeSelect={handleTypeSelection} />
+            {filteredImages.length > 0 && (
+                <ImageDisplay
+                    filteredImages={filteredImages}
+                    selectedImageIndex={selectedImageIndex}
+                    onImageClick={handleImageNameClick}
+                    onRentClick={handleRentButtonClick}
+                />
+            )}
         </div>
     )
 }

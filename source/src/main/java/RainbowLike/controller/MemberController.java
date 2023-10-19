@@ -15,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 @RestController
@@ -38,46 +41,6 @@ public class MemberController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-    @GetMapping("/id-tel/{tel}")
-    public ResponseEntity<String> getMemIdByTel(@PathVariable String tel) {
-        return memberService.findMemIdByTel(tel)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/tel-id/{id}")
-    public ResponseEntity<String> getTelByMemId(@PathVariable String id) {
-        return memberService.findTelByMemId(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/search/{option}/{value}")
-    public ResponseEntity<Iterable<Member>> searchMember(@PathVariable String option, @PathVariable String value) {
-        return ResponseEntity.ok(memberService.searchMember(option, value));
-    }
-
-    @GetMapping("/check/{type}/{value}")
-    public ResponseEntity<Boolean> checkDuplicate(@PathVariable String type, @PathVariable String value) {
-        return ResponseEntity.ok(memberService.checkDuplicate(type, value));
-    }
-
-    @PostMapping
-    public ResponseEntity<Member> saveMember(@RequestBody MemberDto memberDto) {
-        Member savedMember = memberService.saveMember(memberDto);
-        return ResponseEntity.ok(savedMember);
-    }
-
-    @PatchMapping("/id/{id}/{pwd}")
-    public ResponseEntity<?> memberPwdChange(@PathVariable String id, @PathVariable String pwd) {
-        Member updatedMember = memberService.changePassword(id, pwd);
-        if (updatedMember != null) {
-            return ResponseEntity.ok(updatedMember);
-        }
-        return ResponseEntity.badRequest().body("Failed to update password");
-    }
-
     @GetMapping("/{memId}")
     public ResponseEntity<Member> getMemberInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -105,7 +68,7 @@ public class MemberController {
     }
 
     //멤버번호로 회원정보 가져오기
-    @RequestMapping("/memInfo/{memNum}")
+    @GetMapping("/memInfo/{memNum}")
     public ResponseEntity<Member> getMemberByMemNum(@PathVariable Long memNum) {
         Member member = memberRepository.findByMemNum(memNum);
         if (member != null) {
@@ -115,6 +78,53 @@ public class MemberController {
         }
     }
 
+
+    @GetMapping("/id-tel/{tel}")
+    public ResponseEntity<String> getMemIdByTel(@PathVariable String tel) {
+        return memberService.findMemIdByTel(tel)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/tel-id/{id}")
+    public ResponseEntity<String> getTelByMemId(@PathVariable String id) {
+        return memberService.findTelByMemId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/search/{option}/{value}")
+    public ResponseEntity<Iterable<Member>> searchMember(@PathVariable String option, @PathVariable String value) {
+        return ResponseEntity.ok(memberService.searchMember(option, value));
+    }
+
+    @GetMapping("/check/{type}/{value}")
+    public ResponseEntity<Boolean> checkDuplicate(@PathVariable String type, @PathVariable String value) {
+        return ResponseEntity.ok(memberService.checkDuplicate(type, value));
+    }
+
+    @PostMapping
+    public ResponseEntity<String> saveMemberAndFile(
+            @RequestParam("memberData") String memberDataJson,
+            @RequestParam(name = "file", required = false) List<MultipartFile> files,
+            @RequestParam(name = "tableName", required = false) String tableName,
+            @RequestParam(name = "number", required = false) Long number) {
+        System.out.println(memberDataJson);
+        try {
+            return ResponseEntity.ok(memberService.saveMemberAndFile(memberDataJson, files, tableName, number));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("회원가입 중 오류가 발생했습니다.");
+        }
+    }
+
+    @PatchMapping("/id/{id}/{pwd}")
+    public ResponseEntity<?> memberPwdChange(@PathVariable String id, @PathVariable String pwd) {
+        Member updatedMember = memberService.changePassword(id, pwd);
+        if (updatedMember != null) {
+            return ResponseEntity.ok(updatedMember);
+        }
+        return ResponseEntity.badRequest().body("Failed to update password");
+    }
 
     //회원정보수정에 따른 업데이트
     @PatchMapping("/update/{memId}")
