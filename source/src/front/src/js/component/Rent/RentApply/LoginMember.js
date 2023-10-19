@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {useHistory, useLocation, useNavigate} from 'react-router-dom';
-import {SERVER_URL} from "../Common/constants";
+import {SERVER_URL} from "../../Common/constants";
+import styles from "../../../../css/component/Rent/LoginMember.module.css"
 
 
 const LoginMember = () => {
@@ -25,40 +26,55 @@ const LoginMember = () => {
     }, []);
 
     return (
-        <div id="title">
+        <div id={styles.title}>
             {member !== null ? (  // member가 null이 아닌 경우에만 렌더링
-                <div className="memApplyInfo">
+                <div className={styles.memApplyInfo}>
                     <h3>신청자 정보</h3>
-                    <hr />
+                    <hr className={styles.mainHr}/>
                     <ul>
                         <li>
                             <p>*</p>
-                            <b>신청자명</b> <input value={member.name} />
+                            <b className={styles.name}>신청자명</b> <input className={styles.memBasicInput} value={member.name} />
                         </li>
                         <hr />
                         <li>
                             <p>*</p>
-                            <b>휴대폰번호</b> <input value={member.tel} />
+                            <b>휴대폰번호</b> <input  className={styles.memBasicInput} value={member.tel} />
                         </li>
                         <hr />
                         <li>
                             <p>*</p>
-                            <b>이메일주소</b> <input value={member.email} />
+                            <b>이메일주소</b> <input  className={styles.memBasicInput} value={member.email} />
                         </li>
                         <hr />
                         <li>
-                            <b>단체명</b>
-                            <input />
+                            <b className={styles.group}>단체명</b>
+                            <input  className={styles.memBasicInput} />
                         </li>
                         <hr />
                         <li>
-                            <b>대표자</b>
-                            <input value={member.name} />
+                            <b className={styles.ceo}> 대표자</b>
+                            <input   className={styles.memBasicInput} value={member.name} />
                         </li>
                         <hr />
                         <li>
                             <b>사업자등록증</b>
-                            <button>파일추가</button>
+                            <div>
+                            <button style={{
+                                width: "80px",
+                                height: "40px",
+                                backgroundColor: "#3d0c69",
+                                color: "#ffffff",
+                                borderRadius: '5px',
+                                fontSize: "15px",
+                                fontWeight: "bold",
+                                marginRight: "10%",
+                                position: "relative",
+                                border: "1px solid #ffffff"
+                            }}
+                            >파일첨부</button>
+                                {/*<p>이용료 면제 기준 해당시 사업자 등록증 첨부해주세요.</p>*/}
+                            </div>
                         </li>
                         <hr />
                     </ul>
