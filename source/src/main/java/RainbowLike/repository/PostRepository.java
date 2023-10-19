@@ -31,6 +31,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Iterable<Post> findByBoardAndMemberIn(Board board, List<Member> members);
 
     Iterable<Post> findByMemberIn(List<Member> members);
+
+    List<Post> findByBoardAndPostNumGreaterThanOrderByPostNumAsc(Board board, Long postNum);
+
+    List<Post> findByBoardAndPostNumLessThanOrderByPostNumDesc(Board board, Long postNum);
+
     List<Post> findByParentsNum(Long parentsNum);
 
 
