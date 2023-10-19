@@ -7,9 +7,11 @@ import ReactQuill from "react-quill";
 import {post} from "axios";
 
 function PostForm(props) {
+    const { parentsNum: parentsNumFromURL } = useParams();
     const location = useLocation();
-    const mode = location.state?.mode || 'create';  // "create" 또는 "edit"
+    const mode = location.state?.mode || 'create';  // "create" 또는 "edit", or "reply"
     const [isEditMode, setIsEditMode] = useState(mode === 'edit');
+    const [isReplyMode, setIsReplyMode] = useState(mode === 'reply');
 
     const { postNum: postNumFromParams } = useParams();
     const postNum = props.postNum || postNumFromParams;
@@ -39,7 +41,7 @@ function PostForm(props) {
     });
 
     useEffect(() => {
-        // 회원 정보 가져오기 (이전 코드)
+        // 회원 정보 가져오기
         fetch(SERVER_URL + `members/id/${memId}`)
             .then(response => response.json())
             .then(data => {
@@ -57,34 +59,44 @@ function PostForm(props) {
                 window.location.href = '/login';
             });
 
-        // 글 정보 가져오기 (추가)
-        if (isEditMode) {  // postNum의 유무와 isEditMode로 fetch를 실행
+        // 글 정보 가져오기 (편집 모드일 때)
+        if (isEditMode) {
             fetch(`${SERVER_URL}post/${postNum}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)// title에 문자가 있다면 로직 실행
-                        setFormData({
-                            memNum: data.member.memNum,
-                            boardNum: data.board.boardNum || '',
-                            title: data.title || '',
-                            content: data.content || '',
-                            pageView: data.pageView || 0,
-                            parentsNum: data.parentsNum || '',
-                            memName: data.member.name || '',
-                            phone: data.member.tel || '',
-                            email: data.member.email || '',
-                            clubRecuStatus: data.clubRecuStatus || '',
-                            delYN: data.delYN || 'N'
-                        });
-                        setContent(data.content || '');  // ReactQuill에 값을 설정하기 위해
-
+                    setFormData({
+                        memNum: data.member.memNum,
+                        boardNum: data.board.boardNum || '',
+                        title: data.title || '',
+                        content: data.content || '',
+                        pageView: data.pageView || 0,
+                        parentsNum: data.parentsNum || '',
+                        memName: data.member.name || '',
+                        phone: data.member.tel || '',
+                        email: data.member.email || '',
+                        clubRecuStatus: data.clubRecuStatus || '',
+                        delYN: data.delYN || 'N'
+                    });
+                    setContent(data.content || '');
                 })
                 .catch(error => {
                     console.error('Error fetching the post:', error);
                 });
-            console.log(formData.content)
+
+            console.log(formData.content);
         }
-    }, [postNum,isEditMode]);
+console.log(formData)
+
+        // 답글 모드일 때
+        if (isReplyMode) {
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                parentsNum: parentsNumFromURL
+            }));
+        }
+
+    }, [postNum, isEditMode, isReplyMode]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
@@ -116,8 +128,16 @@ function PostForm(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const endpoint = isEditMode ? `${SERVER_URL}post/edit/${postNum}` : `${SERVER_URL}post/new`;
-        const method = isEditMode ? 'PUT' : 'POST';
+        let endpoint;
+        let method;
+
+        if (isEditMode) {
+            endpoint = `${SERVER_URL}post/edit/${postNum}`;
+            method = 'PUT';
+        } else {
+            endpoint = `${SERVER_URL}post/new`;
+            method = 'POST';
+        }
 
         try {
             const response = await fetch(endpoint, {
@@ -136,6 +156,8 @@ function PostForm(props) {
 
             if (isEditMode) {
                 alert('게시글을 수정했습니다.');
+            } else if (isReplyMode) {
+                alert('답글을 작성했습니다.');
             } else {
                 alert('게시글을 작성했습니다.');
             }
@@ -162,6 +184,8 @@ function PostForm(props) {
             console.error('Error:', error);
         }
     };
+
+
     const handleRedirect = () => {
         if (boardNum == 1 || boardNum == 2) {
             navigate(`/post/${boardNum}`);
