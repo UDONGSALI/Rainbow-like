@@ -3,9 +3,12 @@ package RainbowLike.service;
 import RainbowLike.constant.DelYN;
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
+import RainbowLike.dto.EduHistDto;
 import RainbowLike.dto.MemberDto;
 import RainbowLike.entity.*;
 import RainbowLike.repository.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.User;
@@ -15,8 +18,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,15 +31,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
     private final ModelMapper mapper;
+    private final PasswordEncoder passwordEncoder;
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
-    private final ChatRoomRepository chatRoomRepository;
+    private final MemberRepository memberRepository;
     private final RentHistRepository rentHistRepository;
     private final FtWorkerRepository ftWorkerRepository;
+    private final CommentRepository commentRepository;
+    private final ChatRoomRepository chatRoomRepository;
     private final FtConsumerRepository ftConsumerRepository;
+    private final FileService fileService;
 
     @PostConstruct
     private void createDefaultMembers() {
@@ -49,6 +55,22 @@ public class MemberService implements UserDetailsService {
         String encodedPassword = passwordEncoder.encode(member.getPwd());
         member.setPwd(encodedPassword);
         return memberRepository.save(member);
+    }
+
+    @Transactional
+    public String saveMemberAndFile(String memberDataJson, List<MultipartFile> files, String tableName, Long number) throws IOException {
+        MemberDto memberDto;
+        try {
+            memberDto = new ObjectMapper().readValue(memberDataJson, MemberDto.class);
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("멤버 정보 변환에 실패했습니다.", e);
+        }
+        saveMember(memberDto);
+
+        if (files != null && !files.isEmpty()) {
+            fileService.uploadFilesAndGetFileNums(files, tableName, number);
+        }
+        return "가입이 완료 되었습니다!";
     }
 
     public Iterable<Member> findAllMembers() {

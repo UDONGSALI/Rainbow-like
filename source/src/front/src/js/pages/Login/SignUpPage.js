@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import SignUp from "../../component/Login/SignUp";
-import SignAgreement from "../../component/Login/SignAgreement";
+import SignUp from "../../component/Login/SignUp/SignUp";
+import SignAgreement from "../../component/Login/SignUp/SignAgreement";
 import Header from "../../layout/Header/Header";
 import { headerInfo, urlData } from "../../layout/Header/Data/LoginHeader";
 import styles from '../../../css/pages/Login/SignUpPage.module.css';

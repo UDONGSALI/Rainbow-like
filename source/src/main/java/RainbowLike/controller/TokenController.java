@@ -1,6 +1,5 @@
 package RainbowLike.controller;
 
-import RainbowLike.entity.Member;
 import RainbowLike.entity.Token;
 import RainbowLike.service.JwtService;
 import io.jsonwebtoken.Claims;
@@ -64,13 +63,14 @@ public class TokenController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{tokenNum}")
-    public void deleteToken(@PathVariable Long tokenNum) {
-        jwtService.deleteTokenByTokenNum(tokenNum);
-    }
-    @DeleteMapping
-    public void deleteToken(@RequestParam String jti) {
-        jwtService.deleteTokenByJti(jti);
+//    @DeleteMapping("/{tokenNum}")
+//    public void deleteToken(@PathVariable Long tokenNum) {
+//        jwtService.deleteTokenByTokenNum(tokenNum);
+//    }
+    @DeleteMapping("/{jti}")
+    public void deleteToken(@PathVariable  String jti) {
+        System.out.println("토큰 삭제");jwtService.deleteTokenByJti(jti);
+
     }
 
 }
