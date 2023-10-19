@@ -31,7 +31,7 @@ export default function MyCounselList() {
         }
 
         // memNum을 사용하여 해당 멤버의 교육신청내역만 가져오도록 수정
-        fetch(`${SERVER_URL}memberCounsel/${memNum}`)
+        fetch(`${SERVER_URL}post/memberCounsel/${memNum}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);

@@ -18,9 +18,9 @@ export default function RentAgreeForm() {
     };
 
     const handleChange2 = () => {
-        setChecked1(false);
+        setChecked1(true);
         setChecked2(true);
-        setChecked3(false);
+        setChecked3(true);
     };
     const handleChange3 = (event) => {
         setChecked1(true);

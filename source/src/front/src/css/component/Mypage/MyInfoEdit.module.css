@@ -5,7 +5,7 @@
     margin-bottom: 5%;
     padding-right: 15%;
     padding-left: 15%;
-    font-family: Prompt;
+    font-family:'IBM Plex Sans KR', sans-serif;
     font-size: 17px;
     position: relative;
 
@@ -141,7 +141,8 @@
 #title> .main2 > .basicInfo >.userPwd> .container> div > span{
     color: red;
     margin-right: 5%;
-}
+}c
+
 
 #title> .main2 > .basicInfo >.userPwd> .container> .userPwdIn >p{
     margin-top: 10px;
