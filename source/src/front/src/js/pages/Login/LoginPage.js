@@ -1,5 +1,5 @@
 import React from 'react';
-import Login from "../../component/Login/Login";
+import Login from "../../component/Login/Login/Login";
 import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/LoginHeader";
 

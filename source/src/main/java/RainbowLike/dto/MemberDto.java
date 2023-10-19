@@ -3,6 +3,12 @@ package RainbowLike.dto;
 
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -24,46 +30,35 @@ public class MemberDto {
 
     private String memId;
 
-    @NotEmpty(message = "아이디 중복체크를 해주세요.")
     private String checked;
-
     public void setPwd(String pwd) {
         this.pwd = pwd;
     }
 
-    @NotEmpty(message = "비밀번호는 필수 입력 값입니다.")
-    @Length(min = 8, max = 16, message = "비밀번호는 8자 이상, 16자 이하로 입력해주세요.")
     private String pwd;
 
-    @NotEmpty(message = "비밀번호확인은 필수입니다.")
     private String confirmPwd;
 
-    @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String name;
 
-    @NotEmpty(message = "이메일은 필수 입력 값입니다.")
-    @Email(message = "이메일 형식으로 입력해주세요.")
     private String email;
 
-    @NotBlank(message = "성별을 선택해주세요.")
     private Gender gender;
 
-    @Length(min = 10, max = 11, message = "전화번호를 형식에 맞게 입력해주세요")
     private String tel;
 
-    @Length(min = 8, max = 8, message = "생년월일을 형식에 맞게 입력해주세요")
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate bir;
 
-    @NotBlank(message = "주소는 필수 입력 값입니다.")
     private String addr;
 
-    @NotBlank(message = "상세 주소는 필수 입력 값입니다.")
     private String addrDtl;
 
-    @NotBlank(message = "우편번호는 필수 입력 값입니다.")
     private String addrPost;
 
-    @NotBlank
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate jdate;
 
     static public List<MemberDto> createtestMember() {

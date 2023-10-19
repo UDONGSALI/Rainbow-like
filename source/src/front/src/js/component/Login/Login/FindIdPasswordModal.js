@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Modal, TextField, Stack } from '@mui/material';
+import { Button, Modal, Stack } from '@mui/material';
 import FindId from "./FindId";
 import FindPassword from "./FindPassword";
 import ChangePassword from "./ChangePassword";
+import styles from '../../../../css/component/Login/FindIdPasswordModal.module.css'
 
 const FindIdPasswordModal = ({ isOpen, handleClose }) => {
 
@@ -17,27 +18,8 @@ const FindIdPasswordModal = ({ isOpen, handleClose }) => {
     const [smsSent, setSmsSent] = useState(false);
     const [activeTab, setActiveTab] = useState('findId');
     const [usernameForChange, setUsernameForChange] = useState("");
-    const [buttonColors, setButtonColors] = useState({
-        btn1: "#a38ced",
-        btn2: "#a38ced",
-        btn3: "#a38ced"
-    });
 
     // Handlers
-    const handleMouseEnter = (btnId) => {
-        setButtonColors({
-            ...buttonColors,
-            [btnId]: "#53468b"
-        });
-    };
-
-    const handleMouseLeave = (btnId) => {
-        setButtonColors({
-            ...buttonColors,
-            [btnId]: "#a38ced"
-        });
-    };
-
     const handleCloseWithReset = () => {
         // Reset states
         setPhoneNumber("");
@@ -53,11 +35,6 @@ const FindIdPasswordModal = ({ isOpen, handleClose }) => {
         handleClose();
     };
     const renderActiveComponent = () => {
-        const sharedProps = {
-            handleMouseEnter,
-            handleMouseLeave,
-            buttonColors
-        };
 
         switch (activeTab) {
             case 'findId':
@@ -70,21 +47,13 @@ const FindIdPasswordModal = ({ isOpen, handleClose }) => {
                     isVerified={isVerified} setIsVerified={setIsVerified}
                     smsSent={smsSent} setSmsSent={setSmsSent}
                     memberId={memberId} setMemberId={setMemberId}
-                    handleMouseEnter={handleMouseEnter}
-                    handleMouseLeave={handleMouseLeave}
-                    buttonColors={buttonColors}/>;
+                />;
             case 'findPassword':
                 return <FindPassword
                     onPasswordChangeSuccess={onPasswordChangeSuccess}
-                    handleMouseEnter={handleMouseEnter}
-                    handleMouseLeave={handleMouseLeave}
-                    buttonColors={buttonColors}
                 />;
             case 'changePassword':
                 return <ChangePassword
-                    handleMouseEnter={handleMouseEnter}
-                    handleMouseLeave={handleMouseLeave}
-                    buttonColors={buttonColors}
                     usernameForChange={usernameForChange}  // 아이디 전달
                     closeModal={handleCloseWithReset}      // 여기서 closeModal로 전달
                 />;
@@ -104,25 +73,24 @@ const FindIdPasswordModal = ({ isOpen, handleClose }) => {
             onClose={handleCloseWithReset}
             aria-labelledby="modal-title"
             aria-describedby="modal-description"
-            style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
+            className={styles.container} // Apply the container style
         >
-            <Stack
-                style={{width: '30%', backgroundColor: 'white', padding: '20px', outline: 'none', borderRadius: '5px'}}>
-                <Stack direction="row" spacing={2}>
+            <Stack className={styles.modalStack}> {/* Apply the modalStack style */}
+                <Stack direction="row" spacing={2} className={styles.tabButtons}> {/* Apply the tabButtons style */}
                     <Button
                         onClick={() => setActiveTab('findId')}
-                        style={{fontSize: '20px', color: '#a38ced', fontWeight:'bold'}}
+                        className={styles.tabButton} // Apply the tabButton style
                     >
                         아이디 찾기
                     </Button>
                     <Button
                         onClick={() => setActiveTab('findPassword')}
-                        style={{fontSize: '20px', color: '#a38ced', fontWeight:'bold'}}
+                        className={styles.tabButton} // Apply the tabButton style
                     >
                         비밀번호 찾기
                     </Button>
                 </Stack>
-                <hr/>
+                <hr />
                 {renderActiveComponent()}
             </Stack>
         </Modal>
