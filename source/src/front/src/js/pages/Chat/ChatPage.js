@@ -8,7 +8,7 @@ function ChatPage(){
 
     return(
         <>
-        <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
+        <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={"채팅 문의"}/>
         <div className={styles.ClubMainPage}>
         <div className={styles.List}>
             <ChatList />

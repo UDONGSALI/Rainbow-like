@@ -32,9 +32,6 @@ public class RentHistController {
     public List<RentHist> getAllRentHist() {
         return rentHistService.getAllRentHists();
     }
-
-
-
     // 회원 번호로 멤버별 대관내역 요청
 
     @RequestMapping("/memberRent/{memNum}")
@@ -65,10 +62,12 @@ public class RentHistController {
     }
 
 
-    @PostMapping("/update")
-    public ResponseEntity<String> applyForRent(@RequestBody RentHistDto rentHistDto) {
+    @PostMapping("/update/{spaceNum}/{memNum}")
+    public ResponseEntity<String> applyForRent(@RequestBody RentHistDto rentHistDto,
+                                               @PathVariable Long spaceNum,
+                                               @PathVariable Long memNum) {
         try {
-            RentHist rentHist = rentHistService.applyForRent(rentHistDto);
+            RentHist rentHist = rentHistService.applyForRent(rentHistDto, spaceNum, memNum);
             return ResponseEntity.ok(rentHist.toString());
         } catch (Exception e) {
             e.printStackTrace(); // 예외 메시지를 로깅하도록 수정

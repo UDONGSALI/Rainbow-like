@@ -38,3 +38,23 @@
     max-width: 250px;
     word-wrap: break-word;
 }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header h2 {
+    font-weight: bold;
+    color: #4b3c8f;
+}
+
+.header h1 {
+    font-weight: bold;
+}
+
+.marginTop {
+    margin-top: 10px;
+}
