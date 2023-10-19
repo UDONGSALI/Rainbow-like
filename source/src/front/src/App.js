@@ -14,7 +14,7 @@ import NoticeListPage from './js/pages/Post/NoticeListPage';
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import RentProcessPage from "./js/pages/Rent/RentProcessPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
-import RentApplyPage from "./js/pages/Rent/RentApplyPage";
+
 import FTMainPage from "./js/pages/FT/FTMainPage";
 import FTWListPage from "./js/pages/FT/FTW/FTWListPage";
 import FTWFormPage from "./js/pages/FT/FTW/FTWFormPage";
@@ -66,6 +66,7 @@ import Purpose from "./js/component/Intro/Purpose";
 import AgenHistory from "./js/component/Intro/AgenHistory";
 import RentReviewWritePage from "./js/pages/Rent/RentReviewWritePage";
 import IntroPage from "./js/pages/Intro/IntroPage";
+import QnAPage from "./js/pages/QnA/QnAPage";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import OrganizationChart from "./js/component/Intro/OrganizationChart";
 
@@ -130,6 +131,9 @@ function App() {
                 {/*결제*/}
                 <Route path="/pay/:rentHistNum/:fee" element={<Pay/>}/>
 
+                {/*질문*/}
+                <Route path="/qna" element={<QnAPage/>}/>
+
                 {/*게시글*/}
                 <Route path="/sj" element={<SjNewsPage/>}/>
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
@@ -145,10 +149,9 @@ function App() {
                 {/*공간대관페이지관련*/}
                 <Route path="/rent/process" element={<RentProcessPage/>}/>
                 <Route path="/rent/status" element={<RentStatusPage/>}/>
-                <Route path="/rent/apply" element={<RentApplyPage/>}/>
                 <Route path="/rent/review" element={<RentReviewListPage/>}/>
                 <Route path="/rent/reviewPost/:postNum" element={<RentReviewPostPage/>}/>
-                <Route path="/rent/reviewEdit/:postNum" element={<RentReviewEditPage/>}/>
+                <Route path="/rent/reviewEdit/:postNum" element={memId ?<RentReviewEditPage memId={memId}/> : <Navigate to="/login" replace/>}/>
                 <Route path="/rent/reviewWrite" element={<RentReviewWritePage/>}/>
 
                 {/*마이페이지관련*/}

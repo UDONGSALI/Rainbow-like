@@ -9,32 +9,22 @@ import {headerInfo, urlData} from "../../layout/Header/Data/CslHeader";
 import Header from "../../layout/Header/Header";
 
 
-function LaborListPage() {
+function OnlineCslPage() {
     const { boardNum } = useParams();
     const  memNum = sessionStorage.getItem("memNum")
 
-    let footerTitle = "";
-
-    if (boardNum == "7") {
-        footerTitle = "노무상담게시판";
-    } else if (boardNum == "8") {
-        footerTitle = "온라인상담";
-    }
 
     return (
         <div>
-            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
-            {/* 조건부 렌더링: boardNum이 7일 때만 laborTop을 렌더링 */}
-            {boardNum == "7" && (
-                <>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={'노무상담게시판'}/>
             <div className={styles.laborTop}>
                 <div className={styles.laborImg}  >
-                <img src={LaborImg}  alt={"imgFalse"}/>
+                    <img src={LaborImg}  alt={"imgFalse"}/>
                 </div>
                 <div className={styles.const} >
                     <div className={styles.constText}>
                         <p>
-                        <strong>설립목적</strong>
+                            <strong>설립목적</strong>
                         </p>
                         <ul className={styles.txtList}>
                             <li>
@@ -48,7 +38,7 @@ function LaborListPage() {
                             </li>
                         </ul>
                         <p>
-                        <strong>사업내용</strong>
+                            <strong>사업내용</strong>
                         </p>
                         <ul className={styles.txtList}>
                             <li>
@@ -78,18 +68,16 @@ function LaborListPage() {
             </div>
             <div className={styles.noticeBorderBox} >
                 <div className={styles.noticeTitle}>
-                <strong >노무상담게시판 필독사항</strong>
+                    <strong >노무상담게시판 필독사항</strong>
                 </div>
-                    <p className={styles.noticeCont}>이 곳은 직장맘들을 위한 노무상담 게시판입니다.
+                <p className={styles.noticeCont}>이 곳은 직장맘들을 위한 노무상담 게시판입니다.
                     상담을 원하는 내용을 상세히 작성해 주시면 노무사가 검토 후 답변해 드립니다.
                     <br/>＊상담 내용 검토 등으로 인해 답변에 시간이 걸릴 수 있습니다.</p>
             </div>
-                </>
-            )}
             <CounselingList boardNum={boardNum} memNum={memNum}/>
             <Footer />
         </div>
     );
 }
 
-export default LaborListPage;
+export default OnlineCslPage;

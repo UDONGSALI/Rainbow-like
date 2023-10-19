@@ -360,9 +360,9 @@ public class DefaultFileService {
 
         File post20File1 = new File();
         post20File1.setPost(postRepository.findByPostNum(37L));
-        post20File1.setFileName("post/37/ple3.png");
-        post20File1.setFileOriName("ple3.png");
-        post20File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/37/ple3.png");
+        post20File1.setFileName("post/37/ple7.png");
+        post20File1.setFileOriName("ple7.png");
+        post20File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/37/ple7.png");
 
         fileList.add(post20File1);
 
@@ -376,18 +376,67 @@ public class DefaultFileService {
 
         File post22File1 = new File();
         post22File1.setPost(postRepository.findByPostNum(39L));
-        post22File1.setFileName("post/36/ple2.png");
-        post22File1.setFileOriName("ple2.png");
-        post22File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/36/ple2.png");
+        post22File1.setFileName("post/39/ple5.png");
+        post22File1.setFileOriName("ple5.png");
+        post22File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/39/ple5.png");
         fileList.add(post22File1);
 
         File post23File1 = new File();
         post23File1.setPost(postRepository.findByPostNum(40L));
-        post23File1.setFileName("post/36/ple2.png");
-        post23File1.setFileOriName("ple2.png");
-        post23File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/36/ple2.png");
+        post23File1.setFileName("post/40/ple6.png");
+        post23File1.setFileOriName("ple6.png");
+        post23File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/40/ple6.png");
 
         fileList.add(post23File1);
+
+        File post24File1 = new File();
+        post24File1.setPost(postRepository.findByPostNum(41L));
+        post24File1.setFileName("post/41/newLetter.png");
+        post24File1.setFileOriName("newLetter.png");
+        post24File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/41/newLetter.png");
+
+        fileList.add(post24File1);
+
+        File post25File1 = new File();
+        post25File1.setPost(postRepository.findByPostNum(42L));
+        post25File1.setFileName("post/42/newLetter.png");
+        post25File1.setFileOriName("newLetter.png");
+        post25File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/42/newLetter.png");
+
+        fileList.add(post25File1);
+
+        File post26File1 = new File();
+        post26File1.setPost(postRepository.findByPostNum(43L));
+        post26File1.setFileName("post/43/newLetter.png");
+        post26File1.setFileOriName("newLetter.png");
+        post26File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/43/newLetter.png");
+
+        fileList.add(post26File1);
+
+        File post27File1 = new File();
+        post27File1.setPost(postRepository.findByPostNum(44L));
+        post27File1.setFileName("post/44/newLetter.png");
+        post27File1.setFileOriName("newLetter.png");
+        post27File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/44/newLetter.png");
+
+        fileList.add(post27File1);
+
+        File post28File1 = new File();
+        post28File1.setPost(postRepository.findByPostNum(45L));
+        post28File1.setFileName("post/40/ple6.png");
+        post28File1.setFileOriName("ple6.png");
+        post28File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/45/newLetter.png");
+
+        fileList.add(post28File1);
+
+        File post29File1 = new File();
+        post29File1.setPost(postRepository.findByPostNum(46L));
+        post29File1.setFileName("post/46/newLetter.png");
+        post29File1.setFileOriName("newLetter.png");
+        post29File1.setFileUri("https://storage.googleapis.com/rainbow_like/post/46/newLetter.png");
+
+        fileList.add(post29File1);
+
 
         // 교육 내역 관련
 
