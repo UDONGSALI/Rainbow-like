@@ -11,7 +11,6 @@ function RentStatusPage() {
     return (
         <div>
             <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={'대관 현황 및 신청'}/>
-            <RentStatus/>
             <SpaceApplyForm/>
             <Footer/>
         </div>

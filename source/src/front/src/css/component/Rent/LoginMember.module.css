@@ -1,0 +1,64 @@
+
+/*공통사항*/
+
+#title{
+    position: relative;
+    margin-top: 5%;
+    font-size: 15px;
+
+}
+
+.memBasicInput{
+    width: 300px;
+    height: 40px;
+    border : 1px solid #ccc;
+    border-radius: 3px;
+    justify-content: center;
+}
+
+
+#title > .memApplyInfo{
+    width: 100%;
+    margin-bottom: 5%;
+}
+
+
+#title > .memApplyInfo >h3{
+    font-weight: bold;
+}
+
+#title > .memApplyInfo > .mainHr{
+    border: 1px solid black;
+}
+#title > .memApplyInfo > ul > li {
+    display: flex;
+    text-align: center;
+}
+
+
+#title > .memApplyInfo > ul > li > p{
+    color: red;
+    margin-right: 1%;
+}
+
+#title > .memApplyInfo > ul > li > b{
+    font-size: 16px;
+    margin-right: 5%;
+}
+
+#title > .memApplyInfo > ul > li > .name{
+    font-size: 16px;
+    margin-right: 6.2%;
+}
+
+#title > .memApplyInfo > ul > li > .group{
+    font-size: 16px;
+    margin-right: 9%;
+}
+
+
+#title > .memApplyInfo > ul > li > .ceo{
+    font-size: 16px;
+    margin-right: 9%;
+}
+
