@@ -15,7 +15,7 @@ import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import PostList from "./js/component/Post/PostList";
 import RentProcessPage from "./js/pages/Rent/RentProcessPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
-import RentApplyPage from "./js/pages/Rent/RentApplyPage";
+
 import FTMainPage from "./js/pages/FT/FTMainPage";
 import FTWListPage from "./js/pages/FT/FTW/FTWListPage";
 import FTWFormPage from "./js/pages/FT/FTW/FTWFormPage";
@@ -157,10 +157,9 @@ function App() {
                 {/*공간대관페이지관련*/}
                 <Route path="/rent/process" element={<RentProcessPage/>}/>
                 <Route path="/rent/status" element={<RentStatusPage/>}/>
-                <Route path="/rent/apply" element={<RentApplyPage/>}/>
                 <Route path="/rent/review" element={<RentReviewListPage/>}/>
                 <Route path="/rent/reviewPost/:postNum" element={<RentReviewPostPage/>}/>
-                <Route path="/rent/reviewEdit/:postNum" element={<RentReviewEditPage/>}/>
+                <Route path="/rent/reviewEdit/:postNum" element={memId ?<RentReviewEditPage memId={memId}/> : <Navigate to="/login" replace/>}/>
                 <Route path="/rent/reviewWrite" element={<RentReviewWritePage/>}/>
 
                 {/*마이페이지관련*/}
