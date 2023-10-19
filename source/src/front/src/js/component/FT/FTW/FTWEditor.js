@@ -8,6 +8,7 @@ function FTWEditor(props) {
     const memId = sessionStorage.getItem("memId");
     const memNum = sessionStorage.getItem("memNum");
     const navigate = useNavigate();
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
 
     const [formData, setFormData] = useState({
         memNum: '',
@@ -112,19 +113,25 @@ function FTWEditor(props) {
                         <option value="기타">기타</option>
                     </select>
                 </div>
-                <div className={styles.inputGroup}>
-                    <select
-                        name="ftStatus"
-                        value={formData.ftStatus}
-                        onChange={handleChange}
-                        required
-                    >
-                        <option value="">승인여부</option>
-                        <option value="승인대기">승인대기</option>
-                        <option value="승인">승인</option>
-                        <option value="거부">거부</option>
-                    </select>
-                </div>
+                {
+                    isAdmin ?
+                     <div className={styles.inputGroup}>
+                        <select
+                            name="ftStatus"
+                            value={formData.ftStatus}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">승인여부</option>
+                            <option value="승인대기">승인대기</option>
+                            <option value="승인">승인</option>
+                            <option value="거부">거부</option>
+                        </select>
+                     </div>
+                         :
+                         null
+                 }
+
                 <div className={styles.inputGroup}>
                     <input
                         type="text"

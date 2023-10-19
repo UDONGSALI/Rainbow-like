@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { SERVER_URL } from '../../component/Common/constants';
 import ImgPostList from "../../component/Post/ImgPostList";
 import Footer from "../../layout/Footer/footer";
 import {useParams} from "react-router-dom";

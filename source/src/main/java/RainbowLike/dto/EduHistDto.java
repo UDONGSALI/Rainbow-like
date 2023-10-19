@@ -39,11 +39,25 @@ public class EduHistDto {
 
     static public ArrayList<EduHistDto> createDefaultEduHist(){
         ArrayList<EduHistDto> eduHists = new ArrayList<>();
-        for (int i = 1; i <= 4; i++) {
-            for (int j = 1; j <= 4; j++) {
+        for (int i = 2; i <= 20; i++) {
+            for (int j = 1; j <= 5; j++) {
+                if (j == 1 && i%2 ==0){
+                    continue;
+                }
                 EduHistDto eduHistDto = new EduHistDto();
-                eduHistDto.setEduNum(Long.valueOf(j));
                 eduHistDto.setMemNum(Long.valueOf(i));
+                eduHistDto.setEduNum(Long.valueOf(j));
+                eduHistDto.setStatus(Status.COMPLETE);
+                eduHistDto.setApplyDate(LocalDateTime.now());
+                eduHists.add(eduHistDto);
+            }
+            for (int j = 6; j <= 8; j++) {
+                if ((j == 6 || j == 7 )&& i%2 ==0){
+                    continue;
+                }
+                EduHistDto eduHistDto = new EduHistDto();
+                eduHistDto.setMemNum(Long.valueOf(i));
+                eduHistDto.setEduNum(Long.valueOf(j));
                 eduHistDto.setStatus(Status.APPROVE);
                 eduHistDto.setApplyDate(LocalDateTime.now());
                 eduHists.add(eduHistDto);

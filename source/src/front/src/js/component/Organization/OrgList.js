@@ -3,19 +3,19 @@ import React, {useEffect, useState} from "react";
 // 2. 외부 라이브러리 관련
 import { DataGrid } from "@mui/x-data-grid";
 import styled from "@emotion/styled";
-import { Pagination } from "@mui/material";
 // 3. 프로젝트 내 공통 모듈 관련
 import { SERVER_URL } from "../Common/constants";
 import { useLocation, useNavigate } from "react-router-dom";
 // 4. 컴포넌트 관련
 import SearchComponent from "../Common/SearchComponent";
-import NavigationButton from "../Common/NavigationButton";
 import OrgForm from "./OrgForm";
+import Pagination from "../Common/Pagination";
 // 5. 훅 관련
 import useSearch from "../hook/useSearch";
 import usePagination from "../hook/usePagination";
 import useFetch from "../hook/useFetch";
 import useDelete from "../hook/useDelete";
+import QuickMenu from "../../layout/QuickMenu/QuickMenu";
 
 function OrgList() {
     // 상수 및 상태 정의
@@ -52,7 +52,7 @@ function OrgList() {
         }
     }, [location.search]);
 
-    const handlePageChange = (event, newPage) => {
+    const handlePageChange = (newPage) => {
         navigate(`${location.pathname}?page=${newPage}`);
         setActivePage(newPage);
     };
@@ -159,14 +159,15 @@ function OrgList() {
                         hideFooter={true}
                     />
                 )}
-                <div className="paginationContainer" style={{marginTop: '10px'}}>
-                    <Pagination
-                        count={Math.ceil(orgs.length / itemsPerPage)}
-                        page={activePage}
-                        onChange={handlePageChange}
-                        color="primary"
-                    />
-                </div>
+                <Pagination
+                    activePage={activePage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={orgs.length}
+                    pageRangeDisplayed={10}
+                    onChange={handlePageChange}
+                    prevPageText="<"
+                    nextPageText=">"
+                />
                 <OrgForm
                     org={selectedOrg}
                     open={openModal}
@@ -174,22 +175,15 @@ function OrgList() {
                     onUpdate={handleOrgUpdate}
                 />
             </div>
-            <NavigationButton name="기관 추가" onClick={handleAddOrg} fontSize={'6px'} />
+            <QuickMenu
+                modal={{
+                    method: handleAddOrg,  // 모달을 열 메소드
+                    text: '기관 추가'  // 버튼 텍스트
+                }}
+            />
         </Wrapper>
     );
 }
-
-const StyledScrollHideDiv = styled.div`
-  max-height: 50px;
-  overflow-y: auto;
-  width: 100%;
-  scrollbar-width: none; // Firefox
-  -ms-overflow-style: none; // IE and Edge
-
-  &::-webkit-scrollbar {
-    display: none; // Chrome, Safari, and Opera
-  }
-`;
 
 const Wrapper = styled.div`
   width: fit-content;
