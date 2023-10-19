@@ -29,7 +29,7 @@ export default function MyClubList() {
             }
 
             // memNum을 사용하여 해당 멤버의 모임정보만 가져오도록 수정
-            fetch(`${SERVER_URL}memberClub/${memNum}`)
+            fetch(`${SERVER_URL}post/memberClub/${memNum}`)
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data);
