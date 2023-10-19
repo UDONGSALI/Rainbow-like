@@ -6,6 +6,7 @@ import RainbowLike.entity.Member;
 import RainbowLike.entity.Space;
 import RainbowLike.repository.MemberRepository;
 import RainbowLike.repository.SpaceRepository;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,9 +23,11 @@ public class RentHistDto {
     private static SpaceRepository spaceRepository;
 
     @NotNull
+    @JsonIgnore
     private Member member;
 
     @NotNull
+    @JsonIgnore
     private Space space;
 
     @NotNull
@@ -43,21 +46,10 @@ public class RentHistDto {
     private Status payStatus;
 
 
-    public static RentHistDto createRentHist(Member member, Space space, LocalDateTime rentStdt, LocalDateTime rentEddt,
-                                             LocalDateTime applyDate, Status applyStatus, Status payStatus) {
-        RentHistDto rentHistDto = new RentHistDto();
-        rentHistDto.setMember(member);
-        rentHistDto.setSpace(space);
-        rentHistDto.setRentStdt(rentStdt);
-        rentHistDto.setRentEddt(rentEddt);
-        rentHistDto.setApplyDate(applyDate);
-        rentHistDto.setApplyStatus(applyStatus);
-        rentHistDto.setPayStatus(payStatus);
-        return rentHistDto;
-    }
-
     static public ArrayList<RentHistDto> createRentHists() {
         ArrayList<RentHistDto> rentHistList = new ArrayList<RentHistDto>();
+
+        RentHistDto rentHistDto1 = new RentHistDto();
 
         Member member1 = new Member();
         member1.setMemNum(1L);
@@ -67,10 +59,18 @@ public class RentHistDto {
         LocalDateTime rentEddt1 = LocalDateTime.of(2023, 9, 1, 20, 30, 0, 0);
         LocalDateTime applyDate1 = LocalDateTime.of(2023, 9, 1, 9, 30, 0, 0);
 
-        RentHistDto rent1 = RentHistDto.createRentHist(member1, space1, rentStdt1, rentEddt1, applyDate1, Status.WAIT, Status.WAIT);
+        rentHistDto1.setMember(member1);
+        rentHistDto1.setSpace(space1);
+        rentHistDto1.setRentStdt(rentStdt1);
+        rentHistDto1.setRentEddt(rentEddt1);
+        rentHistDto1.setApplyDate(applyDate1);
+        rentHistDto1.setApplyStatus(Status.WAIT);
+        rentHistDto1.setPayStatus(Status.WAIT);
 
-        rentHistList.add(rent1);
+        rentHistList.add(rentHistDto1);
 
+
+        RentHistDto rentHistDto2 = new RentHistDto();
 
         Member member2 = new Member();
         member2.setMemNum(2L);
@@ -80,9 +80,15 @@ public class RentHistDto {
         LocalDateTime rentEddt2 = LocalDateTime.of(2023, 9, 1, 20, 30, 0, 0);
         LocalDateTime applyDate2 = LocalDateTime.of(2023, 9, 1, 9, 30, 0, 0);
 
-        RentHistDto rent2 = RentHistDto.createRentHist(member2, space2, rentStdt2, rentEddt2, applyDate2, Status.APPROVE, Status.COMPLETE);
+        rentHistDto2.setMember(member2);
+        rentHistDto2.setSpace(space2);
+        rentHistDto2.setRentStdt(rentStdt2);
+        rentHistDto2.setRentEddt(rentEddt2);
+        rentHistDto2.setApplyDate(applyDate2);
+        rentHistDto2.setApplyStatus(Status.APPROVE);
+        rentHistDto2.setPayStatus(Status.COMPLETE);
 
-        rentHistList.add(rent2);
+        rentHistList.add(rentHistDto2);
 
 
 

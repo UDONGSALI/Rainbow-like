@@ -67,6 +67,8 @@ function SearchContainer() {
         </span>;
     }
 
+    console.log(postResults)
+
     return (
         <div className={styles.searchContainer}>
             <div className={styles.searchBox}>
@@ -193,7 +195,16 @@ function SearchContainer() {
                     <div>
                         {postResults.map(post => (
                             <div key={post.id} style={{margin: '15px', fontSize: '16px'}}>
-                <span style={{cursor: 'pointer'}}>
+                <span
+                    onClick={() => {
+                        if (post.boardNum && post.boardNum === 9) {
+                            navigate(`/club/${post.postNum}`);
+                        } else {
+                            navigate(`/post/detail/${post.board.boardNum}/${post.postNum}`);
+                        }
+                    }}
+                    style={{cursor: 'pointer'}}
+                >
                     {highlightSearchTerm(post.title, searchTerm)}
                 </span>
                             </div>

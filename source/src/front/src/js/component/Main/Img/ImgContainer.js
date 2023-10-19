@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import SwiperCore, {Autoplay, EffectFade, Navigation, Pagination} from 'swiper'; // EffectFade 추가
+import React, {useRef, useState, useCallback} from 'react';
+import SwiperCore, {Autoplay, EffectFade, Navigation, Pagination} from 'swiper';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import styles from '../../../../css/component/Main/Img/ImgContainer.module.css';
@@ -41,25 +41,24 @@ function ImgContainer() {
     const swiperRef = useRef(null); // Swiper 인스턴스를 참조하는 ref
     const [activeIndex, setActiveIndex] = useState(0); // 현재 활성 슬라이드의 인덱스
 
-    const toggleAutoplay = () => {
+    const toggleAutoplay = useCallback(() => {
         if (swiperRef.current && swiperRef.current.swiper) {
             if (isPlaying) {
-                swiperRef.current.swiper.autoplay.stop(); // 오토플레이 중지
+                swiperRef.current.swiper.autoplay.stop();
             } else {
-                swiperRef.current.swiper.autoplay.start(); // 오토플레이 시작
+                swiperRef.current.swiper.autoplay.start();
             }
-            setIsPlaying(!isPlaying); // 상태 변경
+            setIsPlaying(!isPlaying);
         }
-    };
+    }, [isPlaying]);
+
+    const handleGotoClick = useCallback((link) => {
+        window.location.href = link;
+    }, []);
 
     function AnimatedText({text, className, style}) {
         return <span className={className} style={style}>{text}</span>;
     }
-
-    function handleGotoClick(link) {
-        window.location.href = link;
-    }
-
 
     return (
         <div>
@@ -128,10 +127,12 @@ const StyledSwiper = styled(Swiper)`
 
   .swiper-button-next {
     right: 75%;
+    transform: translate(-50%, -50%);
   }
 
   .swiper-button-prev {
     left: 12%;
+    transform: translate(-50%, -50%);
   }
 
   .swiper-slide img {
@@ -150,6 +151,7 @@ const PausePlayButton = styled.button`
   height: 35px;
   top: 80.7%;
   left: 20%;
+  transform: translate(-50%, -50%);
   z-index: 1000; // 높은 z-index 값으로 다른 요소 위에 표시
   background-color: rgba(0, 0, 0, 0.5); // 반투명 배경색
   color: white;
@@ -180,4 +182,4 @@ const PauseIcon = styled.div`
   }
 `;
 
-export default ImgContainer;
+export default React.memo(ImgContainer);

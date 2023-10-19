@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import styles from '../../../css/component/Login/SignUp.module.css';
+import styles from '../../../../css/component/Login/SignUp.module.css';
 
 
 function Agreement({onAgreementChange}) {

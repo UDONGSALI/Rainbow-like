@@ -1,46 +1,41 @@
 import styles from '../../../css/component/Rent/RentSpace.module.css';
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../Common/constants";
 import LoginMember from "./RentApply/LoginMember";
 import RentAgreeForm from "./RentApply/RentAgreeForm";
+
+let payStatus
 
 function RentSpace({selectedInfo}) {
     const [member, setMember] = useState(null);
     const [files, setFiles] = useState([]);
     const [selectedUsers, setSelectedUsers] = useState(1); // 사용자 수를 선택하기 위한 상태
     const [fileUri, setFileUri] = useState('');
-    const [rentHistInfo, setRentHistInfo] = useState([]);
-    const navigate = useNavigate();
     const memId = sessionStorage.getItem('memId');
-
-    //대관일자와 일시 합치기
-    // const selectedDateObject = new Date(selectedInfo.selectedDate);
-    // const startTimeParts = selectedInfo.selectedTimeRange[0].split(':');
-    // const endTimeParts = selectedInfo.selectedTimeRange[selectedInfo.selectedTimeRange.length - 1].split(':');
-    // //대관시작시간
-    // const rentStdtObject = new Date(selectedDateObject);
-    // rentStdtObject.setHours(parseInt(startTimeParts[0], 10), parseInt(startTimeParts[1], 10));
-    // //대관종료시간
-    // const rentEddtObject = new Date(selectedDateObject);
-    // rentEddtObject.setHours(parseInt(endTimeParts[0], 10), parseInt(endTimeParts[1], 10));
-    //
-    // console.log("rentStdtObject:", rentStdtObject);
-    // console.log("rentEddtObject:", rentEddtObject);
-
     //대관정보
+
+
+    if (selectedInfo.selectedSpace.rentFee === '무료'){
+        payStatus = 'COMPLETE'
+    }else {
+        payStatus = 'WAIT'
+    }
+    let url = selectedInfo.selectedSpace._links.self.href;
+    let parts = url.split('/');
+    let spaceNumValue = parts[parts.length - 1];
+    let spaceNum = parseInt(spaceNumValue);
+
+
     const [updatedInfo, setUpdatedInfo] = useState({
-        member: '',
-        space: selectedInfo.selectedSpace,
-        rentStdt: selectedInfo.selectedDate + "T" + selectedInfo.selectedTimeRange[0],
-        rentEddt: selectedInfo.selectedDate + "T" + selectedInfo.selectedTimeRange[selectedInfo.selectedTimeRange.length - 1],
+        rentStdt: `${selectedInfo.selectedDate}T${selectedInfo.selectedTimeRange[0]}`,
+        rentEddt: `${selectedInfo.selectedDate}T${selectedInfo.selectedTimeRange[selectedInfo.selectedTimeRange.length - 1]}`,
         applyDate: new Date(),
-        applyStatus: 'null',
-        payStatus: 'null',
+        applyStatus: 'WAIT',
+        payStatus:payStatus,
 
     });
 
-    console.log("upadatedInfo:", updatedInfo);
+    console.log(selectedInfo.selectedTimeRange)
 
     //멤버 정보 가지고 오기
     useEffect(() => {
@@ -63,8 +58,6 @@ function RentSpace({selectedInfo}) {
                 window.location.href = '/login';
             });
     }, []);
-
-    console.log(selectedInfo);
 
     //사진파일 가지고 오기
     useEffect(() => {
@@ -91,11 +84,14 @@ function RentSpace({selectedInfo}) {
             });
     }, [selectedInfo.spaceName]);
 
+    console.log(member)
+    console.log(spaceNum + '스페이스넘')
     //대관예약신청정보 데이터베이스로 보내기
     const handleUpdate = async () => {
 
         try {
-            const response = await fetch(`${SERVER_URL}rent/update`, {
+
+            const response = await fetch(`${SERVER_URL}rent/update/${spaceNum}/${member.memNum}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,7 +99,6 @@ function RentSpace({selectedInfo}) {
                 body: JSON.stringify(updatedInfo),
 
             });
-            console.log('Response Status:', response.status);
 
             if (response.status === 200 || response.status === 201) {
                 let text;
@@ -111,11 +106,11 @@ function RentSpace({selectedInfo}) {
                     text = await response.text();
                     console.log('서버 응답 데이터:', text);
                     alert('정말로 대관 예약 신청을 하시겠습니까?');
-                    // window.location.href = "http://localhost:3000/mypage/infoEditSuccess";
+                    window.location.href = "http://localhost:3000/mypage/rent";
                 } catch (jsonError) {
                     console.log('JSON 파싱 에러:', jsonError);
                     alert('정말로 대관 예약 신청을 하시겠습니까?');
-                    // window.location.href = "http://localhost:3000/mypage/infoEditSuccess";
+                    window.location.href = "http://localhost:3000/mypage/rent";
                 }
             } else {
                 console.log('업데이트 실패:', response.statusText);
@@ -127,8 +122,6 @@ function RentSpace({selectedInfo}) {
             console.error('에러:', error);
             alert('대관 예약 신청 중 네트워크 또는 서버 오류가 발생했습니다. 관리자에게 문의하세요.');
         }
-
-        console.log(updatedInfo);
 
     };
     const handleUserSelectChange = (e) => {
