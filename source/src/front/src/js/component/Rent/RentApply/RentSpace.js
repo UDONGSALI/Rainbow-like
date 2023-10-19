@@ -1,9 +1,9 @@
-import styles from '../../../css/component/Rent/RentSpace.module.css';
+import styles from '../../../../css/component/Rent/RentSpace.module.css';
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {SERVER_URL} from "../Common/constants";
-import LoginMember from "./RentApply/LoginMember";
-import RentAgreeForm from "./RentApply/RentAgreeForm";
+import {SERVER_URL} from "../../Common/constants";
+import LoginMember from "./LoginMember";
+import RentAgreeForm from "./RentAgreeForm";
 
 function RentSpace({selectedInfo}) {
     const [member, setMember] = useState(null);
