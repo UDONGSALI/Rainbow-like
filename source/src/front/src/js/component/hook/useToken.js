@@ -141,7 +141,7 @@ export function useToken() {
 
 
     const deleteTokenFromServer = useCallback((jti) => {
-        fetch(`${SERVER_URL}token?jti=${jti}`, {
+        fetch(`${SERVER_URL}token/${jti}`, {
             method: 'DELETE',
         })
             .then(response => {
