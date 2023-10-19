@@ -1,7 +1,21 @@
 import { useNavigate } from 'react-router-dom';
+import { SERVER_URL } from '../Common/constants';
+import { useState } from "react";
 
 function useDeletePost() {
     const navigate = useNavigate();
+    const [posts, setPosts] = useState([]); // 게시물 목록을 상태로 관리
+
+    const fetchPosts = async (boardNum) => {
+        try {
+            const response = await fetch(`${SERVER_URL}post/${boardNum}`);
+            const data = await response.json();
+            setPosts(data);
+        } catch (err) {
+            console.error(err);
+            alert("게시물 목록을 가져오는 중 오류가 발생했습니다.");
+        }
+    };
 
     const deletePost = async (postNum, files, boardNum, SERVER_URL) => {
         const isConfirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
@@ -21,16 +35,17 @@ function useDeletePost() {
             if (!fileResponses.length || fileResponses.every(response => response.ok)) {
                 const postResponse = await fetch(`${SERVER_URL}post/${postNum}`, { method: 'DELETE' });
                 if (postResponse.ok) {
-                    let newUrl;
+                    await fetchPosts(boardNum); // 게시물 삭제 성공 후 게시물 목록을 다시 가져옴
+
+                    // 게시판 경로 결정 로직
                     if (boardNum <= 2) {
-                        newUrl = `/post/${boardNum}`;
+                        navigate(`/post/${boardNum}`);
                     } else if (boardNum >= 3 && boardNum <= 5) {
-                        newUrl = `/imgPost/${boardNum}`;
+                        navigate(`/imgPost/${boardNum}`);
                     } else if (boardNum >= 7) {
-                        newUrl = `/csl/${boardNum}`;
+                        navigate(`/csl/${boardNum}`);
                     } else {
-                        // 뒤로 가기
-                        navigate(-1);
+                        navigate('/posts');
                     }
 
                     return true;
@@ -48,7 +63,7 @@ function useDeletePost() {
         }
     };
 
-    return { deletePost };
+    return { deletePost, posts }; // posts를 반환하여 사용 가능하게 함
 }
 
 export default useDeletePost;

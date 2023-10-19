@@ -31,7 +31,7 @@ import SignUpPage from "./js/pages/Login/SignUpPage";
 import ClubDtlPage from "./js/pages/Club/ClubDtlPage";
 import ClubEditorPage from "./js/pages/Club/ClubEditorPage";
 import EduHistListPage from "./js/pages/Edu/EduHistListPage";
-import LaborListPage from "./js/pages/Post/LaborListPage";
+import CslListPage from "./js/pages/Post/CslListPage";
 import ErrorPage from "./js/pages/ErrorPage";
 import BoardPostListPage from "./js/pages/Board/BoardPostListPage";
 import BoardListPage from "./js/pages/Board/BoardListPage";
@@ -69,6 +69,7 @@ import IntroPage from "./js/pages/Intro/IntroPage";
 import QnAPage from "./js/pages/QnA/QnAPage";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import OrganizationChart from "./js/component/Intro/OrganizationChart";
+import OnlineTop from "./js/component/Post/OnlineTop";
 
 
 function App() {
@@ -140,9 +141,10 @@ function App() {
                 <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
                 <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
                 <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
-                <Route path="/csl/:boardNum" element={<LaborListPage/>}/>
+                <Route path="/csl/:boardNum" element={<CslListPage/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
                 <Route path="/csl/new" element={<CslFormPage/>}/>
+                <Route path="/csl/new/:parentsNum" element={<CslFormPage/>}/>
                 <Route path="/post/new" element={<PostFormPage/>}/>
                 <Route path="/post/edit/:postNum" element={<PostForm/>}/>
 
