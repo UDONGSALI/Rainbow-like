@@ -74,6 +74,7 @@ import QuickMenu from "./js/layout/QuickMenu/QuickMenu";
 import OrganizationChart from "./js/component/Intro/OrganizationChart";
 import SpaceIntro from "./js/component/Intro/SpaceIntro";
 import IntroPage from "./js/pages/Intro/IntroPage";
+import QnAPage from "./js/pages/QnA/QnAPage";
 
 
 
@@ -126,11 +127,6 @@ function App() {
 
                 {/*기관소개*/}
                 <Route path="/intro" element={<IntroPage />}/>
-                {/*<Route path="/intro" element={<Greeting />}/>*/}
-                {/*<Route path="/purpose" element={<Purpose />}/>*/}
-                {/*<Route path="/history" element={<AgenHistory />}/>*/}
-                {/*<Route path="/organi" element={<OrganizationChart />}/>*/}
-                {/*<Route path="/spaceIntro" element={<SpaceIntro />}/>*/}
 
                 {/*교육*/}
                 <Route path="/edu/calendar" element={<EduCalendarPage/>}/>
@@ -143,6 +139,9 @@ function App() {
 
                 {/*결제*/}
                 <Route path="/pay/:rentHistNum/:fee" element={<Pay/>}/>
+
+                {/*질문*/}
+                <Route path="/qna" element={<QnAPage/>}/>
 
                 {/*게시글*/}
                 <Route path="/sj" element={<SjNewsPage/>}/>
