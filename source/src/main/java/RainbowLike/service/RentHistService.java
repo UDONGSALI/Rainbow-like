@@ -33,9 +33,12 @@ public class RentHistService {
     }
 
     //대관신청하기
-    public RentHist applyForRent(RentHistDto rentHistDto) {
+    public RentHist applyForRent(RentHistDto rentHistDto, Long spaceNum, Long memNum) {
         // RentHistDto를 RentHist 엔터티로 매핑
+
         RentHist rentHist = modelMapper.map(rentHistDto, RentHist.class);
+        rentHist.setSpace(spaceRepository.findBySpaceNum(spaceNum));
+        rentHist.setMember(memberRepository.findByMemNum(memNum));
         // 기타 필요한 로직 추가
         rentHist.setApplyDate(LocalDateTime.now());  // 현재 시간으로 설정하거나 DTO에서 받아온 값 사용
         // 저장된 RentHist 엔터티를 반환
