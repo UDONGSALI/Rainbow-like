@@ -66,6 +66,7 @@ import Purpose from "./js/component/Intro/Purpose";
 import AgenHistory from "./js/component/Intro/AgenHistory";
 import RentReviewWritePage from "./js/pages/Rent/RentReviewWritePage";
 import IntroPage from "./js/pages/Intro/IntroPage";
+import QnAPage from "./js/pages/QnA/QnAPage";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 import OrganizationChart from "./js/component/Intro/OrganizationChart";
 
@@ -130,6 +131,9 @@ function App() {
 
                 {/*결제*/}
                 <Route path="/pay/:rentHistNum/:fee" element={<Pay/>}/>
+
+                {/*질문*/}
+                <Route path="/qna" element={<QnAPage/>}/>
 
                 {/*게시글*/}
                 <Route path="/sj" element={<SjNewsPage/>}/>
