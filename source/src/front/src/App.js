@@ -14,6 +14,7 @@ import NoticeListPage from './js/pages/Post/NoticeListPage';
 import SjNewsPage from "./js/pages/Post/SjNewsPage";
 import RentProcessPage from "./js/pages/Rent/RentProcessPage";
 import RentStatusPage from "./js/pages/Rent/RentStatusPage";
+
 import FTMainPage from "./js/pages/FT/FTMainPage";
 import FTWListPage from "./js/pages/FT/FTW/FTWListPage";
 import FTWFormPage from "./js/pages/FT/FTW/FTWFormPage";
@@ -69,19 +70,15 @@ import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
 
 function App() {
     const decodeToken = useToken();
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [memId, setMemId] = useState(null);
+    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    const [memId, setMemId] = useState(sessionStorage.getItem('memId'));
     const {trackButtonClick, trackPageView} = useTracking(memId);
     const location = useLocation();
     const isPaymentRoute = location.pathname.includes("/pay/"); // /pay/로 시작하는 경로인지 확인
     const isChatRoute = location.pathname.includes("/chat");
 
     useEffect(() => {
-        const currentRole = sessionStorage.getItem("role");
-        const currentMemId = sessionStorage.getItem('memId');
-
-        setIsAdmin(currentRole === "ADMIN");
-        setMemId(currentMemId);
+        setMemId(sessionStorage.getItem("memId"));
     }, []);
 
     useEffect(() => {
@@ -96,7 +93,7 @@ function App() {
             <Route path="/" element={<MainPage/>}/>
 
             {/*로그인*/}
-            <Route path="/login" element={<LoginPage memId={memId} />}/>
+            <Route path="/login" element={<LoginPage/>}/>
             <Route path="/signUp" element={<SignUpPage/>}/>
             <Route path="/search" element={<SearchPage/>}/>
 
@@ -198,8 +195,6 @@ function App() {
             <Route path="/chat" element={<ChatBot/>}/>
             <Route path="/chat/:memNum" element={<Chatting/>}/>
             <Route path="/listchat" element={<ChatPage/>}/>
-            {/*/!*<Route path="/chattest" element={<Chattest />} />*!/*/}
-            {/*<Route path="/chattest" element={<ChatTestPage />} />*/}
 
 
         </Routes>
