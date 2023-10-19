@@ -1,5 +1,5 @@
 import React from "react";
-import SpaceApplyForm from "../../component/Rent/SpaceApplyForm";
+import SpaceApplyForm from "../../component/Rent/RentApply/SpaceApplyForm";
 import RentStatus from "../../component/Rent/RentApply/RentStatus";
 import RentCalender from "../../component/Rent/RentApply/RentCalender";
 import Header from "../../layout/Header/Header";

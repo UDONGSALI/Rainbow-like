@@ -4,8 +4,13 @@
 #title{
     position: relative;
     margin-top: 5%;
-    font-size: 15px;
+    font-size: 17px;
+    font-family:'IBM Plex Sans KR', sans-serif;
+    width: 100%;
+}
 
+.field{
+    width: 18%;
 }
 
 .memBasicInput{
@@ -24,41 +29,63 @@
 
 
 #title > .memApplyInfo >h3{
+    font-size: 25px;
     font-weight: bold;
 }
 
 #title > .memApplyInfo > .mainHr{
     border: 1px solid black;
 }
-#title > .memApplyInfo > ul > li {
+
+
+#title> .memApplyInfo > .memInfo {
+    position: relative;
+    width: 100%;
+}
+
+#title> .memApplyInfo > .memInfo >.container{
     display: flex;
-    text-align: center;
+    position: relative;
+    width: 100%;
 }
 
-
-#title > .memApplyInfo > ul > li > p{
+#title> .memApplyInfo > .memInfo >.container >div > span{
     color: red;
-    margin-right: 1%;
-}
-
-#title > .memApplyInfo > ul > li > b{
-    font-size: 16px;
     margin-right: 5%;
 }
-
-#title > .memApplyInfo > ul > li > .name{
-    font-size: 16px;
-    margin-right: 6.2%;
-}
-
-#title > .memApplyInfo > ul > li > .group{
-    font-size: 16px;
-    margin-right: 9%;
+#title> .memApplyInfo > .memInfo >.container >.buttonWrap {
+    margin-left: 3%;
+    width: 100%;
 }
 
 
-#title > .memApplyInfo > ul > li > .ceo{
-    font-size: 16px;
-    margin-right: 9%;
+#title> .memApplyInfo > .memInfo >.container >.buttonWrap >p{
+    color: #a1a1a1;
+    font-weight: bold;
+    margin-top: 1%;
+    width: 100%;
 }
 
+#title> .memApplyInfo > .memInfo >.container >.buttonWrap >.buttonInfoWrap >.buttonInfo{
+    display: flex;
+    width: 100%;
+
+}
+
+#title> .memApplyInfo > .memInfo >.container >.buttonWrap >.buttonInfoWrap >.buttonInfo >p{
+    color: #a1a1a1;
+    font-weight: bold;
+    margin-top: 1%;
+    margin-right: 1%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding : 4px;
+
+}
+
+#title> .memApplyInfo > .memInfo >.container >.buttonWrap >.buttonInfoWrap >.buttonInfo >.ceoFile{
+
+    margin-top: 0.5%;
+
+
+}
