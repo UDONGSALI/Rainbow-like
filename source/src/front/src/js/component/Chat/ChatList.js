@@ -2,10 +2,7 @@ import styles from "../../../css/component/Club/ClubList.module.css"
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../Common/constants";
-import {DataGrid} from "@mui/x-data-grid";
 import CustomDataGrid from "../Common/CustomDataGrid";
-
-import chatting from "./Chatting";
 
 function ChatList(){
     const [chats, setChats] = useState([]);
@@ -141,9 +138,22 @@ function ChatList(){
 
     const onRowClick = (params) => {
         const rowId = params.row.chatRoom.member.memNum;
-        const popupWindow = window.open(`/chat/${rowId}`, '_blank', 'width=400,height=650');
-        // <Chatting  />
+        const width = 400;
+        const height = 700;
+
+        // Calculate the top and left positions for the center of the screen.
+        const top = (window.innerHeight / 2) - (height / 2) + window.screenY;
+        const left = (window.innerWidth / 2) - (width / 2) + window.screenX;
+
+        // Use those calculated positions in the window.open function.
+        const popupWindow = window.open(
+            `/chat/${rowId}`,
+            '_blank',
+            `width=${width},height=${height},top=${top},left=${left}`
+        );
+        // <Chatting />
     };
+
 
     function onAnswerClick(row) {
 

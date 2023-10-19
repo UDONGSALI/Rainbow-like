@@ -100,7 +100,6 @@ function App() {
                 <Route path="/search" element={<SearchPage/>}/>
 
                 {/*관리자*/}
-                {/*<Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>*/}
                 <Route path="/admin/member" element={isAdmin ? <MemManagePage/> : null}/>
                 <Route path="/admin/edu" element={isAdmin ? <EduListPage type="admin"/> : null}/>
                 <Route path="/admin/edu/add" element={isAdmin ? <EduAddPage/> : null}/>

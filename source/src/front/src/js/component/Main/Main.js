@@ -9,6 +9,8 @@ import { Element, scroller } from 'react-scroll';
 function Main() {
     const [currentSlide, setCurrentSlide] = useState('imgContainer');
 
+    const slideOrder = ['imgContainer', 'eduContainer', 'rentContainer', 'talentContainer'];
+
     const scrollToElement = (elementName) => {
         scroller.scrollTo(elementName, {
             duration: 50,
@@ -22,41 +24,14 @@ function Main() {
 
         const direction = (e.deltaY > 0) ? 'down' : 'up';
         const currentId = e.currentTarget.id;
+        const currentIndex = slideOrder.indexOf(currentId);
 
-        if (direction === 'down') {
-            switch (currentId) {
-                case 'imgContainer':
-                    setCurrentSlide('eduContainer');
-                    scrollToElement('eduContainer');
-                    break;
-                case 'eduContainer':
-                    setCurrentSlide('rentContainer');
-                    scrollToElement('rentContainer');
-                    break;
-                case 'rentContainer':
-                    setCurrentSlide('talentContainer');
-                    scrollToElement('talentContainer');
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            switch (currentId) {
-                case 'talentContainer':
-                    setCurrentSlide('rentContainer');
-                    scrollToElement('rentContainer');
-                    break;
-                case 'rentContainer':
-                    setCurrentSlide('eduContainer');
-                    scrollToElement('eduContainer');
-                    break;
-                case 'eduContainer':
-                    setCurrentSlide('imgContainer');
-                    scrollToElement('imgContainer');
-                    break;
-                default:
-                    break;
-            }
+        let nextIndex = direction === 'down' ? currentIndex + 1 : currentIndex - 1;
+
+        if (nextIndex >= 0 && nextIndex < slideOrder.length) {
+            const nextSlide = slideOrder[nextIndex];
+            setCurrentSlide(nextSlide);
+            scrollToElement(nextSlide);
         }
     };
 
@@ -69,6 +44,8 @@ function Main() {
         mainDiv.addEventListener('wheel', handleScroll, { passive: false });
         mainDiv.addEventListener('mousedown', preventDrag, { passive: false });
 
+        scrollToElement('imgContainer');
+
         return () => {
             mainDiv.removeEventListener('wheel', handleScroll);
             mainDiv.removeEventListener('mousedown', preventDrag);
@@ -76,25 +53,23 @@ function Main() {
     }, []);
 
     return (
-        <div className={styles.Main}>  {/* 이 부분에 position: 'relative' 추가 */}
-            <Element name="imgContainer" id="imgContainer" onWheel={handleScroll}>
-                <ImgContainer />
-            </Element>
-            <Element name="eduContainer" id="eduContainer" className={styles.slide} onWheel={handleScroll}>
-                <EduContainer />
-            </Element>
-            <Element name="rentContainer" id="rentContainer" className={styles.slide} onWheel={handleScroll}>
-                <RentContainer />
-            </Element>
-            <Element name="talentContainer" id="talentContainer" className={styles.slide} onWheel={handleScroll}>
-                <TalentContainer />
-            </Element>
+        <div className={styles.Main}>
+            {slideOrder.map((slide, index) => {
+                const Component = slide === 'imgContainer' ? ImgContainer :
+                    slide === 'eduContainer' ? EduContainer :
+                        slide === 'rentContainer' ? RentContainer :
+                            TalentContainer;
+                return (
+                    <Element key={index} name={slide} id={slide} className={slide !== 'imgContainer' ? styles.slide : ''} onWheel={handleScroll}>
+                        <Component />
+                    </Element>
+                )
+            })}
 
             <div className={styles.dotIndicator}>
-                <div className={`${styles.dot} ${currentSlide === 'imgContainer' ? styles.dotActive : styles.dotImgContainer}`}></div>
-                <div className={`${styles.dot} ${currentSlide === 'eduContainer' ? styles.dotActive : styles.dotEduContainer}`}></div>
-                <div className={`${styles.dot} ${currentSlide === 'rentContainer' ? styles.dotActive : styles.dotRentContainer}`}></div>
-                <div className={`${styles.dot} ${currentSlide === 'talentContainer' ? styles.dotActive : styles.dotTalentContainer}`}></div>
+                {slideOrder.map((slide, index) => (
+                    <div key={index} className={`${styles.dot} ${currentSlide === slide ? styles.dotActive : styles[`dot${slide.charAt(0).toUpperCase() + slide.slice(1)}`]}`}></div>
+                ))}
             </div>
         </div>
     );
