@@ -4,7 +4,7 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import 'react-quill/dist/quill.snow.css';
 
-export default function RentReviewEdit() {
+export default function RentReviewWrite() {
     const {postId} = useParams();
     const {postNum} = useParams();
     const location = useLocation();
@@ -17,10 +17,9 @@ export default function RentReviewEdit() {
     const [updatedPost, setUpdatedPost]=useState({});
     const [formData, setFormData] = useState({
         memNum: '',
-        boardNum: 6,
+        boardNum: 6 ,
         title: '',
         content: '',
-        parentsNum: '',
         delYN: 'N'
     });
 
@@ -46,34 +45,12 @@ export default function RentReviewEdit() {
             });
     }, []);
 
-    //해당 게시글 가지고 오기
-    useEffect(() => {
-        // postNum이 게시글의 식별자라고 가정합니다
-        fetch(SERVER_URL + `post/${postNum}`)
-            .then(response => response.json())
-            .then(data => {
-                setPost(data);
-                console.log(data);
 
-                // 필요한 필드만 업데이트
-                setFormData(prevFormData => ({
-                    ...prevFormData,
-                    title: data.title,
-                    content: data.content,
-                    parentsNum: data.parentsNum,
-                    boardNum: data.board.boardNum,
-                }));
-            })
-            .catch(error => {
-                alert('게시글 정보를 찾을 수 없습니다!');
-            });
-    }, [postNum]);
-
-    // 게시글을 업데이트하는 함수
-    const updatePost = async () => {
+    // 게시글을 업로드하는 함수
+    const writePost = async () => {
         try {
-            const response = await fetch(SERVER_URL + `post/edit/${postNum}`, {
-                method: 'PUT',
+            const response = await fetch(SERVER_URL + `post/new/`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -85,15 +62,16 @@ export default function RentReviewEdit() {
                     delYN: formData.delYN,
 
                 }),
+
             });
 
             if (response.ok) {
-                alert('정말 게시글을 수정하겠습니까?');
-                alert('게시글 수정에 성공했습니다.');
+                alert('정말 게시글을 등록하겠습니까?');
+                alert('게시글 등록에 성공했습니다.');
             }
-            
+
             if (!response.ok) {
-                throw new Error('게시글 업데이트에 실패했습니다');
+                throw new Error('게시글 등록에 실패했습니다');
             }
 
             // 성공적으로 업데이트된 게시글을 가져와서 상태를 갱신
@@ -102,16 +80,18 @@ export default function RentReviewEdit() {
 
         } catch (error) {
             console.error(error);
-            alert('게시글 업데이트에 실패했습니다');
+            alert('게시글 등록에 실패했습니다');
         }
     };
+
+
 
     const handleUpdateButtonClick = () => {
         if (!formData.phone || !formData.email || !formData.title || !formData.content) {
             alert('연락처, 이메일 주소, 제목, 내용은 필수 입력 항목입니다.');
             return;
         }
-        updatePost();
+        writePost();
     };
 
 

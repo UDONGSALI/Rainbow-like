@@ -63,12 +63,18 @@ function SpaceApplyForm({onSelectdInfo}) {
     }, []);
 
 
-    // 일자 선택
-    const handleDateSelect = (selectedDate) => {
-        console.log("Selected Date:", selectedDate);
-        setSelectedDate(selectedDate);  // 선택된 날짜를 업데이트
-    };
 
+// 일자 선택
+    const handleDateSelect = (selectedDate) => {
+        const currentDate = new Date();
+        const isSameOrPastDay = new Date(selectedDate) <= currentDate;
+
+        if (isSameOrPastDay) {
+            alert("당일은 예약이 불가합니다.");
+        } else {
+            setSelectedDate(selectedDate);  // 선택된 날짜를 업데이트
+        }
+    };
 
     // 시간 배열 관련
     const times = Array(18)
@@ -436,7 +442,7 @@ function SpaceApplyForm({onSelectdInfo}) {
                                     borderRadius: '5px',
                                     fontSize: "20px",
                                     fontWeight: "bold",
-                                    marginRight: "10%",
+                                    marginRight: "2%",
                                     position: "relative",
                                 }}
                             >
