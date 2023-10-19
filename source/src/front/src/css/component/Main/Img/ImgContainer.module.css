@@ -59,10 +59,11 @@
 }
 
 .index{
+    font-size: 24px;
     position: absolute;
-    top: 80.8%;
+    top: 80.6%;
     left: 15.5%;
+    transform: translate(-50%, -50%);
     z-index: 1000;
-    font-size: 20px;
     color: white;
 }
