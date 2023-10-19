@@ -219,7 +219,7 @@ export default function RentCalendar ({ onSelectDate }) {
                 />
             </div>
             <div className="rentDate" style={{ display: "flex", marginLeft: "20%", marginRight: "20%", marginBottom: "1%" }}>
-                <h2>대관일자 <b>I</b></h2>
+                <h2>대관일자 <b>ㅣ</b></h2>
                 {selectedDate ? (
                     <h4 style={{ textAlign: "center", marginLeft: "1%", marginTop: "2px" }}>{moment(selectedDate).format("YYYY-MM-DD")}</h4>
                 ) : (

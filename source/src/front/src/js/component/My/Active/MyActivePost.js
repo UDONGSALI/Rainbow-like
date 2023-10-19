@@ -72,8 +72,9 @@ export default function MyActivePost(props) {
             targetPath = `/clubs/${rowId}`;
         } else if (boardName === '세종시 기관 및 단체 소식') {
             targetPath =`/post/detail/${boardNum}/${rowId}`
+
         } else if (boardName === '대관 이용 후기') {
-            targetPath = `/rent/review/${rowId}`;
+            targetPath = `/rent/reviewPost/${rowId}`;
      } else {
             targetPath = `/post/detail/${boardNum}/${rowId}`;
         }

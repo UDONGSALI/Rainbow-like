@@ -48,7 +48,7 @@ public class PostFormDto {
         Board board6 = new Board();
         Board board7 = new Board();
         Board board8 = new Board();
-
+        Board board9 = new Board();
 
         board1.setBoardNum(9L);
         board2.setBoardNum(8L);
@@ -58,6 +58,7 @@ public class PostFormDto {
         board6.setBoardNum(2L);
         board7.setBoardNum(6L);
         board8.setBoardNum(4L);
+        board9.setBoardNum(5L);
 
 
 
@@ -345,6 +346,106 @@ public class PostFormDto {
         post25.setPageView(0);
 
         postList.add(post25);
+
+        PostFormDto post26 = new PostFormDto();
+        post26.setBoard(board8);
+        post26.setMember(member1);
+        post26.setTitle("여플소식 게시판3");
+        post26.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/37/ple7.png\"></p><p>여플소식 내용 입니다. 3</p>");
+        post26.setWriteDate(LocalDateTime.now());
+        post26.setPageView(0);
+
+        postList.add(post26);
+
+        PostFormDto post27 = new PostFormDto();
+        post27.setBoard(board8);
+        post27.setMember(member1);
+        post27.setTitle("여플소식 게시판4");
+        post27.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/38/ple4.png\"></p><p>여플소식 내용 입니다. 4</p>");
+        post27.setWriteDate(LocalDateTime.now());
+        post27.setPageView(0);
+
+        postList.add(post27);
+
+        PostFormDto post28 = new PostFormDto();
+        post28.setBoard(board8);
+        post28.setMember(member1);
+        post28.setTitle("여플소식 게시판5");
+        post28.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/39/ple5.png\"></p><p>여플소식 내용 입니다. 5</p>");
+        post28.setWriteDate(LocalDateTime.now());
+        post28.setPageView(0);
+
+        postList.add(post28);
+
+        PostFormDto post29 = new PostFormDto();
+        post29.setBoard(board8);
+        post29.setMember(member1);
+        post29.setTitle("여플소식 게시판6");
+        post29.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/40/ple6.png\"></p><p>여플소식 내용 입니다. 6</p>");
+        post29.setWriteDate(LocalDateTime.now());
+        post29.setPageView(0);
+
+        postList.add(post29);
+
+        PostFormDto post30 = new PostFormDto();
+        post30.setBoard(board9);
+        post30.setMember(member1);
+        post30.setTitle("뉴스레터 1");
+        post30.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/41/newLetter.png\"></p><p>뉴스레터 게시판 입니다. 1</p>");
+        post30.setWriteDate(LocalDateTime.now());
+        post30.setPageView(0);
+
+        postList.add(post30);
+
+        PostFormDto post31 = new PostFormDto();
+        post31.setBoard(board9);
+        post31.setMember(member1);
+        post31.setTitle("뉴스레터 2");
+        post31.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/42/newLetter.png\"></p><p>뉴스레터 게시판 입니다. 2</p>");
+        post31.setWriteDate(LocalDateTime.now());
+        post31.setPageView(0);
+
+        postList.add(post31);
+
+        PostFormDto post32 = new PostFormDto();
+        post32.setBoard(board9);
+        post32.setMember(member1);
+        post32.setTitle("뉴스레터 3");
+        post32.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/43/newLetter.png\"></p><p>뉴스레터 게시판 입니다. 2</p>");
+        post32.setWriteDate(LocalDateTime.now());
+        post32.setPageView(0);
+
+        postList.add(post32);
+
+        PostFormDto post33 = new PostFormDto();
+        post33.setBoard(board9);
+        post33.setMember(member1);
+        post33.setTitle("뉴스레터 4");
+        post33.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/44/newLetter.png\"></p><p>뉴스레터 게시판 입니다. 4</p>");
+        post33.setWriteDate(LocalDateTime.now());
+        post33.setPageView(0);
+
+        postList.add(post33);
+
+        PostFormDto post34 = new PostFormDto();
+        post34.setBoard(board9);
+        post34.setMember(member1);
+        post34.setTitle("뉴스레터 5");
+        post34.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/45/newLetter.png\"></p><p>뉴스레터 게시판 입니다. 5</p>");
+        post34.setWriteDate(LocalDateTime.now());
+        post34.setPageView(0);
+
+        postList.add(post34);
+
+        PostFormDto post35 = new PostFormDto();
+        post35.setBoard(board9);
+        post35.setMember(member1);
+        post35.setTitle("뉴스레터 6");
+        post35.setContent("<p><img src=\"https://storage.googleapis.com/rainbow_like/post/46/newLetter.png\"></p><p>뉴스레터 게시판 입니다. 6</p>");
+        post35.setWriteDate(LocalDateTime.now());
+        post35.setPageView(0);
+
+        postList.add(post35);
 
         return postList;
     }

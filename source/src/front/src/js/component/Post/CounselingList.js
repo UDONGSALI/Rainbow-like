@@ -24,7 +24,6 @@ function CounselingList(props) {
 
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
-        // 필요하면 추가적인 로직 구현
     };
 
     useEffect(() => {
