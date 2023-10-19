@@ -158,5 +158,4 @@ public class PostService {
         postRepository.deleteByParentsNum(postNum);
         postRepository.deleteById(postNum);
     }
-
 }

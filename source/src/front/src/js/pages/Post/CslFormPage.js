@@ -3,11 +3,12 @@ import useFetch from "../../component/hook/useFetch";
 import {SERVER_URL} from "../../component/Common/constants";
 import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/CslHeader";
-import { useLocation } from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import React from "react";
 import Footer from "../../layout/Footer/footer";
 
 function CslFormPage() {
+    const { parentNum } = useParams();
     const location = useLocation();
     const { boardNum } = location.state || {};
     const { data: postNum, loading } = useFetch(`${SERVER_URL}post/lastPostNum`);
