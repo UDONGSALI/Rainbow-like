@@ -10,5 +10,6 @@ export const urlData = [
     { name: '유관 기관', link: '/admin/org' },
     { name: '게시판 관리', link: '/admin/board' },
     { name: 'SMS', link: '/sms' },
+    { name: '채팅문의', link: '/listchat' },
     { name: '로그', link: '/admin/log' },
 ];

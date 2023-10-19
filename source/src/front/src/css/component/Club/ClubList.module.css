@@ -1,4 +1,11 @@
-.List button {
+
+
+.List{
+    margin-bottom: 5%;
+
+}
+
+.btn button {
     /*width: 100%;*/
     margin-top: 15px;
     /*margin-left: 15px;*/
@@ -14,16 +21,37 @@
     color: #fff;
     border: none;
     cursor: pointer;
+
 }
 
-.List button:hover {
+.btn button:hover {
     background-color: #53468b;
-}
 
-.List{
-    margin-bottom: 5%;
 }
 
 .ftmPage{
     padding: 20px;
 }
+
+.customDataGrid{
+    position :relative;
+    border: 1px solid #c7c1d9;
+    background: #ffffff;
+    display: flex;
+
+}
+.customHeader{
+    font-size: 14px;
+    background-color: rgb(231, 221, 250);
+
+
+}
+
+
+.customCell{
+    font-size: 12px;
+
+
+
+}
+

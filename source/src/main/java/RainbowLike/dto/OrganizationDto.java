@@ -34,14 +34,23 @@ public class OrganizationDto {
     static public ArrayList<OrganizationDto> creatDefaultOrg() {
         ArrayList<OrganizationDto> organizationDtos = new ArrayList<>();
 
-        OrganizationDto organizationDto1 = new OrganizationDto();
-        organizationDto1.setName("세종여성새로일하기센터");
-        organizationDto1.setUrl("http://www.sejongsaeil.com/default/");
-        organizationDto1.setTel("0448638219");
-        organizationDto1.setAddr("세종특별자치시 새롬로 14");
-        organizationDto1.setAddrDtl("새롬종합복지센터 2층");
-        organizationDto1.setAddrPost("30127");
-        organizationDtos.add(organizationDto1);
+        OrganizationDto organizationDto5 = new OrganizationDto();
+        organizationDto5.setName("세종여성플라자");
+        organizationDto5.setUrl("https://www.sejong.go.kr/index.jsp");
+        organizationDto5.setTel("044-863-0380");
+        organizationDto5.setAddr("세종특별자치시 새롬로 14");
+        organizationDto5.setAddrDtl("새롬종합복지센터 4층 (새롬동)");
+        organizationDto5.setAddrPost("30127");
+        organizationDtos.add(organizationDto5);
+
+//        OrganizationDto organizationDto1 = new OrganizationDto();
+//        organizationDto1.setName("세종여성새로일하기센터");
+//        organizationDto1.setUrl("http://www.sejongsaeil.com/default/");
+//        organizationDto1.setTel("0448638219");
+//        organizationDto1.setAddr("세종특별자치시 새롬로 14");
+//        organizationDto1.setAddrDtl("새롬종합복지센터 2층");
+//        organizationDto1.setAddrPost("30127");
+//        organizationDtos.add(organizationDto1);
 
         OrganizationDto organizationDto2 = new OrganizationDto();
         organizationDto2.setName("세종YMCA성인권상담소");
@@ -69,6 +78,7 @@ public class OrganizationDto {
         organizationDto4.setAddrDtl("세종시청");
         organizationDto4.setAddrPost("30151");
         organizationDtos.add(organizationDto4);
+
 
 //        for (int i = 0; i < 100; i++) {
 //            OrganizationDto organizationDto = new OrganizationDto();

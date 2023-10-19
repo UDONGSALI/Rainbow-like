@@ -1,6 +1,5 @@
 
-#contentWrap {
-    padding: 10rem 0 20rem 0;
+.contentWrap {
 }
 
 .layout {
@@ -13,7 +12,7 @@
 
 .subTit {
     position: relative;
-    margin-bottom: 6rem
+    margin-top: 3rem
 }
 
 .subTit h3 {
@@ -22,11 +21,11 @@
 }
 
 .space .topBox {
+    margin-top: 3%;
     display: block;
     background: #F5F5F5;
     border-radius: 1rem;
     padding: 7.4rem 3rem 4rem;
-    margin-bottom: 6rem;
 }
 
 .space .topBox .topBoxInner {
