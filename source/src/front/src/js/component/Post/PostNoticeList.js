@@ -25,6 +25,7 @@ function PostNoticeList(props) {
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    console.log(posts)
     //페이지관련
     const [activePage, setActivePage] = useState(1);
     const itemsCountPerPage = 10;
@@ -32,6 +33,8 @@ function PostNoticeList(props) {
     const indexOfLastPost = activePage * itemsCountPerPage;
     const indexOfFirstPost = indexOfLastPost - itemsCountPerPage;
     const pageRangeDisplayed = 5;
+
+    //검색관련
     const {data: fetchedPosts, loadingPosts} = useFetch(`${SERVER_URL}post/board/${boardNum}`);
     const {data: fetchedFiles, filesLoading} = useFetch(SERVER_URL + 'files/table/post', []);
     const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}post/${boardNum}`, setPosts);

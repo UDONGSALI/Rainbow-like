@@ -48,11 +48,11 @@ const menuData = [
     },
     {
         title: "직장맘 지원센터",
-        items: [{name: "노무상담 게시판", url: "/csl/7"},]
+        items: [{name: "노무상담 게시판", url: "/csl/7"},{name: "온라인상담 게시판", url: "/csl/8"},]
     },
     {
         title: "정보 나눔",
-        items: [{name:"공지사항", url:"/post/1"}, {name:"자주 뭍는 질문", url:"/"},
+        items: [{name:"공지사항", url:"/post/1"}, {name:"자주 뭍는 질문", url:"/qna"},
             {name:"언론 보도", url:"/post/2"}, {name:"세종시 기관 및 단체 소식", url:"/imgPost/3"},
             {name:"여플소식", url:"/imgPost/4"}, {name:"뉴스레터", url:"/imgPost/5"}]
     },

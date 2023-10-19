@@ -26,10 +26,12 @@ function ImgPostList(props) {
     const { data: fetchedFiles,  filesLoading } = useFetch(SERVER_URL + 'files/table/post', []);
     const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}post/${boardNum}`, setPosts);
 
+    console.log(posts)
 
     useEffect(() => {
         if (!loadingPosts) {
-            setPosts(fetchedPosts.reverse());
+            // 서버로부터 받은 데이터 fetchedPosts를 역순으로 정렬하여 setPosts로 상태를 업데이트합니다.
+            setPosts([...fetchedPosts].reverse());
         }
 
         if (!filesLoading) {
@@ -37,16 +39,6 @@ function ImgPostList(props) {
         }
     }, [fetchedPosts, fetchedFiles]);
 
-    const onDelClick = (postNum) => {
-        fetch(`${SERVER_URL}api/posts/${postNum}`, { method: 'DELETE' })
-            .then(response => {
-                fetch(`${SERVER_URL}posts?boardNum=${boardNum}`)
-                    .then(response => response.json())
-                    .then(data => setPosts(data))
-                    .catch(error => console.error(error));
-            })
-            .catch(err => console.error(err));
-    };
 
     const getPostImage = (postNum) => {
         const matchingFile = files.find(file => file.post && file.post.postNum == postNum);

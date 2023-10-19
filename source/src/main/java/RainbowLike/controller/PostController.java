@@ -67,6 +67,28 @@ public class PostController {
         return ResponseEntity.ok().body(0L);  // 0을 반환하거나 다른 기본값을 반환할 수 있습니다.
     }
 
+
+    // 다음 게시글 가져오기
+    @GetMapping("/{boardNum}/next/{postNum}")
+    public ResponseEntity<Post> getNextPost(@PathVariable Long boardNum, @PathVariable Long postNum) {
+        List<Post> nextPosts = postRepository.findByBoardAndPostNumGreaterThanOrderByPostNumAsc(boardRepository.findByBoardNum(boardNum), postNum);
+        if (!nextPosts.isEmpty()) {
+            return ResponseEntity.ok(nextPosts.get(0));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // 이전 게시글 가져오기
+    @GetMapping("/{boardNum}/prev/{postNum}")
+    public ResponseEntity<Post> getPrevPost(@PathVariable Long boardNum, @PathVariable Long postNum) {
+        List<Post> prevPosts = postRepository.findByBoardAndPostNumLessThanOrderByPostNumDesc(boardRepository.findByBoardNum(boardNum), postNum);
+        if (!prevPosts.isEmpty()) {
+            return ResponseEntity.ok(prevPosts.get(0));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
     // 회원 번호로 멤버별 클럽의 게시글 요청
     @GetMapping("/memberClub/{memNum}")
     public Iterable<Post> getClubPostsByMember(@PathVariable Long memNum) {
