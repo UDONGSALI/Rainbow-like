@@ -2,13 +2,13 @@ import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import {SERVER_URL} from "../Common/constants";
+import {SERVER_URL} from "../../Common/constants";
 import { useNavigate } from 'react-router-dom';
-import SpaceModal from "./SpaceModal";
-import RentCalendar from '../Rent/RentApply/RentCalender';
+import SpaceModal from "../SpaceModal";
+import RentCalendar from './RentCalender';
 import {DataGrid} from "@mui/x-data-grid";
-import RentSpace from "./RentSpace";
-import RentStatus from "./RentApply/RentStatus";
+import RentSpace from "../RentSpace";
+import RentStatus from "./RentStatus";
 
 function SpaceApplyForm({onSelectdInfo}) {
     const [member, setMember] = useState([]);
@@ -164,6 +164,7 @@ function SpaceApplyForm({onSelectdInfo}) {
 
                 // 선택된 정보를 로그에 출력
                 const selectedInfo = {
+                    selectedTimeRange,
                     selectedDate,
                     spaceName,
                     rentTime: `${startTime} ~ ${endTime}`,
