@@ -6,6 +6,7 @@ import RainbowLike.dto.FtwDto;
 import RainbowLike.entity.FemaleTalentMatching;
 import RainbowLike.entity.FtConsumer;
 import RainbowLike.entity.FtWorker;
+import RainbowLike.entity.Member;
 import RainbowLike.repository.FemaleTalentMatchingRepository;
 import RainbowLike.repository.FtConsumerRepository;
 import RainbowLike.repository.FtWorkerRepository;
@@ -67,6 +68,106 @@ public class FTalentService {
         return ftmRepository.findConsumerTelByConsumerNum(ftcNum);
     }
 
+    public FtWorker createFtw(FtwDto ftwDto) {
+        FtWorker newFtw = new FtWorker();
+
+        Member member = new Member();
+        member.setMemNum(ftwDto.getMemNum());
+        newFtw.setMember(member);
+
+        newFtw.setSpeField(ftwDto.getSpeField());
+        newFtw.setLicenseYN(ftwDto.getLicenseYN());
+        newFtw.setLicenseDtl(ftwDto.getLicenseDtl());
+        newFtw.setFtDtl(ftwDto.getFtDtl());
+        newFtw.setFtStatus(ftwDto.getFtStatus());
+        newFtw.setStatusDtl(ftwDto.getStatusDtl());
+        newFtw.setDelYN(ftwDto.getDelYN());
+
+        return ftwRepository.save(newFtw);
+    }
+
+
+    public FtConsumer createFtc(FtcDto ftcDto) {
+        FtConsumer newFtc = new FtConsumer();
+
+        Member member = new Member();
+        member.setMemNum(ftcDto.getMemNum());
+        newFtc.setMember(member);
+
+        newFtc.setSpeField(ftcDto.getSpeField());
+        newFtc.setApplyContent(ftcDto.getApplyContent());
+        newFtc.setStatusDtl(ftcDto.getStatusDtl());
+        newFtc.setFtmYN(ftcDto.getFtmYN());
+
+        return ftcRepository.save(newFtc);
+
+    }
+
+    public FemaleTalentMatching createFtm(FtmDto ftmDto) {
+        FemaleTalentMatching newFtm = new FemaleTalentMatching();
+
+        FtWorker ftw = new FtWorker();
+        ftw.setFtWorkerNum(ftmDto.getFtWorkerNum());
+        newFtm.setFtWorker(ftw);
+        FtConsumer ftc = new FtConsumer();
+        ftc.setFtConsumerNum(ftmDto.getFtConsumerNum());
+        newFtm.setFtConsumer(ftc);
+
+        return ftmRepository.save(newFtm);
+    }
+
+    public FtWorker editFtw(Long ftwId, FtwDto ftwDto) {
+        FtWorker editFtw = new FtWorker();
+
+        editFtw.setFtWorkerNum(ftwId);
+
+        Member member = new Member();
+        member.setMemNum(ftwDto.getMemNum());
+        editFtw.setMember(member);
+
+        editFtw.setSpeField(ftwDto.getSpeField());
+        editFtw.setLicenseYN(ftwDto.getLicenseYN());
+        editFtw.setLicenseDtl(ftwDto.getLicenseDtl());
+        editFtw.setFtDtl(ftwDto.getFtDtl());
+        editFtw.setFtStatus(ftwDto.getFtStatus());
+        editFtw.setStatusDtl(ftwDto.getStatusDtl());
+        editFtw.setDelYN(ftwDto.getDelYN());
+
+        return ftwRepository.save(editFtw);
+    }
+
+    public FtConsumer editFtc(Long ftcId, FtcDto ftcDto) {
+        FtConsumer editFtc = new FtConsumer();
+
+        editFtc.setFtConsumerNum(ftcId);
+
+        Member member = new Member();
+        member.setMemNum(ftcDto.getMemNum());
+        editFtc.setMember(member);
+
+        editFtc.setSpeField(ftcDto.getSpeField());
+        editFtc.setApplyContent(ftcDto.getApplyContent());
+        editFtc.setStatusDtl(ftcDto.getStatusDtl());
+        editFtc.setFtmYN(ftcDto.getFtmYN());
+
+        return ftcRepository.save(editFtc);
+    }
+
+    public FemaleTalentMatching editFtc(Long ftmId, FtmDto ftmDto) {
+        FemaleTalentMatching editFtm = new FemaleTalentMatching();
+
+        editFtm.setFtmNum(ftmId);
+
+        FtWorker ftw = new FtWorker();
+        ftw.setFtWorkerNum(ftmDto.getFtWorkerNum());
+        editFtm.setFtWorker(ftw);
+        FtConsumer ftc = new FtConsumer();
+        ftc.setFtConsumerNum(ftmDto.getFtConsumerNum());
+        editFtm.setFtConsumer(ftc);
+
+        return ftmRepository.save(editFtm);
+    }
+
 
     public void ftcSms (String to, Long ftcNum) {
         System.out.println("메시지를 받을 컨슈머 : " + to);
@@ -76,6 +177,9 @@ public class FTalentService {
         System.out.println("메시지를 받을 워커 : " + to);
         System.out.println("[세종여성플라자] 회원님의 여성인재풀DB가 열람되었습니다. \n여성인재풀DB에 기재하신 연락처로 연락이 갈 수 있습니다.");
     }
+
+
+
 
 
 }

@@ -3,12 +3,12 @@ import React, {useEffect, useState} from "react";
 // 2. 외부 라이브러리 관련
 import {DataGrid} from "@mui/x-data-grid";
 import styled from '@emotion/styled';
-import {Pagination} from "@mui/material";
 // 3. 프로젝트 내 공통 모듈 관련
 import {SERVER_URL} from '../Common/constants';
 import {useLocation, useNavigate} from 'react-router-dom';
 // 4. 컴포넌트 관련
 import SearchComponent from "../Common/SearchComponent";
+import Pagination from "../Common/Pagination";
 // 5. 훅 관련
 import useSearch from "../hook/useSearch";
 import usePagination from "../hook/usePagination";
@@ -69,7 +69,7 @@ function EduList() {
         }
     }, [location.search]);
 
-    const handlePageChange = (event, newPage) => {
+    const handlePageChange = (newPage) => {
         navigate(`${location.pathname}?page=${newPage}`);
         setActivePage(newPage);
     }
@@ -200,31 +200,19 @@ function EduList() {
                         hideFooter={true}
                     />
                 )}
-                <div className="paginationContainer" style={{marginTop: '10px'}}>
                     <Pagination
-                        count={Math.ceil(edus.length / itemsPerPage)}
-                        page={activePage}
+                        activePage={activePage}
+                        itemsCountPerPage={itemsPerPage}
+                        totalItemsCount={edus.length}
+                        pageRangeDisplayed={10}
                         onChange={handlePageChange}
-                        color="primary"
+                        prevPageText="<"
+                        nextPageText=">"
                     />
-                </div>
             </div>
         </Wrapper>
     );
-
 }
-
-const StyledScrollHideDiv = styled.div`
-  max-height: 50px;
-  overflow-y: auto;
-  width: 100%;
-  scrollbar-width: none; // Firefox
-  -ms-overflow-style: none; // IE and Edge
-
-  &::-webkit-scrollbar {
-    display: none; // Chrome, Safari, and Opera
-  }
-`;
 
 const Wrapper = styled.div`
   width: fit-content;
