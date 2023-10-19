@@ -68,7 +68,9 @@ function ChatBot() {
             newChatHistory.push({ text: content, isUser: false });
         }
 
-        setChatHistory(newChatHistory);
+        setTimeout(() => {
+            setChatHistory(newChatHistory);
+        }, 100)
 
     };
 

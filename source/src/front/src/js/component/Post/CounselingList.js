@@ -24,7 +24,6 @@ function CounselingList(props) {
 
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
-        // 필요하면 추가적인 로직 구현
     };
 
     useEffect(() => {
@@ -114,9 +113,6 @@ function CounselingList(props) {
         return name;
     }
     const currentStart = totalItemsCount - (activePage - 1) * itemsCountPerPage;
-    console.log('totalItemsCount:', totalItemsCount);
-    console.log('activePage:', activePage);
-    console.log('itemsCountPerPage:', itemsCountPerPage);
     const columns = [
         {
             field: 'orderNumber',
@@ -215,7 +211,8 @@ function CounselingList(props) {
             filterable: false,
             renderCell: (row) => {
                 return (
-                    <div>
+                    <CenteredData>
+                        <StyledCell>
                         {row.value && row.value[0] && ( // 첫 번째 파일만 확인
                             <div style={{width: '24px', height: '24px', marginRight: '8px'}}>
                                 <img
@@ -225,7 +222,8 @@ function CounselingList(props) {
                                 />
                             </div>
                         )}
-                    </div>
+                        </StyledCell>
+                    </CenteredData>
                 );
             },
             width: 80,

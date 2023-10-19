@@ -71,7 +71,7 @@ function FTCEditor(props){
                 alert('게시글을 수정했습니다.');
 
                 //게시글 상세로 이동
-                navigate(`/ftc/${id}`);
+                navigate(`/ftc/dtl/${id}`);
             })
             .catch((error) => {
                 // 오류 처리
@@ -117,7 +117,7 @@ function FTCEditor(props){
                         <option value="기타">기타</option>
                     </select>
                 </div>
-                {isAdmin?
+                {isAdmin ?
                 <div className={styles.inputGroup}>
                     <input
                         type="text"
