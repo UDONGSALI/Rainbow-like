@@ -155,21 +155,21 @@ export default function RentCalendar ({ onSelectDate }) {
 
         return (
             <div className="rbc-toolbar">
-        <span className="rbc-btn-group">
-          <button type="button" onClick={goToBack}>
-            이전
-          </button>
-        </span>
                 <span className="rbc-btn-group">
-          <button type="button" onClick={goToToday}>
-            오늘
-          </button>
-        </span>
+                    <button type="button" onClick={goToBack}>
+                        이전
+                    </button>
+                </span>
                 <span className="rbc-btn-group">
-          <button type="button" onClick={goToNext}>
-            다음
-          </button>
-        </span>
+                    <button type="button" onClick={goToToday}>
+                        오늘
+                    </button>
+                </span>
+                <span className="rbc-btn-group">
+                    <button type="button" onClick={goToNext}>
+                        다음
+                    </button>
+                </span>
                 <span className="rbc-toolbar-label">{label()}</span>
             </div>
         );
@@ -181,9 +181,9 @@ export default function RentCalendar ({ onSelectDate }) {
     };
 
     const handleNavigate = (date, view, action) => {
-        const yesterday = moment().subtract(1, "day");
-        if (moment(date).isSameOrBefore(yesterday, "day")) {
-            alert("대관 예약이 불가합니다.");
+        const today = moment().startOf('day');
+        if (moment(date).isSameOrBefore(today)) {
+            alert("당일은 대관 예약이 불가합니다.");
             return;
         }
 

@@ -8,8 +8,9 @@ const LoginMember = () => {
     const [member, setMember] = useState(null);
     const [file, setFile] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const memId = sessionStorage.getItem('memId');
-
+    const [memId, setMemId] = useState(sessionStorage.getItem('memId'));
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
 
 
     useEffect(() => {
@@ -17,12 +18,61 @@ const LoginMember = () => {
             .then((response) => response.json())
             .then((data) => {
                 setMember(data);
+                // 신청자 정보를 불러온 후, 휴대폰번호와 이메일주소를 state에 설정
+                setPhone(data.tel || '');
+                setEmail(data.email || '');
             })
             .catch((error) => {
                 alert('회원 정보를 찾을 수 없습니다!');
                 window.location.href = '/login';
             });
-    }, []);
+    }, [memId]);
+
+    // 게시글을 업데이트하는 함수
+    const updateFiles = async () => {
+        try {
+            const response = await fetch(SERVER_URL + `files/${postNum}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    memNum: formData.memNum,
+                    boardNum: formData.boardNum,
+                    title: formData.title,
+                    content: formData.content,
+                    delYN: formData.delYN,
+
+                }),
+            });
+
+            if (response.ok) {
+                alert('정말 게시글을 수정하겠습니까?');
+                alert('게시글 수정에 성공했습니다.');
+            }
+
+            if (!response.ok) {
+                throw new Error('게시글 업데이트에 실패했습니다');
+            }
+
+            // 성공적으로 업데이트된 게시글을 가져와서 상태를 갱신
+            const updatedData = await response.json();
+            setUpdatedPost(updatedData);
+
+        } catch (error) {
+            console.error(error);
+            alert('게시글 업데이트에 실패했습니다');
+        }
+    };
+
+
+    const handlePhoneChange = (e) => {
+        setPhone(e.target.value);
+    };
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
 
     const handleFileChange = (e) => {
         const newFile = e.target.files[0];
@@ -61,7 +111,7 @@ const LoginMember = () => {
                             <div className={styles.field}>
                                 <span>*</span>
                                 <b className={styles.name}>신청자명</b></div>
-                            <input className={styles.memBasicInput} value={member.name}/>
+                            <input className={styles.memBasicInput} value={member.name} readOnly/>
 
                         </div>
                         <hr/>
@@ -69,7 +119,11 @@ const LoginMember = () => {
                             <div className={styles.field}>
                                 <span>*</span>
                                 <b>휴대폰번호</b></div>
-                            <input className={styles.memBasicInput} value={member.tel}/>
+                            <input
+                                className={styles.memBasicInput}
+                                value={phone || member.tel || ''}
+                                onChange={handlePhoneChange}
+                            />
 
                         </div>
                         <hr/>
@@ -77,7 +131,11 @@ const LoginMember = () => {
                             <div className={styles.field}>
                                 <span>*</span>
                                 <b>이메일주소</b></div>
-                            <input className={styles.memBasicInput} value={member.email}/>
+                            <input
+                                className={styles.memBasicInput}
+                                value={email || member.email || ''}
+                                onChange={handleEmailChange}
+                            />
 
                         </div>
                         <hr/>

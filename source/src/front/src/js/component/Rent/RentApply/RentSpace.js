@@ -1,16 +1,18 @@
-import styles from '../../../css/component/Rent/RentSpace.module.css';
+import styles from '../../../../css/component/Rent/RentSpace.module.css';
 import React, {useEffect, useState} from "react";
-import {SERVER_URL} from "../Common/constants";
-import LoginMember from "./RentApply/LoginMember";
-import RentAgreeForm from "./RentApply/RentAgreeForm";
+import {SERVER_URL} from "../../Common/constants";
+import LoginMember from "../RentApply/LoginMember";
+import RentAgreeForm from "../RentApply/RentAgreeForm";
 
 let payStatus
 
 function RentSpace({selectedInfo}) {
     const [member, setMember] = useState(null);
     const [files, setFiles] = useState([]);
-    const [selectedUsers, setSelectedUsers] = useState(1); // 사용자 수를 선택하기 위한 상태
+
     const [fileUri, setFileUri] = useState('');
+
+    const [selectedPurpose, setSelectedPurpose] = useState('');
     const memId = sessionStorage.getItem('memId');
     //대관정보
 
@@ -84,10 +86,15 @@ function RentSpace({selectedInfo}) {
             });
     }, [selectedInfo.spaceName]);
 
-    console.log(member)
-    console.log(spaceNum + '스페이스넘')
+
     //대관예약신청정보 데이터베이스로 보내기
     const handleUpdate = async () => {
+
+     // 사용목적이 입력되지 않았을 경우 알림창 표시
+        if (!selectedPurpose.trim()) {
+            alert('사용목적 입력은 필수입니다.');
+            return;
+        }
 
         try {
 
@@ -127,6 +134,10 @@ function RentSpace({selectedInfo}) {
     const handleUserSelectChange = (e) => {
         const selectedUserCount = parseInt(e.target.value, 10);
         setSelectedUsers(selectedUserCount);
+    };
+
+    const handlePurposeChange = (e) => {
+        setSelectedPurpose(e.target.value);
     };
 
     return (
@@ -201,7 +212,11 @@ function RentSpace({selectedInfo}) {
                         <div className={styles.field}>
                         <span>*</span>
                             <b>사용목적</b></div><div>
-                        <input className={styles.basicInput}/></div>
+                        <input
+                            className={styles.basicInput}
+                            value={selectedPurpose}
+                            onChange={handlePurposeChange}
+                        /></div>
                     </div>
                     <hr/>
                 </div>
