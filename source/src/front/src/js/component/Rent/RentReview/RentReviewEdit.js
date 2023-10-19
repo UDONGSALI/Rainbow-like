@@ -1,35 +1,29 @@
 import React, {useEffect, useState, useRef, useMemo} from "react";
 import styles from '../../../../css/component/Post/PostForm.module.css';
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import 'react-quill/dist/quill.snow.css';
-import ReactQuill from "react-quill";
 
-export default function RentReviewEdit({postNum}) {
+export default function RentReviewEdit() {
+    const {postNum} = useParams();
     const location = useLocation();
-    const boardNum = location.state?.boardNum;
     const navigate = useNavigate();
     const memId = sessionStorage.getItem("memId");
     const [member, setMember] = useState([]);
-    const [content, setContent] = React.useState('');
-    const [filesNumbers, setFilesNumbers] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [retryCount, setRetryCount] = useState(0);
-    const [imageLoading, setImageLoading] = useState(false);
-    const [fileSrcToNumberMap, setFileSrcToNumberMap] = useState({});
+    const [post, setPost] = useState({});
+    const [file, setFile] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [updatedPost, setUpdatedPost]=useState({});
     const [formData, setFormData] = useState({
         memNum: '',
         boardNum: location.state?.boardNum || '',
         title: '',
         content: '',
-        pageView: 0,
-        conselStatus: 'WAIT',
         parentsNum: '',
-        clubAllowStatus: 'WAIT',
-        clubRecuStatus: '',
         delYN: 'N'
     });
 
+    //로그인한 멤버정보 가지고 오기
     useEffect(() => {
         fetch(SERVER_URL + `members/id/${memId}`)
             .then(response => response.json())
@@ -50,284 +44,216 @@ export default function RentReviewEdit({postNum}) {
                 window.location.href = '/login';
             });
     }, []);
+
+    //해당 게시글 가지고 오기
+    useEffect(() => {
+        // postNum이 게시글의 식별자라고 가정합니다
+        fetch(SERVER_URL + `post/${postNum}`)
+            .then(response => response.json())
+            .then(data => {
+                setPost(data);
+                console.log(data);
+
+                // 필요한 필드만 업데이트
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    title: data.title,
+                    content: data.content,
+                    parentsNum: data.parentsNum,
+                }));
+            })
+            .catch(error => {
+                alert('게시글 정보를 찾을 수 없습니다!');
+            });
+    }, [postNum]);
+
+    // 게시글을 업데이트하는 함수
+    const updatePost = async () => {
+        try {
+            const response = await fetch(SERVER_URL + `post/${postNum}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: formData.title,
+                    content: formData.content,
+                    parentsNum: formData.parentsNum,
+                }),
+            });
+            console.log('Response Status:', response.status);
+            // 성공적으로 처리됐을 때의 처리 (예: 다른 페이지로 리다이렉트하거나 성공 메시지 표시 등)
+            if (!response.ok) {
+                throw new Error('게시글 업데이트에 실패했습니다');
+            }
+
+
+        } catch (error) {
+            console.error(error);
+            alert('게시글 업데이트에 실패했습니다');
+
+        }
+    };
+
+    const handleUpdateButtonClick = () => {
+        updatePost();
+    };
+
+
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData(prevState => ({...prevState, [name]: value}));
     };
 
-    const handleQuillChange = (contentValue) => {
-        setContent(contentValue);
-        setFormData(prevState => ({...prevState, content: contentValue}));
-
-        const imgTagPattern = /<img [^>]*src="([^"]+)"[^>]*>/g;
-        const currentSrcs = [];
-        let match;
-        while (match = imgTagPattern.exec(contentValue)) {
-            currentSrcs.push(match[1]);
-        }
-
-        const missingSrcs = Object.keys(fileSrcToNumberMap).filter(src => !currentSrcs.includes(src));
-        const missingFileNumbers = missingSrcs.map(src => fileSrcToNumberMap[src]);
-
-        setFilesNumbers(prevNumbers => prevNumbers.filter(num => !missingFileNumbers.includes(num)));
-
-        setFileSrcToNumberMap(prevMap => {
-            missingSrcs.forEach(src => delete prevMap[src]);
-            return {...prevMap};
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`${SERVER_URL}post/new`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            alert('게시글을 작성했습니다.');
-
-            if (filesNumbers && filesNumbers.length > 0) {
-                filesNumbers.push(postNum + 1);
-
-                const fileResponse = await fetch(SERVER_URL + "files/edit", {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(filesNumbers),
-                });
-                if (!fileResponse.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const fileData = await fileResponse.json();
-                console.log(fileData.message);  // "Files updated successfully" 메시지 출력
-            }
-            handleRedirect();
-        } catch (error) {
-            console.error('Error:', error);
+    const handleFileChange = (e) => {
+        const newFile = e.target.files[0];
+        if (newFile) {
+            setFile(newFile);
+            setSelectedFiles([newFile]);
         }
     };
 
-    const handleRedirect = () => {
-        if (boardNum == 1 || boardNum == 2) {
-            navigate(`/post/${boardNum}`);
-        } else if (boardNum >= 3 && boardNum <= 5) {
-            navigate(`/imgPost/${boardNum}`);
-        } else if (boardNum >= 6) {
-            navigate(`/rentReview/${postNum}`)
-        } else if (boardNum >= 7) {
-            navigate(`/csl/${boardNum}`);
-        } else {
-            navigate(`/`);
-        }
+    const handleFileCancel = () => {
+        setFile(null);
+        setSelectedFiles([]);
     };
 
-    function insertToEditor(url) {
-        if (quillRef.current) {
-            const editor = quillRef.current.getEditor();
-            const range = editor.getSelection();
-            editor.insertEmbed(range ? range.index : 0, 'image', url);
-        }
-    }
 
-    function checkImageAvailability(urls) {
-        const maxRetries = 5;
-        let failedUrls = [];
-
-        setLoading(true);
-
-        urls.forEach(url => {
-            fetch(url)
-                .then(response => {
-                    if (response.ok && !loading) {
-                        insertToEditor(url);
-                    } else {
-                        failedUrls.push(url);
-                    }
-                })
-                .catch(() => {
-                    failedUrls.push(url);
-                })
-                .finally(() => {
-                    if (failedUrls.length && retryCount < maxRetries) {
-                        setTimeout(() => {
-                            setRetryCount(prevRetry => prevRetry + 1);
-                            checkImageAvailability(failedUrls);
-                        }, 300);
-                    } else {
-                        setLoading(false);
-                    }
-                });
-        });
-    }
-
-    function imageHandler() {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.setAttribute('multiple', 'true');
-        input.click();
-
-        input.onchange = () => {
-            const files = Array.from(input.files);
-
-            if (files.length > 1) {
-                alert('한번에 한 사진만 업로드 가능합니다!');
-                return;
-            }
-
-            const formData = new FormData();
-
-            files.forEach(file => {
-                formData.append('file', file);
-            });
-
-            formData.append('tableName', 'post');
-            formData.append('number', postNum + 1);
-
-            fetch(`${SERVER_URL}files/FileNums`, {
-                method: 'POST',
-                body: formData,
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    setFilesNumbers(prevFilesNumbers => [...prevFilesNumbers, ...data]);
-
-                    const storageBaseUrl = "https://storage.googleapis.com/rainbow_like/";
-                    const urlsForFiles = files.map(file => {
-                        const postUrlPath = `post/${postNum + 1}/${file.name}`;
-                        return storageBaseUrl + postUrlPath;
-                    });
-
-                    const newFileSrcToNumberMap = {};
-                    urlsForFiles.forEach((url, index) => {
-                        newFileSrcToNumberMap[url] = data[index];
-                    });
-                    setFileSrcToNumberMap(prevMap => ({...prevMap, ...newFileSrcToNumberMap}));
-
-                    setLoading(true);
-                    checkImageAvailability(urlsForFiles);
-                })
-                .catch(error => {
-                    console.error("There was a problem with the fetch operation:", error.message);
-                })
-                .finally(() => {
-                    setImageLoading(false);
-                });
-        };
-    }
-
-    const modules = useMemo(() => {
-        return {
-            toolbar: {
-                container: [
-                    [{header: [1, 2, 3, false]}],
-                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                    ['image'],
-                ],
-                handlers: {
-                    image: imageHandler,
-                },
-            },
-        };
-    }, []);
-
-    const formats = [
-        'header',
-        'bold',
-        'italic',
-        'underline',
-        'strike',
-        'blockquote',
-        'image',
-    ];
-
-    const quillRef = useRef();
 
     return (
         <div className={styles.parentContainer}>
-            <div className={styles.postFormContainer}>
+            <div className={styles.postFormContainer} >
                 <div className={styles.formHeader}>
                     <span className={styles.formHeaderText}>게시글 등록</span>
                 </div>
                 <hr className={`${styles.formHeaderLine} ${styles.otherHr}`}/>
-                <form onSubmit={handleSubmit} className={styles.postForm}>
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}><span className={styles.required}>*</span>이름</label>
-                        <input
-                            type="text"
-                            name="memName"
-                            value={formData.memName}
-                            disabled
-                            className={styles.input}
-                        />
+                <div className={styles.inputGroup} style={{width:"100%"}}>
+                    <label className={styles.label}><span className={styles.required}>*</span>이름</label>
+                    <input
+                        type="text"
+                        name="memName"
+                        value={formData.memName}
+                        disabled
+                        className={styles.input}
+                        style={{width: "40%",}}
+                    />
+                </div>
+                <div className={styles.inputGroup}>
+                    <label className={styles.label}><span className={styles.required}>*</span>연락처</label>
+                    <input
+                        type="text"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        required
+                        className={styles.input}
+                        style={{width: "40%",}}
+                    />
+                </div>
+                <div className={styles.inputGroup}>
+                    <label className={styles.label}><span className={styles.required}>*</span>이메일 주소</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className={styles.input}
+                        style={{width: "40%",}}
+                    />
+                </div>
+                <div className={styles.inputGroup}>
+                    <label className={styles.label}><span className={styles.required}>*</span>제목</label>
+                    <input
+                        type="text"
+                        name="title"
+                        value={formData.title}
+                        onChange={handleChange}
+                        required
+                        className={styles.input}
+                        style={{
+                            width: "100%",
+                        }}
+                    />
+                </div>
+                <div className={styles.inputGroup} >
+                    <label className={styles.label}><span className={styles.required}>*</span>내용</label>
+                    <textarea
+                        type="text"
+                        name="content"
+                        value={formData.content}
+                        onChange={handleChange}
+                        required
+                        style={{
+                            width: "100%",
+                            height : "400px",
+                            maxHeight: "100%",
+                            border: "1px solid #ccc",
+                            borderRadius: '5px',
+                        }}
+                    />
+                </div>
+                <div className={styles.inputGroup}>
+                    <label className={styles.label}>첨부파일</label>
+                    <div className={styles.buttonInfoWrap} >
+                        <button
+                            style={{
+                                width: '80px',
+                                height: '40px',
+                                backgroundColor: '#3d0c69',
+                                color: '#ffffff',
+                                borderRadius: '5px',
+                                fontSize: '15px',
+                                fontWeight: 'bold',
+                                marginRight: '10%',
+                                position: 'relative',
+                                border: '1px solid #ffffff',
+
+                            }}
+                            onClick={() => document.getElementById('fileInput').click()}
+                        >
+                            파일첨부
+                        </button>
+                        {file && (
+                            <>
+                                <div className={styles.buttonInfo} style={{display:"flex"}}>
+                                    <p>선택된 파일: {file.name}</p>
+                                    <button className={styles.ceoFile}
+                                            style={{
+                                                width: '65px',
+                                                height: '40px',
+                                                backgroundColor: '#c694fa',
+                                                color: '#ffffff',
+                                                borderRadius: '5px',
+                                                fontSize: '15px',
+                                                fontWeight: 'bold',
+                                                marginRight: '10%',
+                                                position: 'relative',
+                                                border: '1px solid #ffffff',
+                                            }}
+                                            onClick={handleFileCancel}>취소
+                                    </button>
+                                </div>
+                            </>
+                        )}
                     </div>
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}><span className={styles.required}>*</span>연락처</label>
-                        <input
-                            type="text"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            required
-                            className={styles.input}
-                        />
-                    </div>
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}><span className={styles.required}>*</span>이메일 주소</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                            className={styles.input}
-                        />
-                    </div>
-                    <div className={styles.inputGroup}>
-                        <label className={styles.label}><span className={styles.required}>*</span>제목</label>
-                        <input
-                            type="text"
-                            name="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                            required
-                            className={styles.input}
-                        />
-                    </div>
-                    <div className={`${styles.inputGroup} ${styles.customInputGroup}`}>
-                        <label className={styles.label}></label>
-                        <ReactQuill
-                            ref={quillRef}
-                            theme="snow"
-                            value={content}
-                            onChange={handleQuillChange}
-                            modules={modules}
-                            formats={formats}
-                            className={styles.customQuill}
-                        />
-                    </div>
-                    <div className={styles.buttonGroup}>
-                        <button type="submit" className={styles.submitButton}>등록</button>
-                        <button type="button" onClick={handleRedirect} className={styles.redirectButton}>목록으로</button>
-                    </div>
-                </form>
+                    <input
+                        type="file"
+                        id="fileInput"
+                        style={{display: 'none'}}
+                        onChange={handleFileChange}
+                    />
+                </div>
+
+                <div className={styles.buttonGroup}>
+                    <button type="submit" className={styles.submitButton} onClick={handleUpdateButtonClick}>등록</button>
+                    <button type="button" onClick={() => navigate('/rent/reviewPost')}
+                            className={styles.redirectButton}>목록으로
+                    </button>
+                </div>
             </div>
         </div>
-    );
+    )
+        ;
 }
 
