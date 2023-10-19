@@ -80,18 +80,7 @@ function CounselingList(props) {
             post.orderNumber = totalPosts - index; // 역순으로 순서 번호 부여
         });
     });
-    const onDelClick = (url) => {
-        fetch(url, {method: 'DELETE'})
-            .then(response => {
-                setOpen(true);
-            })
-            .catch(err => console.error(err));
-    };
 
-    const onEditClick = (params) => {
-        const rowId = params.row.postNum;
-        navigate(`/posts/edit/${rowId}`,{ state: { mode: "edit" } });
-    };
 
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
