@@ -81,10 +81,7 @@ function PostForm(props) {
                 .catch(error => {
                     console.error('Error fetching the post:', error);
                 });
-
-            console.log(formData.content);
         }
-console.log(formData)
 
         // 답글 모드일 때
         if (isReplyMode) {

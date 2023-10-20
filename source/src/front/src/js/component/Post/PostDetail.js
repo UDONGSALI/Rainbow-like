@@ -26,8 +26,6 @@ function PostDetail(props) {
     const [isPrevActive, setIsPrevActive] = useState(false);
     const [isNextActive, setIsNextActive] = useState(false);
 
-    console.log(sessionStorage.role)
-    console.log(post)
     useEffect(() => {
         fetch(SERVER_URL + `files/postNum/${postNum}`)
             .then((response) => response.json())
@@ -63,36 +61,40 @@ function PostDetail(props) {
             .catch(error => console.error(error));
     }, [postNum]);
 
-    useEffect(() => {
 
-        // 초기화: nextPost와 prevPost 상태를 null로 설정
-        setNextPost(null);
-        setPrevPost(null);
-        setIsLoading(true); // 데이터를 가져오기 시작할 때 로딩 상태로 설정합니다.
+        useEffect(() => {
+            // 초기화: nextPost와 prevPost 상태를 null로 설정
+            setNextPost(null);
+            setPrevPost(null);
+            setIsLoading(true); // 데이터를 가져오기 시작할 때 로딩 상태로 설정합니다.
 
-        Promise.all([
-            fetch(`${SERVER_URL}post/${boardNum}/next/${postNum}`).then(res => {
-                if (res.status === 404) return null;
-                return res.json();
-            }),
-            fetch(`${SERVER_URL}post/${boardNum}/prev/${postNum}`).then(res => {
-                if (res.status === 404) return null;
-                return res.json();
-            })
-        ])
-            .then(([nextData, prevData]) => {
-                if (nextData) setNextPost(nextData);
-                if (prevData) setPrevPost(prevData);
-                setIsLoading(false); // 데이터를 가져온 후 로딩 상태를 해제합니다.
-            })
-            .catch(error => {
-                console.error(error);
-                setIsLoading(false); // 오류가 발생한 경우에도 로딩 상태를 해제합니다.
-            });
-    }, [postNum, boardNum]);
+            const fetchData = async () => {
+                try {
+                    const [nextResponse, prevResponse] = await Promise.all([
+                        fetch(`${SERVER_URL}post/${boardNum}/next/${postNum}`),
+                        fetch(`${SERVER_URL}post/${boardNum}/prev/${postNum}`)
+                    ]);
+
+                    if (nextResponse.ok) {
+                        const nextData = await nextResponse.json();
+                        setNextPost(nextData);
+                    }
+
+                    if (prevResponse.ok) {
+                        const prevData = await prevResponse.json();
+                        setPrevPost(prevData);
+                    }
+                } catch (error) {
+                    console.error(error);
+                } finally {
+                    setIsLoading(false); // 데이터를 가져온 후 또는 오류가 발생한 후 로딩 상태를 해제합니다.
+                }
+            };
+            fetchData();
+        }, [postNum, boardNum]);
 
 
-    useEffect(() => {
+        useEffect(() => {
         setIsNextActive(nextPost !== null);
         setIsPrevActive(prevPost !== null);
     }, [nextPost, prevPost]);
@@ -106,10 +108,9 @@ function PostDetail(props) {
         navigate(`/post/edit/${postNum}`, { state: { mode: "edit" } });
     };
 
-    if (isLoading) {
+    if (isLoading || !post) {
         return <div>Loading...</div>;
     }
-
 
     return (
         <div className={styles.postDetail}> {/* CSS 모듈 적용 */}
@@ -151,11 +152,8 @@ function PostDetail(props) {
                 )}
                 {/*답글 활성화 조건*/}
                 {
-                    ((isLabor && post.board.boardNum == 7) ||
-                        (isCounselor && post.board.boardNum == 8)) &&
-                    post.member.memId !== memId &&
-                    post.conselStatus === 'WAIT' &&
-                    ( // 여기에 추가된 조건
+                    ((isLabor && post.board.boardNum == 7 && post.member.memId !== memId && post.conselStatus === 'APPROVE') ||
+                        (post.board.boardNum == 8 && isCounselor && post.member.memId !== memId)) ? (
                         <button
                             onClick={() => {
                                 navigate(`/csl/new/${postNum}`, { state: { mode: "reply", boardNum } });
@@ -164,7 +162,7 @@ function PostDetail(props) {
                         >
                             답글
                         </button>
-                    )
+                    ) : null
                 }
                 <button onClick={() => {
                     if (post.board.boardNum <= 2) {
@@ -206,7 +204,7 @@ function PostDetail(props) {
                             {prevPost.title}
                         </button>
                     </div>
-                )}
+                    )}
             </div>
         </div>
     );
