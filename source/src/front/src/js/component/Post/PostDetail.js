@@ -61,7 +61,7 @@ function PostDetail(props) {
             .then(data => setPost(data))
             .catch(error => console.error(error));
     }, [postNum]);
-console.log(post)
+
     useEffect(() => {
 
         // 초기화: nextPost와 prevPost 상태를 null로 설정
@@ -149,16 +149,21 @@ console.log(post)
                     </>
                 )}
                 {/*답글 활성화 조건*/}
-                {((isLabor && post.board.boardNum === 7) || (isCounselor && post.board.boardNum === 8)) && post.member.memId !== memId && (
-                    <button
-                        onClick={() => {
-                            navigate(`/csl/new/${postNum}`, { state: { mode: "reply", boardNum } });
-                        }}
-                        className={styles.postReplyButton}
-                    >
-                        답글
-                    </button>
-                )}
+                {
+                    ((isLabor && post.board.boardNum === 7) ||
+                        (isCounselor && post.board.boardNum === 8)) &&
+                    post.member.memId !== memId &&
+                    post.conselStatus === 'WAIT' && ( // 여기에 추가된 조건
+                        <button
+                            onClick={() => {
+                                navigate(`/csl/new/${postNum}`, { state: { mode: "reply", boardNum } });
+                            }}
+                            className={styles.postReplyButton}
+                        >
+                            답글
+                        </button>
+                    )
+                }
                 <button onClick={() => {
                     if (post.board.boardNum <= 2) {
                         navigate(`/post/${post.board.boardNum}`);
