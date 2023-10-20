@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {DataGrid} from '@mui/x-data-grid';
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import {SERVER_URL} from "../Common/constants";
+import {SERVER_URL} from "../../Common/constants";
 import SpaceModal from "./SpaceModal";
 
 

@@ -109,33 +109,7 @@ export default function RentReviewList() {
             align: 'center',
             headerAlign: 'center',
         },
-        {
-            field: 'postFiles',
-            headerName: '파일',
-            width: 80,
-            headerClassName: styles.customHeader,
-            cellClassName: styles.customCell,
-            align: 'center',
-            headerAlign: 'center',
-            sortable: false,
-            filterable: false,
-            renderCell: (row) => {
-                return (
-                    <div>
-                        {row.value && row.value[0] && ( // 첫 번째 파일만 확인
-                            <div style={{width: '24px', height: '24px', marginRight: '8px'}}>
-                                <img
-                                    src={File}
-                                    alt='file'
-                                    style={{maxWidth: '100%', maxHeight: '100%'}}
-                                />
-                            </div>
-                        )}
-                    </div>
-                );
-            },
 
-        },
 
     ];
 
