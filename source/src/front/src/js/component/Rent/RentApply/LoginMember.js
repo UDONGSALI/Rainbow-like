@@ -28,44 +28,6 @@ const LoginMember = () => {
             });
     }, [memId]);
 
-    // 게시글을 업데이트하는 함수
-    const updateFiles = async () => {
-        try {
-            const response = await fetch(SERVER_URL + `files/${postNum}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    memNum: formData.memNum,
-                    boardNum: formData.boardNum,
-                    title: formData.title,
-                    content: formData.content,
-                    delYN: formData.delYN,
-
-                }),
-            });
-
-            if (response.ok) {
-                alert('정말 게시글을 수정하겠습니까?');
-                alert('게시글 수정에 성공했습니다.');
-            }
-
-            if (!response.ok) {
-                throw new Error('게시글 업데이트에 실패했습니다');
-            }
-
-            // 성공적으로 업데이트된 게시글을 가져와서 상태를 갱신
-            const updatedData = await response.json();
-            setUpdatedPost(updatedData);
-
-        } catch (error) {
-            console.error(error);
-            alert('게시글 업데이트에 실패했습니다');
-        }
-    };
-
-
     const handlePhoneChange = (e) => {
         setPhone(e.target.value);
     };
@@ -121,7 +83,7 @@ const LoginMember = () => {
                                 <b>휴대폰번호</b></div>
                             <input
                                 className={styles.memBasicInput}
-                                value={phone || member.tel || ''}
+                                value={phone||''||member.tel}
                                 onChange={handlePhoneChange}
                             />
 
@@ -133,7 +95,7 @@ const LoginMember = () => {
                                 <b>이메일주소</b></div>
                             <input
                                 className={styles.memBasicInput}
-                                value={email || member.email || ''}
+                                value={email ||''||member.email }
                                 onChange={handleEmailChange}
                             />
 

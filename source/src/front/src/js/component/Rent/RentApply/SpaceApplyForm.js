@@ -30,24 +30,23 @@ function SpaceApplyForm({onSelectdInfo}) {
     const memId = sessionStorage.getItem("memId");
 
 
-    //대관내역 불러오기
-
+    // 대관내역 불러오기
     useEffect(() => {
+        const fetchRentHist = async () => {
+            try {
+                const response = await fetch(SERVER_URL + 'rent');
+                const data = await response.json();
+                // console.log('Raw Data:', data);
+                setRent((prevRent) => [...prevRent, ...data]); // 이전 상태를 기반으로 업데이트
+            } catch (error) {
+                alert('대관 장소 정보를 찾을 수 없습니다!');
+                console.error(error);
+            }
+        };
+
+        // 컴포넌트 마운트될 때 한 번만 실행
         fetchRentHist();
     }, []);
-
-    const fetchRentHist = async () => {
-        try {
-            const response = await fetch(SERVER_URL + 'rent');
-            const data = await response.json();
-            // console.log('Raw Data:', data);
-            setRent(data);
-        } catch (error) {
-            alert('대관 장소 정보를 찾을 수 없습니다!');
-            console.error(error);
-        }
-    };
-
 
     useEffect(() => {
         fetch(SERVER_URL + `members/id/${memId}`)
@@ -132,10 +131,10 @@ function SpaceApplyForm({onSelectdInfo}) {
 
         return reservedTimes.includes(selectedTime);
     };
-
+    console.log("rent:",rent);
 
     // 시간 선택 관련
-    const handleSelectTime = (spaceName, time, memName) => {
+    const handleSelectTime = (spaceName, time) => {
         if (!selectedDate) {
             alert('대관일자를 선택 해주세요.');
             return;
@@ -156,8 +155,9 @@ function SpaceApplyForm({onSelectdInfo}) {
             }
         }
 
+
         // 예약된 시간인지 확인
-        if (isTimeAlreadyReserved(spaceName, time, memName)) {
+        if (isTimeAlreadyReserved(spaceName, time)) {
             alert('이미 예약된 시간입니다. 다른 시간을 선택해주세요.');
         } else {
             const existingSelectedTimes = selectedTimes[spaceName] || [];
@@ -414,7 +414,11 @@ function SpaceApplyForm({onSelectdInfo}) {
                                                 : isTimeAlreadyReserved(params.row.spaceName, time)
                                                     ? "lightgray"
                                                     : "white",
+                                            cursor: isTimeAlreadyReserved(params.row.spaceName, time)
+                                                ? "not-allowed"
+                                                : "pointer",
                                         }}
+                                        disabled={isTimeAlreadyReserved(params.row.spaceName, time)}
                                     >
                                         {time}
                                     </button>
