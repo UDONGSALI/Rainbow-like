@@ -5,6 +5,7 @@ import styles from "../../../../css/component/Mypage/MypageComponent.module.css"
 import CustomDataGrid from "../../Common/CustomDataGrid";
 import useDelete from "../../hook/useDelete";
 import PayStatusCell from "../../Rent/RenderCell/PayStatusCell";
+import Pagination from "../../Common/Pagination";
 
 export default function MyRentHistList() {
     const [memNum, setMemNum] = useState(null);
@@ -16,6 +17,8 @@ export default function MyRentHistList() {
     const [currentPermitData, setCurrentPermitData] = useState({spaceName: "", getRentDate: "", getRentTime: ""});
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedSpace, setSelectedSpace] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // 페이지당 표시할 항목 수
     const navigate = useNavigate();
     const deleteItem = useDelete(SERVER_URL);
 
@@ -145,6 +148,9 @@ export default function MyRentHistList() {
         setModalOpen(false);
     };
 
+    const handleChangePage = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
 
     const columns = [
@@ -319,9 +325,9 @@ export default function MyRentHistList() {
                 <div
                     className={styles.posts}
                     style={{
-                        height: 500,
+                        maxHeight: 600,
+                        height:"100%",
                         width: "100%",
-
 
                     }}
                 >
@@ -335,9 +341,19 @@ export default function MyRentHistList() {
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
+                        autoHeight={true}
 
                     />
                 </div>
+                <Pagination
+                    activePage={currentPage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={rentHists.length}
+                    pageRangeDisplayed={5} // 원하는 범위로 조절
+                    onChange={handleChangePage}
+                    prevPageText="<"
+                    nextPageText=">"
+                />
             </div>
         </div>
     );

@@ -66,6 +66,7 @@ export default function RentReviewEdit() {
             })
             .catch(error => {
                 alert('게시글 정보를 찾을 수 없습니다!');
+                alert('새 게시글을 작성하시겠습니까?');
             });
     }, [postNum]);
 
@@ -88,13 +89,13 @@ export default function RentReviewEdit() {
             });
 
             if (response.ok) {
-                alert('정말 게시글을 수정하겠습니까?');
-                alert('게시글 수정을 되었습니다.');
+                alert('정말 게시글을 등록하겠습니까?');
+                alert('게시글이 등록되었습니다.');
                 window.location.href='/rent/review'
             }
 
             if (!response.ok) {
-                throw new Error('게시글 업데이트에 실패했습니다');
+                throw new Error('게시글 등록에 실패했습니다');
             }
 
             // 성공적으로 업데이트된 게시글을 가져와서 상태를 갱신
@@ -103,7 +104,7 @@ export default function RentReviewEdit() {
 
         } catch (error) {
             console.error(error);
-            alert('게시글 업데이트에 실패했습니다');
+            alert('게시글 등록에 실패했습니다');
         }
     };
 

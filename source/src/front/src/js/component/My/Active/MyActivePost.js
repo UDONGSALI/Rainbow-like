@@ -3,11 +3,14 @@ import {SERVER_URL} from "../../../../js/component/Common/constants";
 import {useNavigate} from "react-router-dom";
 import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
+import Pagination from "../../Common/Pagination";
 
 
 export default function MyActivePost(props) {
     const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
     const [posts, setPosts] = useState([]); // 게시글 데이터 상태
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // 페이지당 표시할 항목 수
     const navigate = useNavigate();
 
 
@@ -45,7 +48,7 @@ export default function MyActivePost(props) {
                 const postsWithNumbers = data.map((post, index) => ({
                     ...post,
                     id: post.postNum,
-                    number: data.length - index, // 각 행에 번호를 순차적으로 할당
+                    number: index + 1, // 각 행에 번호를 순차적으로 할당
                 }));
                 setPosts(postsWithNumbers);
 
@@ -81,6 +84,10 @@ export default function MyActivePost(props) {
 
         // 실제로 경로 이동
         navigate(targetPath);
+    };
+
+    const handleChangePage = (pageNumber) => {
+        setCurrentPage(pageNumber);
     };
 
 
@@ -167,7 +174,8 @@ export default function MyActivePost(props) {
                 <div
                     className={styles.posts}
                     style={{
-                        height: 500,
+                        maxHeight: 600,
+                        height:"100%",
                         width: "100%",
 
                     }}
@@ -181,11 +189,22 @@ export default function MyActivePost(props) {
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
-                        pagination={true} // 페이지네이션 활성화
+                        pagination={true}
+                        autoHeight={true}
 
 
                     />
+
                 </div>
+                <Pagination
+                    activePage={currentPage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={posts.length}
+                    pageRangeDisplayed={5} // 원하는 범위로 조절
+                    onChange={handleChangePage}
+                    prevPageText="<"
+                    nextPageText=">"
+                />
             </div>
         </div>
     );

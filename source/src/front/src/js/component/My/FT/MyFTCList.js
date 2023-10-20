@@ -5,10 +5,13 @@ import {SERVER_URL} from "../../Common/constants";
 import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
 import useDelete from "../../hook/useDelete";
+import Pagination from "../../Common/Pagination";
 
 export default function MyFTCList() {
     const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
     const [ftConsumers, setFtConsumers] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // 페이지당 표시할 항목 수
     const navigate = useNavigate();
     const deleteItem = useDelete(SERVER_URL);
 
@@ -35,7 +38,7 @@ export default function MyFTCList() {
                 const ftcWithNumbers = ftcData.map((ftConsumer, index) => ({
                     ...ftConsumer,
                     id: ftConsumer.ftConsumerNum,  // ftConsumerNum이 실제로 데이터에 있는지 확인해야 함
-                    number: ftcData.length - index, // 내림차순으로 번호를 부여
+                    number: index + 1
                 }));
 
                 setFtConsumers(ftcWithNumbers);
@@ -62,6 +65,11 @@ const onRowClick = (params) => {
             return "미해결";
         }
     };
+
+    const handleChangePage = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
 
     const columns = [
         {
@@ -151,8 +159,9 @@ const onRowClick = (params) => {
                 <div
                     className={styles.posts}
                     style={{
-                        height: 500,
-                        width: '100%',
+                        maxHeight: 600,
+                        height:"100%",
+                        width: "100%",
                     }}
                 >
                     <CustomDataGrid
@@ -165,9 +174,19 @@ const onRowClick = (params) => {
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
+                        autoHeight={true}
 
                     />
                 </div>
+                <Pagination
+                    activePage={currentPage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={ftConsumers.length}
+                    pageRangeDisplayed={5} // 원하는 범위로 조절
+                    onChange={handleChangePage}
+                    prevPageText="<"
+                    nextPageText=">"
+                />
             </div>
         </div>
     );
