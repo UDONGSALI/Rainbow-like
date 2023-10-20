@@ -27,6 +27,7 @@ function PostDetail(props) {
     const [isNextActive, setIsNextActive] = useState(false);
 
     console.log(sessionStorage.role)
+    console.log(post)
     useEffect(() => {
         fetch(SERVER_URL + `files/postNum/${postNum}`)
             .then((response) => response.json())
@@ -113,7 +114,7 @@ function PostDetail(props) {
     return (
         <div className={styles.postDetail}> {/* CSS 모듈 적용 */}
             <div className={styles.titleDivider}></div>
-            <h2 className={styles.title}>{post.title}</h2>
+            <h2 className={styles.title}>{post ? post.title : 'Loading...'}</h2>
             <div className={styles.postMeta}>
                 <p className={styles.postData}>
                     작성자: {post.member.memId}{' '}
@@ -150,10 +151,11 @@ function PostDetail(props) {
                 )}
                 {/*답글 활성화 조건*/}
                 {
-                    ((isLabor && post.board.boardNum === 7) ||
-                        (isCounselor && post.board.boardNum === 8)) &&
+                    ((isLabor && post.board.boardNum == 7) ||
+                        (isCounselor && post.board.boardNum == 8)) &&
                     post.member.memId !== memId &&
-                    post.conselStatus === 'WAIT' && ( // 여기에 추가된 조건
+                    post.conselStatus === 'WAIT' &&
+                    ( // 여기에 추가된 조건
                         <button
                             onClick={() => {
                                 navigate(`/csl/new/${postNum}`, { state: { mode: "reply", boardNum } });

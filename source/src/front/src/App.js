@@ -133,31 +133,19 @@ function App() {
 
             {/*질문*/}
             <Route path="/qna" element={<QnAPage/>}/>
-
-
-                {/*게시글*/}
-                <Route path="/sj" element={<SjNewsPage/>}/>
-                <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
-                <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
-                <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
-                <Route path="/csl/:boardNum" element={<CslListPage/>}/>
-                <Route path="/error" element={<ErrorPage/>}/>
-                <Route path="/csl/new" element={<CslFormPage/>}/>
-                <Route path="/csl/new/:parentsNum" element={<CslFormPage/>}/>
-                <Route path="/post/new" element={<PostFormPage/>}/>
-                <Route path="/post/edit/:postNum" element={<PostForm/>}/>
+            {/*에러*/}
+            <Route path="/error" element={<ErrorPage/>}/>
 
             {/*게시글*/}
+            <Route path="/sj" element={<SjNewsPage/>}/>
             <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
             <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
             <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
             <Route path="/csl/:boardNum" element={<CslListPage/>}/>
-            <Route path="/error" element={<ErrorPage/>}/>
             <Route path="/csl/new" element={<CslFormPage/>}/>
+            <Route path="/csl/new/:parentsNum" element={<CslFormPage/>}/>
             <Route path="/post/new" element={<PostFormPage/>}/>
             <Route path="/post/edit/:postNum" element={<PostForm/>}/>
-
-
 
             {/*공간대관페이지관련*/}
             <Route path="/rent/process" element={<RentProcessPage/>}/>

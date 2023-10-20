@@ -9,6 +9,8 @@ import {headerInfo, urlData} from "../../layout/Header/Data/InfoShareHeader";
 function PostDetailPage() {
     const navigate = useNavigate();
     const { boardNum, postNum } = useParams();
+    const [headerInfo, setHeaderInfo] = useState(null);
+    const [urlData, setUrlData] = useState(null);
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const isLabor = sessionStorage.getItem("role") === "LABOR";
     const isCounselor= sessionStorage.getItem("role") === "COUNSELOR";
@@ -16,6 +18,23 @@ function PostDetailPage() {
 
     // 게시글을 표시할지 여부를 저장하는 상태
     const [showPost, setShowPost] = useState(false);
+
+    // header import 조건
+    useEffect(() => {
+        if (["1", "2", "3", "4", "5"].includes(boardNum)) {
+            import("../../layout/Header/Data/InfoShareHeader")
+                .then(module => {
+                    setHeaderInfo(module.headerInfo);
+                    setUrlData(module.urlData);
+                });
+        } else if (["7", "8"].includes(boardNum)) {
+            import("../../layout/Header/Data/CslHeader")
+                .then(module => {
+                    setHeaderInfo(module.headerInfo);
+                    setUrlData(module.urlData);
+                });
+        }
+    }, [boardNum]);
 
     //7,8번 게시판 상세 글 접근 권한 설정
     useEffect(() => {
@@ -36,7 +55,9 @@ function PostDetailPage() {
 
                         const isAllowed = () => {
                             if (board.boardNum == 8) {
-                                return isAdmin || isCounselor;
+                                return isAdmin || isCounselor ||
+                                    memNum == data.member?.memNum ||
+                                    memNum == parentData?.member?.memNum;
                             }
                             if (board.boardNum == 7) {
                                 return isAdmin ||
@@ -84,7 +105,9 @@ function PostDetailPage() {
 
     return (
         <div>
-            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
+            {headerInfo && urlData ? (
+                <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle} />
+            ) : null}
             {showPost ? <PostDetail postNum={ postNum } boardNum = {boardNum} /> : null}
             <Footer />
         </div>

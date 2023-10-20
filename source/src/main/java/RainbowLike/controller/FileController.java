@@ -93,6 +93,7 @@ public class FileController {
             fileService.deleteFilesByPostNum(postNum); // 여기서 Long 타입 변환을 제거했습니다.
             return ResponseEntity.ok("Files deleted successfully.");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body("Error occurred while deleting files: " + e.getMessage());
         }
     }
