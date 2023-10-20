@@ -180,7 +180,7 @@ function BoardPostList({ boardNum }) {
                         onClick={() => navigate(navigateTo)}
                         style={{ cursor: 'pointer' }}
                     >
-                {row.row.parentsNum ? "ㄴ[Reply] " : ""}{row.row.title}
+                {row.row.parentsNum ? "ㄴ [답글] " : ""}{row.row.title}
             </span>
                 );
             }

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -97,6 +98,19 @@ public class PostService {
             default:
                 return Collections.emptyList();
         }
+    }
+
+    public List<Post> getCounselPostsByMember(Long memNum) {
+        List<Board> councelBoard = boardRepository.findByBoardNameContaining("상담");
+        List<Post> posts = postRepository.findByBoardInAndMemberMemNum(councelBoard, memNum);
+        List<Long> parentsNums = new ArrayList<>();
+
+        for (Post post : posts) {
+            parentsNums.add(post.getPostNum());
+        }
+
+        posts.addAll(postRepository.findByParentsNumIn(parentsNums));
+        return posts;
     }
 
     public Iterable<Post> searchPostsByBoardNumAndOptionAndValue(Long boardNum, String option, String value) {
