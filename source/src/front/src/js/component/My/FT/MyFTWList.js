@@ -5,12 +5,14 @@ import {SERVER_URL} from "../../Common/constants";
 import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
 import useDelete from "../../hook/useDelete";
+import Pagination from "../../Common/Pagination";
 
 export default function MyFTWList() {
     const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
     const [ftWorkers, setFtWorkers] = useState([]);
     const [ftConsumers, setFtConsumers] = useState([]);
-    // useState로 ftData 상태 추가
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // 페이지당 표시할 항목 수
     const [ftData, setFtData] = useState({ ftWorkers: [], ftConsumers: [] });
     const navigate = useNavigate();
 
@@ -59,6 +61,11 @@ const onRowClick = (params) => {
         console.log('rowId:', rowId);
         navigate(`/edu/list/detail/${rowId}`);
     };
+
+    const handleChangePage = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
 
     const columns = [
         {
@@ -153,8 +160,9 @@ const onRowClick = (params) => {
                 <div
                     className={styles.posts}
                     style={{
-                        height: 500,
-                        width: '100%',
+                        maxHeight: 600,
+                        height:"100%",
+                        width: "100%",
                     }}
                 >
                     <CustomDataGrid
@@ -167,14 +175,19 @@ const onRowClick = (params) => {
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
-                        sortModel={[
-                            {
-                                field: "postNum",
-                                sort: "desc", // 내림차순 정렬
-                            },
-                        ]}
+                        autoHeight={true}
+
                     />
                 </div>
+                <Pagination
+                    activePage={currentPage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={ftWorkers.length}
+                    pageRangeDisplayed={5} // 원하는 범위로 조절
+                    onChange={handleChangePage}
+                    prevPageText="<"
+                    nextPageText=">"
+                />
             </div>
         </div>
     );
