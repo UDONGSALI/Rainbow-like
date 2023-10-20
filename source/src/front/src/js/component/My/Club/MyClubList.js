@@ -3,50 +3,53 @@ import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
+import Pagination from "../../Common/Pagination";
 
 export default function MyClubList() {
-        const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
-        const [clubs, setClubs] = useState([]); // 게시글 데이터 상태
-        const navigate = useNavigate();
+    const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
+    const [clubs, setClubs] = useState([]); // 게시글 데이터 상태
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // 페이지당 표시할 항목 수
+    const navigate = useNavigate();
 
 
-        useEffect(() => {
-            // 로그인한 사용자 정보를 가져오는 방법에 따라서 구현
-            const fetchedUserInfo = {memNum: sessionStorage.getItem("memNum")};
-            setMemNum(fetchedUserInfo.memNum); // memNum 상태 업데이트
-        }, []);
+    useEffect(() => {
+        // 로그인한 사용자 정보를 가져오는 방법에 따라서 구현
+        const fetchedUserInfo = {memNum: sessionStorage.getItem("memNum")};
+        setMemNum(fetchedUserInfo.memNum); // memNum 상태 업데이트
+    }, []);
 
-        useEffect(() => {
-            // memNum 상태가 변경될 때마다 fetchClubsByMember를 호출
-            if (memNum !== null) {
-                fetchClubsByMember();
-            }
-        }, [memNum]);
+    useEffect(() => {
+        // memNum 상태가 변경될 때마다 fetchClubsByMember를 호출
+        if (memNum !== null) {
+            fetchClubsByMember();
+        }
+    }, [memNum]);
 
-        const fetchClubsByMember = () => {
-            if (memNum === null) {
-                return;
-            }
+    const fetchClubsByMember = () => {
+        if (memNum === null) {
+            return;
+        }
 
-            // memNum을 사용하여 해당 멤버의 모임정보만 가져오도록 수정
-            fetch(`${SERVER_URL}post/memberClub/${memNum}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    const clubWithNumbers = data.map((club, index) => ({
-                        ...club,
-                        id: club.postNum,
-                        number: index + 1, // 각 행에 번호를 순차적으로 할당
-                    }));
+        // memNum을 사용하여 해당 멤버의 모임정보만 가져오도록 수정
+        fetch(`${SERVER_URL}post/memberClub/${memNum}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                const clubWithNumbers = data.map((club, index) => ({
+                    ...club,
+                    id: club.postNum,
+                    number: index + 1, // 각 행에 번호를 순차적으로 할당
+                }));
 
-                    setClubs(clubWithNumbers);
-                })
+                setClubs(clubWithNumbers);
+            })
 
 
-                .catch((error) => {
-                    console.error("API 호출 중 오류 발생:", error);
-                });
-        };
+            .catch((error) => {
+                console.error("API 호출 중 오류 발생:", error);
+            });
+    };
 
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
@@ -67,7 +70,9 @@ export default function MyClubList() {
             return "대기";
         }
     };
-
+    const handleChangePage = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
     const columns = [
         {
             field: "number",
@@ -102,7 +107,6 @@ export default function MyClubList() {
             }
 
 
-
         },
         {
             field: "writeDate",
@@ -121,7 +125,7 @@ export default function MyClubList() {
                 return formattedDate;
             },
         },
-        
+
         {
             field: "clubAllowStatus",
             headerName: "허가 상태",
@@ -168,7 +172,8 @@ export default function MyClubList() {
                 <div
                     className={styles.posts}
                     style={{
-                        height: 500,
+                        maxHeight: 600,
+                        height:"100%",
                         width: "100%",
                     }}
                 >
@@ -182,14 +187,19 @@ export default function MyClubList() {
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
-                        sortModel={[
-                            {
-                                field: "number",
-                                sort: "desc", // 내림차순 정렬
-                            },
-                        ]}
+                        autoHeight={true}
+
                     />
                 </div>
+                <Pagination
+                    activePage={currentPage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={clubs.length}
+                    pageRangeDisplayed={5} // 원하는 범위로 조절
+                    onChange={handleChangePage}
+                    prevPageText="<"
+                    nextPageText=">"
+                />
             </div>
         </div>
     );

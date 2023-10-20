@@ -22,7 +22,7 @@ const getToday=()=>{
     const getThreeDaysLater=()=>{
         const today =getToday();
         const threeDaysLater=new Date(today);
-        threeDaysLater.setDate(today.getDate()+3);
+        threeDaysLater.setDate(today.getDate()+1);
         return threeDaysLater;
 
     };
@@ -49,8 +49,8 @@ const getToday=()=>{
                 </div>
                 <div className={styles.rentNotice}>
                     <ul>
-                        <li>○ <b>대관 시간 안내 : </b> 대관은 <span>최소 1일 전</span>부터 예약 가능합니다.</li>
-                        <li>○ <b>예약 신청 가능일 : </b><span>{threeDaysLater.toLocaleDateString()} ~ {oneMonthLater.toLocaleDateString()} </span>(대관일 1개월 전부터 최소 3일 전)</li>
+                        <li>○ <b>대관 시간 안내 : </b> 대관은 <span>최소 1시간 이상</span>부터 예약 가능합니다.</li>
+                        <li>○ <b>예약 신청 가능일 : </b><span>{threeDaysLater.toLocaleDateString()} ~ {oneMonthLater.toLocaleDateString()} </span>(대관일 1개월 전부터 최소 1일 전)</li>
                         <li>○ <b>장기 대관 예약 : </b> 5일 이상 장기 대관을 원하시는 분은 044-863-0380로 문의 부탁드립니다.</li>
                     </ul>
                 </div>
