@@ -3,8 +3,8 @@
     margin-top: 5%;
     padding-right: 20%;
     padding-left: 20%;
-    font-family: Prompt;
-    font-size: 18px;
+    font-family:'IBM Plex Sans KR', sans-serif;
+    font-size: 20px;
 
 }
 
@@ -39,7 +39,7 @@
     justify-content: right;
     margin-top: 5%;
     margin-bottom: 2%;
-    margin-right: 15%;
+    margin-right: 20%;
     height: 20px;
     width: 100%;
 }
@@ -54,15 +54,11 @@
 }
 
 #review >.postBox >.content{
-    padding-top: 3%;
-    padding-top: 3%;
+    padding-top: 5%;
     padding-left:5%;
     padding-right: 5%;
 }
 
-#review >.postBox >.postButton>.button1{
-
-}
 
 
 

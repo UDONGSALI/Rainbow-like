@@ -155,21 +155,21 @@ export default function RentCalendar ({ onSelectDate }) {
 
         return (
             <div className="rbc-toolbar">
-        <span className="rbc-btn-group">
-          <button type="button" onClick={goToBack}>
-            이전
-          </button>
-        </span>
                 <span className="rbc-btn-group">
-          <button type="button" onClick={goToToday}>
-            오늘
-          </button>
-        </span>
+                    <button type="button" onClick={goToBack}>
+                        이전
+                    </button>
+                </span>
                 <span className="rbc-btn-group">
-          <button type="button" onClick={goToNext}>
-            다음
-          </button>
-        </span>
+                    <button type="button" onClick={goToToday}>
+                        오늘
+                    </button>
+                </span>
+                <span className="rbc-btn-group">
+                    <button type="button" onClick={goToNext}>
+                        다음
+                    </button>
+                </span>
                 <span className="rbc-toolbar-label">{label()}</span>
             </div>
         );
@@ -181,24 +181,27 @@ export default function RentCalendar ({ onSelectDate }) {
     };
 
     const handleNavigate = (date, view, action) => {
-        const yesterday = moment().subtract(1, "day");
-        if (moment(date).isSameOrBefore(yesterday, "day")) {
-            alert("대관 예약이 불가합니다.");
-            return;
-        }
+        const today = moment().startOf('day');
 
         setSelectedDate(date);
         const isHoliday = events.some(
             (event) => event.isHoliday && moment(event.start).isSame(date, "day")
         );
 
-        if (isHoliday) {
+        if (moment(date).isSameOrBefore(today)) {
+            alert("대관 예약이 불가합니다.");
+            setSelectedDate(null);
+            return;
+        } else if (isHoliday) {
             alert("이 날은 공휴일입니다. 대관 예약이 불가합니다.");
             setSelectedDate(null);
         } else {
             onSelectDate(moment(date).format("YYYY-MM-DD"));
         }
     };
+
+
+
 
     return (
         <div>
