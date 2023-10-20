@@ -4,7 +4,7 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import 'react-quill/dist/quill.snow.css';
 
-export default function RentReviewEdit() {
+export default function RentReviewWrite() {
     const {postId} = useParams();
     const {postNum} = useParams();
     const location = useLocation();
@@ -14,13 +14,12 @@ export default function RentReviewEdit() {
     const [post, setPost] = useState({});
     const [file, setFile] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const [updatedPost, setUpdatedPost]=useState({});
+    const [updatedPost, setUpdatedPost] = useState({});
     const [formData, setFormData] = useState({
         memNum: '',
         boardNum: 6,
         title: '',
         content: '',
-        parentsNum: '',
         delYN: 'N'
     });
 
@@ -46,34 +45,12 @@ export default function RentReviewEdit() {
             });
     }, []);
 
-    //해당 게시글 가지고 오기
-    useEffect(() => {
-        // postNum이 게시글의 식별자라고 가정합니다
-        fetch(SERVER_URL + `post/${postNum}`)
-            .then(response => response.json())
-            .then(data => {
-                setPost(data);
-                console.log(data);
 
-                // 필요한 필드만 업데이트
-                setFormData(prevFormData => ({
-                    ...prevFormData,
-                    title: data.title,
-                    content: data.content,
-                    parentsNum: data.parentsNum,
-                    boardNum: data.board.boardNum,
-                }));
-            })
-            .catch(error => {
-                alert('게시글 정보를 찾을 수 없습니다!');
-            });
-    }, [postNum]);
-
-    // 게시글을 업데이트하는 함수
-    const updatePost = async () => {
+    // 게시글을 업로드하는 함수
+    const writePost = async () => {
         try {
-            const response = await fetch(SERVER_URL + `post/edit/${postNum}`, {
-                method: 'PUT',
+            const response = await fetch(SERVER_URL + `post/new/`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -85,16 +62,16 @@ export default function RentReviewEdit() {
                     delYN: formData.delYN,
 
                 }),
+
             });
 
             if (response.ok) {
-                alert('정말 게시글을 수정하겠습니까?');
-                alert('게시글 수정을 되었습니다.');
-                window.location.href='/rent/review'
+                alert('정말 게시글을 등록하겠습니까?');
+                alert('게시글 등록에 성공했습니다.');
             }
 
             if (!response.ok) {
-                throw new Error('게시글 업데이트에 실패했습니다');
+                throw new Error('게시글 등록에 실패했습니다');
             }
 
             // 성공적으로 업데이트된 게시글을 가져와서 상태를 갱신
@@ -103,16 +80,17 @@ export default function RentReviewEdit() {
 
         } catch (error) {
             console.error(error);
-            alert('게시글 업데이트에 실패했습니다');
+            alert('게시글 등록에 실패했습니다');
         }
     };
+
 
     const handleUpdateButtonClick = () => {
         if (!formData.phone || !formData.email || !formData.title || !formData.content) {
             alert('연락처, 이메일 주소, 제목, 내용은 필수 입력 항목입니다.');
             return;
         }
-        updatePost();
+        writePost();
     };
 
 
@@ -135,27 +113,26 @@ export default function RentReviewEdit() {
     };
 
 
-
     return (
-        <div className={styles.parentContainer} style={{ fontFamily:'IBM Plex Sans KR'}}>
-            <div className={styles.postFormContainer} >
+        <div className={styles.parentContainer} >
+            <div className={styles.postFormContainer}>
                 <div className={styles.formHeader}>
-                    <span className={styles.formHeaderText} style={{fontSize:"25px", fontWeight:"bold"}}>게시글 등록</span>
+                    <span className={styles.formHeaderText} style={{fontWeight:"bold"}}>게시글 등록</span>
                 </div>
                 <hr className={`${styles.formHeaderLine} ${styles.otherHr}`}/>
-                <div className={styles.inputGroup} style={{width:"100%", marginTop:"-3%"}}>
-                    <label className={styles.label} style={{marginRight:"4%",fontSize:"17px", fontWeight:"bold"}}><span className={styles.required}>*</span>이름</label>
+                <div className={styles.inputGroup} style={{width: "100%"}}>
+                    <label className={styles.label}><span className={styles.required}>*</span>이름</label>
                     <input
                         type="text"
                         name="memName"
                         value={formData.memName}
                         disabled
                         className={styles.input}
-                        style={{width: "40%"}}
+                        style={{width: "40%",}}
                     />
                 </div>
                 <div className={styles.inputGroup}>
-                    <label className={styles.label} style={{marginRight:"4%",fontSize:"17px", fontWeight:"bold"}}><span className={styles.required}>*</span>연락처</label>
+                    <label className={styles.label}><span className={styles.required}>*</span>연락처</label>
                     <input
                         type="text"
                         name="phone"
@@ -167,7 +144,7 @@ export default function RentReviewEdit() {
                     />
                 </div>
                 <div className={styles.inputGroup}>
-                    <label className={styles.label} style={{marginRight:"4%",fontSize:"17px", fontWeight:"bold"}}><span className={styles.required}>*</span>이메일 주소</label>
+                    <label className={styles.label}><span className={styles.required}>*</span>이메일 주소</label>
                     <input
                         type="email"
                         name="email"
@@ -179,7 +156,7 @@ export default function RentReviewEdit() {
                     />
                 </div>
                 <div className={styles.inputGroup}>
-                    <label className={styles.label} style={{marginRight:"4%",fontSize:"17px", fontWeight:"bold"}}><span className={styles.required}>*</span>제목</label>
+                    <label className={styles.label}><span className={styles.required}>*</span>제목</label>
                     <input
                         type="text"
                         name="title"
@@ -192,8 +169,8 @@ export default function RentReviewEdit() {
                         }}
                     />
                 </div>
-                <div className={styles.inputGroup} >
-                    <label className={styles.label} style={{marginRight:"4%",fontSize:"17px", fontWeight:"bold"}}><span className={styles.required}>*</span>내용</label>
+                <div className={styles.inputGroup}>
+                    <label className={styles.label}><span className={styles.required}>*</span>내용</label>
                     <textarea
                         type="text"
                         name="content"
@@ -202,15 +179,15 @@ export default function RentReviewEdit() {
                         required
                         style={{
                             width: "100%",
-                            height : "400px",
+                            height: "400px",
                             maxHeight: "100%",
                             border: "1px solid #ccc",
                             borderRadius: '5px',
                         }}
                     />
                 </div>
-                <div className={styles.inputGroup} style={{width:"100^"}}>
-                    <label className={styles.label} style={{marginRight:"4%",fontSize:"17px", fontWeight:"bold"}}>첨부파일</label>
+                <div className={styles.inputGroup}>
+                    <label className={styles.label}>첨부파일</label>
                     <div className={styles.buttonInfoWrap} style={{width:"100%"}}>
                         <button
                             style={{
@@ -233,8 +210,7 @@ export default function RentReviewEdit() {
                         {file && (
                             <>
                                 <div className={styles.buttonInfo} style={{display: "flex",width:"100%"}}>
-                                    <p style={{width:"50%",height: "40px",border:"1px solid #cccccc", borderRadius:"5px",marginTop:"1%",padding:"3px", marginRight:"1%"}}>
-                                        <b>선택된 파일:</b>{file.name}</p>
+                                    <p style={{width:"10%"}}>선택된 파일: {file.name}</p>
                                     <button className={styles.ceoFile}
                                             style={{
                                                 width: '65px',
@@ -245,7 +221,6 @@ export default function RentReviewEdit() {
                                                 fontSize: '15px',
                                                 fontWeight: 'bold',
                                                 marginRight: '10%',
-                                                marginTop:"1%",
                                                 position: 'relative',
                                                 border: '1px solid #ffffff',
                                             }}
@@ -262,34 +237,38 @@ export default function RentReviewEdit() {
                         onChange={handleFileChange}
                     />
                 </div>
-
-                <div className={styles.buttonGroup} style={{width:"100%",display:"flex" , marginTop:"10%"}}>
-                    <button type="submit" className={styles.submitButton}
+                <div className={styles.buttonGroup}>
+                    <button type="submit"
+                            onClick={handleUpdateButtonClick}
+                            style={{
+                                   width: "100px",
+                                   height: "40px",
+                                   backgroundColor: "#a38ced",
+                                   color: "#ffffff",
+                                   border: "1px solid #cccccc",
+                                   borderRadius: '5px',
+                                   fontSize: "15px",
+                                   fontWeight: "bold",
+                                   marginTop: "3%",
+                                   marginBottom: "15%"
+                    }}>등록
+                    </button>
+                    <button type="button" onClick={() => navigate('/rent/review')}
                             onClick={handleUpdateButtonClick}
                             style={{
                                 width: "100px",
                                 height: "40px",
-                                backgroundColor: "#a38ced",
+                                backgroundColor: "#3d0c69",
                                 color: "#ffffff",
                                 border: "1px solid #cccccc",
                                 borderRadius: '5px',
                                 fontSize: "15px",
                                 fontWeight: "bold",
-                                marginRight:"5px"
-                            }}>등록</button>
-                    <button type="button"
-                            onClick={() => navigate('/rent/review')}
-                            className={styles.redirectButton}   style={{
-                        width: "100px",
-                        height: "40px",
-                        backgroundColor: "#3d0c69",
-                        color: "#ffffff",
-                        border: "1px solid #cccccc",
-                        borderRadius: '5px',
-                        fontSize: "15px",
-                        fontWeight: "bold",
-                        marginBottom: "15%"
-                    }}>목록으로
+                                textAlign:"center",
+                                marginTop: "3%",
+                                marginBottom: "15%"
+                    }}
+                    >목록으로
                     </button>
                 </div>
             </div>

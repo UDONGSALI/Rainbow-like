@@ -1,23 +1,22 @@
-import styles from '../../../css/component/Rent/RentSpace.module.css';
+import styles from '../../../../css/component/Rent/RentSpace.module.css';
 import React, {useEffect, useState} from "react";
-import {SERVER_URL} from "../Common/constants";
-import LoginMember from "./RentApply/LoginMember";
-import RentAgreeForm from "./RentApply/RentAgreeForm";
+import {SERVER_URL} from "../../Common/constants";
+import LoginMember from "../RentApply/LoginMember";
+import RentAgreeForm from "../RentApply/RentAgreeForm";
 
 let payStatus
 
 function RentSpace({selectedInfo}) {
     const [member, setMember] = useState(null);
     const [files, setFiles] = useState([]);
-    const [selectedUsers, setSelectedUsers] = useState(1); // 사용자 수를 선택하기 위한 상태
+    const [selectedUsers, setSelectedUsers] = useState(1);
     const [fileUri, setFileUri] = useState('');
-    const memId = sessionStorage.getItem('memId');
-    //대관정보
+    const [memId, setMemId] = useState(sessionStorage.getItem('memId'));
+    const [selectedPurpose, setSelectedPurpose] = useState('');
 
-
-    if (selectedInfo.selectedSpace.rentFee === '무료'){
+    if (selectedInfo.selectedSpace.rentFee === '무료') {
         payStatus = 'COMPLETE'
-    }else {
+    } else {
         payStatus = 'WAIT'
     }
     let url = selectedInfo.selectedSpace._links.self.href;
@@ -25,13 +24,13 @@ function RentSpace({selectedInfo}) {
     let spaceNumValue = parts[parts.length - 1];
     let spaceNum = parseInt(spaceNumValue);
 
-
+    //대관정보
     const [updatedInfo, setUpdatedInfo] = useState({
         rentStdt: `${selectedInfo.selectedDate}T${selectedInfo.selectedTimeRange[0]}`,
         rentEddt: `${selectedInfo.selectedDate}T${selectedInfo.selectedTimeRange[selectedInfo.selectedTimeRange.length - 1]}`,
         applyDate: new Date(),
         applyStatus: 'WAIT',
-        payStatus:payStatus,
+        payStatus: payStatus,
 
     });
 
@@ -84,10 +83,15 @@ function RentSpace({selectedInfo}) {
             });
     }, [selectedInfo.spaceName]);
 
-    console.log(member)
-    console.log(spaceNum + '스페이스넘')
+
     //대관예약신청정보 데이터베이스로 보내기
     const handleUpdate = async () => {
+
+        // 사용목적이 입력되지 않았을 경우 알림창 표시
+        if (!selectedPurpose.trim()) {
+            alert('사용목적 입력은 필수입니다.');
+            return;
+        }
 
         try {
 
@@ -106,6 +110,7 @@ function RentSpace({selectedInfo}) {
                     text = await response.text();
                     console.log('서버 응답 데이터:', text);
                     alert('정말로 대관 예약 신청을 하시겠습니까?');
+                    alert('대관 예약 신청이 완료되었습니다. 마이페이지에서 확인하세요.');
                     window.location.href = "http://localhost:3000/mypage/rent";
                 } catch (jsonError) {
                     console.log('JSON 파싱 에러:', jsonError);
@@ -124,9 +129,18 @@ function RentSpace({selectedInfo}) {
         }
 
     };
+
     const handleUserSelectChange = (e) => {
         const selectedUserCount = parseInt(e.target.value, 10);
         setSelectedUsers(selectedUserCount);
+    };
+
+    const handlePurposeChange = (e) => {
+        setSelectedPurpose(e.target.value);
+    };
+
+    function redirectToURL() {
+        window.location.href = "/mypage/rent"
     };
 
     return (
@@ -167,41 +181,48 @@ function RentSpace({selectedInfo}) {
                     <hr/>
                     <div className={styles.container}>
                         <div className={styles.field}>
-                        <span>*</span>
-                        <b>사용날짜</b></div>
-                        <div> <b>{selectedInfo.selectedDate}</b></div>
+                            <span>*</span>
+                            <b>사용날짜</b></div>
+                        <div><b>{selectedInfo.selectedDate}</b></div>
                     </div>
                     <hr/>
                     <div className={styles.container}>
                         <div className={styles.field}>
                             <span>*</span>
-                        <b>사용시간</b></div><div> <b> {selectedInfo.rentTime}</b></div>
+                            <b>사용시간</b></div>
+                        <div><b> {selectedInfo.rentTime}</b></div>
                     </div>
                     <hr/>
                     <div className={styles.container}>
                         <div className={styles.field}>
-                        <span>*</span>
-                            <b>대관료</b></div><div>
-                        <b> {selectedInfo.selectedSpace.rentFee}</b></div>
+                            <span>*</span>
+                            <b>대관료</b></div>
+                        <div>
+                            <b> {selectedInfo.selectedSpace.rentFee}</b></div>
                     </div>
                     <hr/>
                     <div className={styles.container}>
                         <div className={styles.field}>
-                        <span>*</span>
+                            <span>*</span>
                             <b>사용인원</b></div>
                         <div className={styles.per}>
-                        <select value={selectedUsers} onChange={handleUserSelectChange}>
-                            {[...Array(selectedInfo.selectedSpace.maxPerson).keys()].map((num) => (
-                                <option key={num + 1} value={num + 1}>{num + 1}</option>
-                            ))}
-                        </select></div>
+                            <select value={selectedUsers} onChange={handleUserSelectChange}>
+                                {[...Array(selectedInfo.selectedSpace.maxPerson).keys()].map((num) => (
+                                    <option key={num + 1} value={num + 1}>{num + 1}</option>
+                                ))}
+                            </select></div>
                     </div>
                     <hr/>
                     <div className={styles.container}>
                         <div className={styles.field}>
-                        <span>*</span>
-                            <b>사용목적</b></div><div>
-                        <input className={styles.basicInput}/></div>
+                            <span>*</span>
+                            <b>사용목적</b></div>
+                        <div>
+                            <input
+                                className={styles.basicInput}
+                                value={selectedPurpose}
+                                onChange={handlePurposeChange}
+                            /></div>
                     </div>
                     <hr/>
                 </div>
@@ -211,19 +232,19 @@ function RentSpace({selectedInfo}) {
             {/*대관신청자정보*/}
             <LoginMember/>
             <div className={styles.rentButton}>
-            <button
-                onClick={handleUpdate}
-                style={{
-                    width: "150px",
-                    height: "50px",
-                    backgroundColor: "#a38ced",
-                    color: "rgb(255,255,255)",
-                    border: "1px solid #ffffff",
-                    borderRadius: '5px',
-                    fontSize: "20px",
-                    fontWeight: "bold",
-                }}>대관신청
-            </button>
+                <button
+                    onClick={handleUpdate}
+                    style={{
+                        width: "150px",
+                        height: "50px",
+                        backgroundColor: "#a38ced",
+                        color: "rgb(255,255,255)",
+                        border: "1px solid #ffffff",
+                        borderRadius: '5px',
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                    }}>대관신청
+                </button>
             </div>
 
         </div>

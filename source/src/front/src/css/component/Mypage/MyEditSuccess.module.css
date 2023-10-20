@@ -4,8 +4,10 @@
     margin-bottom: 5%;
     padding-right: 15%;
     padding-left: 15%;
-    font-family: Prompt;
-    font-size: 15px;
+    font-family:'IBM Plex Sans KR', sans-serif;
+    font-size: 17px;
+    position: relative;
+
 
 
 }
