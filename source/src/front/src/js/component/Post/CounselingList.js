@@ -81,13 +81,14 @@ function CounselingList(props) {
         });
     });
 
-
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
         const boardNumber = params.row.board.boardNum;
         const parentPost = params.row.parentsNum ? postsWithFiles.find(post => post.postNum === params.row.parentsNum) : null;
 
-        if (isAdmin || params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || (parentPost && parentPost?.member?.memNum == memNum)) {
+
+        // if (isAdmin || params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || (parentPost && parentPost?.member?.memNum == memNum))
+        {
             navigate(`/post/detail/${boardNum}/${rowId}`, {
                 state: {boardNum: boardNumber}
             });
@@ -133,7 +134,8 @@ function CounselingList(props) {
                         }}
                         onClick={() => {
                             try {
-                                if (isAdmin ||  params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || parentPost?.member?.memNum == memNum) {
+                                // if (isAdmin ||  params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || parentPost?.member?.memNum == memNum)
+                                    {
                                     onRowClick(params);
                                 }
                             } catch (error) {
