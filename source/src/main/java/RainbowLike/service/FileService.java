@@ -224,6 +224,9 @@ public class FileService {
     }
     public void deleteFilesByPostNum(Long postNum) {
         List<File> files = fileRepository.findByPostPostNum(postNum); // 여기서도 Long 타입 변환을 제거했습니다.
-        fileRepository.deleteAll(files);
+        for (File file : files) {
+            String deleteUrl = "http://localhost:8090/api/files/" + file.getFileNum();
+            restTemplate.delete(deleteUrl);
+        }
     }
 }

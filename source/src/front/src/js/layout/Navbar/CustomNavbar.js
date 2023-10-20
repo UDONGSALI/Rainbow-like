@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo, memo} from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import styles from '../../../css/layout/Navbar/CustomNavbar.module.css';
 import logo1 from "../../../img/layout/logo1.png";
@@ -44,7 +44,7 @@ const menuData = [
     },
     {
         title: "소모임",
-        items: [{name: "소모임", url: "/clubs"}, {name: "소모임 신청", url: "/clubs/new"}]
+        items: [{name: "소모임", url: "/clubsMain"}, {name: "소모임 신청", url: "/clubs/new"}]
     },
     {
         title: "직장맘 지원센터",
@@ -159,7 +159,7 @@ function CustomNavbar({memId, isAdmin}) {
     );
 }
 
-function Menu({menu, setActiveMenu, activeMenu}) {
+const Menu = memo(({menu, setActiveMenu, activeMenu}) => {
     return (
         <div
             className={styles.menu}
@@ -170,17 +170,19 @@ function Menu({menu, setActiveMenu, activeMenu}) {
             {menu.title}
         </div>
     );
-}
+});
 
-function ItemArea({activeMenu, setActiveMenu}) {
+const ItemArea = memo(({activeMenu, setActiveMenu}) => {
+    const activeMenuData = useMemo(() =>
+            menuData.find(menu => menu.title === activeMenu)
+        , [activeMenu]);
+
     if (!activeMenu) return null;
-
-    const activeMenuData = menuData.find(menu => menu.title === activeMenu);
 
     return (
         <div className={styles.itemArea}>
             <div className={styles.titleArea}>
-                <span className={styles.titleText}>{activeMenu}</span> {/* 이 부분 수정 */}
+                <span className={styles.titleText}>{activeMenu}</span>
             </div>
             <div className={styles.itemContent}>
                 {activeMenuData && activeMenuData.items.map(item => (
@@ -189,14 +191,15 @@ function ItemArea({activeMenu, setActiveMenu}) {
             </div>
         </div>
     );
-}
+});
 
-function Item({item}) {
+
+const Item = memo(({item}) => {
     return (
         <Link to={item.url} className={styles.item}>
             {item.name}
         </Link>
     );
-}
+});
 
-export default CustomNavbar;
+export default memo(CustomNavbar);

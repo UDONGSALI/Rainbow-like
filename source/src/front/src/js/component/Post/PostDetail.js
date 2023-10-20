@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
 import styles from '../../../css/component/Post/PostDetail.module.css';
 import useDeletePost from "../hook/useDeletePost";
-import {findAllByRole} from "@testing-library/react";
+
 
 function PostDetail(props) {
     const { postNum,boardNum } = props;
@@ -15,6 +15,7 @@ function PostDetail(props) {
 
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const isLabor = sessionStorage.getItem("role") === "LABOR";
+    const isCounselor= sessionStorage.getItem("role") === "COUNSELOR";
     const [memId, setMemId] = useState(sessionStorage.getItem('memId'));
 
     // 이전 글과 다음 글 상태 정보 저장
@@ -26,6 +27,7 @@ function PostDetail(props) {
     const [isNextActive, setIsNextActive] = useState(false);
 
     console.log(sessionStorage.role)
+    console.log(post)
     useEffect(() => {
         fetch(SERVER_URL + `files/postNum/${postNum}`)
             .then((response) => response.json())
@@ -90,8 +92,6 @@ function PostDetail(props) {
     }, [postNum, boardNum]);
 
 
-    console.log(nextPost)
-console.log(prevPost)
     useEffect(() => {
         setIsNextActive(nextPost !== null);
         setIsPrevActive(prevPost !== null);
@@ -110,11 +110,11 @@ console.log(prevPost)
         return <div>Loading...</div>;
     }
 
-console.log(boardNum)
+
     return (
         <div className={styles.postDetail}> {/* CSS 모듈 적용 */}
             <div className={styles.titleDivider}></div>
-            <h2 className={styles.title}>{post.title}</h2>
+            <h2 className={styles.title}>{post ? post.title : 'Loading...'}</h2>
             <div className={styles.postMeta}>
                 <p className={styles.postData}>
                     작성자: {post.member.memId}{' '}
@@ -149,16 +149,23 @@ console.log(boardNum)
                         <button onClick={onDelClick} className={styles.postDeleteButton}>삭제</button>
                     </>
                 )}
-                {isLabor && post.board.boardNum === 7 && post.member.memId !== memId && (
-                    <button
-                        onClick={() => {
-                            navigate(`/csl/new/${postNum}`, { state: { mode: "reply", boardNum } });
-                        }}
-                        className={styles.postReplyButton}
-                    >
-                        답글
-                    </button>
-                )}
+                {/*답글 활성화 조건*/}
+                {
+                    ((isLabor && post.board.boardNum == 7) ||
+                        (isCounselor && post.board.boardNum == 8)) &&
+                    post.member.memId !== memId &&
+                    post.conselStatus === 'WAIT' &&
+                    ( // 여기에 추가된 조건
+                        <button
+                            onClick={() => {
+                                navigate(`/csl/new/${postNum}`, { state: { mode: "reply", boardNum } });
+                            }}
+                            className={styles.postReplyButton}
+                        >
+                            답글
+                        </button>
+                    )
+                }
                 <button onClick={() => {
                     if (post.board.boardNum <= 2) {
                         navigate(`/post/${post.board.boardNum}`);

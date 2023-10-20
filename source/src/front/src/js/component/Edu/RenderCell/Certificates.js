@@ -15,7 +15,7 @@ function Certificates({ name, eduName, isOpen, onClose }) {
         <ModalBackground className="printModal" onClick={onClose}>
             <Global styles={globalPrintStyles} />
             <CertificateWrapper onClick={e => e.stopPropagation()}>
-                <CertificateTitle>수료증</CertificateTitle>
+                <CertificateTitle>수료증</CertificateTitle><br/>
                 <CertificateText>성명: {name}</CertificateText>
                 <CertificateText>프로그램명: {eduName}</CertificateText>
                 <CertificateText>
@@ -70,10 +70,12 @@ const ModalBackground = styled.div`
 `;
 
 const CertificateWrapper = styled.div`
+  width: 60%;
   border: 3px double #3a3a3a;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 30px 40px;
+  gap: 20px;
   max-width: 600px;
   margin: 0 auto;
   background-color: #fdfcfb;
@@ -82,17 +84,15 @@ const CertificateWrapper = styled.div`
 
 const CertificateTitle = styled.h2`
   text-align: center;
-  margin-bottom: 30px;
   font-family: 'Playfair Display', serif; // Google Fonts에서 가져온 폰트
   font-size: 2.5em; // 글자 크기를 약간 늘림
   font-weight: bold;
   border-bottom: 2px solid #3a3a3a;
-  padding-bottom: 10px;
+  padding-bottom: 25px;
 `;
 
 const CertificateText = styled.p`
-  font-size: 18px;
-  margin-bottom: 15px;
+  font-size: 30px;
   font-family: 'Playfair Display', serif; // Google Fonts에서 가져온 폰트
   line-height: 1.5;
   text-align: left;
@@ -100,8 +100,7 @@ const CertificateText = styled.p`
 
 const CertificateDate = styled.p`
   text-align: right;
-  margin-top: 40px;
-  font-size: 16px;
+  font-size: 26px;
   font-family: 'Playfair Display', serif; // Google Fonts에서 가져온 폰트
 `;
 
@@ -146,7 +145,6 @@ const globalPrintStyles = css`
 
     .printModal > div {
       max-width: 90%;
-      width: 100%;
       margin: auto; // 중앙 정렬을 위한 설정
     }
   }

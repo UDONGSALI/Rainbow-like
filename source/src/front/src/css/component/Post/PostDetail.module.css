@@ -147,6 +147,7 @@
 /* .postEditButton, .postDeleteButton, .postListButton 클래스 스타일 */
 .postEditButton,
 .postDeleteButton,
+.postReplyButton,
 .postListButton {
     padding: 10px 20px;
     background-color: #a38ced;

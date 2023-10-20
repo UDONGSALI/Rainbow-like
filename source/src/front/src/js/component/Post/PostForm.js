@@ -36,7 +36,6 @@ function PostForm(props) {
         memName:'',
         email:'',
         phone:'',
-        clubRecuStatus: '',
         delYN: 'N'
     });
 
@@ -91,7 +90,7 @@ console.log(formData)
         if (isReplyMode) {
             setFormData(prevFormData => ({
                 ...prevFormData,
-                parentsNum: parentsNumFromURL
+                parentsNum: parseInt(parentsNumFromURL)
             }));
         }
 
