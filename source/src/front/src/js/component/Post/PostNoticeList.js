@@ -25,7 +25,6 @@ function PostNoticeList(props) {
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-    console.log(posts)
     //페이지관련
     const [activePage, setActivePage] = useState(1);
     const itemsCountPerPage = 10;

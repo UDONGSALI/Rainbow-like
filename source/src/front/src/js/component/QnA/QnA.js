@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {memo, useState} from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -55,7 +55,7 @@ const accordionData = [
                             aria-controls={`panel${index + 1}-content`}
                             id={`panel${index + 1}-header`}
                         >
-                            <Typography>
+                            <Typography component="div">
                                 <div className={expandedPanel === `panel${index + 1}` ? styles.acodiHeaderActive : styles.acodiHeader}>
                                     <span className={styles.QuestionMark}>Q</span>
                                     <div className={styles.Question}>{data.question}</div>
@@ -63,7 +63,7 @@ const accordionData = [
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails style={{backgroundColor: '#F3F3F3FF'}}>
-                            <Typography>
+                            <Typography component="div">
                                 <div className={styles.acodInner}>
                                     <span className={styles.answerMark}>A</span>
                                     <div className={styles.answerTxt}>{data.answer}</div>
@@ -75,4 +75,4 @@ const accordionData = [
             </div>
         )
     }
-export default QnA
+export default memo(QnA)
