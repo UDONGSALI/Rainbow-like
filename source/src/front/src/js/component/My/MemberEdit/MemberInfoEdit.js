@@ -176,7 +176,7 @@ export default function MemberInfoEdit() {
 
 
     function redirectToURL1() {
-        window.location.href = "http://localhost:3000/mypage/edu";
+        window.location.href = "/mypage/infoEdit";
     };
 
 

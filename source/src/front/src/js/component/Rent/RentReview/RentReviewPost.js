@@ -3,6 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import styles from "../../../../css/component/Rent/RentReviewPost.module.css";
 import Comment from "../../Comment/Comment";
+import RentReviewComment from "./RentReviewComment";
 
 const RentReviewDetails = () => {
     const {postNum} = useParams();
@@ -112,9 +113,51 @@ const RentReviewDetails = () => {
 
     // 데이터가 로드되면 UI를 렌더링
     return (
-        <div id={styles.review}>
-            <p><b>글번호</b> {postDetails.postNum} <b>｜</b></p>
-            <div className={styles.postBox}>
+        <div id={styles.review} style={{width: "100%"}}>
+            <div style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                height: "45px",
+            }}>
+                <div style={{width: "30%", marginLeft:"5px"}}>
+                    <p><b>글번호</b> {postDetails.postNum} <b>｜</b></p>
+                </div>
+                <div style={{width: "70%", display: "flex", justifyContent: "flex-end"}}>
+                    {postDetails.member.memId === memId || isAdmin ? (
+                        <div style={{marginRight:"5px"}}>
+                            <button onClick={onEditClick} style={{
+                                width: "70px",
+                                height: "35px",
+                                backgroundColor: "rgba(118,83,253,0.5)",
+                                color: "#ffffff",
+                                border: "1px solid #cccccc",
+                                borderRadius: '5px',
+                                fontSize: "15px",
+                                fontWeight: "bold",
+                                marginRight: "2px" // 여백 추가
+                            }}> 수정
+                            </button>
+                            <button onClick={onDeleteClick} style={{
+                                width: "70px",
+                                height: "35px",
+                                backgroundColor: "rgba(61,12,105,0.73)",
+                                color: "#ffffff",
+                                border: "1px solid #cccccc",
+                                borderRadius: '5px',
+                                fontSize: "15px",
+                                fontWeight: "bold",
+                            }}> 삭제
+                            </button>
+                        </div>
+                    ) : (
+                        <></>
+                    )}
+                </div>
+            </div>
+
+            {/*게시글*/}
+            <div className={styles.postBox} style={{width: "100%", height: "700px"}}>
                 <div className={styles.titleWrap}>
                     <div className={styles.title}>
                         <h2><b>제목</b> {postDetails.title}</h2>
@@ -126,51 +169,17 @@ const RentReviewDetails = () => {
                     </div>
                 </div>
                 <hr/>
-                <div className={styles.content}>
-                    <p>{postDetails.content}</p>
-                </div>
-
-                <div>
-                    <div className={styles.postButton}>
-                        {postDetails.member.memId === memId || isAdmin ? (
-                            <>
-                                <div className={styles.button1}>
-                                    <button onClick={onEditClick}
-                                            style={{
-                                                width: "80px",
-                                                height: "40px",
-                                                backgroundColor: "rgba(118,83,253,0.5)",
-                                                color: "#ffffff",
-                                                border: "1px solid #cccccc",
-                                                borderRadius: '5px',
-                                                fontSize: "15px",
-                                                fontWeight: "bold",
-                                                marginTop: "5%",
-                                                marginBottom: "15%"
-                                            }}> 수정
-                                    </button>
-                                    <button onClick={onDeleteClick}
-                                            style={{
-                                                width: "80px",
-                                                height: "40px",
-                                                backgroundColor: "rgba(61,12,105,0.73)",
-                                                color: "#ffffff",
-                                                border: "1px solid #cccccc",
-                                                borderRadius: '5px',
-                                                fontSize: "15px",
-                                                fontWeight: "bold",
-                                                marginTop: "5%",
-                                                marginBottom: "15%"
-                                            }}> 삭제
-                                    </button>
-                                </div>
-                            </>
-                        ) : (
-                            <></>
-                        )}
+                <div style={{width: "100%"}}>
+                    <div className={styles.content} style={{marginLeft: "5%", marginRight: "5%", marginBottom: "10%"}}>
+                        <p>{postDetails.content}</p>
                     </div>
                 </div>
             </div>
+
+            {/*대관이용후기게시글 댓글*/}
+            <RentReviewComment/>
+
+            {/*게시글 작성 및 목록이동 버튼*/}
             <div className={styles.button2} style={{display: 'flex', justifyContent: 'center'}}>
 
                 <button onClick={() => navigate('/rent/reviewWrite')}
@@ -184,7 +193,8 @@ const RentReviewDetails = () => {
                             fontSize: "15px",
                             fontWeight: "bold",
                             marginTop: "5%",
-                            marginBottom: "15%"
+                            marginBottom: "15%",
+                            marginRight:"5px"
                         }}>새글쓰기
                 </button>
 
