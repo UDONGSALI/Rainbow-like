@@ -14,9 +14,8 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -99,10 +98,8 @@ public class PostController {
 
     // 회원 번호로 멤버별 상담(온라인상담,노무상담게시판)의 게시글 요청
     @GetMapping("/memberCounsel/{memNum}")
-    public Iterable<Post> getCounselByMember(@PathVariable Long memNum) {
-
-        List<Board> councelBoard = boardRepository.findByBoardNameContaining("상담");
-        return postRepository.findByBoardInAndMemberMemNum(councelBoard, memNum);
+    public List<Post> getCounselByMember(@PathVariable Long memNum) {
+        return postService.getCounselPostsByMember(memNum);
     }
 
     @PostMapping("/new")
