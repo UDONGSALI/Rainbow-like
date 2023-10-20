@@ -36,7 +36,6 @@ function PostForm(props) {
         memName:'',
         email:'',
         phone:'',
-        conselStatus: 'WAIT',
         delYN: 'N'
     });
 
