@@ -183,19 +183,17 @@
     background-color: white;
 }
 
-/* .prevButton 클래스 스타일 */
-.prevButton {
+.prevButton  {
     border: none;
-    border-top: 1px solid black ;
-    border-bottom: 1px solid black;
+    border-top: 1px solid #c4c4c4;
+    border-bottom: 1px solid #c4c4c4;
     padding-top: 10px;
     padding-bottom: 8px;
 }
 
-/* .nextButton 클래스 스타일 */
-.nextButton {
-    border-top: 1px solid black ;
-    border-bottom: 1px solid black;
+.nextButton{
+    border-top: 1px solid #c4c4c4;
+    border-bottom: 1px solid #c4c4c4;
     padding-top: 10px;
     padding-bottom: 8px;
     margin-bottom: 30px;
