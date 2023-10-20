@@ -9,7 +9,7 @@ function ClubFormPage(props){
 
     return(
         <div>
-            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={"소모임 신청"}/>
 
             <ClubForm memId = {memId} />
         </div>

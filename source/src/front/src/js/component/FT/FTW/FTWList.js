@@ -287,7 +287,7 @@ function FTWList({ ftcNum, checkedRows, setCheckedRows }) {
                     </ul>
                 </div>
                 :
-                <div class={styles.btn}>
+                <div className={styles.btn}>
                 <button onClick={() => {
                     const path = isAdmin ? '/admin/ftmain' : '/ftmain';
                     navigate(path);

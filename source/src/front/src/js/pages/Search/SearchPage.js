@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {memo, useState} from 'react';
 import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/SearchHeader";
 import SearchContainer from "../../component/Search/SearchContainer";
@@ -13,4 +13,4 @@ function SearchPage() {
     );
 }
 
-export default SearchPage;
+export default memo(SearchPage);

@@ -8,7 +8,7 @@ function FTCFormPage(props){
 
     return(
         <div>
-            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={"인재 매칭 신청"}/>
             <FTCForm memId={memId}/>
         </div>
     );
