@@ -14,10 +14,10 @@ export default function RentReviewWrite() {
     const [post, setPost] = useState({});
     const [file, setFile] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const [updatedPost, setUpdatedPost]=useState({});
+    const [updatedPost, setUpdatedPost] = useState({});
     const [formData, setFormData] = useState({
         memNum: '',
-        boardNum: 6 ,
+        boardNum: 6,
         title: '',
         content: '',
         delYN: 'N'
@@ -85,7 +85,6 @@ export default function RentReviewWrite() {
     };
 
 
-
     const handleUpdateButtonClick = () => {
         if (!formData.phone || !formData.email || !formData.title || !formData.content) {
             alert('연락처, 이메일 주소, 제목, 내용은 필수 입력 항목입니다.');
@@ -114,15 +113,14 @@ export default function RentReviewWrite() {
     };
 
 
-
     return (
-        <div className={styles.parentContainer}>
-            <div className={styles.postFormContainer} >
+        <div className={styles.parentContainer} >
+            <div className={styles.postFormContainer}>
                 <div className={styles.formHeader}>
-                    <span className={styles.formHeaderText}>게시글 등록</span>
+                    <span className={styles.formHeaderText} style={{fontWeight:"bold"}}>게시글 등록</span>
                 </div>
                 <hr className={`${styles.formHeaderLine} ${styles.otherHr}`}/>
-                <div className={styles.inputGroup} style={{width:"100%"}}>
+                <div className={styles.inputGroup} style={{width: "100%"}}>
                     <label className={styles.label}><span className={styles.required}>*</span>이름</label>
                     <input
                         type="text"
@@ -171,7 +169,7 @@ export default function RentReviewWrite() {
                         }}
                     />
                 </div>
-                <div className={styles.inputGroup} >
+                <div className={styles.inputGroup}>
                     <label className={styles.label}><span className={styles.required}>*</span>내용</label>
                     <textarea
                         type="text"
@@ -181,7 +179,7 @@ export default function RentReviewWrite() {
                         required
                         style={{
                             width: "100%",
-                            height : "400px",
+                            height: "400px",
                             maxHeight: "100%",
                             border: "1px solid #ccc",
                             borderRadius: '5px',
@@ -190,7 +188,7 @@ export default function RentReviewWrite() {
                 </div>
                 <div className={styles.inputGroup}>
                     <label className={styles.label}>첨부파일</label>
-                    <div className={styles.buttonInfoWrap} >
+                    <div className={styles.buttonInfoWrap} style={{width:"100%"}}>
                         <button
                             style={{
                                 width: '80px',
@@ -211,8 +209,8 @@ export default function RentReviewWrite() {
                         </button>
                         {file && (
                             <>
-                                <div className={styles.buttonInfo} style={{display:"flex"}}>
-                                    <p>선택된 파일: {file.name}</p>
+                                <div className={styles.buttonInfo} style={{display: "flex",width:"100%"}}>
+                                    <p style={{width:"10%"}}>선택된 파일: {file.name}</p>
                                     <button className={styles.ceoFile}
                                             style={{
                                                 width: '65px',
@@ -239,11 +237,38 @@ export default function RentReviewWrite() {
                         onChange={handleFileChange}
                     />
                 </div>
-
                 <div className={styles.buttonGroup}>
-                    <button type="submit" className={styles.submitButton} onClick={handleUpdateButtonClick}>등록</button>
+                    <button type="submit"
+                            onClick={handleUpdateButtonClick}
+                            style={{
+                                   width: "100px",
+                                   height: "40px",
+                                   backgroundColor: "#a38ced",
+                                   color: "#ffffff",
+                                   border: "1px solid #cccccc",
+                                   borderRadius: '5px',
+                                   fontSize: "15px",
+                                   fontWeight: "bold",
+                                   marginTop: "3%",
+                                   marginBottom: "15%"
+                    }}>등록
+                    </button>
                     <button type="button" onClick={() => navigate('/rent/review')}
-                            className={styles.redirectButton}>목록으로
+                            onClick={handleUpdateButtonClick}
+                            style={{
+                                width: "100px",
+                                height: "40px",
+                                backgroundColor: "#3d0c69",
+                                color: "#ffffff",
+                                border: "1px solid #cccccc",
+                                borderRadius: '5px',
+                                fontSize: "15px",
+                                fontWeight: "bold",
+                                textAlign:"center",
+                                marginTop: "3%",
+                                marginBottom: "15%"
+                    }}
+                    >목록으로
                     </button>
                 </div>
             </div>

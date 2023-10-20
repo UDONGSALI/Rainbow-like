@@ -182,23 +182,26 @@ export default function RentCalendar ({ onSelectDate }) {
 
     const handleNavigate = (date, view, action) => {
         const today = moment().startOf('day');
-        if (moment(date).isSameOrBefore(today)) {
-            alert("당일은 대관 예약이 불가합니다.");
-            return;
-        }
 
         setSelectedDate(date);
         const isHoliday = events.some(
             (event) => event.isHoliday && moment(event.start).isSame(date, "day")
         );
 
-        if (isHoliday) {
+        if (moment(date).isSameOrBefore(today)) {
+            alert("대관 예약이 불가합니다.");
+            setSelectedDate(null);
+            return;
+        } else if (isHoliday) {
             alert("이 날은 공휴일입니다. 대관 예약이 불가합니다.");
             setSelectedDate(null);
         } else {
             onSelectDate(moment(date).format("YYYY-MM-DD"));
         }
     };
+
+
+
 
     return (
         <div>
