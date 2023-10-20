@@ -22,9 +22,13 @@ function ImgPostList(props) {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 6;
+
     const { data: fetchedPosts, loadingPosts } = useFetch(`${SERVER_URL}post/board/${boardNum}`);
     const { data: fetchedFiles,  filesLoading } = useFetch(SERVER_URL + 'files/table/post', []);
     const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}post/${boardNum}`, setPosts);
+
+    // 데이터와 이미지가 모두 로드
+    const isDataLoaded = !loadingPosts && !filesLoading;
 
     useEffect(() => {
         if (!loadingPosts) {
@@ -57,6 +61,10 @@ function ImgPostList(props) {
             state: { boardNum: boardNumber }
         });
     };
+
+    if (!isDataLoaded) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div>

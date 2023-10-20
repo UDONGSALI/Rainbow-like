@@ -156,7 +156,7 @@ function CounselingList(props) {
                         }}
                     >
                         <StyledCell>
-                            {params.row.parentsNum ? "ㄴ[답글] " : ""}{params.value}
+                            {params.row.parentsNum ? "ㄴ [답글] " : ""}{params.value}
                         </StyledCell>
                     </div>
                 );

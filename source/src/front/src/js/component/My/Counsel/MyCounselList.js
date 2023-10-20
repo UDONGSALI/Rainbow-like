@@ -1,19 +1,19 @@
-
 import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
 import useDelete from "../../hook/useDelete";
-import Pagination from "../../Common/Pagination";
+import useFetch from "../../hook/useFetch";
 
 export default function MyCounselList() {
     const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
     const [counsels, setCounsels] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10; // 페이지당 표시할 항목 수
     const navigate = useNavigate();
     const deleteItem = useDelete(SERVER_URL);
+
+    const {data: fetchedCounsels, loading} = useFetch(`${SERVER_URL}post/memberCounsel/${memNum}`);
+
 
     useEffect(() => {
         // 로그인한 사용자 정보를 가져오는 방법에 따라서 구현
@@ -21,42 +21,50 @@ export default function MyCounselList() {
         setMemNum(fetchedUserInfo.memNum); // memNum 상태 업데이트
     }, []);
 
+
     useEffect(() => {
-        // memNum 상태가 변경될 때마다 fetchClubsByMember를 호출
-        if (memNum !== null) {
-            fetchCounselsByMember();
-        }
-    }, [memNum]);
-
-    const fetchCounselsByMember = () => {
-        if (memNum === null) {
-            return;
-        }
-
-        // memNum을 사용하여 해당 멤버의 교육신청내역만 가져오도록 수정
-        fetch(`${SERVER_URL}post/memberCounsel/${memNum}`)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                const modifiedData = data.map(item => ({
-                    ...item,
-                    type:item.board.boardName,
-
-
-                }));
-                const counselsWithNumbers = modifiedData.map((counsel, index) => ({
-                    ...counsel,
-                    id: counsel.postNum,
-                    number: index + 1, // 각 행에 번호를 순차적으로 할당
-                }));
-
-                setCounsels(counselsWithNumbers);
-            })
-            .catch((error) => {
-                console.error("API 호출 중 오류 발생:", error);
+        if (!loading) {
+            // Post 객체에 type 속성 설정
+            fetchedCounsels.forEach(post => {
+                switch (post.board.boardNum) {
+                    case 7:
+                        post.type = '노무 상담';
+                        break;
+                    case 8:
+                        post.type = '온라인 상담';
+                        break;
+                    default:
+                        break;
+                }
             });
-    };
 
+            const primaryCounsels = fetchedCounsels.filter(post => !post.parentsNum).sort((a, b) => b.postNum - a.postNum);
+
+            const replyMap = fetchedCounsels.reduce((acc, post) => {
+                if (post.parentsNum) {
+                    if (!acc[post.parentsNum]) {
+                        acc[post.parentsNum] = [];
+                    }
+                    acc[post.parentsNum].push(post);
+                }
+                return acc;
+            }, {});
+
+            const sortedCounsels = [];
+
+            primaryCounsels.forEach(primaryCounsel => {
+                sortedCounsels.push(primaryCounsel);
+                if (replyMap[primaryCounsel.postNum]) {
+                    sortedCounsels.push(...replyMap[primaryCounsel.postNum]);
+                }
+            });
+
+            setCounsels(sortedCounsels);
+        }
+    },[loading, fetchedCounsels, memNum]);
+
+
+    console.log(counsels)
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
         const boardNum = params.row.board.boardNum;
@@ -64,9 +72,6 @@ export default function MyCounselList() {
         console.log('rowId:', rowId);
         navigate(`/post/detail/${boardNum}/${rowId}`);
     };
-
-
-
 
     function convertEnumToKorean(enumValue) {
         if (enumValue === "APPROVE") {
@@ -77,7 +82,7 @@ export default function MyCounselList() {
             return "완료";
         } else if (enumValue === "EDU") {
             return "교육";
-        } else if (enumValue === "BUSINESS"){
+        } else if (enumValue === "BUSINESS") {
             return "사업";
         } else {
             return "대기";
@@ -86,7 +91,7 @@ export default function MyCounselList() {
 
     const columns = [
         {
-            field: "number",
+            field: "postNum",
             headerName: "번호",
             width: 80,
             headerClassName: styles.customHeader,
@@ -121,7 +126,7 @@ export default function MyCounselList() {
                         style={{cursor: "pointer"}}
                         onClick={() => onRowClick(params)}
                     >
-                        {postTitle}
+                        {params.row.parentsNum ? "ㄴ [답글] " : ""}{params.row.title}
                     </div>
                 );
             }
@@ -164,18 +169,13 @@ export default function MyCounselList() {
         );
     }
 
-    const handleChangePage = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
-
     return (
         <div id={styles.active}>
             <div className={styles.main}>
                 <div
                     className={styles.posts}
                     style={{
-                        maxHeight: 600,
-                        height:"100%",
+                        height: 500,
                         width: "100%",
                     }}
                 >
@@ -189,20 +189,16 @@ export default function MyCounselList() {
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
-                        autoHeight={true}
-
+                        sortModel={[
+                            {
+                                field: "number",
+                                sort: "desc", // 내림차순 정렬
+                            },
+                        ]}
                     />
                 </div>
-                <Pagination
-                    activePage={currentPage}
-                    itemsCountPerPage={itemsPerPage}
-                    totalItemsCount={counsels.length}
-                    pageRangeDisplayed={5} // 원하는 범위로 조절
-                    onChange={handleChangePage}
-                    prevPageText="<"
-                    nextPageText=">"
-                />
             </div>
         </div>
     );
-};
+}
+;

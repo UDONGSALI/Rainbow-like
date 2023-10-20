@@ -37,10 +37,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByBoardAndPostNumLessThanOrderByPostNumDesc(Board board, Long postNum);
 
     List<Post> findByParentsNum(Long parentsNum);
-
-
-//    List<Post> findByIdAndContent(Long id, String content);
-
+    List<Post> findByParentsNumIn(List<Long> parentsNums);
 
     @Modifying
     @Query("update Post p set p.pageView = p.pageView + 1 where p.postNum = :id")
@@ -56,6 +53,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     // 게시판과 멤버를 이용하여 게시글 찾기
     List<Post> findByBoardInAndMemberMemNum(List<Board> boards, Long memNum);
+
+
+    List<Post> findByPostNumIn(List<Long> postNums);
 
 
     @Transactional
