@@ -148,7 +148,6 @@ function App() {
                 <Route path="/post/edit/:postNum" element={<PostForm/>}/>
 
             {/*게시글*/}
-            <Route path="/sj" element={<SjNewsPage/>}/>
             <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
             <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
             <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
