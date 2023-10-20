@@ -41,6 +41,8 @@ public class CommentController {
     }
 
 
+
+
     @RequestMapping("/membernumcomm/{id}")
     public Iterable<Comment> getMemberNumComm(@PathVariable Long id) {
         //멤버 넘버 조회
