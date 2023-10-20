@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {DataGrid} from "@mui/x-data-grid";
-import { SERVER_URL} from "../Common/constants";
+import React, {useEffect, useState} from 'react';
+import {SERVER_URL} from "../Common/constants";
 import Snackbar from '@mui/material/Snackbar';
-import {useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import styles from '../../../css/component/Club/ClubList.module.css';
 import CustomDataGrid from "../Common/CustomDataGrid";
 
@@ -43,7 +42,7 @@ function ClubList(props) {
 
             renderCell: (params) => (
                 <div
-                    style={{ cursor: 'pointer' }}
+                    style={{cursor: 'pointer'}}
                     onClick={() => onRowClick(params)}
                 >
                     {params.value}
@@ -106,7 +105,7 @@ function ClubList(props) {
                 headerAlign: 'center',
                 renderCell: (params) => (
                     <button
-                        style={{ cursor: 'pointer' }}
+                        style={{cursor: 'pointer'}}
                         onClick={() => onEditClick(params)}
                     >
                         {params.value}
@@ -139,7 +138,7 @@ function ClubList(props) {
         fetchPosts();
     }, []);
 
-    const fetchPosts = () =>{
+    const fetchPosts = () => {
         fetch(`${SERVER_URL}post/board/9`)
             .then(response =>
                 response.json())
@@ -165,7 +164,7 @@ function ClubList(props) {
             parentsNum: post.parentsNum,
             clubAllowStatus: post.clubAllowStatus,
             clubRecuStatus: post.clubRecuStatus,
-            delYN : 'Y'
+            delYN: 'Y'
         };
 
         // PUT 요청 보내기
@@ -223,18 +222,17 @@ function ClubList(props) {
     }
 
     return (
-        <div className={styles.List} style={{ height: 500, width: '100%' }}>
-            <div class={styles.btn}>
-            <button onClick = {() => navigate('/clubs/new')}>소모임 신청</button>
+        <div className={styles.List} style={{height: 500, width: '100%'}}>
+            <div className={styles.btn}>
+                <button onClick={() => navigate('/clubs/new')}>소모임 신청</button>
             </div>
             <CustomDataGrid
                 className={styles.customDataGrid}
                 columns={columns}
-                      rows={posts}
-                      disableRowSelectionOnClick={true}
-                      getRowId={row => row.postNum}
-                pageSize={5} // 페이지당 5개의 행을 보여줍니다.
-                getRowId={(row) => row.postNum}
+                rows={posts}
+                disableRowSelectionOnClick={true}
+                getRowId={row => row.postNum}
+                pageSize={5}
                 components={{
                     NoRowsOverlay: CustomNoRowsOverlay
                 }}
@@ -246,7 +244,6 @@ function ClubList(props) {
                     },
                 ]}
             />
-
 
 
             <Snackbar

@@ -164,7 +164,7 @@ function RentHistList(props) {
     }
 
     const columns = [
-        {field: 'rentHistNum', headerName: '번호', width: 40},
+        {field: 'rentHistNum', headerName: '번호', width: 60},
         {
             field: 'spaceName',
             headerName: '공간명',
@@ -224,7 +224,7 @@ function RentHistList(props) {
         {
             field: 'permit',
             headerName: '허가증',
-            width: 70,
+            width: 80,
             renderCell: (params) => (
                 <div
                     style={{ cursor: 'pointer' }}
@@ -242,14 +242,14 @@ function RentHistList(props) {
         {
             field: 'cancel',
             headerName: '취소',
-            width: 40,
+            width: 80,
             renderCell: (params) => (
                 <button onClick={() => handleDelete(params.row.rentHistNum)}>
                     취소
                 </button>
             ),
         }
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
@@ -275,7 +275,8 @@ function RentHistList(props) {
                         columns={columns}
                         rows={rentHist.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                         pageSize={5}
-                        hideFooter={true}
+                        hideFooter
+                        disableColumnMenu
                     />
                 )}
                 <Pagination
