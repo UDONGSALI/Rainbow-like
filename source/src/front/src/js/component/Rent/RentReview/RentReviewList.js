@@ -5,10 +5,13 @@ import Snackbar from "@mui/material/Snackbar";
 import CustomDataGrid from "../../Common/CustomDataGrid";
 import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import File from "../../../../img/component/file.png";
+import Pagination from "../../Common/Pagination";
 
 export default function RentReviewList() {
     const [rentReviews, setRentReviews] = useState([]);
     const [open, setOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 20; // 페이지당 표시할 항목 수
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,6 +41,10 @@ export default function RentReviewList() {
         const rowId = params.row.postNum;
 
         navigate(`/rent/reviewPost/${rowId}`);
+    };
+
+    const handleChangePage = (pageNumber) => {
+        setCurrentPage(pageNumber);
     };
 
 
@@ -147,6 +154,15 @@ export default function RentReviewList() {
                             }}
                             pagination={true}
 
+                        />
+                        <Pagination
+                            activePage={currentPage}
+                            itemsCountPerPage={itemsPerPage}
+                            totalItemsCount={rentReviews.length}
+                            pageRangeDisplayed={5} // 원하는 범위로 조절
+                            onChange={handleChangePage}
+                            prevPageText="<"
+                            nextPageText=">"
                         />
                         <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <button onClick={() => navigate('/rent/reviewWrite')}

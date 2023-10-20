@@ -5,11 +5,13 @@ import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../../../js/component/Common/constants";
 import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
-
+import Pagination from "../../../component/Common/Pagination";
 
 export default function MyActiveComment() {
     const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
     const [comments, setComments] = useState([]); // 게시글 데이터 상태
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10; // 페이지당 표시할 항목 수
     const navigate = useNavigate();
 
 
@@ -35,18 +37,26 @@ export default function MyActiveComment() {
         fetch(`${SERVER_URL}comments/member/${memNum}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
+                console.log("Comments data:", data);
+
                 // 해당 멤버의 댓글만 필터링하여 상태(State)에 저장
                 const memberComments = data.filter((comment) => comment.member.memNum === memNum);
+                console.log("Member comments:", memberComments);
                 setComments(memberComments);
+
+                // 필터링: delYN이 'N'인 게시물만 남김
+                const filteredComments = data.filter((comment) => comment.delYN === 'N');
+                console.log("Filtered comments:", filteredComments);
+                setComments(filteredComments);
+
                 // 번호를 추가하여 각 행에 할당
                 const commentsWithNumbers = data.map((comment, index) => ({
                     ...comment,
                     id: comment.commNum,
                     number: index + 1, // 각 행에 번호를 순차적으로 할당
                 }));
+                console.log("Comments with numbers:", commentsWithNumbers);
                 setComments(commentsWithNumbers);
-
             })
             .catch((error) => {
                 console.error("API 호출 중 오류 발생:", error);
@@ -68,7 +78,7 @@ export default function MyActiveComment() {
         } else if (boardName === '세종시 기관 및 단체 소식') {
             targetPath = `/post/detail/${rowId}`;
         } else if (boardName === '대관 이용 후기') {
-            targetPath = `/rent/review/${rowId}`;
+            targetPath = `/rent/reviewPost/${rowId}`;
         } else {
             targetPath = `/post/detail/${rowId}`;
         }
@@ -76,6 +86,7 @@ export default function MyActiveComment() {
         // 실제로 경로 이동
         navigate(targetPath);
     };
+
 
 
     const columns = [
@@ -133,12 +144,21 @@ export default function MyActiveComment() {
         {
             field: "content",
             headerName: "댓글 내용",
-            flex: 1,
+            flex:1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
 
+        },
+        {
+            field: "delYN",
+            headerName: "댓글 삭제 여부",
+            width: 150,
+            headerClassName: styles.customHeader,
+            cellClassName: styles.customCell,
+            align: 'center',
+            headerAlign: 'center',
 
 
         },
@@ -178,6 +198,9 @@ export default function MyActiveComment() {
             </div>
         );
     }
+    const handleChangePage = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
 
     return (
@@ -187,31 +210,36 @@ export default function MyActiveComment() {
                 <div
                     className={styles.posts}
                     style={{
-                        height: 500,
+                        maxHeight: 600,
+                        height:"100%",
                         width: "100%",
-
 
                     }}
                 >
                     <CustomDataGrid
                         className={styles.customDataGrid}
                         columns={columns}
-                        rows={comments}
-                        pageSize={5} // 페이지당 5개의 행을 보여줍니다.
+                        rows={comments.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)}
                         getRowId={(row) => row.commNum}
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
-                        sortModel={[
-                            {
-                                field: "number",
-                                sort: "desc", // 내림차순 정렬
-                            },
-                        ]}
+                        autoHeight={true}
+
 
                     />
+
                 </div>
+                <Pagination
+                    activePage={currentPage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={comments.length}
+                    pageRangeDisplayed={5} // 원하는 범위로 조절
+                    onChange={handleChangePage}
+                    prevPageText="<"
+                    nextPageText=">"
+                />
             </div>
         </div>
     );
