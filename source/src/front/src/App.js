@@ -66,9 +66,6 @@ import RentReviewWritePage from "./js/pages/Rent/RentReviewWritePage";
 import IntroPage from "./js/pages/Intro/IntroPage";
 import QnAPage from "./js/pages/QnA/QnAPage";
 import CustomNavbar from "./js/layout/Navbar/CustomNavbar";
-import OrganizationChart from "./js/component/Intro/OrganizationChart";
-import OnlineTop from "./js/component/Post/OnlineTop";
-
 
 
 function App() {
@@ -108,13 +105,13 @@ function App() {
             <Route path="/admin/eduHist" element={isAdmin ? <EduHistListPage memId={memId} type="admin"/> : null}/>
             <Route path="/admin/rentHist"
                    element={isAdmin ? <RentHistListPage memId={memId} type="admin"/> : null}/>
+            <Route path="/admin/pay" element={isAdmin ? <PayListPage/> : null}/>
             <Route path="/admin/org" element={isAdmin ? <OrgListPage/> : null}/>
             <Route path="/admin/board" element={isAdmin ? <BoardListPage/> : null}/>
             <Route path="/admin/board/post/:boardNum" element={isAdmin ? <BoardPostListPage/> : null}/>
+            <Route path="admin/ftmain" element={isAdmin ? <FTMainPage type="admin"/> : null}/>
+            <Route path="admin/ftmain/ftw/:id" element={isAdmin ? <FTWDtlPage type="admin"/> : null}/>
             <Route path="/admin/log" element={isAdmin ? <LogListPage/> : null}/>
-            <Route path="/admin/pay" element={isAdmin ? <PayListPage/> : null}/>
-            <Route path="admin/ftmain" element={<FTMainPage type="admin"/>}/>
-            <Route path="admin/ftmain/ftw/:id" element={<FTWDtlPage type="admin"/>}/>
 
             {/*기관소개*/}
             <Route path="/intro" element={<IntroPage/>}/>
@@ -133,11 +130,11 @@ function App() {
 
             {/*질문*/}
             <Route path="/qna" element={<QnAPage/>}/>
+
             {/*에러*/}
             <Route path="/error" element={<ErrorPage/>}/>
 
             {/*게시글*/}
-            <Route path="/sj" element={<SjNewsPage/>}/>
             <Route path="/post/detail/:boardNum/:postNum" element={<PostDetailPage/>}/>
             <Route path="/imgPost/:boardNum" element={<SjNewsPage/>}/>
             <Route path="/post/:boardNum" element={<NoticeListPage/>}/>
@@ -146,7 +143,7 @@ function App() {
             <Route path="/csl/new/:parentsNum" element={<CslFormPage/>}/>
             <Route path="/post/new" element={<PostFormPage/>}/>
             <Route path="/post/edit/:postNum" element={<PostForm/>}/>
-
+            
             {/*공간대관페이지관련*/}
             <Route path="/rent/process" element={<RentProcessPage/>}/>
             <Route path="/rent/status" element={<RentStatusPage/>}/>
@@ -175,7 +172,7 @@ function App() {
                    element={memId ? <MyInfoEditSuccessPage memId={memId}/> : <Navigate to="/login" replace/>}/>
 
             {/*소모임*/}
-            <Route path="/clubs" element={<ClubPage/>}/>
+            <Route path="/clubsMain" element={<ClubPage/>}/>
             <Route path="/clubs/new" element={memId ? <ClubFormPage/> : <Navigate to="/login" replace/>}/>
             <Route path="/clubs/:id" element={<ClubDtlPage/>}/>
             <Route path="/clubs/edit/:id" element={<ClubEditorPage/>}/>

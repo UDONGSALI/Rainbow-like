@@ -29,7 +29,7 @@ function ImgContainer() {
         },
         {
             text: ["이웃과", "소통이", "활•◡•짝", "소모임"],
-            link: "/clubs"
+            link: "/clubsMain"
         },
         {
             text: ["엄마의", "웃음이", "활•◡•짝", "지원 센터"],

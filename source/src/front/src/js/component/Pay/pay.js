@@ -74,15 +74,13 @@ export default function Pay() {
         }}>
             <div style={{
                 width:'80%',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                marginBottom:'8px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius:'5px'
             }}>
-                <h1>대여비 결제</h1>
+                <h1>대관비 결제</h1>
                 <h3>{fee}원</h3>
             </div>
             {isLoading ? (
@@ -97,7 +95,7 @@ export default function Pay() {
             ) : (
                 <>
                     <div id="payment-widget" style={{width: '100%'}}/>
-                    <button style={{border: "none", fontSize: '18px'}} onClick={handlePayment}>
+                    <button style={{border: "none", fontSize: '18px', padding:'5px 20px'}} onClick={handlePayment}>
                         결제하기
                     </button>
                 </>

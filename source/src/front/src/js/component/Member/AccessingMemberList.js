@@ -12,22 +12,23 @@ import useSearch from "../hook/useSearch";
 import useFetch from "../hook/useFetch";
 import useDelete from "../hook/useDelete";
 
+// 1. 상수 및 상태
+const SEARCH_OPTIONS = [
+    {value: 'memId', label: 'ID', type: 'text'},
+    {
+        value: 'type',
+        label: '유형',
+        type: 'select',
+        options: [
+            {value: 'ADMIN', label: '관리자'},
+            {value: 'USER', label: '일반 회원'},
+            {value: 'LABOR', label: '노무사'},
+            {value: 'COUNSELOR', label: '상담사'}
+        ]
+    },
+];
+
 function AccessingMemberList() {
-    // 1. 상수 및 상태
-    const SEARCH_OPTIONS = [
-        {value: 'memId', label: 'ID', type: 'text'},
-        {
-            value: 'type',
-            label: '유형',
-            type: 'select',
-            options: [
-                {value: 'ADMIN', label: '관리자'},
-                {value: 'USER', label: '일반 회원'},
-                {value: 'LABOR', label: '노무사'},
-                {value: 'COUNSELOR', label: '상담사'}
-            ]
-        },
-    ];
     // 2. 로컬 상태 관리
     const [accessingMembers, setAccessingMembers] = useState([]);
 
@@ -93,7 +94,7 @@ function AccessingMemberList() {
             ),
             width: 150
         },
-    ]
+    ].map(col => ({ ...col, sortable: false }));
     return (
         <Wrapper style={{textAlign: 'center'}}>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
@@ -118,7 +119,8 @@ function AccessingMemberList() {
                         columns={columns}
                         rows={accessingMembers}
                         getRowId={(row) => row.tokenNum}
-                        hideFooter={true}
+                        hideFooter
+                        disableColumnMenu
                     />
                 )}
             </div>

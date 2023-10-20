@@ -17,15 +17,15 @@ import useFetch from "../hook/useFetch";
 import DateCell from "../Common/DateCell";
 import CurrencyCell from "./RenderCell/CurrencyCell";
 
-function PayList() {
-    // 1. 상수 및 상태
-    const itemsPerPage = 10;
-    const SEARCH_OPTIONS = [
-        {label: "대여 번호", value: "rentHistNum", type: "number"},
-        {label: "공간명", value: "spaceName", type: "text"},
-        {label: "회원 ID", value: "memId", type: "text"},
-    ];
+// 1. 상수 및 상태
+const itemsPerPage = 10;
+const SEARCH_OPTIONS = [
+    {label: "대여 번호", value: "rentHistNum", type: "number"},
+    {label: "공간명", value: "spaceName", type: "text"},
+    {label: "회원 ID", value: "memId", type: "text"},
+];
 
+function PayList() {
     // 2. Router Hooks
     const navigate = useNavigate();
     const location = useLocation();
@@ -98,7 +98,7 @@ function PayList() {
         {
             field: 'payHistNum',
             headerName: '번호',
-            width: 50, // 임의의 폭 값 설정
+            width: 60, // 임의의 폭 값 설정
         },
         {
             field: 'rentHistNum',
@@ -116,7 +116,7 @@ function PayList() {
         {
             field: 'spaceName',
             headerName: '공간명',
-            width: 150,
+            width: 160,
             renderCell: (row) => (
                 <span
                     onClick={() => handleSpaceClick(row.row.rentHist.space)}
@@ -151,7 +151,7 @@ function PayList() {
             width: 150,
             renderCell:DateCell
         },
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
@@ -177,7 +177,8 @@ function PayList() {
                         columns={columns}
                         rows={pays.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                         getRowId={(row) => row.payHistNum}
-                        hideFooter={true}
+                        hideFooter
+                        disableColumnMenu
                     />
                 )}
                 <Pagination
