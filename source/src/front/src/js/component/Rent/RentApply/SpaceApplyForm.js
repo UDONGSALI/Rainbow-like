@@ -4,10 +4,10 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import {SERVER_URL} from "../../Common/constants";
 import { useNavigate } from 'react-router-dom';
-import SpaceModal from "../SpaceModal";
+import SpaceModal from "./SpaceModal";
 import RentCalendar from './RentCalender';
 import {DataGrid} from "@mui/x-data-grid";
-import RentSpace from "../RentSpace";
+import RentSpace from "./RentSpace";
 import RentStatus from "./RentStatus";
 
 function SpaceApplyForm({onSelectdInfo}) {
@@ -21,29 +21,32 @@ function SpaceApplyForm({onSelectdInfo}) {
     const [selectedSpace, setSelectedSpace] = useState(null);
     const [selectedInfo, setSelectedInfo] = useState(null);
     const [mode, setMode] = useState(false);
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+    const currentMinutes = currentDate.getMinutes();
+    const currentTime = `${String(currentHour).padStart(2, '0')}:${String(currentMinutes).padStart(2, '0')}`;
 
     const navigate = useNavigate();
     const memId = sessionStorage.getItem("memId");
 
 
-    //대관내역 불러오기
-
+    // 대관내역 불러오기
     useEffect(() => {
+        const fetchRentHist = async () => {
+            try {
+                const response = await fetch(SERVER_URL + 'rent');
+                const data = await response.json();
+                // console.log('Raw Data:', data);
+                setRent((prevRent) => [...prevRent, ...data]); // 이전 상태를 기반으로 업데이트
+            } catch (error) {
+                alert('대관 장소 정보를 찾을 수 없습니다!');
+                console.error(error);
+            }
+        };
+
+        // 컴포넌트 마운트될 때 한 번만 실행
         fetchRentHist();
     }, []);
-
-    const fetchRentHist = async () => {
-        try {
-            const response = await fetch(SERVER_URL + 'rent');
-            const data = await response.json();
-            // console.log('Raw Data:', data);
-            setRent(data);
-        } catch (error) {
-            alert('대관 장소 정보를 찾을 수 없습니다!');
-            console.error(error);
-        }
-    };
-
 
     useEffect(() => {
         fetch(SERVER_URL + `members/id/${memId}`)
@@ -59,12 +62,18 @@ function SpaceApplyForm({onSelectdInfo}) {
     }, []);
 
 
-    // 일자 선택
-    const handleDateSelect = (selectedDate) => {
-        console.log("Selected Date:", selectedDate);
-        setSelectedDate(selectedDate);  // 선택된 날짜를 업데이트
-    };
 
+// 일자 선택
+    const handleDateSelect = (selectedDate) => {
+        const currentDate = new Date();
+        const isSameOrPastDay = new Date(selectedDate) <= currentDate;
+
+        if (isSameOrPastDay) {
+            alert("당일은 예약이 불가합니다.");
+        } else {
+            setSelectedDate(selectedDate);  // 선택된 날짜를 업데이트
+        }
+    };
 
     // 시간 배열 관련
     const times = Array(18)
@@ -122,17 +131,33 @@ function SpaceApplyForm({onSelectdInfo}) {
 
         return reservedTimes.includes(selectedTime);
     };
-
+    console.log("rent:",rent);
 
     // 시간 선택 관련
-    const handleSelectTime = (spaceName, time, memName) => {
+    const handleSelectTime = (spaceName, time) => {
         if (!selectedDate) {
             alert('대관일자를 선택 해주세요.');
             return;
         }
 
+        const currentDateIndex = convertTimeToIndex(currentTime);
+
+        // Check if the selected date is the same as the current date
+        const selectedDateIndex = convertTimeToIndex(selectedDate);
+        if (selectedDateIndex === currentDateIndex) {
+            // Check if selected time is before current time
+            const currentTimeIndex = convertTimeToIndex(currentTime);
+            const selectedTimeIndex = convertTimeToIndex(time);
+
+            if (selectedTimeIndex < currentTimeIndex) {
+                alert('현재 시간 이전의 시간은 선택할 수 없습니다.');
+                return;
+            }
+        }
+
+
         // 예약된 시간인지 확인
-        if (isTimeAlreadyReserved(spaceName, time, memName)) {
+        if (isTimeAlreadyReserved(spaceName, time)) {
             alert('이미 예약된 시간입니다. 다른 시간을 선택해주세요.');
         } else {
             const existingSelectedTimes = selectedTimes[spaceName] || [];
@@ -389,7 +414,11 @@ function SpaceApplyForm({onSelectdInfo}) {
                                                 : isTimeAlreadyReserved(params.row.spaceName, time)
                                                     ? "lightgray"
                                                     : "white",
+                                            cursor: isTimeAlreadyReserved(params.row.spaceName, time)
+                                                ? "not-allowed"
+                                                : "pointer",
                                         }}
+                                        disabled={isTimeAlreadyReserved(params.row.spaceName, time)}
                                     >
                                         {time}
                                     </button>
@@ -417,7 +446,7 @@ function SpaceApplyForm({onSelectdInfo}) {
                                     borderRadius: '5px',
                                     fontSize: "20px",
                                     fontWeight: "bold",
-                                    marginRight: "10%",
+                                    marginRight: "2%",
                                     position: "relative",
                                 }}
                             >

@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import {SERVER_URL} from '../Common/constants';
+import {SERVER_URL} from '../../Common/constants';
 import Typography from '@mui/material/Typography';
-import styles from '../../../css/component/Rent/SpaceModal.module.css';
+import styles from '../../../../css/component/Rent/SpaceModal.module.css';
 
 const style = {
     position: 'relative',
