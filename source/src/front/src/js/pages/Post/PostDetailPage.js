@@ -3,6 +3,8 @@ import PostDetail from "../../component/Post/PostDetail";
 import { useParams, useNavigate } from 'react-router-dom';
 import Footer from "../../layout/Footer/footer";
 import { SERVER_URL } from '../../component/Common/constants'
+import Header from "../../layout/Header/Header";
+import {headerInfo, urlData} from "../../layout/Header/Data/InfoShareHeader";
 
 function PostDetailPage() {
     const navigate = useNavigate();
@@ -62,37 +64,27 @@ function PostDetailPage() {
     }, [postNum, navigate, isAdmin, isLabor, isCounselor, memNum]);
 
 
-    let pageTitle;
-    switch (boardNum) {
-        case '1':
-            pageTitle = '공지사항';
-            break;
-        case '2':
-            pageTitle = '언론보도';
-            break;
-        case '3':
-            pageTitle = '세종시 기관 및 단체 소식';
-            break;
-        case '4':
-            pageTitle = '여플소식';
-            break;
-        case '5':
-            pageTitle = '뉴스레터';
-            break;
-        case '7':
-            pageTitle = '노무상담게시판';
-            break;
-        case '8':
-            pageTitle = '온라인상담';
-            break;
-        default:
-            pageTitle = '알 수 없는 게시판'; // 또는 적절한 오류 메시지
-            break;
+    let footerTitle = "";
+
+    if (boardNum == "1") {
+        footerTitle = "공지사항";
+    } else if (boardNum == "2") {
+        footerTitle = "언론보도";
+    }else if (boardNum == "3") {
+        footerTitle = "세종시 기관 및 단체 소식";
+    }else if (boardNum == "4") {
+        footerTitle = "여플소식";
+    }else if (boardNum == "5") {
+        footerTitle = "뉴스레터";
+    }else if (boardNum == "7") {
+        footerTitle = "노무상담 게시판";
+    }else if (boardNum == "8") {
+        footerTitle = "온라인상담 게시판";
     }
 
     return (
         <div>
-            <h2 style={{ textAlign: 'center',marginTop:'20px' ,marginBottom:'20px'}}>{pageTitle}</h2>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             {showPost ? <PostDetail postNum={ postNum } boardNum = {boardNum} /> : null}
             <Footer />
         </div>
