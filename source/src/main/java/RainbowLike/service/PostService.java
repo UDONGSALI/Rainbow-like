@@ -50,11 +50,11 @@ public class PostService {
         Board board = new Board();
         board.setBoardNum(postFormDto.getBoardNum());
         newPost.setBoard(board);
-        if (board.getBoardNum() == 7L || board.getBoardNum() == 8L){
+        if (board.getBoardNum() == 7L || board.getBoardNum() == 8L) {
             newPost.setConselStatus(Status.WAIT);
         }
 
-        if(newPost.getParentsNum() != null){
+        if (newPost.getParentsNum() != null) {
             Post parenstsPost = postRepository.findByPostNum(newPost.getParentsNum());
             parenstsPost.setConselStatus(Status.COMPLETE);
             savePost(parenstsPost);
@@ -166,13 +166,21 @@ public class PostService {
         return null;
     }
 
+    @Transactional
     public void deletePost(Long postNum) {
-        if (postRepository.existsById(postNum)) {
-            postRepository.deleteById(postNum);
-        } else {
-            throw new RuntimeException("Post not found with postNum: " + postNum);
-        }
+        Post post = postRepository.findByPostNum(postNum);
+        Optional.ofNullable(post.getParentsNum())
+                .ifPresent(parentsNum -> {
+                    Post parentsPost = postRepository.findByPostNum(parentsNum);
+                    if (parentsPost.getBoard().getBoardNum() == 7L) {
+                        parentsPost.setConselStatus(Status.APPROVE);
+                    } else {
+                        parentsPost.setConselStatus(Status.WAIT);
+                    }
+                });
+        postRepository.delete(post);
     }
+
 
     public void deletePostAndRelated(Long postNum) {
         // 현재 게시글을 삭제하기 전에 parentsNum과 일치하는 게시글들을 삭제
