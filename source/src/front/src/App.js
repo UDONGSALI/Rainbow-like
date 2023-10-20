@@ -143,7 +143,7 @@ function App() {
             <Route path="/csl/new/:parentsNum" element={<CslFormPage/>}/>
             <Route path="/post/new" element={<PostFormPage/>}/>
             <Route path="/post/edit/:postNum" element={<PostForm/>}/>
-            
+
             {/*공간대관페이지관련*/}
             <Route path="/rent/process" element={<RentProcessPage/>}/>
             <Route path="/rent/status" element={<RentStatusPage/>}/>
