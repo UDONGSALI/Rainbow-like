@@ -15,11 +15,11 @@ import useSearch from "../hook/useSearch";
 import useFetch from "../hook/useFetch";
 import usePagination from "../hook/usePagination";
 import useDelete from "../hook/useDelete";
+import usePatch from "../hook/usePatch";
 // 6. Helper 함수나 Renderer 관련
 import {renderStatusCell} from "./RenderCell/statusRenderer";
 import renderApprovalStatusCell from "./RenderCell/renderApprovalStatusCell";
 import InfoModal from "../Common/InfoModal";
-import usePatch from "../hook/usePatch";
 import DateCell from "../Common/DateCell";
 
 const ADMIN_ROLE = "ADMIN";
@@ -243,9 +243,12 @@ function EduHistList(props) {
             field: 'printCertificate',
             headerName: '수료증',
             width: 70,
+            style: 'cursor:pointer',
             renderCell: (params) => (
                 <div
-                    onClick={() => handleCertificatePrint(params.row.status, params.row.member?.name, params.row.edu?.eduName)}>
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleCertificatePrint(params.row.status, params.row.member?.name, params.row.edu?.eduName)}
+                >
                     🖨️
                 </div>
             ),
