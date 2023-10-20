@@ -34,7 +34,6 @@ function EduForm({eduNum}) {
                 if (response.ok) {
                     const data = await response.json();
                     setFormData(data);
-                    // 필요하다면 기존 파일 정보도 설정합니다.
                 } else {
                     console.error("Failed to fetch the education data");
                 }
@@ -55,92 +54,95 @@ function EduForm({eduNum}) {
         setFormData({...formData, [name]: value});
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
+        if (eduNum) {
+            handleUpdate();
+        } else {
+            handleCreate();
+        }
+    };
 
+    const handleUpdate = async () => {
         try {
-            if (eduNum) {
-                // 수정 로직 (PATCH 요청)
+            await fetch(`${SERVER_URL}files/eduNum/${eduNum}`, {
+                method: 'DELETE'
+            });
+            const response = await fetch(`${SERVER_URL}api/edus/${eduNum}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
 
-                // Step 1: 기존의 파일들 삭제
-                await fetch(`${SERVER_URL}files/eduNum/${eduNum}`, {
-                    method: 'DELETE'
-                });
+            if (response.ok) {
+                alert('정보가 수정되었습니다.');
 
-                // Step 2: 데이터 수정
-                const response = await fetch(`${SERVER_URL}api/edus/${eduNum}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-
-                if (response.ok) {
-                    alert('정보가 수정되었습니다.');
-                    navigate(`/edu/list/detail/${eduNum}`);
-                    // Step 3: 새 파일들 업로드
-                    if (selectedFiles.length > 0) {
-                        const formDataWithFiles = new FormData();
-                        for (const file of selectedFiles) {
-                            formDataWithFiles.append('file', file);
-                        }
-                        formDataWithFiles.append('tableName', "edu");
-                        formDataWithFiles.append('number', eduNum);
-
-                        const fileUploadResponse = await fetch(`${SERVER_URL}files`, {
-                            method: 'POST',
-                            body: formDataWithFiles,
-                        });
-                        const fileUploadData = await fileUploadResponse.text();
-                        console.log('File upload response:', fileUploadData);
+                if (selectedFiles.length > 0) {
+                    const formDataWithFiles = new FormData();
+                    for (const file of selectedFiles) {
+                        formDataWithFiles.append('file', file);
                     }
-                    window.location.reload();
-                } else {
-                    const errorData = await response.text();
-                    console.error('Error:', errorData.message || "Unknown error");
+                    formDataWithFiles.append('tableName', "edu");
+                    formDataWithFiles.append('number', eduNum);
+
+                    const fileUploadResponse = await fetch(`${SERVER_URL}files`, {
+                        method: 'POST',
+                        body: formDataWithFiles,
+                    });
+                    const fileUploadData = await fileUploadResponse.text();
                 }
+                navigate(`/edu/list/detail/${eduNum}`);
             } else {
-                // 기존의 생성 로직
-                const response = await fetch(`${SERVER_URL}api/edus`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    alert('정보가 등록되었습니다.');
-
-                    if (selectedFiles.length > 0) {
-                        const formDataWithFiles = new FormData();
-                        for (const file of selectedFiles) {
-                            formDataWithFiles.append('file', file);
-                        }
-                        formDataWithFiles.append('tableName', "edu");
-                        formDataWithFiles.append('number', 0);
-
-                        const fileUploadResponse = await fetch(`${SERVER_URL}files`, {
-
-                            method: 'POST',
-                            body: formDataWithFiles,
-                        });
-
-                        const fileUploadData = await fileUploadResponse.text();
-                        console.log('File upload response:', fileUploadData);
-                    }
-                    window.location.reload();
-                } else {
-                    const errorData = await response.text();
-                    console.error('Error:', errorData.message || "Unknown error");
-                }
+                const errorData = await response.text();
+                console.error('Error:', errorData.message || "Unknown error");
             }
         } catch (error) {
             console.error('Error:', error);
         }
     };
+
+    const handleCreate = async () => {
+        try {
+            const response = await fetch(`${SERVER_URL}api/edus`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(response);
+                alert('정보가 등록되었습니다.');
+
+                if (selectedFiles.length > 0) {
+                    const formDataWithFiles = new FormData();
+                    for (const file of selectedFiles) {
+                        formDataWithFiles.append('file', file);
+                    }
+                    formDataWithFiles.append('tableName', "edu");
+                    formDataWithFiles.append('number', 0);
+
+                    const fileUploadResponse = await fetch(`${SERVER_URL}files`, {
+                        method: 'POST',
+                        body: formDataWithFiles,
+                    });
+                    const fileUploadData = await fileUploadResponse.text();
+                    console.log('File upload response:', fileUploadData);
+                }
+                navigate(`/edu/list/detail/${eduNum}`);
+            } else {
+                const errorData = await response.text();
+                console.error('Error:', errorData.message || "Unknown error");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
 
     return (
             <div className={styles.registrationFormContainer}>
