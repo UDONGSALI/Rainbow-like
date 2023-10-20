@@ -227,6 +227,7 @@ function RentHistList(props) {
             width: 70,
             renderCell: (params) => (
                 <div
+                    style={{ cursor: 'pointer' }}
                     onClick={() => handlePermitPrint(
                         params.row.applyStatus,
                         params.row.payStatus,  // 여기에 payStatus를 추가합니다.
