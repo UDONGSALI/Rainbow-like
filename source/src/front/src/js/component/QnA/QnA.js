@@ -42,7 +42,7 @@ const accordionData = [
 ];
 
         return (
-            <div style={{ width: '60%', margin: '0 auto' }}>
+            <div style={{ width: '60%', margin: '0 auto', marginTop: '3em'}}>
                 {accordionData.map((data, index) => (
                     <Accordion
                         key={index}

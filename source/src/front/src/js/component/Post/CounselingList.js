@@ -11,16 +11,17 @@ import Pagination from "../Common/Pagination";
 function CounselingList(props) {
     const {boardNum, memNum} = props;
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+    const isCounselor = sessionStorage.getItem("role") === "COUNSELOR";
     const [files, setFiles] = useState([]);
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+
     //페이지관련
     const [activePage, setActivePage] = useState(1);
     const itemsCountPerPage = 10;
     const totalItemsCount = posts.length;
     const pageRangeDisplayed = 5;
-
 
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
@@ -86,12 +87,18 @@ function CounselingList(props) {
         const boardNumber = params.row.board.boardNum;
         const parentPost = params.row.parentsNum ? postsWithFiles.find(post => post.postNum === params.row.parentsNum) : null;
 
-
-        // if (isAdmin || params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || (parentPost && parentPost?.member?.memNum == memNum))
-        {
-            navigate(`/post/detail/${boardNum}/${rowId}`, {
-                state: {boardNum: boardNumber}
-            });
+        if (boardNumber == 7) {
+            if (isAdmin || params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || (parentPost && parentPost?.member?.memNum == memNum)) {
+                navigate(`/post/detail/${boardNum}/${rowId}`, {
+                    state: {boardNum: boardNumber}
+                });
+            }
+        } else if (boardNumber == 8) {
+            if (isAdmin || isCounselor || params.row.member?.memNum == memNum || (parentPost && parentPost?.member?.memNum == memNum)) {
+                navigate(`/post/detail/${boardNum}/${rowId}`, {
+                    state: {boardNum: boardNumber}
+                });
+            }
         }
     }
 
@@ -123,23 +130,28 @@ function CounselingList(props) {
             field: 'title',
             headerName: '제목',
             headerAlign: 'center',
-            width: 400,
+            width: 447.5,
             renderCell: (params) => {
+                const boardNumber = params.row.board.boardNum;
                 const parentPost = params.row.parentsNum ? postsWithFiles.find(post => post.postNum === params.row.parentsNum) : null;
+                let isClickable = false;
+
+                if (boardNumber === 7) {
+                    isClickable = isAdmin || params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || (parentPost && parentPost?.member?.memNum == memNum);
+                } else if (boardNumber === 8) {
+                    isClickable = isAdmin || isCounselor || params.row.member?.memNum == memNum || (parentPost && parentPost?.member?.memNum == memNum);
+                }
 
                 return (
                     <div
                         style={{
-                            cursor: (isAdmin ||  params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || parentPost?.member?.memNum == memNum) ? 'pointer' : 'default'
+                            cursor: isClickable ? 'pointer' : 'default'
                         }}
                         onClick={() => {
-                            try {
-                                // if (isAdmin ||  params.row.labor?.memNum == memNum || params.row.member?.memNum == memNum || parentPost?.member?.memNum == memNum)
-                                    {
-                                    onRowClick(params);
-                                }
-                            } catch (error) {
-                                console.log('열람 권한이 없습니다.')
+                            if (isClickable) {
+                                onRowClick(params);
+                            } else {
+                                console.log('열람 권한이 없습니다.');
                             }
                         }}
                     >
@@ -226,7 +238,7 @@ function CounselingList(props) {
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', width: '100%'
         }}>
-            <DataGrid
+            <StyledDataGrid
                 columns={columns}
                 rows={currentPagePosts}
                 style={{width: '900px', height: 400}}
@@ -257,29 +269,12 @@ function CounselingList(props) {
     );
 }
 
-const EditButton = styled('button')({
-    cursor: 'pointer',
-    backgroundColor: '#a38ced',
-    color: 'white',
-    padding: '8px 12px',
-    border: '1px solid #99959e',
-    borderRadius: '5px',
-    '&:hover': {
-        backgroundColor: '#53468b',
-    }
-});
+const StyledDataGrid = styled(DataGrid)`
+  & .MuiDataGrid-columnHeader {
+    background-color: #ececec;
+  }
+`;
 
-const DeleteButton = styled('button')({
-    cursor: 'pointer',
-    backgroundColor: '#a38ced',
-    color: 'white',
-    padding: '8px 12px',
-    border: '1px solid #99959e',
-    borderRadius: '5px',
-    '&:hover': {
-        backgroundColor: '#53468b'
-    }
-});
 const CenteredData = styled.div`
   display: flex;
   justify-content: center;
