@@ -26,8 +26,6 @@ function ImgPostList(props) {
     const { data: fetchedFiles,  filesLoading } = useFetch(SERVER_URL + 'files/table/post', []);
     const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}post/${boardNum}`, setPosts);
 
-    console.log(posts)
-
     useEffect(() => {
         if (!loadingPosts) {
             // 서버로부터 받은 데이터 fetchedPosts를 역순으로 정렬하여 setPosts로 상태를 업데이트합니다.
@@ -74,14 +72,13 @@ function ImgPostList(props) {
                     totalPages={Math.ceil(posts.length / postsPerPage)}
                 />
                 {currentPosts.map((post, index) => (
-                    // Link 컴포넌트로 게시글을 감싸고, 스타일을 직접 지정
                     <Link
                         to={{
                             pathname: `/post/detail/${boardNum}/${post.postNum}`,
                             state: { boardNum: post.board.boardNum }
                         }}
                         key={post.postNum}
-                        className={styles.customLink}
+                        className={`${styles.customLink} ${boardNum == 5 ? styles.newsBoradSum : ''}`}
                     >
                         <div className={styles.postDetail}>
                             <div className={styles.leftTop}>
