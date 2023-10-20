@@ -17,44 +17,34 @@ function useDeletePost() {
         }
     };
 
-    const deletePost = async (postNum, files, boardNum, SERVER_URL) => {
+    const deletePost = async (postNum, files, boardNum, SERVER_URL, onSuccess) => {
         const isConfirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
         if (!isConfirmed) {
             return false;
         }
-
         try {
-            const fileDeletePromises = files.length ?
-                files.filter(file => file.post.postNum === postNum)
-                    .map(file => {
-                        const fileDeleteUrl = `${SERVER_URL}files/post/${postNum}`;
-                        return fetch(fileDeleteUrl, { method: 'DELETE' });
-                    }) : [];
+            const response = await fetch(`${SERVER_URL}post/${postNum}`, { method: 'DELETE' });
 
-            const fileResponses = await Promise.all(fileDeletePromises);
-            if (!fileResponses.length || fileResponses.every(response => response.ok)) {
-                const postResponse = await fetch(`${SERVER_URL}post/${postNum}`, { method: 'DELETE' });
-                if (postResponse.ok) {
-                    await fetchPosts(boardNum); // 게시물 삭제 성공 후 게시물 목록을 다시 가져옴
-
-                    // 게시판 경로 결정 로직
-                    if (boardNum <= 2) {
-                        navigate(`/post/${boardNum}`);
-                    } else if (boardNum >= 3 && boardNum <= 5) {
-                        navigate(`/imgPost/${boardNum}`);
-                    } else if (boardNum >= 7) {
-                        navigate(`/csl/${boardNum}`);
-                    } else {
-                        navigate('/posts');
-                    }
-
-                    return true;
-                } else {
-                    alert("게시글 삭제에 실패하였습니다.");
-                    return false;
+            if (response.ok) {
+                await fetchPosts(boardNum); // 게시물 삭제 성공 후 게시물 목록을 다시 가져옴
+                if (onSuccess) {
+                    onSuccess(postNum); // 성공 콜백 호출
                 }
+                // 게시판 경로 결정 로직
+                if (boardNum <= 2) {
+                    navigate(`/post/${boardNum}`);
+                } else if (boardNum >= 3 && boardNum <= 5) {
+                    navigate(`/imgPost/${boardNum}`);
+                } else if (boardNum >= 7) {
+                    navigate(`/csl/${boardNum}`);
+                } else {
+                    navigate('/posts');
+                }
+                alert("게시글을 삭제 했습니다!.");
+                return true;
             } else {
-                throw new Error('Failed to delete some files');
+                alert("게시글 삭제에 실패하였습니다.");
+                return false;
             }
         } catch (err) {
             console.error(err);

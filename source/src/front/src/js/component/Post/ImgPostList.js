@@ -72,14 +72,13 @@ function ImgPostList(props) {
                     totalPages={Math.ceil(posts.length / postsPerPage)}
                 />
                 {currentPosts.map((post, index) => (
-                    // Link 컴포넌트로 게시글을 감싸고, 스타일을 직접 지정
                     <Link
                         to={{
                             pathname: `/post/detail/${boardNum}/${post.postNum}`,
                             state: { boardNum: post.board.boardNum }
                         }}
                         key={post.postNum}
-                        className={styles.customLink}
+                        className={`${styles.customLink} ${boardNum == 5 ? styles.newsBoradSum : ''}`}
                     >
                         <div className={styles.postDetail}>
                             <div className={styles.leftTop}>
