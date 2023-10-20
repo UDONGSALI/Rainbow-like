@@ -94,15 +94,12 @@ function EduList() {
         {
             field: 'eduNum',
             headerName: '번호',
-            renderCell: (row) => (
-                <div>{row.id}</div>
-            ),
-            width: 30
+            width: 60
         },
         {
             field: 'type',
             headerName: '구분',
-            width: 30,
+            width: 60,
             renderCell: (row) => (
                 <div className={`typeCell ${row.value}`}>
                     {row.value === 'BUSINESS' ? '사업' :
@@ -134,7 +131,7 @@ function EduList() {
         {
             field: 'recuStdt~recuEddt',
             headerName: '모집 기간',
-            width: 170,
+            width: 180,
             valueGetter: (params) => {
                 return `${params.row.recuStdt}~${params.row.recuEddt}`;
             },
@@ -142,7 +139,7 @@ function EduList() {
         {
             field: 'recuPerson+/+capacity',
             headerName: '신청인/정원',
-            width: 100,
+            width: 120,
             valueGetter: (params) => {
                 return `${params.row.recuPerson}/${params.row.capacity}`;
             },
@@ -150,7 +147,7 @@ function EduList() {
         {
             field: 'status',
             headerName: '상태',
-            width: 80,
+            width: 100,
             renderCell: (params) => renderStatusCell(params.row),
         },
         ...(isAdmin ? [
@@ -162,7 +159,7 @@ function EduList() {
                 renderCell: (row) => (
                     <button onClick={() => handleEdit(row.id)}>수정</button>
                 ),
-                width: 60,
+                width: 80,
             },
             {
                 field: 'delete',
@@ -172,10 +169,10 @@ function EduList() {
                 renderCell: (row) => (
                     <button onClick={() => handleDelete(row.id)}>삭제</button>
                 ),
-                width: 60,
+                width: 80,
             },
         ] : []),
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
@@ -201,7 +198,8 @@ function EduList() {
                         columns={columns}
                         rows={edus.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                         getRowId={(row) => row.eduNum}
-                        hideFooter={true}
+                        hideFooter
+                        disableColumnMenu
                     />
                 )}
                     <Pagination

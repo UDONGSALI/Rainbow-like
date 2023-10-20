@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState, useCallback, memo} from 'react'; // useCallback import
 import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/AdminHeader";
 import LogList from "../../component/Log/LogList";
@@ -7,20 +7,19 @@ import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 
-
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
 function LogListPage() {
-    const [footerTitle, setFooterTitle] = useState('로그'); // 초기값은 '로그'
+    const [footerTitle, setFooterTitle] = useState('로그');
 
-    const handleSlideChange = (event) => {
+    const handleSlideChange = useCallback((event) => {
         const realIndex = event.realIndex;
         if (realIndex === 0) {
             setFooterTitle('로그');
         } else if (realIndex === 1) {
             setFooterTitle('접속 통계');
         }
-    };
+    }, []);
 
     return (
         <div>
@@ -40,4 +39,4 @@ function LogListPage() {
     );
 }
 
-export default LogListPage;
+export default memo(LogListPage);

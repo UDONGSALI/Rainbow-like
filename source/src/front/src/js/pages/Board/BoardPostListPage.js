@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
+import {useParams} from "react-router-dom";
+import {SERVER_URL} from "../../component/Common/constants";
 import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/AdminHeader";
-import {useParams} from "react-router-dom";
 import BoardPostList from "../../component/Board/BoardPostList";
-import {SERVER_URL} from "../../component/Common/constants";
 import SwiperCore, {A11y, Navigation, Pagination, Scrollbar} from 'swiper';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/swiper-bundle.css';
@@ -29,20 +29,25 @@ function BoardPostListPage() {
             });
     }, [boardNum]);
 
-    const handleSlideChange = (swiper) => {
-        const newBoardNum = swiper.realIndex + 1;  // realIndex 사용
+    const handleSlideChange = useCallback((swiper) => {
+        const newBoardNum = swiper.realIndex + 1;
         if (newBoardNum <= 9) {
             setBoardNum(newBoardNum.toString());
         } else {
             swiper.slideTo(0, 0);
             setBoardNum("1");
         }
-    }
+    }, []);
+
+    const slides = Array.from({ length: 9 }, (_, index) => (
+        <SwiperSlide key={index}>
+            <BoardPostList boardNum={index + 1} />
+        </SwiperSlide>
+    ));
 
     return (
         <div>
             <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={boardName}/>
-
             <Swiper
                 spaceBetween={50}
                 slidesPerView={1}
@@ -90,4 +95,4 @@ function BoardPostListPage() {
     );
 }
 
-export default BoardPostListPage;
+export default memo(BoardPostListPage);

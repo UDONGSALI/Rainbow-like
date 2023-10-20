@@ -22,16 +22,12 @@ import renderApprovalStatusCell from "./RenderCell/renderApprovalStatusCell";
 import InfoModal from "../Common/InfoModal";
 import DateCell from "../Common/DateCell";
 
-const ADMIN_ROLE = "ADMIN";
-
-function EduHistList(props) {
+function EduHistList(memId) {
     // 1. React Router 관련
     const navigate = useNavigate();
     const location = useLocation();
 // 2. 사용자 관련
-    const {memId} = props;
-    const userRole = sessionStorage.getItem("role");
-    const isAdmin = userRole === ADMIN_ROLE;
+    const isAdmin = sessionStorage.getItem("role") === 'ADMIN';
 // 3. 로컬 상태 관리
     const [eduHist, setEduHist] = useState([]);
     const {activePage, setActivePage} = usePagination(1);
@@ -156,11 +152,11 @@ function EduHistList(props) {
     };
 
     const columns = [
-        {field: 'eduHistNum', headerName: '번호', width: 40},
+        {field: 'eduHistNum', headerName: '번호', width: 60},
         {
             field: 'type',
             headerName: '구분',
-            width: 40,
+            width: 60,
             renderCell: (row) => (
                 <div className={`typeCell ${row.row.edu.type}`}>
                     {row.row.edu.type === 'BUSINESS' ? '사업' :
@@ -242,7 +238,7 @@ function EduHistList(props) {
         {
             field: 'printCertificate',
             headerName: '수료증',
-            width: 70,
+            width: 80,
             style: 'cursor:pointer',
             renderCell: (params) => (
                 <div
@@ -256,14 +252,15 @@ function EduHistList(props) {
         {
             field: 'cancel',
             headerName: '취소',
-            width: 40,
+            width: 80,
             renderCell: (params) => (
                 <button onClick={() => handleDelete(params.row.eduHistNum)}>
                     취소
                 </button>
             ),
         }
-    ];
+    ].map(col => ({ ...col, sortable: false }));
+
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
@@ -289,7 +286,8 @@ function EduHistList(props) {
                         columns={columns}
                         rows={eduHist.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                         pageSize={5}
-                        hideFooter={true}
+                        hideFooter
+                        disableColumnMenu
                     />
                 )}
                     <Pagination

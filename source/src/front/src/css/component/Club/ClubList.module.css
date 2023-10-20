@@ -38,7 +38,7 @@
     border: 1px solid #c7c1d9;
     background: #ffffff;
     display: flex;
-
+    margin-top: 4%;
 }
 .customHeader{
     font-size: 14px;

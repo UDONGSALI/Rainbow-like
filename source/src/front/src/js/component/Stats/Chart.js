@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, memo} from 'react';
 import useFetch from "../hook/useFetch";
 import { SERVER_URL } from "../Common/constants";
 import { PieChart as RechartsPieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
@@ -96,4 +96,4 @@ function Chart() {
     );
 }
 
-export default Chart;
+export default memo(Chart);
