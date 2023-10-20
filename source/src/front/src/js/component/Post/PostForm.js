@@ -37,6 +37,7 @@ function PostForm(props) {
         email:'',
         phone:'',
         clubRecuStatus: '',
+        conselStatus: '',
         delYN: 'N'
     });
 

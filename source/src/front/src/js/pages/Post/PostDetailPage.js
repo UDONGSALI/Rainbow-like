@@ -9,6 +9,7 @@ function PostDetailPage() {
     const { boardNum, postNum } = useParams();
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const isLabor = sessionStorage.getItem("role") === "LABOR";
+    const isCounselor= sessionStorage.getItem("role") === "COUNSELOR";
     const memNum = sessionStorage.getItem("memNum");
 
     // 게시글을 표시할지 여부를 저장하는 상태
@@ -19,48 +20,47 @@ function PostDetailPage() {
         fetch(`${SERVER_URL}post/${postNum}`)
             .then(response => response.json())
             .then(data => {
-                const parentsNum = data.parentsNum;
+                const { board, parentsNum } = data;
+                if (board.boardNum == 7 || board.boardNum == 8) {
+                    const fetchParentDataIfNeeded = () => {
+                        if (parentsNum) {
+                            return fetch(`${SERVER_URL}post/${parentsNum}`)
+                                .then(response => response.json());
+                        }
+                        return Promise.resolve(null);
+                    };
 
-                if (data.board.boardNum == 7 || data.board.boardNum == 8) {
-                    if (parentsNum) {
-                        // 부모 게시물이 있을 경우, 부모 게시물 정보를 가져옴
-                        fetch(`${SERVER_URL}post/${parentsNum}`)
-                            .then(response => response.json())
-                            .then(parentData => {
-                                if (!isAdmin &&
-                                    memNum != data.labor?.memNum &&
-                                    memNum != data.member?.memNum &&
-                                    memNum != parentData.member?.memNum) {
-                                    alert("이 페이지에 접근할 수 없습니다.");
-                                    navigate('/error');
-                                    return;
-                                }
-                                // 조건에 부합하면 게시글을 표시
-                                setShowPost(true);
-                            })
-                            .catch(error => {
-                                console.error(error);
-                                // navigate('/error'); // 에러 발생 시 에러 페이지로 리다이렉트
-                            });
-                    } else {
-                        if (!isAdmin && memNum != data.labor?.memNum && memNum != data.member?.memNum) {
+                    fetchParentDataIfNeeded().then(parentData => {
+
+                        const isAllowed = () => {
+                            if (board.boardNum == 8) {
+                                return isAdmin || isCounselor;
+                            }
+                            if (board.boardNum == 7) {
+                                return isAdmin ||
+                                    memNum == data.labor?.memNum ||
+                                    memNum == data.member?.memNum ||
+                                    memNum == parentData?.member?.memNum;
+                            }
+                            return false;
+                        };
+
+                        if (!isAllowed()) {
                             alert("이 페이지에 접근할 수 없습니다.");
                             navigate('/error');
                             return;
                         }
-                        // 조건에 부합하면 게시글을 표시
                         setShowPost(true);
-                    }
+                    });
                 } else {
-                    // 조건에 부합하면 게시글을 표시
                     setShowPost(true);
                 }
             })
             .catch(error => {
                 console.error(error);
-                // navigate('/error'); // 에러 발생 시 에러 페이지로 리다이렉트
             });
-    }, [postNum, navigate, isAdmin, isLabor, memNum]);
+    }, [postNum, navigate, isAdmin, isLabor, isCounselor, memNum]);
+
 
     let pageTitle;
     switch (boardNum) {
