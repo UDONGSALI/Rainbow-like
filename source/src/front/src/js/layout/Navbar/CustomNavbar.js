@@ -44,7 +44,7 @@ const menuData = [
     },
     {
         title: "소모임",
-        items: [{name: "소모임", url: "/clubs"}, {name: "소모임 신청", url: "/clubs/new"}]
+        items: [{name: "소모임", url: "/clubsMain"}, {name: "소모임 신청", url: "/clubs/new"}]
     },
     {
         title: "직장맘 지원센터",
