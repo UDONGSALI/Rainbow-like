@@ -11,7 +11,7 @@ function FTCEditor(props){
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
 
     const [formData, setFormData] = useState({
-        memNum: memNum,
+        memNum: memNum || '', // memNum이 null이나 undefined인 경우 빈 문자열을 할당
         speField: '',
         applyContent: '',
         statusDtl: '',
@@ -32,7 +32,7 @@ function FTCEditor(props){
             .then(formData => {
                 // 데이터를 가져와서 formData 상태를 업데이트
                 setFormData({
-                    memNum: formData.member.memNum,
+                    memNum: formData.member.memNum || '',
                     speField: formData.ftc.speField,
                     applyContent: formData.ftc.applyContent,
                     statusDtl: formData.ftc.statusDtl,

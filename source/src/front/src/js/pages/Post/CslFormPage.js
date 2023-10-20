@@ -15,9 +15,9 @@ function CslFormPage() {
     let footerTitle = "";
 
     if (boardNum == "7") {
-        footerTitle = "노무상담게시판";
+        footerTitle = "노무상담 게시판";
     } else if (boardNum == "8") {
-        footerTitle = "온라인상담";
+        footerTitle = "온라인상담 게시판";
     }
 
     // 로딩 중일 때는 "Loading..." 메시지를 표시

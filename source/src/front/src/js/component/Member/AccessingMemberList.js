@@ -1,5 +1,5 @@
 // 1. React 관련
-import React, {useEffect, useState} from "react";
+import React, {memo, useEffect, useState} from "react";
 // 2. 외부 라이브러리 관련
 import {DataGrid} from "@mui/x-data-grid";
 import styled from '@emotion/styled';
@@ -12,22 +12,23 @@ import useSearch from "../hook/useSearch";
 import useFetch from "../hook/useFetch";
 import useDelete from "../hook/useDelete";
 
+// 1. 상수 및 상태
+const SEARCH_OPTIONS = [
+    {value: 'memId', label: 'ID', type: 'text'},
+    {
+        value: 'type',
+        label: '유형',
+        type: 'select',
+        options: [
+            {value: 'ADMIN', label: '관리자'},
+            {value: 'USER', label: '일반 회원'},
+            {value: 'LABOR', label: '노무사'},
+            {value: 'COUNSELOR', label: '상담사'}
+        ]
+    },
+];
+
 function AccessingMemberList() {
-    // 1. 상수 및 상태
-    const SEARCH_OPTIONS = [
-        { value: 'memId', label: 'ID', type: 'text' },
-        {
-            value: 'type',
-            label: '유형',
-            type: 'select',
-            options: [
-                { value: 'ADMIN', label: '관리자' },
-                { value: 'USER', label: '일반 회원' },
-                { value: 'LABOR', label: '노무사' },
-                { value: 'COUNSELOR', label: '상담사' }
-            ]
-        },
-    ];
     // 2. 로컬 상태 관리
     const [accessingMembers, setAccessingMembers] = useState([]);
 
@@ -43,11 +44,11 @@ function AccessingMemberList() {
         }
     }, [loading, fetchedAccessingMembers]);
 
-    const handleDelete = async (tokenNum) => {
-        const isSuccess = await deleteItem('token/' + tokenNum, "강제 로그아웃");
+    const handleDelete = async (jti) => {
+        const isSuccess = await deleteItem('token/' + jti, "강제 로그아웃");
 
         if (isSuccess) {
-            const updatedRows = accessingMembers.filter(row => row.tokenNum !== tokenNum);
+            const updatedRows = accessingMembers.filter(row => row.jti !== jti);
             setAccessingMembers(updatedRows);
         }
     };
@@ -89,12 +90,11 @@ function AccessingMemberList() {
             sortable: false,
             filterable: false,
             renderCell: (row) => (
-                <button onClick={() => handleDelete(row.id)}>로그아웃</button>
+                <button onClick={() => handleDelete(row.row.jti)}>로그아웃</button>
             ),
             width: 150
         },
-    ];
-
+    ].map(col => ({ ...col, sortable: false }));
     return (
         <Wrapper style={{textAlign: 'center'}}>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
@@ -119,7 +119,8 @@ function AccessingMemberList() {
                         columns={columns}
                         rows={accessingMembers}
                         getRowId={(row) => row.tokenNum}
-                        hideFooter={true}
+                        hideFooter
+                        disableColumnMenu
                     />
                 )}
             </div>
@@ -238,5 +239,4 @@ const StyledDataGrid = styled(DataGrid)`
   }
 
 `;
-
-export default AccessingMemberList;
+export default memo(AccessingMemberList);

@@ -77,7 +77,7 @@ function ClubDetail(props) {
 
             .then((data) => {
                 alert('게시글을 삭제했습니다.');
-                navigate('/clubs');
+                navigate('/clubsMain');
 
             })
             .catch((error) => {
@@ -132,7 +132,7 @@ function ClubDetail(props) {
                         ) : (
                             <></>
                         )}
-                        <button onClick={() => navigate("/clubs")}>리스트로</button>
+                        <button onClick={() => navigate("/clubsMain")}>리스트로</button>
                     </div>
 
         </div>

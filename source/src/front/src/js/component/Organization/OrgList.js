@@ -17,13 +17,14 @@ import useFetch from "../hook/useFetch";
 import useDelete from "../hook/useDelete";
 import QuickMenu from "../../layout/QuickMenu/QuickMenu";
 
+// 상수 및 상태 정의
+const itemsPerPage = 10;
+const SEARCH_OPTIONS = [
+    {label: "기관명", value: "name", type: "text"},
+    {label: "주소", value: "addr", type: "text"},
+];
+
 function OrgList() {
-    // 상수 및 상태 정의
-    const itemsPerPage = 10;
-    const SEARCH_OPTIONS = [
-        {label: "기관명", value: "name", type: "text"},
-        {label: "주소", value: "addr", type: "text"},
-    ];
     // Router Hooks
     const navigate = useNavigate();
     const location = useLocation();
@@ -94,21 +95,21 @@ function OrgList() {
     };
 
     const columns = [
-        {field: 'orgNum', headerName: '번호', width: 30},
+        {field: 'orgNum', headerName: '번호', width: 60},
         {field: 'name', headerName: '기관명', width: 200},
         {
             field: 'url',
             headerName: '웹사이트',
-            width: 250,
+            width: 200,
             renderCell: (params) => (
                 <a href={params.value} target="_blank" rel="noopener noreferrer">
                     {params.value}
                 </a>
             )
         },
-        {field: 'tel', headerName: '전화번호', width: 100},
+        {field: 'tel', headerName: '전화번호', width: 120},
         {field: 'addr', headerName: '주소', width: 250},
-        {field: 'addrDtl', headerName: '세부 주소', width: 150},
+        {field: 'addrDtl', headerName: '세부 주소', width: 200},
         {field: 'addrPost', headerName: '우편 번호', width: 100},
         {
             field: 'edit',
@@ -118,7 +119,7 @@ function OrgList() {
             renderCell: (row) => (
                 <button onClick={() => handleEdit(row.id)}>수정</button>
             ),
-            width: 60,
+            width: 80,
         },
         {
             field: 'delete',
@@ -128,9 +129,9 @@ function OrgList() {
             renderCell: (row) => (
                 <button onClick={() => handleDelete(row.id)}>삭제</button>
             ),
-            width: 60,
+            width: 80,
         },
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
@@ -156,7 +157,8 @@ function OrgList() {
                         columns={columns}
                         rows={orgs.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                         getRowId={(row) => row.orgNum}
-                        hideFooter={true}
+                        hideFooter
+                        disableColumnMenu
                     />
                 )}
                 <Pagination

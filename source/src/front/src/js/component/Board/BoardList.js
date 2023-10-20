@@ -116,7 +116,7 @@ function BoardList() {
                 </select>
             ),
         }
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
@@ -132,7 +132,8 @@ function BoardList() {
                         columns={columns}
                         rows={boards}
                         getRowId={(row) => row.boardId.toString()}
-                        hideFooter={true}
+                        hideFooter
+                        disableColumnMenu
                     />
                 )}
         </Wrapper>

@@ -8,7 +8,7 @@ function FTWFormPage(props){
 
     return(
         <div>
-            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={""}/>
+            <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={"인재 등록 신청"}/>
             <FTWForm memId={memId}/>
         </div>
     );

@@ -49,6 +49,16 @@ public class PostService {
         Board board = new Board();
         board.setBoardNum(postFormDto.getBoardNum());
         newPost.setBoard(board);
+        if (board.getBoardNum() == 7L || board.getBoardNum() == 8L){
+            newPost.setConselStatus(Status.WAIT);
+        }
+
+        if(newPost.getParentsNum() != null){
+            Post parenstsPost = postRepository.findByPostNum(newPost.getParentsNum());
+            parenstsPost.setConselStatus(Status.COMPLETE);
+            savePost(parenstsPost);
+            newPost.setConselStatus(null);
+        }
 
         Member member = new Member();
         member.setMemNum(postFormDto.getMemNum());
@@ -68,9 +78,6 @@ public class PostService {
         Post existingPost = optionalPost.get();
 
         mapper.map(postFormDto, existingPost);
-
-        System.out.println(postFormDto.getBoardNum() + "보드 넘 확인");
-        System.out.println(postFormDto.getMemNum() + "멤 넘 확인");
 
         existingPost.setBoard(boardRepository.findByBoardNum(postFormDto.getBoardNum()));
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import styles from '../../../css/component/Search/SearchContainer.module.css';
 import magnifier2 from "../../../img/layout/magnifier2.png";
 import { urlToNameMapping } from "../Stats/urlToNameMapping";
@@ -66,8 +66,6 @@ function SearchContainer() {
             {parts.map((part, i) => part.toLowerCase() === searchTerm.toLowerCase() ? <span key={i} style={{ color: 'red' }}>{part}</span> : part)}
         </span>;
     }
-
-    console.log(postResults)
 
     return (
         <div className={styles.searchContainer}>
@@ -216,4 +214,4 @@ function SearchContainer() {
     );
 }
 
-export default SearchContainer;
+export default memo(SearchContainer);
