@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import styles from '../../../css/component/Main/Main.module.css';
 import ImgContainer from "./Img/ImgContainer";
 import EduContainer from "./Edu/EduContainer";
@@ -75,4 +75,4 @@ function Main() {
     );
 };
 
-export default Main;
+export default memo(Main);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import Login from "../../component/Login/Login/Login";
 import Header from "../../layout/Header/Header";
 import {headerInfo, urlData} from "../../layout/Header/Data/LoginHeader";
@@ -13,4 +13,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default memo(LoginPage);

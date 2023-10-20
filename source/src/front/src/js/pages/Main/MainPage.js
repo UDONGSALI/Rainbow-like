@@ -1,5 +1,6 @@
 import Main from "../../component/Main/Main";
 import QuickMenu from "../../layout/QuickMenu/QuickMenu";
+import {memo} from "react";
 
 function MainPage() {
     return (
@@ -10,4 +11,4 @@ function MainPage() {
     )
 }
 
-export default MainPage;
+export default memo(MainPage);

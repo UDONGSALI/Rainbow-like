@@ -1,5 +1,5 @@
 // 1. React 관련
-import React, {useEffect, useState} from "react";
+import React, {memo, useCallback, useEffect, useState} from "react";
 // 2. 외부 라이브러리 관련
 import {DataGrid} from "@mui/x-data-grid";
 import styled from '@emotion/styled';
@@ -17,33 +17,33 @@ import useDelete from "../hook/useDelete";
 // 6. Helper 함수나 Renderer 관련
 import {renderStatusCell} from "./RenderCell/statusRenderer";
 
-function EduList() {
-    // 1. 상수 및 상태
-    const itemsPerPage = 10;
-    const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    const SEARCH_OPTIONS = [
-        {label: "프로그램명", value: "eduName", type: "text"},
-        {
-            label: "구분",
-            value: "type",
-            type: "select",
-            options: [
-                {label: "교육", value: "EDU"},
-                {label: "사업", value: "BUSINESS"}
-            ]
-        },
-        {label: "내용", value: "content", type: "text"},
-        {
-            label: "접수 방법",
-            value: "recuMethod",
-            type: "select",
-            options: [
-                {label: "관리자 승인", value: "ADMIN_APPROVAL"},
-                {label: "선착순 모집", value: "FIRST_COME"}
-            ]
-        }
-    ];
+// 1. 상수 및 상태
+const itemsPerPage = 10;
+const isAdmin = sessionStorage.getItem("role") === "ADMIN";
+const SEARCH_OPTIONS = [
+    {label: "프로그램명", value: "eduName", type: "text"},
+    {
+        label: "구분",
+        value: "type",
+        type: "select",
+        options: [
+            {label: "교육", value: "EDU"},
+            {label: "사업", value: "BUSINESS"}
+        ]
+    },
+    {label: "내용", value: "content", type: "text"},
+    {
+        label: "접수 방법",
+        value: "recuMethod",
+        type: "select",
+        options: [
+            {label: "관리자 승인", value: "ADMIN_APPROVAL"},
+            {label: "선착순 모집", value: "FIRST_COME"}
+        ]
+    }
+];
 
+function EduList() {
     // 2. Router Hooks
     const navigate = useNavigate();
     const location = useLocation();
@@ -69,22 +69,26 @@ function EduList() {
         }
     }, [location.search]);
 
-    const handlePageChange = (newPage) => {
+    const handlePageChange = useCallback((newPage) => {
         navigate(`${location.pathname}?page=${newPage}`);
         setActivePage(newPage);
-    }
+    }, [location.pathname, navigate, setActivePage]);
 
-    const handleTitleClick = (eduNum) => navigate('/edu/list/detail/' + eduNum);
-    const handleEdit = (eduNum) => navigate('/admin/edu/edit/' + eduNum);
+    const handleTitleClick = useCallback((eduNum) => {
+        navigate('/edu/list/detail/' + eduNum);
+    }, [navigate]);
 
-    const handleDelete = async (eduNum) => {
+    const handleEdit = useCallback((eduNum) => {
+        navigate('/admin/edu/edit/' + eduNum);
+    }, [navigate]);
+
+    const handleDelete = useCallback(async (eduNum) => {
         const isSuccess = await deleteItem('api/edus/' + eduNum, "삭제");
-
         if (isSuccess) {
             const updatedRows = edus.filter(row => row.eduNum !== eduNum);
             setEdus(updatedRows);
         }
-    };
+    }, [deleteItem, edus]);
 
     const columns = [
         {
@@ -325,4 +329,4 @@ const StyledDataGrid = styled(DataGrid)`
 
 `;
 
-export default EduList;
+export default memo(EduList);
