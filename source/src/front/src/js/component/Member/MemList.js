@@ -157,7 +157,7 @@ function MemList() {
         {
             field: 'memNum',
             headerName: '번호',
-            width: 40
+            width: 60
         },
         {
             field: 'type',
@@ -185,7 +185,7 @@ function MemList() {
         {
             field: 'gender',
             headerName: '성별',
-            width: 50,
+            width: 80,
             renderCell: (row) => (
                 <div>{row.value === 'FEMALE' ? '여자' : row.value === 'MALE' ? '남자' : ''}</div>
             ),
@@ -230,7 +230,7 @@ function MemList() {
             ),
             width: 100
         },
-    ]
+    ].map(col => ({ ...col, sortable: false }));
 
     return (
         <Wrapper>
@@ -251,6 +251,7 @@ function MemList() {
                             rows={membersWithFiles.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                             getRowId={(row) => row.memNum}
                             hideFooter
+                            disableColumnMenu
                         />
                     )}
                     <Pagination

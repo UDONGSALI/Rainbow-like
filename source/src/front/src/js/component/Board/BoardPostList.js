@@ -1,5 +1,5 @@
 // 1. React 관련
-import React, { useEffect, useState } from "react";
+import React, {memo, useEffect, useState} from "react";
 // 2. 외부 라이브러리 관련
 import { DataGrid } from "@mui/x-data-grid";
 import styled from '@emotion/styled';
@@ -163,16 +163,27 @@ function BoardPostList({ boardNum }) {
     };
 
     const columns = [
-        { field: 'postNum', headerName: '번호', width: 50 },
+        { field: 'postNum', headerName: '번호', width: 80 },
         {
             field: 'title',
-            headerName: '제목',
+            headerName: 'title',
             width: 200,
-            renderCell: (row) => (
-                <span>
-                {row.row.parentsNum ? "ㄴ[답글] " : ""}{row.row.title}
+            renderCell: (row) => {
+                const boardNum = row.row.board.boardNum;
+                const postNum = row.row.postNum;
+                const navigateTo = (boardNum === 9)
+                    ? `/clubs/${postNum}`
+                    : `/post/detail/${boardNum}/${postNum}`;
+
+                return (
+                    <span
+                        onClick={() => navigate(navigateTo)}
+                        style={{ cursor: 'pointer' }}
+                    >
+                {row.row.parentsNum ? "ㄴ[Reply] " : ""}{row.row.title}
             </span>
-            )
+                );
+            }
         },
         {
             field: 'memId',
@@ -214,7 +225,7 @@ function BoardPostList({ boardNum }) {
             {
                 field: 'labor',
                 headerName: '배정 노무사',
-                width: 100,
+                width: 120,
                 renderCell: (params) => <LaborCell
                     params={params}
                     handleMemIdClick={handleMemIdClick}
@@ -240,7 +251,7 @@ function BoardPostList({ boardNum }) {
                 <button onClick={() => handleDelete(params.row.postNum)}>삭제</button>
             )
         }
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     return (
         <Wrapper style={{ textAlign: 'center' }}>
@@ -266,7 +277,8 @@ function BoardPostList({ boardNum }) {
                         columns={columns}
                         rows={posts.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                         getRowId={(row) => row.postNum.toString()}
-                        hideFooter={true}
+                        hideFooter
+                        disableColumnMenu
                     />
                 )}
                 <Pagination
@@ -387,4 +399,4 @@ const StyledDataGrid = styled(DataGrid)`
   }
 `;
 
-export default BoardPostList;
+export default memo(BoardPostList);

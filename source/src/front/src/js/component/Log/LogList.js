@@ -1,5 +1,5 @@
 // 1. React 관련
-import React, {useEffect, useState} from "react";
+import React, {memo, useEffect, useState} from "react";
 // 2. 외부 라이브러리 관련
 import {DataGrid} from "@mui/x-data-grid";
 import styled from '@emotion/styled';
@@ -14,34 +14,33 @@ import useSearch from "../hook/useSearch";
 import usePagination from "../hook/usePagination";
 import useFetch from "../hook/useFetch";
 
+// 1. 상수 및 상태
+const itemsPerPage = 10;
+const SEARCH_OPTIONS = [
+    {
+        label: "유형",
+        value: "type",
+        type: "select",
+        options: [
+            {label: "PageView", value: "PageView"},
+            {label: "ButtonClick", value: "ButtonClick"}
+        ]
+    },
+    {
+        value: 'memType',
+        label: '회원 유형',
+        type: 'select',
+        options: [
+            { value: 'ADMIN', label: '관리자' },
+            { value: 'USER', label: '일반 회원' },
+            { value: 'LABOR', label: '노무사' },
+            { value: 'COUNSELOR', label: '상담사' }
+        ]
+    },
+    {label: "회원 ID", value: "memId", type: "text"},
+    {label: "URL", value: "url", type: "text"},
+];
 function LogList() {
-    // 1. 상수 및 상태
-    const itemsPerPage = 10;
-    const SEARCH_OPTIONS = [
-        {
-            label: "유형",
-            value: "type",
-            type: "select",
-            options: [
-                {label: "PageView", value: "PageView"},
-                {label: "ButtonClick", value: "ButtonClick"}
-            ]
-        },
-        {
-            value: 'memType',
-            label: '회원 유형',
-            type: 'select',
-            options: [
-                { value: 'ADMIN', label: '관리자' },
-                { value: 'USER', label: '일반 회원' },
-                { value: 'LABOR', label: '노무사' },
-                { value: 'COUNSELOR', label: '상담사' }
-            ]
-        },
-        {label: "회원 ID", value: "memId", type: "text"},
-        {label: "URL", value: "url", type: "text"},
-    ];
-
     // 2. Router Hooks
     const navigate = useNavigate();
     const location = useLocation();
@@ -90,7 +89,7 @@ function LogList() {
         {
             field: 'logNum',
             headerName: '번호',
-            width: 50, // 임의의 폭 값 설정
+            width: 60,
         },
         {
             field: 'type',
@@ -112,12 +111,12 @@ function LogList() {
         {
             field: 'url',
             headerName: 'URL',
-            width: 200
+            width: 250
         },
         {
             field: 'label',
             headerName: 'Label',
-            width: 60
+            width: 200
         },
         {
             field: 'date',
@@ -131,7 +130,7 @@ function LogList() {
             width: 100,
             valueGetter: (params) => formatTime(params.row.createdAt)
         },
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     return (
         <Wrapper style={{textAlign: 'center'}}>
@@ -157,7 +156,8 @@ function LogList() {
                         columns={columns}
                         rows={logs.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                         getRowId={(row) => row.logNum}
-                        hideFooter={true}
+                        hideFooter
+                        disableColumnMenu
                     />
                 )}
                     <Pagination
@@ -172,7 +172,6 @@ function LogList() {
             </div>
         </Wrapper>
     );
-
 }
 
 const Wrapper = styled.div`
@@ -286,4 +285,4 @@ const StyledDataGrid = styled(DataGrid)`
 
 `;
 
-export default LogList;
+export default memo(LogList);
