@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {memo, useState} from 'react';
 import { Button, Modal, Stack } from '@mui/material';
 import FindId from "./FindId";
 import FindPassword from "./FindPassword";
@@ -96,4 +96,4 @@ const FindIdPasswordModal = ({ isOpen, handleClose }) => {
         </Modal>
     );
 }
-export default FindIdPasswordModal;
+export default memo(FindIdPasswordModal);

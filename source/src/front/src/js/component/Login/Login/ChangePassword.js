@@ -1,6 +1,6 @@
-    import React, { useState } from 'react';
-    import { TextField, Stack, Button } from '@mui/material';
+    import React, {memo, useState} from 'react';
     import axios from 'axios';
+    import { TextField, Stack, Button } from '@mui/material';
     import { SERVER_URL } from "../../Common/constants";
     import styles from '../../../../css/component/Login/Find.module.css'
 
@@ -74,4 +74,4 @@
         );
     };
 
-    export default ChangePassword;
+    export default memo(ChangePassword);

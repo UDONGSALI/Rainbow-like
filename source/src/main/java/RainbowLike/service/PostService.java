@@ -54,6 +54,11 @@ public class PostService {
         member.setMemNum(postFormDto.getMemNum());
         newPost.setMember(member);
 
+        if(newPost.getParentsNum() != null){
+            Post parenstsPost = postRepository.findByPostNum(newPost.getParentsNum());
+            parenstsPost.setConselStatus(Status.COMPLETE);
+            savePost(parenstsPost);
+        }
         return savePost(newPost);
     }
 

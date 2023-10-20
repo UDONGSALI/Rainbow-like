@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Snackbar, Stack, TextField, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, {memo, useEffect, useState} from 'react';
+import {Button, Snackbar, Stack, TextField, Typography} from '@mui/material';
+import {Link} from 'react-router-dom';
 import FindIdPasswordModal from './FindIdPasswordModal';
-import { useToken } from '../../hook/useToken';
+import {useToken} from '../../hook/useToken';
 import styles from '../../../../css/component/Login/Login.module.css';
 
 // 상수 정의
@@ -12,7 +12,7 @@ const BUTTON_COLOR_HOVER = '#53468b';
 function Login() {
     const [memId, setMemId] = useState(null);
     const [snackbarMessage, setSnackbarMessage] = useState(null);
-    const { decodeToken: decodeAndSetToken, deleteTokenFromServer, getToken } = useToken();
+    const {decodeToken: decodeAndSetToken, deleteTokenFromServer, getToken} = useToken();
     const storedFailedAttempts = localStorage.getItem('failedAttempts') || 0;
     const [failedAttempts, setFailedAttempts] = useState(parseInt(storedFailedAttempts, 10));
 
@@ -38,7 +38,7 @@ function Login() {
     }, []);
 
     const handleChange = (e) => {
-        setUser({ ...user, [e.target.name]: e.target.value });
+        setUser({...user, [e.target.name]: e.target.value});
     };
 
     const handleCaptchaAnswerChange = (e) => {
@@ -101,7 +101,7 @@ function Login() {
     return (
         <div className={styles.loginContainer}>
             {memId ? (
-                <LoggedInView memId={memId} logout={logout} buttonColor={buttonColor} setButtonColor={setButtonColor} />
+                <LoggedInView memId={memId} logout={logout} buttonColor={buttonColor} setButtonColor={setButtonColor}/>
             ) : (
                 <LoginFormView
                     handleChange={handleChange}
@@ -124,7 +124,7 @@ function Login() {
                 onClose={() => setOpen(false)}
                 message={snackbarMessage}
             />
-            <FindIdPasswordModal isOpen={isModalOpen} handleClose={handleCloseModal} />
+            <FindIdPasswordModal isOpen={isModalOpen} handleClose={handleCloseModal}/>
         </div>
     );
 }
@@ -146,14 +146,14 @@ function LoginFormView({
                        }) {
     return (
         <Stack alignItems='flex-start' className={styles.formStack}>
-            <div style={{ display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderRadius: '4px' }}>
-                <Stack spacing={2} style={{ flex: 1 }}>
+            <div style={{display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderRadius: '4px'}}>
+                <Stack spacing={2} style={{flex: 1}}>
                     <TextField
                         name="username"
                         label="아이디"
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
-                        style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}
+                        style={{boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}
                     />
                     <TextField
                         type="password"
@@ -161,7 +161,7 @@ function LoginFormView({
                         label="비밀번호"
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
-                        style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}
+                        style={{boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}
                     />
                     {failedAttempts >= 5 && (
                         <TextField
@@ -169,7 +169,7 @@ function LoginFormView({
                             label={`${firstNum} * ${secondNum} = ?`}
                             value={captchaAnswer}
                             onChange={handleCaptchaAnswerChange}
-                            style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}
+                            style={{boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}
                         />
                     )}
                 </Stack>
@@ -196,8 +196,8 @@ function LoginFormView({
                     Login
                 </Button>
             </div>
-            <div style={{ padding: '16px', borderRadius: '4px', width: '100%' }}>
-                <Typography variant="body2" style={{ fontSize: '14px' }}>
+            <div style={{padding: '16px', borderRadius: '4px', width: '100%'}}>
+                <Typography variant="body2" style={{fontSize: '14px'}}>
                     <span role="img" aria-label="Question mark in circle">😳</span>
                     아이디나 비밀번호를 잊어버리셨나요?
                     <Link
@@ -207,8 +207,8 @@ function LoginFormView({
                         <strong> 아이디/비밀번호 찾기</strong>
                     </Link>
                 </Typography>
-                <br />
-                <Typography variant="body2" style={{ fontSize: '14px' }}>
+                <br/>
+                <Typography variant="body2" style={{fontSize: '14px'}}>
                     <span role="img" aria-label="Exclamation mark in circle">😖</span>
                     아직 세종여성플라자의 회원이 아니신가요?
                     <Link to="/signup" style={customLinkStyle}> <strong>회원가입</strong></Link>
@@ -219,7 +219,7 @@ function LoginFormView({
 }
 
 // 로그인 성공 후 화면
-function LoggedInView({ memId, logout, buttonColor, setButtonColor }) {
+function LoggedInView({memId, logout, buttonColor, setButtonColor}) {
     return (
         <Stack
             alignItems="flex-start"
@@ -231,12 +231,12 @@ function LoggedInView({ memId, logout, buttonColor, setButtonColor }) {
                 borderRadius: '5px',
             }}
         >
-            <div style={{ display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderRadius: '4px' }}>
-                <Stack style={{ flex: '1' }}>
-                    <Typography variant="h5" style={{ lineHeight: '1', marginTop: '25px' }}>
+            <div style={{display: 'flex', flexDirection: 'row', width: '100%', padding: '16px', borderRadius: '4px'}}>
+                <Stack style={{flex: '1'}}>
+                    <Typography variant="h5" style={{lineHeight: '1', marginTop: '25px'}}>
                         {memId}님, 환영합니다!
                     </Typography>
-                    <br />
+                    <br/>
                 </Stack>
                 <Button
                     variant="contained"
@@ -265,4 +265,4 @@ function LoggedInView({ memId, logout, buttonColor, setButtonColor }) {
     );
 }
 
-export default React.memo(Login);
+export default memo(Login);

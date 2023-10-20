@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import styles from '../../../../css/component/Login/Find.module.css'
+import {memo} from "react";
 
 const FindId = ({
                     phoneNumber, setPhoneNumber,
@@ -102,4 +103,4 @@ const FindId = ({
     );
 };
 
-export default FindId;
+export default memo(FindId);

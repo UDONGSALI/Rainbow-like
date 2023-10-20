@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {memo, useState} from "react";
 import axios from 'axios';
 import Stack from "@mui/material/Stack";
 import { TextField } from "@mui/material";
@@ -96,4 +96,4 @@ const FindPassword = ({
     );
 };
 
-export default FindPassword;
+export default memo(FindPassword);
