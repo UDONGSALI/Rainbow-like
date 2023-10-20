@@ -25,7 +25,7 @@ function PostNoticeList(props) {
     const [posts, setPosts] = useState([]);
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-    console.log(posts)
+
     //페이지관련
     const [activePage, setActivePage] = useState(1);
     const itemsCountPerPage = 10;
@@ -42,13 +42,15 @@ function PostNoticeList(props) {
 
     useEffect(() => {
         if (!loadingPosts) {
-            setPosts(fetchedPosts.reverse());
+            // 서버로부터 받은 데이터 fetchedPosts를 역순으로 정렬하여 setPosts로 상태를 업데이트합니다.
+            setPosts([...fetchedPosts].reverse());
         }
 
         if (!filesLoading) {
             setFiles(fetchedFiles);
         }
     }, [fetchedPosts, fetchedFiles]);
+
 
     const handlePageChange = (pageNumber) => {
         setActivePage(pageNumber);
@@ -80,13 +82,12 @@ function PostNoticeList(props) {
         });
     });
 
-    const onDelClick = async (postNum, postFiles, boardNum) => {
-        const success = await deletePost(postNum, postFiles, boardNum, SERVER_URL);  // 삭제 요청
-
-        if (success) {
-            setOpen(true);  // 삭제 성공 알림 표시
-            fetchedPosts();  // 게시물 목록 다시 불러오기
-        }
+    const onDelClick = (postNum, postFiles, boardNum) => {
+        deletePost(postNum, postFiles, boardNum, SERVER_URL, (deletedPostNum) => {
+            // 삭제된 게시글을 상태에서 제거
+            const updatedPosts = posts.filter(post => post.postNum !== deletedPostNum);
+            setPosts(updatedPosts);
+        });
     };
 
     const onEditClick = (params) => {
@@ -127,7 +128,7 @@ function PostNoticeList(props) {
             field: 'title',
             headerName: '제목',
             headerAlign: 'center',
-            width: isAdmin ? 350 : 420,  // 조건부 width 값 설정
+            width: isAdmin ? 360.5 : 447.5,  // 조건부 width 값 설정
             renderCell: (params) => (
                 <div
                     style={{cursor: 'pointer'}}
@@ -141,7 +142,7 @@ function PostNoticeList(props) {
             field: 'member',
             headerName: '작성자',
             headerAlign: 'center',
-            width: isAdmin ? 80 : 100,  // 조건부 width 값 설정
+            width: isAdmin ? 80 : 110,  // 조건부 width 값 설정
             valueGetter: (params) => {
                 const members = Array.isArray(params.row.member) ? params.row.member : [params.row.member];
                 return members.map((m) => m.name).join(', ');
@@ -158,7 +159,7 @@ function PostNoticeList(props) {
             field: 'pageView',
             headerName: '조회수',
             headerAlign: 'center',
-            width: isAdmin ? 80 : 110,  // 조건부 width 값 설정
+            width: isAdmin ? 77 : 110,  // 조건부 width 값 설정
             renderCell: (params) => (
                 <CenteredData>
                     <StyledCell>
@@ -239,7 +240,7 @@ function PostNoticeList(props) {
                         </DeleteButton>
                     </CenteredData>
                 ),
-            },
+            }
         ] : [])  // 조건부로 배열을 확장하여 추가
     ];
 
@@ -258,7 +259,7 @@ function PostNoticeList(props) {
                     currentPage={activePage}
                     totalPages={Math.ceil(postsWithFiles.length / itemsCountPerPage)}
                 />
-                <DataGrid
+                <StyledDataGrid
                     columns={columns}
                     rows={currentPagePosts}
                     style={{width: '920px', height: 400}}
@@ -291,6 +292,11 @@ function PostNoticeList(props) {
 
     );
 }
+const StyledDataGrid = styled(DataGrid)`
+  & .MuiDataGrid-columnHeader {
+    background-color: #ececec;
+  }
+`;
 
 const EditButton = styled('button')({
     cursor: 'pointer',

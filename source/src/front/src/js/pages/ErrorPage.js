@@ -12,10 +12,11 @@ function ErrorPage() {
 }
 
 const ErrorContainer = styled.div`
-    width: 100%;       /* 화면의 너비 전체로 설정 */
-    height: 100vh;      /* 화면의 높이 전체로 설정 */
+    width: 60%;       /* 화면의 너비 전체로 설정 */
+    height: 100%;      /* 화면의 높이 전체로 설정 */
     overflow: hidden;   /* 이미지가 컨테이너를 벗어나지 않게 함 */
     position: relative; /* 이미지 위치 조정을 위해 설정 */
+    margin: 0 auto;
 `;
 
 const ErrorImage = styled.img`
