@@ -1,11 +1,11 @@
 // 1. React 관련
-import React, { useEffect, useState } from 'react';
+import React, {memo, useEffect, useState} from 'react';
 // 2. 외부 라이브러리 관련
-import { DataGrid } from '@mui/x-data-grid';
+import {DataGrid} from '@mui/x-data-grid';
 import styled from '@emotion/styled';
 // 3. 프로젝트 내 공통 모듈 관련
-import { SERVER_URL } from '../Common/constants';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {SERVER_URL} from '../Common/constants';
+import {useLocation, useNavigate} from 'react-router-dom';
 // 4. 컴포넌트 관련
 import MemberEditor from "./MemberEditor";
 import SearchComponent from "../Common/SearchComponent";
@@ -17,6 +17,32 @@ import useSearch from "../hook/useSearch";
 import useDelete from "../hook/useDelete";
 import usePatch from "../hook/usePatch";
 
+const SEARCH_OPTIONS = [
+    {value: 'memId', label: 'ID', type: 'text'},
+    {
+        value: 'type',
+        label: '유형',
+        type: 'select',
+        options: [
+            {value: 'ADMIN', label: '관리자'},
+            {value: 'USER', label: '일반 회원'},
+            {value: 'LABOR', label: '노무사'},
+            {value: 'COUNSELOR', label: '상담사'}
+        ]
+    },
+    {value: 'name', label: '이름', type: 'text'},
+    {value: 'addr', label: '주소', type: 'text'},
+    {
+        value: 'gender',
+        label: '성별',
+        type: 'select',
+        options: [
+            {value: 'FEMALE', label: '여자'},
+            {value: 'MALE', label: '남자'}
+        ]
+    }
+];
+
 function MemList() {
     // 1. Router Hooks
     const navigate = useNavigate();
@@ -24,31 +50,6 @@ function MemList() {
 
     // 2. 상수 및 상태
     const itemsPerPage = 10;
-    const SEARCH_OPTIONS = [
-        { value: 'memId', label: 'ID', type: 'text' },
-        {
-            value: 'type',
-            label: '유형',
-            type: 'select',
-            options: [
-                { value: 'ADMIN', label: '관리자' },
-                { value: 'USER', label: '일반 회원' },
-                { value: 'LABOR', label: '노무사' },
-                { value: 'COUNSELOR', label: '상담사' }
-            ]
-        },
-        { value: 'name', label: '이름', type: 'text' },
-        { value: 'addr', label: '주소', type: 'text' },
-        {
-            value: 'gender',
-            label: '성별',
-            type: 'select',
-            options: [
-                { value: 'FEMALE', label: '여자' },
-                { value: 'MALE', label: '남자' }
-            ]
-        }
-    ];
 
     // 3. 로컬 상태 관리
     const [openModal, setOpenModal] = useState(false);
@@ -56,10 +57,10 @@ function MemList() {
     const [membersWithFiles, setMembersWithFiles] = useState([]);
 
     // 4. 커스텀 훅 사용
-    const { activePage, setActivePage } = usePagination(1);
-    const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}members`, setMembersWithFiles);
-    const { data: members, loading: membersLoading } = useFetch(SERVER_URL + 'members', []);
-    const { data: files, loading: filesLoading } = useFetch(SERVER_URL + 'files/table/member', []);
+    const {activePage, setActivePage} = usePagination(1);
+    const {searchTerm, setSearchTerm, handleSearch} = useSearch(`${SERVER_URL}members`, setMembersWithFiles);
+    const {data: members, loading: membersLoading} = useFetch(SERVER_URL + 'members', []);
+    const {data: files, loading: filesLoading} = useFetch(SERVER_URL + 'files/table/member', []);
     const deleteItem = useDelete(SERVER_URL);
     const patchItem = usePatch(SERVER_URL + "api/members");
 
@@ -99,12 +100,12 @@ function MemList() {
     const handleOpenModal = (member) => {
         setSelectedMember(member);
         setOpenModal(true);
-    };
+    }
 
     const handleCloseModal = () => {
         setSelectedMember(null);
         setOpenModal(false);
-    };
+    }
 
     const handlePageChange = (newPage) => {
         navigate(`${location.pathname}?page=${newPage}`);
@@ -136,7 +137,7 @@ function MemList() {
     };
 
     const handleTypeChange = async (memNum, newValue) => {
-        const isSuccess = await patchItem(`/${memNum}`, { type: newValue }, "회원 유형");
+        const isSuccess = await patchItem(`/${memNum}`, {type: newValue}, "회원 유형");
         if (isSuccess) {
             setMembersWithFiles((prevMembers) => {
                 return prevMembers.map((member) => {
@@ -229,11 +230,11 @@ function MemList() {
             ),
             width: 100
         },
-    ];
+    ]
 
     return (
-        <Wrapper style={{ textAlign: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Wrapper>
+            <CenteredContainer>
                 <SearchComponent
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
@@ -243,44 +244,54 @@ function MemList() {
                     currentPage={activePage}
                     totalPages={Math.ceil(membersWithFiles.length / itemsPerPage)}
                 />
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    {membersLoading ? (
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            height: '200px'
-                        }}>로딩중...</div>
-                    ) : (
+                <CenteredContainer>
+                    {membersLoading ? <LoadingContainer>로딩중...</LoadingContainer> : (
                         <StyledDataGrid
                             columns={columns}
                             rows={membersWithFiles.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)}
                             getRowId={(row) => row.memNum}
-                            hideFooter={true}
+                            hideFooter
                         />
                     )}
-                        <Pagination
-                            activePage={activePage}
-                            itemsCountPerPage={itemsPerPage}
-                            totalItemsCount={membersWithFiles.length}
-                            pageRangeDisplayed={10}
-                            onChange={handlePageChange}
-                            prevPageText="<"
-                            nextPageText=">"
-                        />
+                    <Pagination
+                        activePage={activePage}
+                        itemsCountPerPage={itemsPerPage}
+                        totalItemsCount={membersWithFiles.length}
+                        pageRangeDisplayed={10}
+                        onChange={handlePageChange}
+                        prevPageText="<"
+                        nextPageText=">"
+                    />
                     <MemberEditor
                         member={selectedMember}
                         open={openModal}
                         onClose={handleCloseModal}
-                        onUpdate={handleUpdate}  // 추가
+                        onUpdate={handleUpdate}
                     />
-                </div>
-            </div>
+                </CenteredContainer>
+            </CenteredContainer>
         </Wrapper>
     );
 }
 
+const CenteredContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+`;
+
 const StyledScrollHideDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   max-height: 50px;
   overflow-y: auto;
   width: 100%;
@@ -401,5 +412,4 @@ const StyledDataGrid = styled(DataGrid)`
     }
   }
 `;
-
-export default MemList;
+export default memo(MemList);
