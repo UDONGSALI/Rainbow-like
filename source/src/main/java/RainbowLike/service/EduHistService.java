@@ -32,13 +32,6 @@ public class EduHistService {
     private final FileService fileService;
     private final ModelMapper mapper;
 
-    public void createDefaultEduHists() {
-        List<EduHistDto> eduHistDtos = EduHistDto.createDefaultEduHist();
-        for (EduHistDto eduHistDto : eduHistDtos) {
-            saveEduHist(eduHistDto);
-        }
-    }
-
     public Iterable<EduHist> findAll() {
         return eduHistRepository.findAll();
     }
@@ -134,6 +127,13 @@ public class EduHistService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void createDefaultEduHists() {
+        List<EduHistDto> eduHistDtos = EduHistDto.createDefaultEduHist();
+        for (EduHistDto eduHistDto : eduHistDtos) {
+            saveEduHist(eduHistDto);
         }
     }
 }
