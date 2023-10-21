@@ -1,10 +1,7 @@
 package RainbowLike;
 
 import RainbowLike.controller.*;
-import RainbowLike.service.DefaultFileService;
-import RainbowLike.service.EduHistService;
-import RainbowLike.service.PostService;
-import RainbowLike.service.RentHistService;
+import RainbowLike.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +20,7 @@ public class RainbowLikeApplication implements CommandLineRunner {
     private final SmsController smsController;
     private final CbotController cbotController;
     private final ChatController chatController;
+    private final PayHistService payHistService;
 
     public static void main(String[] args) {
         SpringApplication.run(RainbowLikeApplication.class, args);
@@ -32,7 +30,9 @@ public class RainbowLikeApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        rentHistService.createBasicRent();
+        rentHistService.createDefaultRent();
+
+        payHistService.creatDefaultPayHists();
 
         postService.createDefaultPosts();
 

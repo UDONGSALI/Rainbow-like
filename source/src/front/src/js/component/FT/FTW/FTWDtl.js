@@ -71,7 +71,7 @@ function FTWDtl({ftwNum}){
             .then((data) => {
                 alert('게시글을 삭제했습니다.');
                 setOpen(true);
-                navigate('/ftw');
+                navigate('/mypage/ftw');
 
 
             })

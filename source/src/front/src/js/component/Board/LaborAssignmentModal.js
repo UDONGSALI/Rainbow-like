@@ -1,23 +1,30 @@
-import { DataGrid } from '@mui/x-data-grid';
-import { Modal } from '@mui/material';
+import {DataGrid} from '@mui/x-data-grid';
+import {Modal} from '@mui/material';
 import useFetch from "../hook/useFetch";
 import usePatch from "../hook/usePatch";
 import {SERVER_URL} from "../Common/constants";
 import styled from '@emotion/styled';
-import React from "react";
+import React, {useState} from "react";
+import {useConfirm} from "../hook/useConfirm";
 
-function LaborAssignmentModal({ open, onClose, postNum, onAssignSuccess }) {
-    const { data: members, loading } = useFetch(`${SERVER_URL}members/search/type/LABOR`);
+function LaborAssignmentModal({open, onClose, postNum, onAssignSuccess}) {
+    const {data: members, loading} = useFetch(`${SERVER_URL}members/search/type/LABOR`);
     const patchItem = usePatch(SERVER_URL);
+    const confirm = useConfirm();
+    const [isSwalOpen, setIsSwalOpen] = useState(false);
 
     const handleAssignLabor = async (memId) => {
-        if (!window.confirm("이 노무사를 배정 하시겠습니까?")) return;
+        setIsSwalOpen(true);
+        const isConfirmed = await confirm("이 노무사를 배정 하시겠습니까?");
+        if (!isConfirmed) return;
 
-        const isSuccess = await patchItem(`post/patch/`+postNum, { action: "labor", laborId: memId },'배정');
+
+        const isSuccess = await patchItem(`post/patch/` + postNum, {action: "labor", laborId: memId}, '배정');
         if (isSuccess) {
             onAssignSuccess(postNum, memId);
             onClose();
         }
+        setIsSwalOpen(false);
     };
 
     const columns = [
@@ -51,33 +58,35 @@ function LaborAssignmentModal({ open, onClose, postNum, onAssignSuccess }) {
     ];
 
     return (
-        <Modal
-            open={open}
-            onClose={onClose}
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
-        >
-            <div style={{maxHeight: '500px', overflowY: 'auto', backgroundColor: 'white', padding: '20px'}}>
-                {loading ? (
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '200px'
-                    }}>로딩중...</div>
-                ) : (
-                    <StyledDataGrid
-                        rows={members}
-                        columns={columns}
-                        getRowId={(row) => row.memNum}
-                        hideFooter={true}
-                    />
-                )}
-            </div>
-        </Modal>
+        !isSwalOpen && (
+            <Modal
+                open={open}
+                onClose={onClose}
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <div style={{maxHeight: '500px', overflowY: 'auto', backgroundColor: 'white', padding: '20px'}}>
+                    {loading ? (
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '200px'
+                        }}>로딩중...</div>
+                    ) : (
+                        <StyledDataGrid
+                            rows={members}
+                            columns={columns}
+                            getRowId={(row) => row.memNum}
+                            hideFooter={true}
+                        />
+                    )}
+                </div>
+            </Modal>
+        )
     );
 }
 

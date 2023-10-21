@@ -177,9 +177,4 @@ public class FTalentService {
         System.out.println("메시지를 받을 워커 : " + to);
         System.out.println("[세종여성플라자] 회원님의 여성인재풀DB가 열람되었습니다. \n여성인재풀DB에 기재하신 연락처로 연락이 갈 수 있습니다.");
     }
-
-
-
-
-
 }

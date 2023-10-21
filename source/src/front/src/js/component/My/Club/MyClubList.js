@@ -35,7 +35,6 @@ export default function MyClubList() {
         fetch(`${SERVER_URL}post/memberClub/${memNum}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 const clubWithNumbers = data.map((club, index) => ({
                     ...club,
                     id: club.postNum,
@@ -54,7 +53,6 @@ export default function MyClubList() {
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
 
-        console.log('rowId:', rowId);
         navigate(`/clubs/${rowId}`);
     };
 
@@ -146,8 +144,7 @@ export default function MyClubList() {
             align: 'center',
             headerAlign: 'center',
         },
-
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     function CustomNoRowsOverlay() {
         return (
@@ -186,7 +183,7 @@ export default function MyClubList() {
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
-                        pagination={true}
+                        disableColumnMenu
                         autoHeight={true}
 
                     />

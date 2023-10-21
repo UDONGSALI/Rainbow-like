@@ -22,7 +22,6 @@ export default function RentReviewList() {
         fetch(SERVER_URL + "post/board/6")
             .then(response => response.json())
             .then((data) => {
-                console.log(data);
                 // Sort the data array in descending order based on postNum
                 data.sort((a, b) => b.postNum - a.postNum);
 
@@ -40,7 +39,7 @@ export default function RentReviewList() {
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
 
-        navigate(`/rent/reviewPost/${rowId}`);
+        navigate(`/rent/review/post/${rowId}`);
     };
 
     const handleChangePage = (pageNumber) => {
@@ -165,7 +164,7 @@ export default function RentReviewList() {
                             nextPageText=">"
                         />
                         <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <button onClick={() => navigate('/rent/reviewWrite')}
+                        <button onClick={() => navigate('/rent/review/write')}
                                 style={{
                                     width: "100px",
                                     height: "40px",

@@ -6,10 +6,20 @@ import {SERVER_URL} from "../Common/constants";
 function ClubForm(props){
     const navigate = useNavigate();
     const memId = sessionStorage.getItem("memId");
-    const [member, setMember] = useState([]);
-    const [formData, setFormData] = useState({});
+    const [member, setMember] = useState({ memNum: "" });
+    const [formData, setFormData] = useState({
+        memNum: "",
+        boardNum: 9,
+        title: "",
+        content: "",
+        pageView: 0,
+        parentsNum: "",
+        clubAllowStatus: 'WAIT',
+        clubRecuStatus: '',
+        delYN : 'N'
+    });
 
-        useEffect(() => {
+    useEffect(() => {
         memberSet();
 
         const formSet = {
@@ -110,7 +120,6 @@ function ClubForm(props){
                         placeholder="소모임 본문"
                         required
                     >
-                        본문을 작성해주세요.
                     </textarea>
                 </div>
 

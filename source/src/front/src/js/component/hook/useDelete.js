@@ -1,6 +1,9 @@
+import {useConfirm} from "./useConfirm";
+
 function useDelete(SERVER_URL) {
+    const confirm = useConfirm();
     const deleteItem = async (endpoint, actionType = "삭제") => {
-        const isConfirmed = window.confirm(`정말 ${actionType} 하시겠습니까?`);
+        const isConfirmed = await confirm(`정말 ${actionType} 하시겠습니까?`);
         if (!isConfirmed) return false;
 
         try {

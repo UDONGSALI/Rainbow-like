@@ -112,7 +112,7 @@ public class RentHistService {
         rentHistRepository.deleteById(rentHistNum);
     }
 
-    public void createBasicRent() {
+    public void createDefaultRent() {
         ArrayList<RentHistDto> rentHistDtoList = RentHistDto.createRentHists();
         createRentHists(rentHistDtoList);
     }

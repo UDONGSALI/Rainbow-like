@@ -42,7 +42,6 @@ export default function RentReviewComment() {
                     (comment) => comment.delYN !== "Y"
                 );
                 setComments(nonDeletedComments);
-                console.log("postComment:", nonDeletedComments);
             })
             .catch((error) => {
                 alert("댓글을 가져오는 중에 문제가 발생했습니다.");
@@ -60,7 +59,6 @@ export default function RentReviewComment() {
             .then((response) => response.json())
             .then((data) => {
                 setRentComms(data);
-                console.log("comments data:", data);
 
                 // 필요한 필드만 업데이트
                 setReplyFormData((prevFormData) => ({
@@ -84,19 +82,18 @@ export default function RentReviewComment() {
         parentNum: "0",
         delYN: "N",
     });
-    console.log("formData:", formData);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
-        console.log("Name:", name, "Value:", value);
+        // console.log("Name:", name, "Value:", value);
 
         // formData 로그 추가
-        console.log("formData before update:", formData);
+        // console.log("formData before update:", formData);
 
         setFormData({...formData, [name]: value});
 
         // formData 로그 추가
-        console.log("formData after update:", formData);
+        // console.log("formData after update:", formData);
     };
 
     //댓글 작성하기
@@ -224,7 +221,6 @@ export default function RentReviewComment() {
 
     // 댓글 삭제(delYN을 Y로 바꿔 리스트에 노출하지 않게 함)
     const onDelClick = (comment) => {
-        console.log(comment);
         const updatedCommentData = {
             editDate: new Date(),
             content: comment.content,
@@ -286,7 +282,7 @@ export default function RentReviewComment() {
                         marginTop: "3%",
                     }}
                 >
-                    <table style={{width: "100%"}}>
+                    <div style={{width: "100%"}}>
                         <h3
                             style={{
                                 marginLeft: "2%",
@@ -333,7 +329,7 @@ export default function RentReviewComment() {
                                 <b style={{fontSize: "18px"}}>등록</b>
                             </button>
                         </div>
-                    </table>
+                    </div>
                 </div>
                 <div
                     style={{
@@ -372,14 +368,8 @@ export default function RentReviewComment() {
                                 <p>댓글쓰기창에서 댓글을 작성해주세요.</p>
                             ) : (
                                 comments.map((comment, index) => (
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            marginBottom: "10px",
-                                        }}
-                                        key={comment.id}
-                                    >
-                                        <div>
+                                    <div style={{width: "100%", marginBottom: "10px"}} key={comment.commNum}>
+                                    <div>
                                             <div style={{display: "flex"}}>
                                                 <div>
                                                     <b>작성자ㅣ</b>

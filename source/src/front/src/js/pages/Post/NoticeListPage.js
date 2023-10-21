@@ -20,7 +20,6 @@ function NoticeListPage() {
         <div>
             <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             <PostNoticeList boardNum={boardNum} />
-            <Footer />
         </div>
     );
 }

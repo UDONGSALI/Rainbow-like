@@ -34,15 +34,12 @@ function RentSpace({selectedInfo}) {
 
     });
 
-    console.log(selectedInfo.selectedTimeRange)
-
     //멤버 정보 가지고 오기
     useEffect(() => {
         fetch(SERVER_URL + `members/id/${memId}`)
             .then((response) => response.json())
             .then((data) => {
                 setMember(data);
-                console.log("member data:", data);
 
                 // 멤버 정보가 있을 경우 hasUpdates 객체에 추가
                 if (data) {
@@ -64,7 +61,6 @@ function RentSpace({selectedInfo}) {
             .then(response => response.json())
             .then(data => {
                 setFiles(data);
-                console.log("files data:", data);
 
                 // spaceName로 파일의 사진 찾기
                 const matchingFile = data.find(file => file.space && file.space.spaceName === selectedInfo.spaceName);
@@ -73,9 +69,9 @@ function RentSpace({selectedInfo}) {
                     const randomParam = Math.random();  // 무작위 매개변수 생성
                     const updatedFileUri = `${matchingFile.fileUri}?${randomParam}`;  // 매개변수를 URL에 추가
                     setFileUri(updatedFileUri); // 수정된 URL을 상태에 저장
-                    console.log("Matching fileUri:", updatedFileUri);
+                    // console.log("Matching fileUri:", updatedFileUri);
                 } else {
-                    console.log("File not found for spaceName:", selectedInfo.spaceName);
+                    console.error("File not found for spaceName:", selectedInfo.spaceName);
                 }
             })
             .catch(error => {
@@ -108,19 +104,19 @@ function RentSpace({selectedInfo}) {
                 let text;
                 try {
                     text = await response.text();
-                    console.log('서버 응답 데이터:', text);
+                    // console.log('서버 응답 데이터:', text);
                     alert('정말로 대관 예약 신청을 하시겠습니까?');
                     alert('대관 예약 신청이 완료되었습니다. 마이페이지에서 확인하세요.');
                     window.location.href = "http://localhost:3000/mypage/rent";
                 } catch (jsonError) {
-                    console.log('JSON 파싱 에러:', jsonError);
+                    console.error('JSON 파싱 에러:', jsonError);
                     alert('정말로 대관 예약 신청을 하시겠습니까?');
                     window.location.href = "http://localhost:3000/mypage/rent";
                 }
             } else {
-                console.log('업데이트 실패:', response.statusText);
+                console.error('업데이트 실패:', response.statusText);
                 const text = await response.text(); // 여기서도 text 변수를 사용
-                console.log('서버 응답 데이터:', text);
+                // console.log('서버 응답 데이터:', text);
                 alert('대관 예약 신청 중 이상이 발생했습니다. 다시 시도해 주세요.');
             }
         } catch (error) {
