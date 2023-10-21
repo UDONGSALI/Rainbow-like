@@ -63,14 +63,7 @@ public class TokenController {
         return ResponseEntity.ok(response);
     }
 
-//    @DeleteMapping("/{tokenNum}")
-//    public void deleteToken(@PathVariable Long tokenNum) {
-//        jwtService.deleteTokenByTokenNum(tokenNum);
-//    }
     @DeleteMapping("/{jti}")
     public void deleteToken(@PathVariable  String jti) {
-        System.out.println("토큰 삭제");jwtService.deleteTokenByJti(jti);
-
     }
-
 }

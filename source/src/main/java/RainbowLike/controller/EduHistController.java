@@ -79,10 +79,6 @@ public class EduHistController {
             @RequestParam(name = "file", required = false) List<MultipartFile> files,
             @RequestParam(name = "tableName", required = false) String tableName,
             @RequestParam(name = "number", required = false) Long number) {
-        System.out.println(eduHistDataJson);
-        System.out.println(files);
-        System.out.println(tableName);
-        System.out.println(number);
         try {
             return ResponseEntity.ok(eduHistService.saveEduHistAndFile(eduHistDataJson, files, tableName, number));
         } catch (Exception e) {

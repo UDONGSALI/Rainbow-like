@@ -24,7 +24,6 @@ function SjNewsPage() {
         <div>
             <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle}/>
             <ImgPostList boardNum={boardNum} />
-            <Footer />
         </div>
     );
 }

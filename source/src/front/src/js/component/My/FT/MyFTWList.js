@@ -37,7 +37,6 @@ export default function MyFTWList() {
         fetch(`${SERVER_URL}ftw/member/${memNum}`)
             .then((response) => response.json())
             .then((ftwData) => {
-                console.log(ftwData);
                 const ftwWithNumbers = ftwData.map((ftWorker, index) => ({
                     ...ftWorker,
                     id: ftWorker.ftWorkerNum,
@@ -54,12 +53,11 @@ export default function MyFTWList() {
             });
     };
 
-
-const onRowClick = (params) => {
-        const rowId = params.row.eduNum;
-
-        console.log('rowId:', rowId);
-        navigate(`/edu/list/detail/${rowId}`);
+    const onRowClick = (params) => {
+        if (params.field === 'ftDtl') {
+            const ftWorkerId = params.row.ftWorkerNum;
+            navigate(`/ftw/dtl/${ftWorkerId}`);
+        }
     };
 
     const handleChangePage = (pageNumber) => {
@@ -85,9 +83,6 @@ const onRowClick = (params) => {
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
-
-
-
         },
 
         {
@@ -103,7 +98,6 @@ const onRowClick = (params) => {
                 const writeDate = new Date(params.value);
                 //원하는 형식으로 날짜 포맷
                 const formattedDate = `${writeDate.getFullYear()}-${String(writeDate.getMonth() + 1).padStart(2, '0')}-${String(writeDate.getDate()).padStart(2, '0')}`;
-
                 return formattedDate;
             },
         },
@@ -119,22 +113,22 @@ const onRowClick = (params) => {
             headerAlign: 'center',
 
         },
-
         {
-            field: "statusDtl",
+            field: "ftDtl",
             headerName: "상세 내용",
             flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
-            align: 'center',
-            headerAlign: 'center',
-
+            renderCell: (params) => (
+                <div
+                    style={{cursor: "pointer"}}
+                    onClick={() => onRowClick(params)}
+                >
+                    {params.value}
+                </div>
+            ),
         },
-
-
-
-
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     function CustomNoRowsOverlay() {
         return (
@@ -174,7 +168,7 @@ const onRowClick = (params) => {
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
-                        pagination={true}
+                        disableColumnMenu
                         autoHeight={true}
 
                     />

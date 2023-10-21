@@ -131,8 +131,6 @@ function SpaceApplyForm({onSelectdInfo}) {
 
         return reservedTimes.includes(selectedTime);
     };
-    console.log("rent:",rent);
-
     // 시간 선택 관련
     const handleSelectTime = (spaceName, time) => {
         if (!selectedDate) {
@@ -198,8 +196,6 @@ function SpaceApplyForm({onSelectdInfo}) {
                 };
 
                 setSelectedInfo(selectedInfo); // 부모 컴포넌트의 상태 업데이트
-                console.log(selectedInfo);
-
                 // 선택된 시간 범위를 상태로 업데이트
                 setSelectedTimes((prevSelectedTimes) => {
                     const updatedTimes = {...prevSelectedTimes, [spaceName]: sortedTimeRange};

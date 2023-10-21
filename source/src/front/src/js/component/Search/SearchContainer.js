@@ -1,10 +1,10 @@
 import React, {memo, useEffect, useState} from 'react';
 import styles from '../../../css/component/Search/SearchContainer.module.css';
 import magnifier2 from "../../../img/layout/magnifier2.png";
-import { urlToNameMapping } from "../Stats/urlToNameMapping";
-import { useNavigate } from "react-router-dom";
+import {urlToNameMapping} from "../Stats/urlToNameMapping";
+import {useNavigate} from "react-router-dom";
 import useFetch from "../hook/useFetch";
-import { SERVER_URL } from "../Common/constants";
+import {SERVER_URL} from "../Common/constants";
 
 function SearchContainer() {
     // 1. States
@@ -14,13 +14,13 @@ function SearchContainer() {
     const [menuResults, setMenuResults] = useState([]);
     const [eduResults, setEduResults] = useState([]);
     const [postResults, setPostResults] = useState([]);
-    const [searchEduUrl, setSearchEduUrl] = useState(`${SERVER_URL}edus/search/eduName/`);
-    const [searchPostUrl, setSearchPostUrl] = useState(`${SERVER_URL}post/search/title/`);
+    const [searchEduUrl, setSearchEduUrl] = useState(null);
+    const [searchPostUrl, setSearchPostUrl] = useState(null);
 
     // 2. Hooks and effects
     const navigate = useNavigate();
-    const { data: fetchedEdus, loading: edusLoading } = useFetch(searchEduUrl);
-    const { data: fetchedPosts, loading: postsLoading } = useFetch(searchPostUrl);
+    const {data: fetchedEdus, loading: edusLoading} = useFetch(searchEduUrl);
+    const {data: fetchedPosts, loading: postsLoading} = useFetch(searchPostUrl);
 
     useEffect(() => {
         if (!edusLoading && Array.isArray(fetchedEdus)) {
@@ -41,29 +41,41 @@ function SearchContainer() {
 
     const handleSearchSubmit = () => {
         setSearchTerm(inputValue);
-        const filteredMenus = Object.entries(urlToNameMapping).filter(([url, label]) => label.includes(inputValue));
+        const filteredMenus = Object.entries(urlToNameMapping)
+            .filter(([url, label]) => label.includes(inputValue) && !label.includes('관리자'));
         setMenuResults(filteredMenus);
         setSearchEduUrl(`${SERVER_URL}edus/search/eduName/${inputValue}`);
         setSearchPostUrl(`${SERVER_URL}post/search/title/${inputValue}`);
     };
+
 
     const handleMenuClick = (url) => {
         navigate(url);
     };
 
     const getSearchResultCount = () => {
+        const filterPosts = (posts) => {
+            return posts.filter(post => post.board.boardNum !== 7 && post.board.boardNum !== 8);
+        }
+        const filteredPostCount = filterPosts(postResults).length;
+
         switch (selectedMenu) {
-            case '메뉴': return menuResults.length;
-            case '교육': return eduResults.length;
-            case '게시물': return postResults.length;
-            default: return menuResults.length + eduResults.length + postResults.length;
+            case '메뉴':
+                return menuResults.length;
+            case '교육':
+                return eduResults.length;
+            case '게시물':
+                return filteredPostCount;
+            default:
+                return menuResults.length + eduResults.length + filteredPostCount;
         }
     }
 
     const highlightSearchTerm = (text, searchTerm) => {
         const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
         return <span>
-            {parts.map((part, i) => part.toLowerCase() === searchTerm.toLowerCase() ? <span key={i} style={{ color: 'red' }}>{part}</span> : part)}
+            {parts.map((part, i) => part.toLowerCase() === searchTerm.toLowerCase() ?
+                <span key={i} style={{color: 'red'}}>{part}</span> : part)}
         </span>;
     }
 
@@ -134,13 +146,13 @@ function SearchContainer() {
 
                         <div className={styles.title}>교육</div>
                         <div>
-                            {eduResults.map(content => (
-                                <div key={content.id} style={{margin: '15px', fontSize: '16px'}}>
+                            {eduResults.map(edu => (
+                                <div key={edu.eduNum} style={{margin: '15px', fontSize: '16px'}}>
                             <span
-                                onClick={() => navigate(`/edu/list/detail/${content.eduNum}`)}
+                                onClick={() => navigate(`/edu/list/detail/${edu.eduNum}`)}
                                 style={{cursor: 'pointer'}}
                             >
-                                {highlightSearchTerm(content.eduName, searchTerm)}
+                                {highlightSearchTerm(edu.eduName, searchTerm)}
                             </span>
                                 </div>
                             ))}
@@ -148,16 +160,29 @@ function SearchContainer() {
 
                         <div className={styles.title}>게시물</div>
                         <div>
-                            {postResults.map(post => (
-                                <div key={post.id} style={{margin: '15px', fontSize: '16px'}}>
-                            <span
-                                // onClick={() => navigate(`/edu/list/detail/${content.eduNum}`)}
-                                style={{cursor: 'pointer'}}
-                            >
+                            {postResults.map(post => {
+                                const boardNum = post.board.boardNum;
+                                const postNum = post.postNum;
+                                let navigateTo;
+
+                                if (boardNum === 7 || boardNum === 8) return null;
+
+                                if (boardNum === 9) {
+                                    navigateTo = `/clubs/${postNum}`;
+                                } else if (boardNum === 6) {
+                                    navigateTo = `/rent/review/post/${postNum}`;
+                                } else {
+                                    navigateTo = `/post/detail/${boardNum}/${postNum}`;
+                                }
+
+                                return (
+                                    <div key={post.postNum} style={{margin: '15px', fontSize: '16px'}}>
+                            <span onClick={() => navigate(navigateTo)} style={{cursor: 'pointer'}}>
                                 {highlightSearchTerm(post.title, searchTerm)}
                             </span>
-                                </div>
-                            ))}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </>
                 )}
@@ -179,7 +204,7 @@ function SearchContainer() {
                 {selectedMenu === '교육' && (
                     <div>
                         {eduResults.map(edu => (
-                            <div key={edu.id} style={{margin: '15px', fontSize: '16px'}}>
+                            <div key={edu.eduNum} style={{margin: '15px', fontSize: '16px'}}>
                 <span onClick={() => navigate(`/edu/list/detail/${edu.eduNum}`)} style={{cursor: 'pointer'}}>
                     {highlightSearchTerm(edu.eduName, searchTerm)}
                 </span>
@@ -191,22 +216,21 @@ function SearchContainer() {
                 {/* 게시물 중 '게시물' 카테고리 목록 */}
                 {selectedMenu === '게시물' && (
                     <div>
-                        {postResults.map(post => (
-                            <div key={post.id} style={{margin: '15px', fontSize: '16px'}}>
-                <span
-                    onClick={() => {
-                        if (post.boardNum && post.boardNum === 9) {
-                            navigate(`/club/${post.postNum}`);
-                        } else {
-                            navigate(`/post/detail/${post.board.boardNum}/${post.postNum}`);
-                        }
-                    }}
-                    style={{cursor: 'pointer'}}
-                >
-                    {highlightSearchTerm(post.title, searchTerm)}
-                </span>
-                            </div>
-                        ))}
+                        {postResults.map(post => {
+                            if (post.board.boardNum === 7 || post.board.boardNum === 8) return null;
+
+                            const navigateTo = post.boardNum && post.boardNum === 9 ?
+                                `/club/${post.postNum}` :
+                                `/post/detail/${post.board.boardNum}/${post.postNum}`;
+
+                            return (
+                                <div key={post.postNum} style={{margin: '15px', fontSize: '16px'}}>
+                        <span onClick={() => navigate(navigateTo)} style={{cursor: 'pointer'}}>
+                            {highlightSearchTerm(post.title, searchTerm)}
+                        </span>
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
             </div>

@@ -109,7 +109,6 @@ public class MemberController {
             @RequestParam(name = "file", required = false) List<MultipartFile> files,
             @RequestParam(name = "tableName", required = false) String tableName,
             @RequestParam(name = "number", required = false) Long number) {
-        System.out.println(memberDataJson);
         try {
             return ResponseEntity.ok(memberService.saveMemberAndFile(memberDataJson, files, tableName, number));
         } catch (Exception e) {

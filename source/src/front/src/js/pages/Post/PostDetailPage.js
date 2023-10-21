@@ -109,7 +109,6 @@ function PostDetailPage() {
                 <Header headerTitle={headerInfo} urlItems={urlData} footerTitle={footerTitle} />
             ) : null}
             {showPost ? <PostDetail postNum={ postNum } boardNum = {boardNum} /> : null}
-            <Footer />
         </div>
     );
 }

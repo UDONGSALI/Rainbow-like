@@ -10,7 +10,6 @@ function Comment(props) {
     const [comms, setComms] = useState([]);
     const [open, setOpen] = useState(false);
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
-    console.log(memNum);
 
 
     const [replyFormData, setReplyFormData] = useState({
@@ -370,7 +369,6 @@ function Comment(props) {
                     {comms.length === 0 ? (
                         <tr>
                             <td colSpan={7}>아직 댓글이 없습니다. 첫번째 댓글을 작성해보세요!</td>
-                            <br/>
                         </tr>
                     ) : (
                         renderComments(comms)

@@ -41,7 +41,6 @@ function FTWForm(props){
             .then((response) => response.json())
             .then((data) => {
                 alert('등록이 신청되었습니다.');
-                console.log(data);
                 const newPostId = data.ftWorkerNum;
                 navigate(`/ftw/dtl/${newPostId}`);
 

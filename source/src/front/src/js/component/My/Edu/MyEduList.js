@@ -6,6 +6,7 @@ import styles from "../../../../css/component/Mypage/MypageComponent.module.css"
 import CustomDataGrid from "../../Common/CustomDataGrid";
 import useDelete from "../../hook/useDelete";
 import Pagination from "../../Common/Pagination";
+import Certificate from "../../Edu/RenderCell/Certificates";
 
 export default function MyEduList() {
     const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
@@ -39,7 +40,6 @@ export default function MyEduList() {
         fetch(`${SERVER_URL}eduHist/memberEduHist/${memNum}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
 
                 const modifiedData = data.map(item => ({
                     ...item,
@@ -69,8 +69,6 @@ export default function MyEduList() {
 
     const onRowClick = (params) => {
         const rowId = params.row.edu.eduNum;
-
-        console.log('rowId:', rowId);
         navigate(`/edu/list/detail/${rowId}`);
     };
 
@@ -82,17 +80,16 @@ export default function MyEduList() {
             const updatedRows = eduHists.filter(row => row.eduHistNum !== eduHistNum);
             setEduHists(updatedRows);
         }
-        console.log(isSuccess);
+        // console.log(isSuccess);
     };
 
     const handleCertificatePrint = (status, name, eduName) => {
         if (status === 'COMPLETE') {
-            setCurrentCertificateData({name, eduName});
             setIsCertificateOpen(true);
+            setCurrentCertificateData({name, eduName});
         } else {
             alert('교육 수료 후 출력이 가능합니다!');
         }
-
     };
 
     function convertEnumToKorean(enumValue) {
@@ -236,13 +233,14 @@ export default function MyEduList() {
             headerAlign: 'center',
             renderCell: (params) => (
                 <div
-                    onClick={() => handleCertificatePrint(params.row.status, params.row.member?.name, params.row.edu?.eduName)}>
+                    onClick={() => handleCertificatePrint(params.row.status, params.row.member?.name, params.row.edu?.eduName)}
+                    style={{ cursor: "pointer" }}  // 이 부분을 추가했습니다.
+                >
                     🖨️
                 </div>
             ),
         }
-
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     function CustomNoRowsOverlay() {
         return (
@@ -281,11 +279,16 @@ export default function MyEduList() {
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
-                        pagination={true}
                         autoHeight={true}
-
+                        disableColumnMenu
                     />
                 </div>
+                <Certificate
+                    isOpen={isCertificateOpen}
+                    onClose={() => setIsCertificateOpen(false)}
+                    name={currentCertificateData.name}
+                    eduName={currentCertificateData.eduName}
+                />
                 <Pagination
                     activePage={currentPage}
                     itemsCountPerPage={itemsPerPage}
