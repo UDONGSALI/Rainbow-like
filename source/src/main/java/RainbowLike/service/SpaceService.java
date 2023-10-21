@@ -16,17 +16,13 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class SpaceService {
     private final ModelMapper mapper;
-
     private final SpaceRepository spaceRepository;
-
 
     public void createSpaces(ArrayList<SpaceDto> spaceList){
         for(SpaceDto spaceDto : spaceList){
             Space space=mapper.map(spaceDto, Space.class);
-
             spaceRepository.save(space);
         }
     }
-
 
 }

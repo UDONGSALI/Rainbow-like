@@ -1,3 +1,4 @@
+
 .App {
     font-family:'IBM Plex Sans KR', sans-serif;
 }
@@ -41,4 +42,11 @@
 
 body::-webkit-scrollbar {
     display: none;
+}
+
+
+.cinnamoroll-bg {
+    background-size: 100%;
+    background-position: center center; /* 가운데에 이미지를 위치시킵니다 */
+    background-repeat: no-repeat; /* 이미지가 반복되지 않도록 합니다 */
 }

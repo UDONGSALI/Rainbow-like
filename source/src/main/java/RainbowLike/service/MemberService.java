@@ -3,9 +3,8 @@ package RainbowLike.service;
 import RainbowLike.constant.DelYN;
 import RainbowLike.constant.Gender;
 import RainbowLike.constant.Type;
-import RainbowLike.dto.EduHistDto;
 import RainbowLike.dto.MemberDto;
-import RainbowLike.entity.*;
+import RainbowLike.entity.Member;
 import RainbowLike.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,14 +40,6 @@ public class MemberService implements UserDetailsService {
     private final ChatRoomRepository chatRoomRepository;
     private final FtConsumerRepository ftConsumerRepository;
     private final FileService fileService;
-
-    @PostConstruct
-    private void createDefaultMembers() {
-        List<MemberDto> memberDtoList = MemberDto.createtestMember();
-        for (MemberDto memberDto : memberDtoList) {
-            saveMember(memberDto);
-        }
-    }
 
     public Member saveMember(MemberDto memberDto) {
         Member member = mapper.map(memberDto, Member.class);
@@ -130,11 +121,7 @@ public class MemberService implements UserDetailsService {
         if (member == null) {
             throw new UsernameNotFoundException(memId);
         }
-        return User.builder()
-                .username(member.getMemId())
-                .password(member.getPwd())
-                .roles(member.getType().toString())
-                .build();
+        return User.builder().username(member.getMemId()).password(member.getPwd()).roles(member.getType().toString()).build();
     }
 
     public Member changePassword(String id, String pwd) {
@@ -165,5 +152,13 @@ public class MemberService implements UserDetailsService {
         ftWorkerRepository.deleteByMember(member);
         ftConsumerRepository.deleteByMember(member);
         memberRepository.delete(member);
+    }
+
+    @PostConstruct
+    private void createDefaultMembers() {
+        List<MemberDto> memberDtoList = MemberDto.createtestMember();
+        for (MemberDto memberDto : memberDtoList) {
+            saveMember(memberDto);
+        }
     }
 }
