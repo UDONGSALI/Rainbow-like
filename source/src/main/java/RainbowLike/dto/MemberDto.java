@@ -124,6 +124,21 @@ public class MemberDto {
         memberDto4.setJdate(LocalDate.now().minusDays(40));
         memberDtoList.add(memberDto4);
 
+        MemberDto memberDto5 = new MemberDto();
+        memberDto5.setMemId("cinnamoroll");
+        memberDto5.setPwd("20010306");
+        memberDto5.setName("시나모롤");
+        memberDto5.setEmail("cinnamoroll@.sanrio.co.jp");
+        memberDto5.setType(Type.ADMIN);
+        memberDto5.setGender(Gender.MALE);
+        memberDto5.setTel("01020010306");
+        memberDto5.setBir(LocalDate.of(2001, 3, 6));
+        memberDto5.setAddr("동교동 190-1");
+        memberDto5.setAddrDtl("AK PLAZA 홍대 2층");
+        memberDto5.setAddrPost("04051");
+        memberDto5.setJdate(LocalDate.now().minusDays(35));
+        memberDtoList.add(memberDto5);
+
 // 추가 16명의 데이터 생성
         String[] names = {"지수", "철수", "영희", "민수", "수진", "은지", "선영", "태민", "민호", "하은", "서진", "예은", "진영", "재현"};
         String[] emails = {"js@", "cs@", "yh@", "ms@", "sj@", "ej@", "sy@", "tm@", "mh@", "he@", "sj2@", "ye@", "jy@", "jh@"};

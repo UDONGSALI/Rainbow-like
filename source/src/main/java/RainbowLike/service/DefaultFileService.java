@@ -23,6 +23,22 @@ public class DefaultFileService {
         // 멤버 관련
         List<File> fileList = new ArrayList<>();
 
+        File mem1File1 = new File();
+        mem1File1.setMember(memberRepository.findByMemNum(1L));
+        mem1File1.setFileName("member/1/참새.jfif");
+        mem1File1.setFileOriName("참새.jfif");
+        mem1File1.setFileUri("https://storage.googleapis.com/rainbow_like/member/1/참새.jfif");
+
+        fileList.add(mem1File1);
+
+        File mem2File1 = new File();
+        mem2File1.setMember(memberRepository.findByMemNum(2L));
+        mem2File1.setFileName("member/2/duke.png");
+        mem2File1.setFileOriName("duke.png");
+        mem2File1.setFileUri("https://storage.googleapis.com/rainbow_like/member/2/duke.png");
+
+        fileList.add(mem2File1);
+
         File mem3File1 = new File();
         mem3File1.setMember(memberRepository.findByMemNum(3L));
         mem3File1.setFileName("member/3/상담사 자격증.jpg");
@@ -39,13 +55,21 @@ public class DefaultFileService {
 
         fileList.add(mem4File1);
 
+        File mem5File1 = new File();
+        mem5File1.setMember(memberRepository.findByMemNum(5L));
+        mem5File1.setFileName("member/5/Cinnamoroll.png");
+        mem5File1.setFileOriName("Cinnamoroll.png");
+        mem5File1.setFileUri("https://storage.googleapis.com/rainbow_like/member/5/Cinnamoroll.png");
+
+        fileList.add(mem5File1);
+
+        // 교육 관련
+
         File edu1File1 = new File();
         edu1File1.setEdu(eduRepository.findByEduNum(1L));
         edu1File1.setFileName("edu/1/edu1_1.png");
         edu1File1.setFileOriName("edu1_1.png");
         edu1File1.setFileUri("https://storage.googleapis.com/rainbow_like/edu/1/edu1_1.png");
-
-        // 교육 관련
 
         fileList.add(edu1File1);
 

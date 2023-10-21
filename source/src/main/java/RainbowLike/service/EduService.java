@@ -19,20 +19,8 @@ import java.util.ArrayList;
 public class EduService {
 
     private final EduRepository eduRepository;
-
     private final EduHistRepository eduHistRepository;
-
     private final ModelMapper mapper;
-
-
-    @PostConstruct
-    private void createDefaultEdus() {
-        ArrayList<EduDto> eduDtos = EduDto.createDefaultEdu();
-        for (EduDto eduDto: eduDtos) {
-            Edu edu = mapper.map(eduDto, Edu.class);
-            saveEdu(edu);
-        }
-    }
 
     public Iterable<Edu> findAll() {
         return eduRepository.findAll();
@@ -67,5 +55,14 @@ public class EduService {
         Edu edu = eduRepository.findByEduNum(eduNum);
         edu.setRecuPerson(count.intValue());
         eduRepository.save(edu);
+    }
+
+    @PostConstruct
+    private void createDefaultEdus() {
+        ArrayList<EduDto> eduDtos = EduDto.createDefaultEdu();
+        for (EduDto eduDto: eduDtos) {
+            Edu edu = mapper.map(eduDto, Edu.class);
+            saveEdu(edu);
+        }
     }
 }

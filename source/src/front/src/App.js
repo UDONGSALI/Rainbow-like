@@ -102,6 +102,16 @@ import QnAPage from "./js/pages/QnA/QnAPage";
 import ErrorPage from "./js/pages/ErrorPage";
 import Footer from "./js/layout/Footer/footer";
 
+import Cinnamoroll1 from './img/pages/시나모롤1.png'
+import Cinnamoroll2 from './img/pages/시나모롤2.jpg'
+import Cinnamoroll3 from './img/pages/시나모롤3.jpg'
+import Cinnamoroll4 from './img/pages/시나모롤4.jpg'
+import Cinnamoroll5 from './img/pages/시나모롤5.jpg'
+import Cinnamoroll7 from './img/pages/시나모롤2.png'
+import Cinnamoroll8 from './img/pages/시나모롤8.jpg'
+import Cinnamoroll9 from './img/pages/시나모롤9.jpg'
+import Pompompurin from './img/pages/폼폼푸린_배경.jpg'
+
 
 function App() {
     const decodeToken = useToken();
@@ -111,6 +121,7 @@ function App() {
     const location = useLocation();
     const isPaymentRoute = location.pathname.includes("/pay/");
     const isChatRoute = location.pathname.includes("/chat");
+    const [selectedBgImage, setSelectedBgImage] = useState("");
 
     useEffect(() => {
         setMemId(sessionStorage.getItem("memId"));
@@ -124,9 +135,32 @@ function App() {
         trackPageView();
     }, [trackPageView]);
 
+    useEffect(() => {
+        if (memId === "cinnamoroll") {
+            // memId가 cinnamoroll인 경우에만 랜덤 이미지 선택
+            const randomImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+            setSelectedBgImage(randomImage);
+        } else {
+            setSelectedBgImage("");  // 그렇지 않은 경우에는 기본 배경 이미지로 설정
+        }
+    }, [memId, location]);
+
+    const backgroundImages = [
+        Cinnamoroll1,
+        Cinnamoroll2,
+        Cinnamoroll3,
+        Cinnamoroll4,
+        Cinnamoroll5,
+        Cinnamoroll7,
+        Cinnamoroll8,
+        Cinnamoroll9,
+        Pompompurin,
+    ];
 
     return (
-        <div className="App" onClick={trackButtonClick}>
+        <div className="App"
+             style={{ backgroundImage: `url(${selectedBgImage})`, /*backgroundSize:'100%', backgroundPosition:'center center', backgroundRepeat:"no-repeat"*/}}
+             onClick={trackButtonClick}>
 
             {!isPaymentRoute && !isChatRoute && <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
             <Routes>
