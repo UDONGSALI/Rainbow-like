@@ -87,11 +87,6 @@ public class FileService {
     public List<Long> uploadFilesAndGetFileNums(List<MultipartFile> files, String tableName, Long number) throws IOException {
         return uploadToCloudAndGetFileNums(files, tableName, number);
     }
-    public void updatePostNumForImage(String imageUrl, Long postNum) {
-        // Fetch the image record using imageUrl
-        // Update its postNum with the provided postNum
-        // Save the updated image record
-    }
 
     private List<Long> uploadToCloudAndGetFileNums(List<MultipartFile> files, String tableName, Long number) throws IOException {
         PathAndEntities pathAndEntities = determineMidPath(tableName, number);
