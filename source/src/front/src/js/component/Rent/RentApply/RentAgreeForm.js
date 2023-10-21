@@ -6,26 +6,26 @@ import styles from '../../../../css/component/Rent/RentApplicationForm.module.cs
 
 
 export default function RentAgreeForm() {
-    const [checked1, setChecked1] = React.useState([true, false]);
-    const [checked2, setChecked2] = React.useState([true, false]);
-    const [checked3, setChecked3] = React.useState([true, false]);
+    const [checked1, setChecked1] = React.useState(true);
+    const [checked2, setChecked2] = React.useState(false);
+    const [checked3, setChecked3] = React.useState(false);
+
 
 
     const handleChange1 = () => {
-        setChecked1(true);
-        setChecked2(false);
-        setChecked3(false);
+        setChecked1((prev) => !prev); // toggle the checkbox
     };
 
     const handleChange2 = () => {
-        setChecked1(true);
-        setChecked2(true);
-        setChecked3(true);
+        setChecked2((prev) => !prev); // toggle the checkbox
     };
-    const handleChange3 = (event) => {
-        setChecked1(true);
-        setChecked2(true);
-        setChecked3(true);
+
+    const handleChange3 = () => {
+        setChecked3((prev) => {
+            setChecked1(prev ? false : true);
+            setChecked2(prev ? false : true);
+            return !prev; // toggle the checkbox
+        });
     };
 
 
@@ -84,7 +84,7 @@ export default function RentAgreeForm() {
                     <div className={styles.check}>
                         <FormGroup>
                             <FormControlLabel
-                                control={<Checkbox className="checkBox" defaultChecked={false}
+                                control={<Checkbox className="checkBox"
                                                    color={"secondary"}
                                                    checked={checked1}
                                                    onChange={handleChange1}
@@ -119,7 +119,7 @@ export default function RentAgreeForm() {
                     <div className={styles.check}>
                         <FormGroup>
                             <FormControlLabel
-                                control={<Checkbox defaultChecked={false}
+                                control={<Checkbox
                                                    color={"secondary"}
                                                    checked={checked2}
                                                    onChange={handleChange2}
@@ -141,7 +141,7 @@ export default function RentAgreeForm() {
                 <hr/>
                 <FormGroup>
                     <FormControlLabel
-                        control={<Checkbox defaultChecked={false}
+                        control={<Checkbox
                                            color={"secondary"}
                                            checked={checked3}
                                            onChange={handleChange3}

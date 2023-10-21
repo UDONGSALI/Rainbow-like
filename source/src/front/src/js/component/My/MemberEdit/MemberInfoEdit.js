@@ -37,7 +37,6 @@ export default function MemberInfoEdit() {
         addrDtl: '',
         addrPost: '',
         name:'',
-
     });
     const [memNum, setMemNum] = useState(null);
     const [memberInfo, setMemberInfo] = useState(null);
@@ -181,7 +180,7 @@ export default function MemberInfoEdit() {
 
 
     function redirectToModal() {
-        console.log('redirectToModal called');
+        // console.log('redirectToModal called');
         handleOpen(true);
     }
 
@@ -205,7 +204,6 @@ export default function MemberInfoEdit() {
         fetch(`${SERVER_URL}members/memInfo/${memNum}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 // 멤버 정보를 받아온 후, 상태에 저장
                 setMemberInfo(data);
                 setGender(data.gender || ''); // gender가 null이면 빈 문자열로 초기화
@@ -239,8 +237,6 @@ export default function MemberInfoEdit() {
                 name: name !== "" ? name : memberInfo.name,
             };
 
-            console.log(updatedInfo);
-
             try {
                 const response = await fetch(`${SERVER_URL}members/update/${memId}`, {
                     method: 'PATCH',
@@ -250,24 +246,22 @@ export default function MemberInfoEdit() {
                     body: JSON.stringify(updatedInfo),
                 });
 
-                console.log('Response Status:', response.status);
-
                 if (response.status === 200 || response.status === 201) {
                     let text;
                     try {
                         text = await response.text();
-                        console.log('서버 응답 데이터:', text);
+                        // console.log('서버 응답 데이터:', text);
                         alert('회원 정보 수정에 성공 했습니다!');
                         window.location.href = "http://localhost:3000/mypage/infoEditSuccess";
                     } catch (jsonError) {
-                        console.log('JSON 파싱 에러:', jsonError);
+                        console.error('JSON 파싱 에러:', jsonError);
                         alert('회원 정보 수정에 성공 했습니다!');
                         window.location.href = "http://localhost:3000/mypage/infoEditSuccess";
                     }
                 } else {
-                    console.log('업데이트 실패:', response.statusText);
+                    console.error('업데이트 실패:', response.statusText);
                     const text = await response.text(); // 여기서도 text 변수를 사용
-                    console.log('서버 응답 데이터:', text);
+                    // console.log('서버 응답 데이터:', text);
                     alert('회원 정보 수정 중 이상이 발생했습니다. 다시 시도해 주세요.');
                 }
             } catch (error) {
@@ -275,10 +269,10 @@ export default function MemberInfoEdit() {
                 alert('회원 정보 수정 중 네트워크 또는 서버 오류가 발생했습니다.');
             }
 
-            console.log(updatedInfo);
+            // console.log(updatedInfo);
         } else {
             // 수정사항이 없으면 기존 정보 유지
-            console.log('수정사항이 없습니다. 기존 정보를 유지합니다.');
+            console.error('수정사항이 없습니다. 기존 정보를 유지합니다.');
         }
     };
 
@@ -322,7 +316,7 @@ export default function MemberInfoEdit() {
                             <img
                                 src="https://storage.googleapis.com/rainbow_like/img/nextButton.png"
                                 alt="이동"
-                                style={{Width: "60px", height: "60px"}}/>
+                                style={{width: "60px", height: "60px"}}/>
                         </div>
                         <div className={styles.col3}>
                             <p>STEP 02</p><h4>수정완료</h4>
@@ -564,7 +558,7 @@ export default function MemberInfoEdit() {
                     <div className={styles.container}>
                         <div className={styles.field}><b>관심분야</b></div>
                         <div><select className={styles.basicInput} aria-label="interest">
-                            <option selected>선택</option>
+                            <option value>선택</option>
                             <option value="1">여성 취업</option>
                             <option value="2">여성 창업</option>
                             <option value="3">교육 프로그램 참여</option>
@@ -673,7 +667,6 @@ export default function MemberInfoEdit() {
                     <Stack className={styles.modalWrap} spacing={2} direction="row">
                         <Button
                             onClick={() => {
-                                console.log('Button Clicked');
                                 redirectToModal();
                             }}
                             style={{

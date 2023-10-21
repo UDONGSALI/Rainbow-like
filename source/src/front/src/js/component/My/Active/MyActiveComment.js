@@ -37,16 +37,13 @@ export default function MyActiveComment() {
         fetch(`${SERVER_URL}comments/member/${memNum}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log("Comments data:", data);
 
                 // 해당 멤버의 댓글만 필터링하여 상태(State)에 저장
                 const memberComments = data.filter((comment) => comment.member.memNum === memNum);
-                console.log("Member comments:", memberComments);
                 setComments(memberComments);
 
                 // 필터링: delYN이 'N'인 게시물만 남김
                 const filteredComments = data.filter((comment) => comment.delYN === 'N');
-                console.log("Filtered comments:", filteredComments);
                 setComments(filteredComments);
 
                 // 번호를 추가하여 각 행에 할당
@@ -55,7 +52,6 @@ export default function MyActiveComment() {
                     id: comment.commNum,
                     number: index + 1, // 각 행에 번호를 순차적으로 할당
                 }));
-                console.log("Comments with numbers:", commentsWithNumbers);
                 setComments(commentsWithNumbers);
             })
             .catch((error) => {
@@ -78,7 +74,7 @@ export default function MyActiveComment() {
         } else if (boardName === '세종시 기관 및 단체 소식') {
             targetPath = `/post/detail/${rowId}`;
         } else if (boardName === '대관 이용 후기') {
-            targetPath = `/rent/reviewPost/${rowId}`;
+            targetPath = `/rent/review/post/${rowId}`;
         } else {
             targetPath = `/post/detail/${rowId}`;
         }
@@ -179,7 +175,7 @@ export default function MyActiveComment() {
                 return formattedDate;
             },
         },
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
 
     function CustomNoRowsOverlay() {
@@ -224,10 +220,8 @@ export default function MyActiveComment() {
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
-                        pagination={true}
                         autoHeight={true}
-
-
+                        disableColumnMenu
                     />
 
                 </div>

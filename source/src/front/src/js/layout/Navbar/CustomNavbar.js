@@ -113,7 +113,8 @@ function CustomNavbar({memId, isAdmin}) {
                             border: '2px solid#c9c9c9',
                             borderRadius: '15px',
                             padding: '2px 15px',
-                            fontSize: '14px'
+                            fontSize: '14px',
+                            fontWeight:"bold"
                         }}>Newsletter
                         </button>
                     </a>

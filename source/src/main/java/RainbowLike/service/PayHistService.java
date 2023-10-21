@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -67,6 +68,12 @@ public class PayHistService {
 
         return new PaymentAndStatusChangeResult(payHist, updatedRentHist);
     }
-
-
+    @Transactional
+    public void creatDefaultPayHists(){
+        List<PayHistDto> payHists = PayHistDto.createPayHists();
+        for (PayHistDto payHistDto:
+             payHists) {
+            addPayHist(payHistDto);
+        }
+    }
 }

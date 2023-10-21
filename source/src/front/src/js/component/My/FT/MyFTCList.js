@@ -33,7 +33,6 @@ export default function MyFTCList() {
         fetch(`${SERVER_URL}ftc/member/${memNum}`)
             .then((response) => response.json())
             .then((ftcData) => {
-                console.log(ftcData);
 
                 const ftcWithNumbers = ftcData.map((ftConsumer, index) => ({
                     ...ftConsumer,
@@ -49,11 +48,9 @@ export default function MyFTCList() {
             });
     };
 
-const onRowClick = (params) => {
-        const rowId = params.row.eduNum;
-
-        console.log('rowId:', rowId);
-        navigate(`/edu/list/detail/${rowId}`);
+    const onRowClick = (params) => {
+        const rowId = params.row.ftConsumerNum;
+        navigate(`/ftc/dtl/${rowId}`);
     };
 
 
@@ -122,18 +119,23 @@ const onRowClick = (params) => {
 
         },
         {
-            field: "statusDtl",
+            field: "applyContent",
             headerName: "상세 내용",
             flex: 1,
             headerClassName: styles.customHeader,
             cellClassName: styles.customCell,
             align: 'center',
             headerAlign: 'center',
-
-        },
-
-
-    ];
+            renderCell: (params) => (
+                <div
+                    style={{cursor: "pointer"}}
+                    onClick={() => onRowClick(params)}
+                >
+                    {params.value}
+                </div>
+            ),
+        }
+    ].map(col => ({ ...col, sortable: false }));
 
     function CustomNoRowsOverlay() {
         return (
@@ -173,7 +175,7 @@ const onRowClick = (params) => {
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
-                        pagination={true}
+                        disableColumnMenu
                         autoHeight={true}
 
                     />

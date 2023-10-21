@@ -2,8 +2,8 @@ import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import styles from "../../../../css/component/Rent/RentReviewPost.module.css";
-import Comment from "../../Comment/Comment";
 import RentReviewComment from "./RentReviewComment";
+import {useConfirm} from "../../hook/useConfirm";
 
 const RentReviewDetails = () => {
     const {postNum} = useParams();
@@ -13,6 +13,7 @@ const RentReviewDetails = () => {
     const memId = sessionStorage.getItem("memId");
     const isAdmin = sessionStorage.getItem("role") === "ADMIN";
     const navigate = useNavigate();
+    const confirm = useConfirm();
 
     // 서버로부터 데이터를 가져오는 함수
     const fetchPostDetails = async () => {
@@ -41,8 +42,6 @@ const RentReviewDetails = () => {
             // postResponse에서는 JSON을 읽지 않습니다.
             // const postData = await postResponse.json();
             // setPost(postData);
-
-            console.log(detailsData);
         } catch (error) {
             console.error("데이터 가져오기 실패:", error);
         }
@@ -67,11 +66,11 @@ const RentReviewDetails = () => {
     });
     const onEditClick = () => {
         // 수정 페이지로 이동
-        navigate(`/rent/reviewEdit/${postNum}`);
+        navigate(`/rent/review/edit/${postNum}`);
     };
 
-    const onDeleteClick = () => {
-        const shouldDelete = window.confirm('정말로 삭제하시겠습니까?');
+    const onDeleteClick = async () => {
+        const shouldDelete = await confirm('정말로 삭제하시겠습니까?');
         if (shouldDelete) {
             // 삭제 API 호출
             const updatedPostData = {
@@ -182,7 +181,7 @@ const RentReviewDetails = () => {
             {/*게시글 작성 및 목록이동 버튼*/}
             <div className={styles.button2} style={{display: 'flex', justifyContent: 'center'}}>
 
-                <button onClick={() => navigate('/rent/reviewWrite')}
+                <button onClick={() => navigate('/rent/review/write')}
                         style={{
                             width: "100px",
                             height: "40px",

@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../Common/constants';
 import { useState } from "react";
+import {useConfirm} from "./useConfirm";
 
 function useDeletePost() {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]); // 게시물 목록을 상태로 관리
+    const confirm = useConfirm();
 
     const fetchPosts = async (boardNum) => {
         try {
@@ -18,7 +20,7 @@ function useDeletePost() {
     };
 
     const deletePost = async (postNum, files, boardNum, SERVER_URL, onSuccess) => {
-        const isConfirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
+        const isConfirmed = await confirm("정말로 이 게시글을 삭제하시겠습니까?");
         if (!isConfirmed) {
             return false;
         }

@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import styles from "../../../../css/component/Mypage/MypageComponent.module.css";
 import CustomDataGrid from "../../Common/CustomDataGrid";
 import useDelete from "../../hook/useDelete";
 import PayStatusCell from "../../Rent/RenderCell/PayStatusCell";
 import Pagination from "../../Common/Pagination";
+import Permit from "../../Rent/RenderCell/Permit";
+import InfoModal from "../../Common/InfoModal";
 
 export default function MyRentHistList() {
     const [memNum, setMemNum] = useState(null);
@@ -15,11 +16,8 @@ export default function MyRentHistList() {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [isPermitOpen, setIsPermitOpen] = useState(false);
     const [currentPermitData, setCurrentPermitData] = useState({spaceName: "", getRentDate: "", getRentTime: ""});
-    const [modalOpen, setModalOpen] = useState(false);
-    const [selectedSpace, setSelectedSpace] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10; // 페이지당 표시할 항목 수
-    const navigate = useNavigate();
     const deleteItem = useDelete(SERVER_URL);
 
     useEffect(() => {
@@ -44,7 +42,6 @@ export default function MyRentHistList() {
         fetch(`${SERVER_URL}rent/memberRent/${memNum}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 const modifiedData = data.map(item => ({
                     ...item,
                     spaceName: item.space.spaceName,
@@ -135,17 +132,6 @@ export default function MyRentHistList() {
         } else {
             return "대기";
         }
-    };
-
-    // 모달을 열기 위한 함수
-    const handleSpaceInfoClick = (space) => {
-        setSelectedSpace(space);
-        setModalOpen(true);
-    };
-
-   // 모달을 닫기 위한 함수
-    const handleCloseModal = () => {
-        setModalOpen(false);
     };
 
     const handleChangePage = (pageNumber) => {
@@ -294,13 +280,14 @@ export default function MyRentHistList() {
                         params.row.space?.spaceName,
                         getRentDate(params),
                         getRentTime(params)
-                    )}>
+                    )}
+                    style={{ cursor: "pointer" }}
+                >
                     🖨️
                 </div>
             ),
         },
-
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     function CustomNoRowsOverlay() {
         return (
@@ -340,11 +327,23 @@ export default function MyRentHistList() {
                         components={{
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
-                        pagination={true}
                         autoHeight={true}
-
+                        disableColumnMenu
                     />
                 </div>
+                <Permit
+                    isOpen={isPermitOpen}
+                    onClose={() => setIsPermitOpen(false)}
+                    spaceName={currentPermitData.spaceName}
+                    getRentDate={currentPermitData.getRentDate}
+                    getRentTime={currentPermitData.getRentTime}
+                />
+                <InfoModal
+                    title={infoTitle}
+                    data={infoData}
+                    open={isInfoModalOpen}
+                    onClose={() => setIsInfoModalOpen(false)}
+                />
                 <Pagination
                     activePage={currentPage}
                     itemsCountPerPage={itemsPerPage}

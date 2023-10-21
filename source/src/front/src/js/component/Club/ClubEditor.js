@@ -37,23 +37,26 @@ function ClubEditor(props) {
         fetch(SERVER_URL + "post/" + id)
             .then(response => response.json())
             .then(data => {
-                // 데이터를 가져와서 formData 상태를 업데이트
-                setFormData({
-                    memNum: data.member.memNum,
-                    boardNum: data.board.boardNum,
-                    title: data.post.title,
-                    content: data.post.content,
-                    writeDate: data.post.writeDate,
-                    editDate: new Date(),
-                    pageView: data.post.pageView,
-                    parentsNum: data.post.parentsNum,
-                    clubAllowStatus: data.post.clubAllowStatus,
-                    clubRecuStatus: data.post.clubRecuStatus,
-                    delYN: data.post.delYN
-                });
+                // 데이터가 존재하고 post 데이터도 존재하는 경우에만 formData를 업데이트합니다.
+                if (data && data.post) {
+                    setFormData({
+                        memNum: data.member.memNum,
+                        boardNum: data.board.boardNum,
+                        title: data.post.title,
+                        content: data.post.content,
+                        writeDate: data.post.writeDate,
+                        editDate: new Date(),
+                        pageView: data.post.pageView,
+                        parentsNum: data.post.parentsNum,
+                        clubAllowStatus: data.post.clubAllowStatus,
+                        clubRecuStatus: data.post.clubRecuStatus,
+                        delYN: data.post.delYN
+                    });
+                }
             })
             .catch(error => console.error(error));
     }, [id]);
+
 
     useEffect(() => {
         fetch(SERVER_URL + `members/id/${memId}`)
