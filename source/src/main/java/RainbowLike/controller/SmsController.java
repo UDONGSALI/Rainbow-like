@@ -71,7 +71,6 @@ public class SmsController {
         Random random = new Random();
         int randomNumber = random.nextInt(900000) + 100000;
         String randomString = String.valueOf(randomNumber);
-        System.out.println(randomString);
 
         message.setText("세종여성 플라자 인증번호 " + randomString);
 
@@ -221,10 +220,10 @@ public class SmsController {
             }
 
             //실제 메세지 전송 메서드 호출
-//        smsService.ftcSms(cTel, ftcNum);
-//        for (String s : wTelList) {
-//            smsService.ftwSms(s);
-//        }
+        smsService.ftcSms(cTel, ftcNum);
+        for (String s : wTelList) {
+            smsService.ftwSms(s);
+        }
 
         }
 
@@ -239,26 +238,24 @@ public class SmsController {
         @RequestMapping("/rent/{rentNum}")
         public void rentApplySms(@PathVariable Long rentNum){
         // 실제 메세지 발송 메서드
-//        smsService.rentApplySms(rentNum);
+        smsService.rentApplySms(rentNum);
         
             // 테스트용 콘솔출력 메서드
-            smsService.rentApplyTest(rentNum);
+//            smsService.rentApplyTest(rentNum);
 
         }
         @RequestMapping("/rentpay/{rentNum}")
         public void rentPaySms(@PathVariable Long rentNum){
         // 실제 메세지 발송 메서드
-        //        smsService.rentPaySms(rentNum);
+                smsService.rentPaySms(rentNum);
             
             //테스트용 콘솔출력 메서드
-        smsService.rentPayTest(rentNum);
+//        smsService.rentPayTest(rentNum);
         
         
         // 예약 1일 / 1시간 전 메시지 발송(구현 고려중)
 //        smsService.rentAgoSms(rentNum);
         }
-
-
 
         public void createTestSms () {
             ArrayList<SmsHistDto> smsDtoList = SmsHistDto.createTestSms();

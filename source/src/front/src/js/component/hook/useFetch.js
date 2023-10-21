@@ -5,6 +5,10 @@ function useFetch(url, initialData = []) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        if (!url) {
+            setLoading(false);
+            return;
+        }
         fetch(url)
             .then(response => response.json())
             .then(fetchedData => {

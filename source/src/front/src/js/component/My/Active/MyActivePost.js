@@ -37,7 +37,6 @@ export default function MyActivePost(props) {
         fetch(`${SERVER_URL}posts/member/${memNum}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 // 해당 멤버의 게시글만 필터링하여 상태(State)에 저장
                 const memberPosts = data.filter((post) => post.member.memNum === memNum);
                 setPosts(memberPosts);
@@ -63,9 +62,6 @@ export default function MyActivePost(props) {
         const boardNum = params.row.board.boardNum;
         const boardName = params.row.board.boardName; // 게시글의 유형에 따른 필드 (예: type 필드)
 
-        console.log('rowId:', rowId);
-        console.log('boardName:', boardName);
-
         let targetPath = ""; // 이동할 경로 초기화
 
         // boardName에 따라 다른 경로 설정
@@ -77,7 +73,7 @@ export default function MyActivePost(props) {
             targetPath =`/post/detail/${boardNum}/${rowId}`
 
         } else if (boardName === '대관 이용 후기') {
-            targetPath = `/rent/reviewPost/${rowId}`;
+            targetPath = `/rent/review/post/${rowId}`;
      } else {
             targetPath = `/post/detail/${boardNum}/${rowId}`;
         }
@@ -147,7 +143,7 @@ export default function MyActivePost(props) {
                 return formattedDate;
             },
         },
-    ];
+    ].map(col => ({ ...col, sortable: false }));
 
     function CustomNoRowsOverlay() {
         return (
@@ -190,9 +186,7 @@ export default function MyActivePost(props) {
                             NoRowsOverlay: CustomNoRowsOverlay
                         }}
                         pagination={true}
-                        autoHeight={true}
-
-
+                        disableColumnMenu
                     />
 
                 </div>

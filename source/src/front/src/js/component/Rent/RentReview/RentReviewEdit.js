@@ -1,13 +1,11 @@
-import React, {useEffect, useState, useRef, useMemo} from "react";
+import React, {useEffect, useState} from "react";
 import styles from '../../../../css/component/Post/PostForm.module.css';
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {SERVER_URL} from "../../Common/constants";
 import 'react-quill/dist/quill.snow.css';
 
 export default function RentReviewEdit() {
-    const {postId} = useParams();
     const {postNum} = useParams();
-    const location = useLocation();
     const navigate = useNavigate();
     const memId = sessionStorage.getItem("memId");
     const [member, setMember] = useState([]);
@@ -21,7 +19,10 @@ export default function RentReviewEdit() {
         title: '',
         content: '',
         parentsNum: '',
-        delYN: 'N'
+        delYN: 'N',
+        memName: '', // 추가
+        phone: '',   // 추가
+        email: '',   // 추가
     });
 
     //로그인한 멤버정보 가지고 오기
@@ -48,26 +49,26 @@ export default function RentReviewEdit() {
 
     //해당 게시글 가지고 오기
     useEffect(() => {
-        // postNum이 게시글의 식별자라고 가정합니다
-        fetch(SERVER_URL + `post/${postNum}`)
-            .then(response => response.json())
-            .then(data => {
-                setPost(data);
-                console.log(data);
+        if(postNum) { // postNum이 존재할 경우에만 아래 코드 실행
+            fetch(SERVER_URL + `post/${postNum}`)
+                .then(response => response.json())
+                .then(data => {
+                    setPost(data);
 
-                // 필요한 필드만 업데이트
-                setFormData(prevFormData => ({
-                    ...prevFormData,
-                    title: data.title,
-                    content: data.content,
-                    parentsNum: data.parentsNum,
-                    boardNum: data.board.boardNum,
-                }));
-            })
-            .catch(error => {
-                alert('게시글 정보를 찾을 수 없습니다!');
-                alert('새 게시글을 작성하시겠습니까?');
-            });
+                    // 필요한 필드만 업데이트
+                    setFormData(prevFormData => ({
+                        ...prevFormData,
+                        title: data.title,
+                        content: data.content,
+                        parentsNum: data.parentsNum,
+                        boardNum: data.board.boardNum,
+                    }));
+                })
+                .catch(error => {
+                    alert('게시글 정보를 찾을 수 없습니다!');
+                    alert('새 게시글을 작성하시겠습니까?');
+                });
+        }
     }, [postNum]);
 
     // 게시글을 업데이트하는 함수

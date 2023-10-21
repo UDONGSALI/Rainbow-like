@@ -28,7 +28,6 @@ function CslListPage() {
             {boardNum == "7" && <LaborTop />}
             {boardNum == "8" && <OnlineTop />}
             <CounselingList boardNum={boardNum} memNum={memNum}/>
-            <Footer />
         </div>
     );
 }

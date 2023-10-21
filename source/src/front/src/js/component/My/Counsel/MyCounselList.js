@@ -7,8 +7,7 @@ import useDelete from "../../hook/useDelete";
 import useFetch from "../../hook/useFetch";
 import Pagination from "../../Common/Pagination";
 
-export default function MyCounselList() {
-    const [memNum, setMemNum] = useState(null); // 멤버 ID 상태
+export default function MyCounselList({memNum}) {
     const [counsels, setCounsels] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10; // 페이지당 표시할 항목 수
@@ -16,13 +15,6 @@ export default function MyCounselList() {
     const deleteItem = useDelete(SERVER_URL);
 
     const {data: fetchedCounsels, loading} = useFetch(`${SERVER_URL}post/memberCounsel/${memNum}`);
-
-
-    useEffect(() => {
-        // 로그인한 사용자 정보를 가져오는 방법에 따라서 구현
-        const fetchedUserInfo = {memNum: sessionStorage.getItem("memNum")};
-        setMemNum(fetchedUserInfo.memNum); // memNum 상태 업데이트
-    }, []);
 
 
     useEffect(() => {
@@ -65,14 +57,9 @@ export default function MyCounselList() {
             setCounsels(sortedCounsels);
         }
     },[loading, fetchedCounsels, memNum]);
-
-
-    console.log(counsels)
     const onRowClick = (params) => {
         const rowId = params.row.postNum;
         const boardNum = params.row.board.boardNum;
-
-        console.log('rowId:', rowId);
         navigate(`/post/detail/${boardNum}/${rowId}`);
     };
 

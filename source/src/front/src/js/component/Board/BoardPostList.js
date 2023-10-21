@@ -21,6 +21,8 @@ import StatusCell from "../Rent/RenderCell/StatusCell";
 import ConselStatusCell from "./RenderCell/ConselStatusCell";
 import LaborCell from "./RenderCell/LaborCell";
 import {useLocation, useNavigate} from "react-router-dom";
+import {useConfirm} from "../hook/useConfirm";
+import LoadingContainer from "../Common/LoadingContainer";
 
 function BoardPostList({ boardNum }) {
     // 1. 상수 정의
@@ -43,6 +45,7 @@ function BoardPostList({ boardNum }) {
     // 3. 커스텀 훅 사용
     const { activePage, setActivePage } = usePagination(1);
     const patchItem = usePatch(SERVER_URL);
+    const confirm = useConfirm();
     // 4. 데이터 가져오기,
     const { searchTerm, setSearchTerm, handleSearch } = useSearch(`${SERVER_URL}post/${boardNum}`, setPosts);
     const { data: fetchedPosts, loading } = useFetch(`${SERVER_URL}post/board/${boardNum}`);
@@ -80,8 +83,11 @@ function BoardPostList({ boardNum }) {
         }
     }, [loading, fetchedPosts, boardNum]);
 
-    const handleDelete = (postNum) => {
-        if (!window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
+    const handleDelete = async (postNum) => {
+
+        const isConfirmed = await confirm("정말로 이 게시글을 삭제하시겠습니까?");
+
+        if (!isConfirmed) {
             return;
         }
 
@@ -141,9 +147,9 @@ function BoardPostList({ boardNum }) {
     };
 
     const handleCancelAssignment = async (postNum) => {
-        if (!window.confirm("배정된 노무사를 취소하시겠습니까?")) return;
+        const isConfirmed = await confirm("배정된 노무사를 취소하시겠습니까?");
+        if (!isConfirmed) return;
 
-        // 이제 'action'이라는 키로 액션 타입을 지정하고 API에 전달합니다.
         const bodyData = {
             action: "cancelLabor"
         };
@@ -171,13 +177,19 @@ function BoardPostList({ boardNum }) {
             renderCell: (row) => {
                 const boardNum = row.row.board.boardNum;
                 const postNum = row.row.postNum;
-                const navigateTo = (boardNum === 9)
-                    ? `/clubs/${postNum}`
-                    : `/post/detail/${boardNum}/${postNum}`;
+                let navigateTo;
+
+                if (boardNum === 9) {
+                    navigateTo = `/clubs/${postNum}`;
+                } else if (boardNum === 6) {
+                    navigateTo = `/rent/review/post/${postNum}`;
+                } else {
+                    navigateTo = `/post/detail/${boardNum}/${postNum}`;
+                }
 
                 return (
                     <span
-                        onClick={() => navigate(navigateTo)}
+                        onClick={() => navigate(navigateTo)}  // 'navigate'는 해당 경로로 이동하는 함수로 추정됩니다.
                         style={{ cursor: 'pointer' }}
                     >
                 {row.row.parentsNum ? "ㄴ [답글] " : ""}{row.row.title}
@@ -266,12 +278,7 @@ function BoardPostList({ boardNum }) {
                     totalPages={Math.ceil(posts.length / itemsPerPage)}
                 />
                 {loading ? (
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '200px'
-                    }}>로딩중...</div>
+                    <LoadingContainer>로딩중...</LoadingContainer>
                 ) : (
                     <StyledDataGrid
                         columns={columns}
