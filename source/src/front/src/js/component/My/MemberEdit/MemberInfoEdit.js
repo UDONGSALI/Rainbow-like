@@ -252,11 +252,11 @@ export default function MemberInfoEdit() {
                         text = await response.text();
                         // console.log('서버 응답 데이터:', text);
                         alert('회원 정보 수정에 성공 했습니다!');
-                        window.location.href = "http://localhost:3000/mypage/infoEditSuccess";
+                        window.location.href = "/mypage/infoEditSuccess";
                     } catch (jsonError) {
                         console.error('JSON 파싱 에러:', jsonError);
                         alert('회원 정보 수정에 성공 했습니다!');
-                        window.location.href = "http://localhost:3000/mypage/infoEditSuccess";
+                        window.location.href = "/mypage/infoEditSuccess";
                     }
                 } else {
                     console.error('업데이트 실패:', response.statusText);

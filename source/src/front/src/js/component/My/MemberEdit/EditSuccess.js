@@ -5,11 +5,11 @@ import Button from "@mui/material/Button";
 
 export default function EditSuccess() {
     function redirectToURL1() {
-        window.location.href = "http://localhost:3000/";
+        window.location.href = "/";
     };
 
     function redirectToURL2() {
-        window.location.href = "http://localhost:3000/mypage/edu";
+        window.location.href = "/mypage/edu";
     };
 
     return (
