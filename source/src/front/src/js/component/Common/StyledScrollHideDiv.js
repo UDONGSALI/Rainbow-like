@@ -3,13 +3,12 @@ import styled from "@emotion/styled";
 
 const StyledScrollHideDiv = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-height: 50px;
+  height: 120%;
   overflow-y: auto;
   width: 100%;
-  scrollbar-width: none; // Firefox
-  -ms-overflow-style: none; // IE and Edge
 
   &::-webkit-scrollbar {
     display: none; // Chrome, Safari, and Opera

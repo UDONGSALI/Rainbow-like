@@ -273,7 +273,7 @@ function App() {
 
             </Routes>
 
-            {!isChatRoute && <Footer/>}
+            {!isPaymentRoute && !isChatRoute && <Footer/>}
         </div>);
 }
 
