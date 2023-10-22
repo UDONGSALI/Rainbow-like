@@ -29,14 +29,14 @@ const style = {
 
 export default function MemberInfoEdit() {
 
-    const [updatedInfo, setUpdatedInfo] =useState({
+    const [updatedInfo, setUpdatedInfo] = useState({
         pwd: '',
         passwordConfirm: "",
         email: '',
         addr: '',
         addrDtl: '',
         addrPost: '',
-        name:'',
+        name: '',
     });
     const [memNum, setMemNum] = useState(null);
     const [memberInfo, setMemberInfo] = useState(null);
@@ -59,14 +59,18 @@ export default function MemberInfoEdit() {
     const [errors, setErrors] = useState({});
     const open = useDaumPostcodePopup();
 
-    const { decodeToken:  deleteTokenFromServer } = useToken();
+    const {decodeToken: deleteTokenFromServer} = useToken();
     const logout = () => {
-        const jti = sessionStorage.getItem('jti'); // 세션 스토리지에서 jti를 가져옴
+        const jti = sessionStorage.getItem('jti');
         if (jti) {
-            deleteTokenFromServer(jti);
+            deleteTokenFromServer(jti).then(() => {
+                sessionStorage.clear();
+                window.location.reload();
+            });
+        } else {
+            sessionStorage.clear();
+            window.location.reload();
         }
-        sessionStorage.clear();
-        window.location.reload();
     };
 
 
@@ -79,30 +83,30 @@ export default function MemberInfoEdit() {
     };
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
-        setUpdatedInfo((prev) => ({ ...prev, pwd: passwordConfirm }));
+        setUpdatedInfo((prev) => ({...prev, pwd: passwordConfirm}));
     };
     const handlePasswordConfirmChange = (e) => {
         setPasswordConfirm(e.target.value);
     };
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
-        setUpdatedInfo((prev) => ({ ...prev, email: e.target.value }));
+        setUpdatedInfo((prev) => ({...prev, email: e.target.value}));
     };
 
 
     const handleAddrChange = (e) => {
         setAddr(e.target.value);
-        setUpdatedInfo((prev) => ({ ...prev, addr: e.target.value }));
+        setUpdatedInfo((prev) => ({...prev, addr: e.target.value}));
 
     };
     const handleAddrDtlChange = (e) => {
         setAddrDtl(e.target.value);
-        setUpdatedInfo((prev) => ({ ...prev, addrDtl: e.target.value }));
+        setUpdatedInfo((prev) => ({...prev, addrDtl: e.target.value}));
 
     };
     const handleAddrPostChange = (e) => {
         setAddrPost(e.target.value);
-        setUpdatedInfo((prev) => ({ ...prev, addrPost: e.target.value }));
+        setUpdatedInfo((prev) => ({...prev, addrPost: e.target.value}));
 
     };
     const handleSmsConsentChange = () => {
@@ -176,14 +180,13 @@ export default function MemberInfoEdit() {
 
     function redirectToURL1() {
         window.location.href = "/mypage/infoEdit";
-    };
+    }
 
 
     function redirectToModal() {
         // console.log('redirectToModal called');
         handleOpen(true);
     }
-
 
 
     useEffect(() => {

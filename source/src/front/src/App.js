@@ -117,6 +117,7 @@ function App() {
     const decodeToken = useToken();
     const [isAdmin, setIsAdmin] = useState(sessionStorage.getItem("role") === "ADMIN");
     const [memId, setMemId] = useState(sessionStorage.getItem('memId'));
+    const [jti, setJti ]= useState(sessionStorage.getItem('jti'));
     const {trackButtonClick, trackPageView} = useTracking(memId);
     const location = useLocation();
     const isPaymentRoute = location.pathname.includes("/pay/");
@@ -125,10 +126,8 @@ function App() {
 
     useEffect(() => {
         setMemId(sessionStorage.getItem("memId"));
-    }, [location]);
-
-    useEffect(() => {
         setIsAdmin(sessionStorage.getItem("role") === "ADMIN");
+        setJti(sessionStorage.getItem("jti"));
     }, [location]);
 
     useEffect(() => {
@@ -162,12 +161,12 @@ function App() {
              style={{ backgroundImage: `url(${selectedBgImage})`, /*backgroundSize:'100%', backgroundPosition:'center center', backgroundRepeat:"no-repeat"*/}}
              onClick={trackButtonClick}>
 
-            {!isPaymentRoute && !isChatRoute && <CustomNavbar memId={memId} isAdmin={isAdmin}/>}
+            {!isPaymentRoute && !isChatRoute && <CustomNavbar memId={memId} isAdmin={isAdmin} jti={jti}/>}
             <Routes>
                 <Route path="/" element={<MainPage/>}/>
 
                 {/*로그인*/}
-                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/login" element={<LoginPage memId={memId} jti={jti}/>}/>
                 <Route path="/signUp" element={<SignUpPage/>}/>
                 <Route path="/search" element={<SearchPage/>}/>
 
