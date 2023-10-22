@@ -65,5 +65,7 @@ public class TokenController {
 
     @DeleteMapping("/{jti}")
     public void deleteToken(@PathVariable  String jti) {
+        System.out.println("동작 확인");
+        jwtService.deleteTokenByJti(jti);
     }
 }
