@@ -58,19 +58,22 @@ const menuData = [
     },
 ];
 
-function CustomNavbar({memId, isAdmin}) {
+function CustomNavbar({memId, isAdmin, jti}) {
     const [activeMenu, setActiveMenu] = useState(null);
     const location = useLocation();
     const isMainPage = location.pathname === "/";
 
     const {deleteTokenFromServer} = useToken();
     const logout = () => {
-        const jti = sessionStorage.getItem('jti'); // 세션 스토리지에서 jti를 가져옴
         if (jti) {
-            deleteTokenFromServer(jti);
+            deleteTokenFromServer(jti).then(() => {
+                sessionStorage.clear();
+                window.location.reload();
+            });
+        } else {
+            sessionStorage.clear();
+            window.location.reload();
         }
-        sessionStorage.clear();
-        window.location.reload();
     };
 
     return (

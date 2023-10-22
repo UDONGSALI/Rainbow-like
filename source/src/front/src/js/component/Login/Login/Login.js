@@ -9,8 +9,7 @@ import styles from '../../../../css/component/Login/Login.module.css';
 const BUTTON_COLOR_DEFAULT = '#a38ced';
 const BUTTON_COLOR_HOVER = '#53468b';
 
-function Login() {
-    const [memId, setMemId] = useState(null);
+function Login({memId, jti}) {
     const [snackbarMessage, setSnackbarMessage] = useState(null);
     const {decodeToken: decodeAndSetToken, deleteTokenFromServer, getToken} = useToken();
     const storedFailedAttempts = localStorage.getItem('failedAttempts') || 0;
@@ -33,9 +32,6 @@ function Login() {
         color: '#a38ced',
     };
 
-    useEffect(() => {
-        setMemId(sessionStorage.getItem("memId"));
-    }, []);
 
     const handleChange = (e) => {
         setUser({...user, [e.target.name]: e.target.value});
@@ -78,12 +74,15 @@ function Login() {
     };
 
     const logout = () => {
-        const jti = sessionStorage.getItem('jti'); // 세션 스토리지에서 jti를 가져옴
         if (jti) {
-            deleteTokenFromServer(jti);
+            deleteTokenFromServer(jti).then(() => {
+                sessionStorage.clear();
+                window.location.reload();
+            });
+        } else {
+            sessionStorage.clear();
+            window.location.reload();
         }
-        sessionStorage.clear();
-        window.location.reload();
     };
 
     const handleSubmit = () => {
