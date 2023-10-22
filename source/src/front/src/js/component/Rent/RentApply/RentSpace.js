@@ -107,11 +107,11 @@ function RentSpace({selectedInfo}) {
                     // console.log('서버 응답 데이터:', text);
                     alert('정말로 대관 예약 신청을 하시겠습니까?');
                     alert('대관 예약 신청이 완료되었습니다. 마이페이지에서 확인하세요.');
-                    window.location.href = "http://localhost:3000/mypage/rent";
+                    window.location.href = "/mypage/rent";
                 } catch (jsonError) {
                     console.error('JSON 파싱 에러:', jsonError);
                     alert('정말로 대관 예약 신청을 하시겠습니까?');
-                    window.location.href = "http://localhost:3000/mypage/rent";
+                    window.location.href = "/mypage/rent";
                 }
             } else {
                 console.error('업데이트 실패:', response.statusText);
