@@ -111,11 +111,6 @@ public class JwtService {
     public void deleteTokenByJti(String jti) {
         tokenRepository.deleteByJti(jti);
     }
-    @Transactional
-    public void deleteTokenByTokenNum(Long tokenNum) {
-        tokenRepository.deleteById(tokenNum);
-    }
-
     @Scheduled(fixedRate = 1 * 60 * 1000)
     @Transactional
     public void cleanupExpiredTokens() {
