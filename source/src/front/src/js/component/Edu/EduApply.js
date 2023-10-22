@@ -5,10 +5,11 @@ import Checkbox from '@mui/material/Checkbox';
 import Stack from '@mui/material/Stack';
 import {TextField} from '@mui/material';
 import FileUpload from '../Common/FileUpload';
+import {useNavigate} from "react-router-dom";
 
 function EduApply(props) {
     const {eduNum, memId} = props;
-
+    const navigate = useNavigate();
     const [eduData, setEduData] = useState(null);
     const [member, setMember] = useState(null);
     const [isFirstCheckboxChecked, setIsFirstCheckboxChecked] = useState(false);
@@ -31,7 +32,7 @@ function EduApply(props) {
             })
             .catch(error => {
                 alert('존재하지 않는 교육입니다!');
-                window.location.href = '/edu/list';
+                navigate('/edu/list');
             });
 
         fetch(SERVER_URL + `members/id/${memId}`)
@@ -41,7 +42,7 @@ function EduApply(props) {
             })
             .catch(error => {
                 alert('회원 정보를 찾을 수 없습니다!');
-                window.location.href = '/login';
+                navigate('/login');
             });
     }, [eduNum, memId]);
 
@@ -150,8 +151,8 @@ function EduApply(props) {
                 return response.text();
             })
             .then(data => {
-                alert(data);  // 성공 메시지 출력
-                window.location.href = `/edu/list/detail/${eduNum}`;
+                window.alert(data);  // 성공 메시지 출력
+                navigate(`/edu/list/detail/${eduNum}`);
             })
             .catch(error => {
                 // 이미 신청했거나, 다른 오류 발생 시 이곳에서 처리

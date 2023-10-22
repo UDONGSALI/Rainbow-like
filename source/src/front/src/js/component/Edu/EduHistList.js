@@ -23,7 +23,7 @@ import InfoModal from "../Common/InfoModal";
 import DateCell from "../Common/DateCell";
 import LoadingContainer from "../Common/LoadingContainer";
 
-function EduHistList(memId) {
+function EduHistList({memId}) {
     // 1. React Router 관련
     const navigate = useNavigate();
     const location = useLocation();
