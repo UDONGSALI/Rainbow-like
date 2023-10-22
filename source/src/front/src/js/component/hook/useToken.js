@@ -141,15 +141,21 @@ export function useToken() {
 
 
     const deleteTokenFromServer = useCallback((jti) => {
-        fetch(`${SERVER_URL}token/${jti}`, {
+        return fetch(`${SERVER_URL}token/${jti}`, {
             method: 'DELETE',
         })
             .then(response => {
                 if (!response.ok) {
-                    console.error("Error deleting token");
+                    throw new Error("Error deleting token");
                 }
+                return response.text();
+            })
+            .catch(error => {
+                console.error("Error:", error);  // 에러 출력
+                throw error;
             });
     }, []);
+
 
     return { decodeToken, deleteTokenFromServer, getToken };
 }
