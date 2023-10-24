@@ -112,6 +112,7 @@ public class MemberController {
         try {
             return ResponseEntity.ok(memberService.saveMemberAndFile(memberDataJson, files, tableName, number));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body("회원가입 중 오류가 발생했습니다.");
         }
     }
