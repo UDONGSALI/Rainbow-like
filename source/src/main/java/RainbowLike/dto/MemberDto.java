@@ -37,7 +37,7 @@ public class MemberDto {
 
     private String pwd;
 
-    private String confirmPwd;
+    private String passwordConfirm;
 
     private String name;
 
