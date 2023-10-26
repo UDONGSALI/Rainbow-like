@@ -224,4 +224,6 @@ $RECYCLE.BIN
 # Windows shortcuts
 .lnk
 
+*.json
+
 # End of httpswww.toptal.comdevelopersgitignoreapiintellij,eclipse,react,windows
