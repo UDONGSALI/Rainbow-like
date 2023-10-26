@@ -6,16 +6,10 @@ import RainbowLike.constant.Type;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +134,7 @@ public class MemberDto {
         memberDtoList.add(memberDto5);
 
 // 추가 16명의 데이터 생성
-        String[] names = {"지수", "철수", "영희", "민수", "수진", "은지", "선영", "태민", "민호", "하은", "서진", "예은", "진영", "재현"};
+        String[] names = {"김지수", "최철수", "오영희", "박민수", "김수진", "송은지", "박선영", "이태민", "고민호", "오하은", "박서진", "김예은", "최진영", "오재현"};
         String[] emails = {"js@", "cs@", "yh@", "ms@", "sj@", "ej@", "sy@", "tm@", "mh@", "he@", "sj2@", "ye@", "jy@", "jh@"};
         String[] sejongAddresses = {
                 "세종특별자치시 보람동",
