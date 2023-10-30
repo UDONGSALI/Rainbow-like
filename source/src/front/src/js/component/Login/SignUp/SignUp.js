@@ -243,7 +243,7 @@ function SignUp() {
             })
             .then(data => {
                 alert(data)
-                window.location.href = `/login`;
+                // window.location.href = `/login`;
             })
             .catch(error => {
                 alert(error)
