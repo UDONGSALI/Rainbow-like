@@ -7,7 +7,7 @@ const Footer = () => {
         <footer id={styles.footer}>
             <div className={styles.layout}>
                 <div className={styles.logo}>
-                    <a href='https://sj-equity.or.kr/' className={styles.footerLogo}>
+                    <a href='/' className={styles.footerLogo}>
                         <img src={footer_bottom_logo} alt="Footer Logo"/>
                     </a>
                 </div>
