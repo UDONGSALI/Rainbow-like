@@ -67,6 +67,7 @@ const ModalBackground = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 5000;
 `;
 
 const CertificateWrapper = styled.div`
@@ -120,7 +121,7 @@ const globalPrintStyles = css`
       width: 100%;
       height: 100%;
     }
-
+f 
     body * {
       visibility: hidden;
     }
