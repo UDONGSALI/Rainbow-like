@@ -87,7 +87,7 @@ public class FileService {
         PathAndEntities pathAndEntities = determineMidPath(tableName, number);
 
         // Set up Google Cloud Storage
-        ClassPathResource resource = new ClassPathResource("rainbow-like-6e3171ac1695.json");
+        ClassPathResource resource = new ClassPathResource("rainbow-like-e19c6b032b8f.json");
         GoogleCredentials credentials = GoogleCredentials.fromStream(resource.getInputStream());
         String projectId = "rainbow-like";
         Storage storage = StorageOptions.newBuilder()
